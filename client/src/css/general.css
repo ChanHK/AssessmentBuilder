@@ -1,0 +1,19 @@
+@font-face {
+  font-family: Ubuntu-Regular;
+  src: url("../assets/fonts/ubuntu/Ubuntu-Regular.ttf");
+}
+
+@font-face {
+  font-family: Ubuntu-Bold;
+  src: url("../assets/fonts/ubuntu/Ubuntu-Bold.ttf");
+}
+
+@font-face {
+  font-family: JosefinSans-Bold;
+  src: url("../assets/fonts/JosefinSans/JosefinSans-Bold.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
