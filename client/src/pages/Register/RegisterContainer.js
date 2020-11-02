@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
-
+import CustomTitle from "../../components/FormComponents/CustomTitle";
+import CustomForm from "../../components/FormComponents/CustomForm";
+import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
+import CustomFormControl from "../../components/FormComponents/CustomFormControl";
+import CustomFormButton from "../../components/FormComponents/CustomFormButton";
 import "../../css/general.css";
 
 export default class RegisterContainer extends Component {
@@ -14,48 +18,49 @@ export default class RegisterContainer extends Component {
     };
   }
 
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   render() {
     return (
-      <div className={css(styles.BGContainer)}>
-        <div className={css(styles.WhiteBoxContainer)}>
-          <div className={css(styles.titleContainer)}>
-            <a className={css(styles.title)}>Sign up</a>
-          </div>
-          <form className={css(styles.formContainer)}>
-            <a className={css(styles.subtitle)}>Username</a>
-            <input
-              className={css(styles.input)}
-              type="text"
-              // value={this.state.username}
-              placeholder="enter your username"
-              onchange={(value) => this.setState({ username: value })}
+      <div className={css(styles.background)}>
+        <div className={css(styles.whiteBox)}>
+          <CustomTitle>Sign Up</CustomTitle>
+          <CustomForm>
+            <CustomSubLabel>Username</CustomSubLabel>
+            <CustomFormControl
+              name={"username"}
+              type={"text"}
+              onChange={this.onChange}
+              placeholder={"Enter your username"}
             />
             <br />
-            <a className={css(styles.subtitle)}>Email</a>
-            <input
-              className={css(styles.input)}
-              type="text"
-              //   value={this.state.email}
-              placeholder="enter your email"
+            <CustomSubLabel>Email</CustomSubLabel>
+            <CustomFormControl
+              name={"email"}
+              type={"text"}
+              onChange={this.onChange}
+              placeholder={"Enter your email"}
             />
             <br />
-            <a className={css(styles.subtitle)}>Password</a>
-            <input
-              className={css(styles.input)}
-              type="text"
-              //   value={this.state.password}
-              placeholder="enter your password"
+            <CustomSubLabel>Password</CustomSubLabel>
+            <CustomFormControl
+              name={"password"}
+              type={"password"}
+              onChange={this.onChange}
+              placeholder={"Enter your password"}
             />
             <br />
-            <a className={css(styles.subtitle)}>Reenter password</a>
-            <input
-              className={css(styles.input)}
-              type="text"
-              //   value={this.state.secpass}
-              placeholder="reenter your password"
+            <CustomSubLabel>Reenter password</CustomSubLabel>
+            <CustomFormControl
+              name={"secpass"}
+              type={"password"}
+              onChange={this.onChange}
+              placeholder={"Reenter your password"}
             />
-            <button className={css(styles.button)}>Sign up</button>
-          </form>
+            <CustomFormButton>Sign up</CustomFormButton>
+          </CustomForm>
         </div>
       </div>
     );
@@ -63,7 +68,7 @@ export default class RegisterContainer extends Component {
 }
 
 const styles = StyleSheet.create({
-  BGContainer: {
+  background: {
     backgroundColor: "#e0e0e0",
     width: "100%",
     height: "100vh",
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
   },
-  WhiteBoxContainer: {
+  whiteBox: {
     backgroundColor: "white",
     boxShadow: "0 3px 20px 0px rgba(0, 0, 0, 0.1)",
     width: "50%",
@@ -82,58 +87,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
-  },
-  titleContainer: {
-    width: "100%",
-    height: "30%",
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-  },
-  title: {
-    textAlign: "center",
-    fontSize: "40px",
-    fontFamily: "Ubuntu-Bold",
-    paddingTop: "20px",
-    paddingBottom: "20px",
-  },
-  formContainer: {
-    width: "80%",
-    height: "70%",
-    display: "flex",
-    paddingTop: "30px",
-    flexDirection: "column",
-    flexDirection: "column",
-  },
-  subtitle: {
-    fontFamily: "Ubuntu-Bold",
-    paddingBottom: "10px",
-    paddingTop: "10px",
-  },
-  input: {
-    backgroundColor: "#e0e0e0",
-    outline: "none",
-    border: "none",
-    width: "auto",
-    height: "20px",
-    padding: "10px 0px",
-    borderRadius: "5px",
-    fontFamily: "Ubuntu-Bold",
-    paddingLeft: "10px",
-  },
-  button: {
-    marginTop: "40px",
-    width: "auto",
-    height: "50px",
-    padding: "5px 0px",
-    border: "none",
-    outline: "none",
-    fontFamily: "Ubuntu-Bold",
-    backgroundColor: "blueviolet",
-    color: "white",
-    borderRadius: "5px",
-    fontSize: "15px",
-    textTransform: "uppercase",
-    lineHeight: "1.2",
   },
 });
