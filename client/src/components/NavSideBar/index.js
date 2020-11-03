@@ -12,11 +12,20 @@ export default class NavSideBar extends Component {
       hoverAssessment: false,
       hoverQuestionBank: false,
       hoverLogOut: false,
+      windowPosition: window.pageYOffset,
     };
   }
 
+  handleScroll() {
+    this.setState({ windowPosition: window.pageYOffset });
+  }
+
   componentDidMount() {
-    console.log(this.props.showBar);
+    window.addEventListener("scroll", this.handleScroll.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll.bind(this));
   }
 
   toggleEnter = (e) => {
@@ -40,6 +49,12 @@ export default class NavSideBar extends Component {
           className={
             this.props.showBar ? css(styles.active) : css(styles.xactive)
           }
+          style={{
+            top:
+              this.state.windowPosition > "60px"
+                ? this.state.windowPosition + "60px"
+                : "60px",
+          }}
         >
           <div style={{ width: "100%" }}>
             {Data.map((item, index) => {
@@ -74,11 +89,10 @@ const styles = StyleSheet.create({
   active: {
     backgroundColor: "#060b26",
     width: "250px",
-    maxHeight: "100%",
+    height: "100vh",
     display: "flex",
     justifyContent: "center",
     position: "fixed",
-    top: "60px",
     left: "0",
     transition: "350ms",
     zIndex: 1,
@@ -86,13 +100,12 @@ const styles = StyleSheet.create({
   xactive: {
     backgroundColor: "#060b26",
     width: "250px",
-    maxHeight: "100vh",
+    height: "100vh",
     display: "flex",
     justifyContent: "center",
-    position: "absolute",
-    top: "60px",
+    position: "fixed",
     left: "-100%",
-    transition: "850ms",
+    transition: "1000ms",
     zIndex: 1,
   },
   listIcon: {
