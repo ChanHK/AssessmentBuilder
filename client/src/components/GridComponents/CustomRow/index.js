@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
     height: "60px",
     justifyContent: "flex-start",
     alignItems: "center",
+    position: "fixed",
+    top: "0",
   },
 });
 

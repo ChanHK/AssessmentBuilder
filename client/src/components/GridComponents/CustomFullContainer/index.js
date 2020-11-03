@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
   style: {
     width: "100%",
     height: "auto",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
   },
 });
 

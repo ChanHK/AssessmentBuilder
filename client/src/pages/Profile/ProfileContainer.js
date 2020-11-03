@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
+import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import "../../css/general.css";
 
 export default class ProfileContainer extends Component {
@@ -11,13 +12,13 @@ export default class ProfileContainer extends Component {
     return (
       <>
         <Header />
-        <div style={{ width: "100%", height: "100vh" }}>
+        <CustomFullContainer>
           <div className={css(styles.container)}>
             <div className={css(styles.acontainer)}>
               <Form.Label className={css(styles.text)}>Profile</Form.Label>
             </div>
           </div>
-        </div>
+        </CustomFullContainer>
       </>
     );
   }
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     // backgroundColor: "pink",
+    height: "1000px",
   },
   text: {
     fontFamily: "Ubuntu-Bold",
@@ -46,6 +48,5 @@ const styles = StyleSheet.create({
     // minHeight: "100vh",
     display: "flex",
     backgroundColor: "lightgreen",
-    alignSelf: "center",
   },
 });

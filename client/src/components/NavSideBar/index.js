@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
   active: {
     backgroundColor: "#060b26",
     width: "250px",
-    height: "100vh",
+    maxHeight: "100%",
     display: "flex",
     justifyContent: "center",
-    position: "absolute",
+    position: "fixed",
     top: "60px",
     left: "0",
     transition: "350ms",
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   xactive: {
     backgroundColor: "#060b26",
     width: "250px",
-    height: "100vh",
+    maxHeight: "100vh",
     display: "flex",
     justifyContent: "center",
     position: "absolute",
