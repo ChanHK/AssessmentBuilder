@@ -44,7 +44,7 @@ class Header extends Component {
   render() {
     return (
       <CustomFullContainer>
-        <CustomRow bar>
+        <CustomRow style={[styles.rowStyle]}>
           <FaIcons.FaBars
             className={css(styles.icon)}
             style={{ marginLeft: "2rem" }}
@@ -79,6 +79,14 @@ class Header extends Component {
 }
 
 const styles = StyleSheet.create({
+  rowStyle: {
+    backgroundColor: "#060b26",
+    height: "60px",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    position: "fixed",
+    top: "0",
+  },
   icon: {
     height: "40px",
     fontSize: "1.5rem",
