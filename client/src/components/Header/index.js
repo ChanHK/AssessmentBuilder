@@ -34,6 +34,10 @@ class Header extends Component {
     }
   };
 
+  barShow = () => {
+    this.setState({ showBar: !this.state.showBar });
+  };
+
   render() {
     return (
       <>
