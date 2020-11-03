@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: "5px",
     display: "flex",
     border: "2px solid black",
-    // boxShadow: "0px 3px 20px 0px grey",
+    boxShadow: "0px 3px 20px 0px grey",
   },
   innerLayer: {
     flexWrap: "wrap",
