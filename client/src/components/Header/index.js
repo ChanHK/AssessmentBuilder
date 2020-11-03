@@ -4,12 +4,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Row, Image, Form } from "react-bootstrap";
 import * as FaIcons from "react-icons/fa";
 import logo from "../../image/logo/logo.png";
+import NavSideBar from "../../components/NavSideBar";
 
 class Header extends Component {
   constructor() {
     super();
     this.state = {
       showLogo: window.innerWidth > 600 ? true : false,
+      showBar: true,
     };
   }
 
@@ -34,33 +36,37 @@ class Header extends Component {
 
   render() {
     return (
-      <Row className={css(styles.navbar)}>
-        <FaIcons.FaBars
-          className={css(styles.icon)}
-          style={{ marginLeft: "3rem" }}
-        />
+      <>
+        <Row className={css(styles.navbar)}>
+          <FaIcons.FaBars
+            className={css(styles.icon)}
+            style={{ marginLeft: "3rem" }}
+            onClick={this.barShow}
+          />
 
-        {this.state.showLogo ? (
-          <>
+          {this.state.showLogo ? (
+            <>
+              <Image
+                src={logo}
+                className={css(styles.icon, styles.noSelect)}
+                style={{ marginLeft: "1.5rem" }}
+                rounded
+              />
+              <Form.Label className={css(styles.logo, styles.noSelect)}>
+                Assessment Builder
+              </Form.Label>
+            </>
+          ) : (
             <Image
               src={logo}
               className={css(styles.icon, styles.noSelect)}
               style={{ marginLeft: "1.5rem" }}
               rounded
             />
-            <Form.Label className={css(styles.logo, styles.noSelect)}>
-              Assessment Builder
-            </Form.Label>
-          </>
-        ) : (
-          <Image
-            src={logo}
-            className={css(styles.icon, styles.noSelect)}
-            style={{ marginLeft: "1.5rem" }}
-            rounded
-          />
-        )}
-      </Row>
+          )}
+        </Row>
+        <NavSideBar showBar={this.state.showBar} />
+      </>
     );
   }
 }

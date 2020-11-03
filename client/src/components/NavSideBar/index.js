@@ -5,15 +5,18 @@ import { Data } from "./Data";
 import "../../css/general.css";
 
 export default class NavSideBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       hoverProfile: false,
       hoverAssessment: false,
       hoverQuestionBank: false,
       hoverLogOut: false,
-      showBar: false,
     };
+  }
+
+  componentDidMount() {
+    console.log(this.props.showBar);
   }
 
   toggleEnter = (e) => {
@@ -27,13 +30,17 @@ export default class NavSideBar extends Component {
   };
 
   toggleLeave = (e) => {
-    this.setState({ [e.target.type]: false }); 
+    this.setState({ [e.target.type]: false });
   };
 
   render() {
     return (
       <>
-        <nav className={css(styles.active)}>
+        <nav
+          className={
+            this.props.showBar ? css(styles.active) : css(styles.xactive)
+          }
+        >
           <div style={{ width: "100%" }}>
             {Data.map((item, index) => {
               return (
@@ -74,6 +81,18 @@ const styles = StyleSheet.create({
     top: "60px",
     left: "0",
     transition: "350ms",
+    zIndex: 1,
+  },
+  xactive: {
+    backgroundColor: "#060b26",
+    width: "250px",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    position: "fixed",
+    top: "60px",
+    left: "-100%",
+    transition: "850ms",
     zIndex: 1,
   },
   listIcon: {
