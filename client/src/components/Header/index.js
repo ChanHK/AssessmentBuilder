@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Row, Image, Form } from "react-bootstrap";
+import { Image, Form } from "react-bootstrap";
 import * as FaIcons from "react-icons/fa";
 import logo from "../../image/logo/logo.png";
 import NavSideBar from "../../components/NavSideBar";
+import CustomFullContainer from "../GridComponents/CustomFullContainer";
+import CustomRow from "../GridComponents/CustomRow";
+import "../../css/general.css";
 
 class Header extends Component {
   constructor() {
     super();
     this.state = {
       showLogo: window.innerWidth > 600 ? true : false,
-      showBar: true,
+      showBar: false,
     };
   }
 
@@ -40,11 +43,11 @@ class Header extends Component {
 
   render() {
     return (
-      <>
-        <Row className={css(styles.navbar)}>
+      <CustomFullContainer>
+        <CustomRow bar>
           <FaIcons.FaBars
             className={css(styles.icon)}
-            style={{ marginLeft: "3rem" }}
+            style={{ marginLeft: "2rem" }}
             onClick={this.barShow}
           />
 
@@ -68,21 +71,14 @@ class Header extends Component {
               rounded
             />
           )}
-        </Row>
+        </CustomRow>
         <NavSideBar showBar={this.state.showBar} />
-      </>
+      </CustomFullContainer>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  navbar: {
-    backgroundColor: "#060b26",
-    height: "60px",
-    display: "flex",
-    justifyContent: "start",
-    alignItems: "center",
-  },
   icon: {
     height: "40px",
     fontSize: "1.5rem",
