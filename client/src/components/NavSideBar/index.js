@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     position: "fixed",
-    top: "0",
+    top: "60px",
     left: "0",
     transition: "350ms",
     zIndex: 1,

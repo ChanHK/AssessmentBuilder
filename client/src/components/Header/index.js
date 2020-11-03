@@ -3,7 +3,6 @@ import { StyleSheet, css } from "aphrodite";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Row, Image, Form } from "react-bootstrap";
 import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
 import logo from "../../image/logo/logo.png";
 
 class Header extends Component {
@@ -36,13 +35,17 @@ class Header extends Component {
   render() {
     return (
       <Row className={css(styles.navbar)}>
-        <FaIcons.FaBars className={css(styles.icon)} />
+        <FaIcons.FaBars
+          className={css(styles.icon)}
+          style={{ marginLeft: "3rem" }}
+        />
 
         {this.state.showLogo ? (
           <>
             <Image
               src={logo}
               className={css(styles.icon, styles.noSelect)}
+              style={{ marginLeft: "1.5rem" }}
               rounded
             />
             <Form.Label className={css(styles.logo, styles.noSelect)}>
@@ -50,7 +53,12 @@ class Header extends Component {
             </Form.Label>
           </>
         ) : (
-          <AiIcons.AiFillHome className={css(styles.icon)} />
+          <Image
+            src={logo}
+            className={css(styles.icon, styles.noSelect)}
+            style={{ marginLeft: "1.5rem" }}
+            rounded
+          />
         )}
       </Row>
     );
@@ -67,7 +75,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: "40px",
-    marginLeft: "2rem",
     fontSize: "1.5rem",
     background: "none",
     color: "white",
