@@ -1,108 +1,61 @@
 import React, { Component } from "react";
-import * as MdIcons from "react-icons/md";
-import * as HiIcons from "react-icons/hi";
-import * as RiIcons from "react-icons/ri";
-
 import { Link } from "react-router-dom";
 import { StyleSheet, css } from "aphrodite";
+import { Data } from "./Data";
 import "../../css/general.css";
 
 export default class NavSideBar extends Component {
   constructor() {
     super();
     this.state = {
-      hoverA: false,
-      hoverQ: false,
-      hoverC: false,
-      hovers: false,
+      hoverProfile: false,
+      hoverAssessment: false,
+      hoverQuestionBank: false,
+      hoverLogOut: false,
+      showBar: false,
     };
   }
 
-  toggleHoverA = () => {
-    this.setState({ hoverA: !this.state.hoverA });
+  toggleEnter = (e) => {
+    this.setState({
+      hoverProfile: false,
+      hoverAssessment: false,
+      hoverQuestionBank: false,
+      hoverLogOut: false,
+      [e.target.type]: true,
+    });
   };
 
-  toggleHoverQ = () => {
-    this.setState({ hoverQ: !this.state.hoverQ });
-  };
-
-  toggleHoverC = () => {
-    this.setState({ hoverC: !this.state.hoverC });
-  };
-
-  toggleHoverS = () => {
-    this.setState({ hoverS: !this.state.hoverS });
+  toggleLeave = (e) => {
+    this.setState({ [e.target.type]: false }); 
   };
 
   render() {
     return (
       <>
         <nav className={css(styles.active)}>
-          <div className={css(styles.width100)}>
-            <li className={css(styles.listIcon)}>
-              <Link
-                to="/home"
-                className={css(styles.listIconText)}
-                onMouseEnter={this.toggleHoverA}
-                onMouseLeave={this.toggleHoverA}
-                style={
-                  this.state.hoverA
-                    ? { backgroundColor: "#1a83ff" }
-                    : { backgroundColor: " #060b26" }
-                }
-              >
-                <MdIcons.MdAssessment />
-                <span style={{ marginLeft: "16px" }}>Assessment</span>
-              </Link>
-            </li>
-            <li className={css(styles.listIcon)}>
-              <Link
-                to="/questionbank"
-                className={css(styles.listIconText)}
-                onMouseEnter={this.toggleHoverQ}
-                onMouseLeave={this.toggleHoverQ}
-                style={
-                  this.state.hoverQ
-                    ? { backgroundColor: "#1a83ff" }
-                    : { backgroundColor: " #060b26" }
-                }
-              >
-                <RiIcons.RiBankFill />
-                <span style={{ marginLeft: "16px" }}>Question Bank</span>
-              </Link>
-            </li>
-            <li className={css(styles.listIcon)}>
-              <Link
-                to="/candidate"
-                className={css(styles.listIconText)}
-                onMouseEnter={this.toggleHoverC}
-                onMouseLeave={this.toggleHoverC}
-                style={
-                  this.state.hoverC
-                    ? { backgroundColor: "#1a83ff" }
-                    : { backgroundColor: " #060b26" }
-                }
-              >
-                <HiIcons.HiUsers />
-                <span style={{ marginLeft: "16px" }}>Candidate List</span>
-              </Link>
-            </li>
-            <li className={css(styles.listIcon)}>
-              <Link
-                to="/settings"
-                className={css(styles.listIconText)}
-                onMouseEnter={this.toggleHoverS}
-                onMouseLeave={this.toggleHoverS}
-                style={
-                  this.state.hoverS
-                    ? { backgroundColor: "#1a83ff" }
-                    : { backgroundColor: " #060b26" }
-                }
-              >
-                <RiIcons.RiSettings5Fill />
-                <span style={{ marginLeft: "16px" }}>Settings</span>
-              </Link>
-            </li>
+          <div style={{ width: "100%" }}>
+            {Data.map((item, index) => {
+              return (
+                <li key={index} className={css(styles.listIcon)}>
+                  <Link
+                    type={item.hoverName}
+                    to={item.path}
+                    className={css(styles.listIconText, styles.noSelect)}
+                    onMouseEnter={this.toggleEnter}
+                    onMouseLeave={this.toggleLeave}
+                    style={
+                      this.state[item.hoverName]
+                        ? { backgroundColor: "#1a83ff" }
+                        : { backgroundColor: " #060b26" }
+                    }
+                  >
+                    {item.icon}
+                    <span style={{ marginLeft: "16px" }}>{item.title}</span>
+                  </Link>
+                </li>
+              );
+            })}
           </div>
         </nav>
       </>
@@ -111,9 +64,6 @@ export default class NavSideBar extends Component {
 }
 
 const styles = StyleSheet.create({
-  width100: {
-    width: "100%",
-  },
   active: {
     backgroundColor: "#060b26",
     width: "250px",
@@ -145,5 +95,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: "0 16px",
     borderRadius: "4px",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
