@@ -46,7 +46,7 @@ class Header extends Component {
       <CustomFullContainer>
         <CustomRow style={[styles.rowStyle]}>
           <FaIcons.FaBars
-            className={css(styles.icon)}
+            className={css(styles.icon, styles.pointer)}
             style={{ marginLeft: "2rem" }}
             onClick={this.barShow}
           />
@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  pointer: {
+    cursor: "pointer",
   },
 });
 
