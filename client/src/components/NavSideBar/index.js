@@ -8,10 +8,6 @@ export default class NavSideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hoverProfile: false,
-      hoverAssessment: false,
-      hoverQuestionBank: false,
-      hoverLogOut: false,
       windowPosition: window.pageYOffset,
     };
   }
@@ -27,20 +23,6 @@ export default class NavSideBar extends Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll.bind(this));
   }
-
-  toggleEnter = (e) => {
-    this.setState({
-      hoverProfile: false,
-      hoverAssessment: false,
-      hoverQuestionBank: false,
-      hoverLogOut: false,
-      [e.target.type]: true,
-    });
-  };
-
-  toggleLeave = (e) => {
-    this.setState({ [e.target.type]: false });
-  };
 
   render() {
     return (
@@ -63,14 +45,7 @@ export default class NavSideBar extends Component {
                   <Link
                     type={item.hoverName}
                     to={item.path}
-                    className={css(styles.listIconText, styles.noSelect)}
-                    onMouseEnter={this.toggleEnter}
-                    onMouseLeave={this.toggleLeave}
-                    style={
-                      this.state[item.hoverName]
-                        ? { backgroundColor: "#1a83ff" }
-                        : { backgroundColor: " #060b26" }
-                    }
+                    className={css(styles.listIconText, styles.noSelect, styles.hover)}
                   >
                     {item.icon}
                     <span style={{ marginLeft: "16px" }}>{item.title}</span>
@@ -136,5 +111,10 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  hover: {
+    ":hover": {
+      backgroundColor: "#1a83ff",
+    },
   },
 });

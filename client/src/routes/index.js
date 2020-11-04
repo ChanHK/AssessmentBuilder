@@ -5,11 +5,10 @@ import Route from "./Route";
 import LoginContainer from "../pages/Login";
 import RegisterContainer from "../pages/Register";
 
-
 // import Dashboard from "../pages/Dashboard";
 
 import HomeContainer from "../pages/Home";
-import ProfileContainer from "../pages/Profile";
+import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
 // import CandidateContainer from "../pages/Candidate";
 // import QuestionBankContainer from "../pages/QuestionBank";
 
@@ -23,7 +22,9 @@ export default function Routes() {
         {/* <Route path="/dashboard" component={Dashboard} isPrivate /> */}
 
         <Route path="/home" component={HomeContainer} />
-        <Route path="/profile" component={ProfileContainer} />
+        <Route path="/profile" exact component={ProfileContainer} />
+        <Route path="/profile/edit" exact component={EditProfileContainer} />
+
 
         {/* <Route path="/candidate" component={CandidateContainer} />
         <Route path="/questionbank" component={QuestionBankContainer} /> */}
