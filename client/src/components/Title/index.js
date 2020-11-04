@@ -5,7 +5,9 @@ import { StyleSheet, css } from "aphrodite";
 
 const Title = (props) => (
   <div className={css(styles.container)}>
-    <Form.Label className={css(styles.text)}>{props.children}</Form.Label>
+    <Form.Label className={css(styles.text, styles.noSelect)}>
+      {props.children}
+    </Form.Label>
   </div>
 );
 
@@ -24,6 +26,15 @@ const styles = StyleSheet.create({
     fontSize: "30px",
     lineHeight: "34px",
     color: "black",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
 
