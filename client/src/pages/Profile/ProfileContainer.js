@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import Header from "../../components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
@@ -12,13 +11,17 @@ import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
 import profile from "../../image/profile/dummyUser.png";
-import StatusBarMessage from "../../components/StatusBarComponents/StatusBarMessage";
+// import StatusBarMessage from "../../components/StatusBarComponents/StatusBarMessage";
 import CustomLabelTitle from "../../components/ProfileComponents/CustomLabelTitle";
 import CustomLabelInfo from "../../components/ProfileComponents/CustomLabelInfo";
 
 import "../../css/general.css";
 
 export default class ProfileContainer extends Component {
+  handleClick = () => {
+    this.props.history.push(`profile/edit`);
+  };
+
   render() {
     return (
       <>
@@ -51,7 +54,12 @@ export default class ProfileContainer extends Component {
                   <CustomLabelTitle>Occupation</CustomLabelTitle>
                   <CustomLabelInfo>Pirate</CustomLabelInfo>
                   <div className={css(styles.buttonCon)}>
-                    <Button className={css(styles.button)}>Edit</Button>
+                    <Button
+                      className={css(styles.button)}
+                      onClick={this.handleClick}
+                    >
+                      Edit
+                    </Button>
                   </div>
                 </CustomColumn>
               </div>
