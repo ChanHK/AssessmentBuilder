@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Bold",
     paddingBottom: "10px",
     paddingTop: "10px",
+    color: "black",
   },
 });
 
