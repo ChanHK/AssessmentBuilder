@@ -11,10 +11,13 @@ const CustomInput = (props) => (
       styles.input__webkit_autofill_focus_input__webkit_autofill,
       styles.input__webkit_autofill__first_line,
       styles.input__webkit_autofill_active,
-      styles.input__webkit_autofill_focus
+      styles.input__webkit_autofill_focus,
+      styles.hover
     )}
     type={props.type}
     placeholder={props.placeholder}
+    onChange={props.onChangeValue}
+    value={props.value}
     // autocomplete="off"
   />
 );
@@ -69,6 +72,12 @@ const styles = StyleSheet.create({
     fontFamily: '"Ubuntu-Regular"',
     fontSize: "15px !important",
   },
+  // hover: {
+  //   ":hover": {
+  //     border: "2px solid #1a83ff",
+  //     padding: "10px 0px",
+  //   },
+  // },
 });
 
 export default CustomInput;

@@ -49,8 +49,10 @@ export default class ProfileContainer extends Component {
                   <CustomLabelInfo>Male</CustomLabelInfo>
                   <CustomLabelTitle>Year of Birth</CustomLabelTitle>
                   <CustomLabelInfo>Empty</CustomLabelInfo>
-                  <CustomLabelTitle>Country</CustomLabelTitle>
-                  <CustomLabelInfo>Empty</CustomLabelInfo>
+                  {/* <CustomLabelTitle>Country</CustomLabelTitle>
+                  <CustomLabelInfo>Empty</CustomLabelInfo> 
+                  might remove in the future *reason-> takes too much spaces
+                  */}
                   <CustomLabelTitle>Occupation</CustomLabelTitle>
                   <CustomLabelInfo>Pirate</CustomLabelInfo>
                   <div className={css(styles.buttonCon)}>
