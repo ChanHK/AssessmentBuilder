@@ -6,8 +6,8 @@ const Dropdown = (props) => (
     <select
       className={
         props.value === null
-          ? css(styles.default, styles.hover)
-          : css(styles.select, styles.hover)
+          ? css(styles.select, styles.default, styles.hover)
+          : css(styles.select, styles.nondefault, styles.hover)
       }
       onChange={props.onChangeValue}
       value={props.value}
@@ -43,28 +43,17 @@ const styles = StyleSheet.create({
     display: "flex",
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
-    backgroundColor: "inherit !important",
-    border: 0,
+    backgroundColor: "white",
+    border: "2px solid black",
     outline: 0,
-    borderBottom: "2px solid black",
-    paddingLeft: 0,
-    paddingBottom: "2px",
-    color: "black",
+    padding: "10px",
+    borderRadius: "5px",
   },
   default: {
     color: "grey", //
-    fontFamily: "Ubuntu-Regular",
-    fontSize: "15px",
-    width: "100%",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    display: "flex",
-    backgroundColor: "inherit !important",
-    border: 0,
-    outline: 0,
-    borderBottom: "2px solid black",
-    paddingLeft: 0,
-    paddingBottom: "2px",
+  },
+  nondefault: {
+    color: "black",
   },
   hover: {
     // ":hover": {

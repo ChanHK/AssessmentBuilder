@@ -28,13 +28,14 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     color: "black",
     outline: "none",
-    border: 0,
-    borderBottom: "2px solid black",
-    backgroundColor: "#e0e0e0",
+    border: "2px solid black",
+    backgroundColor: "white",
     fontSize: "15px",
     ":focus": {
       borderColor: "#1a83ff",
     },
+    padding: 10,
+    borderRadius: "5px",
   },
   input__webkit_autofill: {
     WebkitTextFillColor: "inherit !important",
