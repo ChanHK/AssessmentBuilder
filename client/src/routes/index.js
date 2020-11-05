@@ -10,7 +10,7 @@ import RegisterContainer from "../pages/Register";
 import HomeContainer from "../pages/Home";
 import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
 // import CandidateContainer from "../pages/Candidate";
-// import QuestionBankContainer from "../pages/QuestionBank";
+import QuestionBankContainer from "../pages/QuestionBank";
 
 export default function Routes() {
   return (
@@ -25,9 +25,9 @@ export default function Routes() {
         <Route path="/profile" exact component={ProfileContainer} />
         <Route path="/profile/edit" exact component={EditProfileContainer} />
 
+        <Route path="/questionbank" component={QuestionBankContainer} />
 
-        {/* <Route path="/candidate" component={CandidateContainer} />
-        <Route path="/questionbank" component={QuestionBankContainer} /> */}
+        {/* <Route path="/candidate" component={CandidateContainer} /> */}
 
         {/* redirect user to SignIn page if route does not exist and user is not authenticated */}
         <Route component={RegisterContainer} />
