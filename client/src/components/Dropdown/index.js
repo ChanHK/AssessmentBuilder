@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
 
-const CustomDropdown = (props) => (
+const Dropdown = (props) => (
   <div className={css(styles.container)}>
     <select
       className={
@@ -83,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomDropdown;
+export default Dropdown;

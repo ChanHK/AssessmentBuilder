@@ -10,7 +10,7 @@ import Title from "../../components/Title";
 import CustomLabelTitle from "../../components/ProfileComponents/CustomLabelTitle";
 import CustomInput from "../../components/CustomInput";
 import "../../css/general.css";
-import CustomDropdown from "../../components/CustomDropdown";
+import Dropdown from "../../components/Dropdown";
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
 
@@ -75,7 +75,7 @@ class EditProfileContainer extends Component {
                   />
                   <br />
                   <CustomLabelTitle>Gender</CustomLabelTitle>
-                  <CustomDropdown
+                  <Dropdown
                     options={GenderData}
                     placeholder={"Select your gender"}
                     value={gender}
@@ -83,7 +83,7 @@ class EditProfileContainer extends Component {
                   />
                   <br />
                   <CustomLabelTitle>Year of Birth</CustomLabelTitle>
-                  <CustomDropdown
+                  <Dropdown
                     options={GenerateYear()}
                     placeholder={"Select your birth year"}
                     value={birthYear}
