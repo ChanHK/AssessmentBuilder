@@ -12,6 +12,9 @@ import SearchBar from "../../components/SearchBar";
 import DataTable from "react-data-table-component";
 import "../../css/general.css";
 import Button from "../../components/Button";
+import TableButton from "../../components/TableButton";
+import CustomRow from "../../components/GridComponents/CustomRow";
+import * as MdIcons from "react-icons/md";
 
 const customStyles = {
   headCells: {
@@ -83,7 +86,18 @@ const columns = [
   {
     name: "Options",
     selector: "opt",
-    right: "true",
+    // right: "true",
+    cell: (row) => (
+      <CustomRow>
+        <TableButton>
+          <MdIcons.MdModeEdit />
+        </TableButton>
+        <TableButton>
+          <MdIcons.MdDelete />
+        </TableButton>
+      </CustomRow>
+    ),
+    width: "180px",
   },
 ];
 
