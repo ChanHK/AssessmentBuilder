@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, css } from "aphrodite";
-import ImageUploader from 'react-images-upload';
+import ImageUploader from "react-images-upload";
 
 const ImageUpload = (props) => (
   <ImageUploader
     withIcon
-    buttonText="Choose images"
     onChange={props.onChange}
     imgExtension={[".jpg", ".png"]}
     maxFileSize={3145728}
