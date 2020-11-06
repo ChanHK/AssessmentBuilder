@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Header from "../../components/Header";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Button } from "react-bootstrap";
+import Button from "../../components/Button";
 import { StyleSheet, css } from "aphrodite";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -57,7 +56,10 @@ export default class ProfileContainer extends Component {
                   <CustomLabelInfo>Pirate</CustomLabelInfo>
                   <div className={css(styles.buttonCon)}>
                     <Button
-                      className={css(styles.button)}
+                      backgroundColor={"#060b26"}
+                      color={"white"}
+                      padding={"8px"}
+                      width={"100px"}
                       onClick={this.handleClick}
                     >
                       Edit
@@ -93,18 +95,6 @@ const styles = StyleSheet.create({
     border: "2px solid black",
     padding: "40px",
     boxShadow: "0px 3px 20px 0px grey",
-  },
-  button: {
-    border: "none",
-    outline: "none",
-    fontFamily: "Ubuntu-Bold",
-    backgroundColor: "#060b26",
-    color: "white",
-    borderRadius: "5px",
-    fontSize: "15px",
-    textTransform: "uppercase",
-    lineHeight: "1.2",
-    width: "100px",
   },
   buttonCon: {
     justifyContent: "flex-end",
