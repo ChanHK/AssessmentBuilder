@@ -11,8 +11,7 @@ import QuestionType from "./Data/QuestionType";
 import SearchBar from "../../components/SearchBar";
 import DataTable from "react-data-table-component";
 import "../../css/general.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Button } from "react-bootstrap";
+import Button from "../../components/Button";
 
 const customStyles = {
   headCells: {
@@ -105,6 +104,10 @@ export default class ProfileContainer extends Component {
     this.setState({ questionType: e.target.value });
   };
 
+  handleClick = () => {
+    this.props.history.push(`questionbank/createQuestion`);
+  };
+
   render() {
     const { searchText, questionType } = this.state;
     return (
@@ -150,7 +153,9 @@ export default class ProfileContainer extends Component {
               />
               <div className={css(styles.buttonCon)}>
                 <Button
-                  className={css(styles.button)}
+                  backgroundColor={"#060b26"}
+                  color={"white"}
+                  padding={"8px"}
                   onClick={this.handleClick}
                 >
                   Create Question
@@ -184,18 +189,6 @@ const styles = StyleSheet.create({
       fontSize: "20px",
       fontFamily: "Ubuntu-Regular",
     },
-  },
-  button: {
-    border: "none",
-    outline: "none",
-    fontFamily: "Ubuntu-Bold",
-    backgroundColor: "#060b26",
-    color: "white",
-    borderRadius: "5px",
-    fontSize: "15px",
-    // textTransform: "uppercase",
-    lineHeight: "1.2",
-    width: "100px",
   },
   buttonCon: {
     justifyContent: "flex-end",
