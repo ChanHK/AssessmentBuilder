@@ -100,17 +100,15 @@ class EditProfileContainer extends Component {
                   <br />
                   <br />
                   <br />
-                  <div className={css(styles.buttonCon)}>
-                    <Button
-                      backgroundColor={"#060b26"}
-                      color={"white"}
-                      padding={"8px"}
-                      width={"100px"}
-                      onClick={this.handleClick}
-                    >
-                      Save
-                    </Button>
-                  </div>
+                  <Button
+                    backgroundColor={"#060b26"}
+                    color={"white"}
+                    padding={"8px"}
+                    width={"100px"}
+                    onClick={this.handleClick}
+                  >
+                    Save
+                  </Button>
                 </CustomColumn>
               </div>
             </CustomColumn>
@@ -135,10 +133,6 @@ const styles = StyleSheet.create({
     border: "2px solid black",
     padding: "40px",
     boxShadow: "0px 3px 20px 0px grey",
-  },
-  buttonCon: {
-    justifyContent: "flex-end",
-    display: "flex",
   },
 });
 

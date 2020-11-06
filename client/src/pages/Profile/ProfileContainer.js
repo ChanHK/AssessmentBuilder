@@ -54,17 +54,15 @@ export default class ProfileContainer extends Component {
                   */}
                   <CustomLabelTitle>Occupation</CustomLabelTitle>
                   <CustomLabelInfo>Pirate</CustomLabelInfo>
-                  <div className={css(styles.buttonCon)}>
-                    <Button
-                      backgroundColor={"#060b26"}
-                      color={"white"}
-                      padding={"8px"}
-                      width={"100px"}
-                      onClick={this.handleClick}
-                    >
-                      Edit
-                    </Button>
-                  </div>
+                  <Button
+                    backgroundColor={"#060b26"}
+                    color={"white"}
+                    padding={"8px"}
+                    width={"100px"}
+                    onClick={this.handleClick}
+                  >
+                    Edit
+                  </Button>
                 </CustomColumn>
               </div>
               <br />
@@ -95,9 +93,5 @@ const styles = StyleSheet.create({
     border: "2px solid black",
     padding: "40px",
     boxShadow: "0px 3px 20px 0px grey",
-  },
-  buttonCon: {
-    justifyContent: "flex-end",
-    display: "flex",
   },
 });

@@ -151,16 +151,14 @@ export default class ProfileContainer extends Component {
                 responsive
                 customStyles={customStyles}
               />
-              <div className={css(styles.buttonCon)}>
-                <Button
-                  backgroundColor={"#060b26"}
-                  color={"white"}
-                  padding={"8px"}
-                  onClick={this.handleClick}
-                >
-                  Create Question
-                </Button>
-              </div>
+              <Button
+                backgroundColor={"#060b26"}
+                color={"white"}
+                padding={"8px"}
+                onClick={this.handleClick}
+              >
+                Create Question
+              </Button>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -189,9 +187,5 @@ const styles = StyleSheet.create({
       fontSize: "20px",
       fontFamily: "Ubuntu-Regular",
     },
-  },
-  buttonCon: {
-    justifyContent: "flex-end",
-    display: "flex",
   },
 });

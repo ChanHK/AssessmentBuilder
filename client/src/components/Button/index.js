@@ -2,18 +2,20 @@ import React from "react";
 import { StyleSheet, css } from "aphrodite";
 
 const Button = (props) => (
-  <button
-    className={css(styles.button)}
-    style={{
-      backgroundColor: props.backgroundColor,
-      color: props.color,
-      padding: props.padding,
-      width: props.width,
-    }}
-    onClick={props.onClick}
-  >
-    {props.children}
-  </button>
+  <div className={css(styles.buttonCon)}>
+    <button
+      className={css(styles.button)}
+      style={{
+        backgroundColor: props.backgroundColor,
+        color: props.color,
+        padding: props.padding,
+        width: props.width,
+      }}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  </div>
 );
 
 const styles = StyleSheet.create({
@@ -29,6 +31,10 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
     lineHeight: "1.2",
+  },
+  buttonCon: {
+    justifyContent: "flex-end",
+    display: "flex",
   },
 });
 
