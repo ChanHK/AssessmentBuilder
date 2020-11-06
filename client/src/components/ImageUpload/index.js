@@ -4,15 +4,16 @@ import ImageUploader from "react-images-upload";
 
 const ImageUpload = (props) => (
   <ImageUploader
-    withIcon
+    withIcon={props.icon}
     onChange={props.onChange}
     imgExtension={[".jpg", ".png"]}
-    maxFileSize={3145728}
+    maxFileSize={props.maxFileSize ? props.maxFileSize: 3145728}
     className={css(styles.upload, styles.noSelect)}
     buttonText={"Choose Images"}
     buttonClassName={css(styles.button)}
     withPreview
-    label={"Max file size: 3mb, accepted: jpg | png"}
+    label={props.label ? props.label :"Max file size: 3mb, accepted: jpg | png"}
+    singleImage={props.singleImage}
   />
 );
 
