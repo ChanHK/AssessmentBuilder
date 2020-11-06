@@ -140,6 +140,7 @@ export default class ProfileContainer extends Component {
                   />
                 </div>
               </Wrapper>
+              <br />
               <DataTable
                 columns={columns}
                 data={data}
