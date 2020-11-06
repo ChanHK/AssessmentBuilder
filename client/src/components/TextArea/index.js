@@ -10,12 +10,13 @@ const TextArea = (props) => (
     onChange={props.onChange}
     value={props.value}
     autocomplete="off"
+    style={{height: props.height ? props.height : "200px"}}
   />
 );
 
 const styles = StyleSheet.create({
   style: {
-    width: "auto",
+    width: "100%",
     fontFamily: "Ubuntu-Regular",
     color: "black",
     outline: "none",
@@ -27,14 +28,7 @@ const styles = StyleSheet.create({
     },
     padding: 10,
     borderRadius: "5px",
-    height: "200px",
   },
-  // hover: {
-  //   ":hover": {
-  //     border: "2px solid #1a83ff",
-  //     padding: "10px 0px",
-  //   },
-  // },
 });
 
 export default TextArea;

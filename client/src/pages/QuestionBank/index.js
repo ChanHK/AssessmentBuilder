@@ -1,3 +1,4 @@
 import QuestionBankContainer from "./QuestionBankContainer";
+import CreateQuestionContainer from "./CreateQuestionContainer";
 
-export default QuestionBankContainer;
+export { QuestionBankContainer, CreateQuestionContainer };
