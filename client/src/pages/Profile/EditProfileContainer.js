@@ -12,6 +12,7 @@ import "../../css/general.css";
 import Dropdown from "../../components/Dropdown";
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
+import ImageUpload from "../../components/ImageUpload";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -64,42 +65,55 @@ class EditProfileContainer extends Component {
               <Title>Update Profile</Title>
               <div className={css(styles.infoCon)}>
                 <CustomColumn>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <CustomLabelTitle>Profile Picture</CustomLabelTitle>
+                    <ImageUpload
+                      icon={false}
+                      singleImage={true}
+                      label={"Max file size: 1mb, accepted: jpg | png"}
+                      maxFileSize={1048576}
+                    />
+                  </div>
                   <CustomLabelTitle>Username</CustomLabelTitle>
-                  <CustomInput
-                    name={"username"}
-                    type={"text"}
-                    placeholder={" Enter your username"}
-                    onChangeValue={this.onChangeUsername}
-                    value={username}
-                  />
-                  <br />
+                  <div style={{ paddingBottom: "25px" }}>
+                    <CustomInput
+                      name={"username"}
+                      type={"text"}
+                      placeholder={" Enter your username"}
+                      onChangeValue={this.onChangeUsername}
+                      value={username}
+                    />
+                  </div>
                   <CustomLabelTitle>Gender</CustomLabelTitle>
-                  <Dropdown
-                    options={GenderData}
-                    placeholder={"Select your gender"}
-                    value={gender}
-                    onChangeValue={this.onChangeGender}
-                  />
-                  <br />
+                  <div style={{ paddingBottom: "25px" }}>
+                    <Dropdown
+                      options={GenderData}
+                      placeholder={"Select your gender"}
+                      value={gender}
+                      onChangeValue={this.onChangeGender}
+                    />
+                  </div>
+
                   <CustomLabelTitle>Year of Birth</CustomLabelTitle>
-                  <Dropdown
-                    options={GenerateYear()}
-                    placeholder={"Select your birth year"}
-                    value={birthYear}
-                    onChangeValue={this.onChangeBirthYear}
-                  />
-                  <br />
+                  <div style={{ paddingBottom: "25px" }}>
+                    <Dropdown
+                      options={GenerateYear()}
+                      placeholder={"Select your birth year"}
+                      value={birthYear}
+                      onChangeValue={this.onChangeBirthYear}
+                    />
+                  </div>
+
                   <CustomLabelTitle>Occupation</CustomLabelTitle>
-                  <CustomInput
-                    name={"occupation"}
-                    type={"text"}
-                    placeholder={" Enter your occupation"}
-                    onChangeValue={this.onChangeOccupation}
-                    value={occupation}
-                  />
-                  <br />
-                  <br />
-                  <br />
+                  <div style={{ paddingBottom: "75px" }}>
+                    <CustomInput
+                      name={"occupation"}
+                      type={"text"}
+                      placeholder={" Enter your occupation"}
+                      onChangeValue={this.onChangeOccupation}
+                      value={occupation}
+                    />
+                  </div>
                   <Button
                     backgroundColor={"#060b26"}
                     color={"white"}
@@ -122,6 +136,7 @@ class EditProfileContainer extends Component {
 const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
+    paddingBottom: "75px",
   },
   infoCon: {
     width: "auto",

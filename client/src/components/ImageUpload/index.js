@@ -7,13 +7,16 @@ const ImageUpload = (props) => (
     withIcon={props.icon}
     onChange={props.onChange}
     imgExtension={[".jpg", ".png"]}
-    maxFileSize={props.maxFileSize ? props.maxFileSize: 3145728}
+    maxFileSize={props.maxFileSize ? props.maxFileSize : 3145728}
     className={css(styles.upload, styles.noSelect)}
     buttonText={"Choose Images"}
     buttonClassName={css(styles.button)}
     withPreview
-    label={props.label ? props.label :"Max file size: 3mb, accepted: jpg | png"}
+    label={
+      props.label ? props.label : "Max file size: 3mb, accepted: jpg | png"
+    }
     singleImage={props.singleImage}
+    fileContainerStyle={{ boxShadow: "none" }}
   />
 );
 
@@ -26,6 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: "5px",
     color: "black",
     fontFamily: "Ubuntu-Regular",
+    backgroundColor: "white",
   },
   noSelect: {
     userSelect:

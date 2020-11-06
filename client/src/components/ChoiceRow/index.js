@@ -28,7 +28,7 @@ const ChoiceRow = (props) => (
         <div style={{ paddingBottom: "10px" }}>
           <ImageUpload
             icon={false}
-            singleImage={false}
+            singleImage={true}
             label={"Max file size: 1mb, accepted: jpg | png"}
             maxFileSize={1048576}
           />

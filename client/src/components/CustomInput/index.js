@@ -24,7 +24,7 @@ const CustomInput = (props) => (
 
 const styles = StyleSheet.create({
   style: {
-    width: "auto",
+    width: "100%",
     fontFamily: "Ubuntu-Regular",
     color: "black",
     outline: "none",
