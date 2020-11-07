@@ -9,21 +9,9 @@ import Wrapper from "../../components/Wrapper";
 import Dropdown from "../../components/Dropdown";
 import QuestionType from "./Data/QuestionType";
 import SearchBar from "../../components/SearchBar";
-import DataTable from "react-data-table-component";
 import "../../css/general.css";
 import Button from "../../components/Button";
-import TableButton from "../../components/TableButton";
-import CustomRow from "../../components/GridComponents/CustomRow";
-import * as MdIcons from "react-icons/md";
-
-const customStyles = {
-  headCells: {
-    style: {
-      fontSize: "20px",
-      fontFamily: "Ubuntu-Bold",
-    },
-  },
-};
+import Table from "../../components/Table";
 
 const data = [
   { id: 1, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
@@ -39,69 +27,7 @@ const data = [
   { id: 6, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
 ];
 
-const columns = [
-  {
-    name: "#",
-    selector: "id",
-    cell: (row) => (
-      <div>
-        <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-          {row.id}
-        </div>
-      </div>
-    ),
-    width: "20px",
-  },
-  {
-    name: "Question Description",
-    selector: "qd",
-    cell: (row) => (
-      <div>
-        <div
-          style={{
-            fontSize: "15px",
-            fontFamily: "Ubuntu-Regular",
-          }}
-        >
-          {row.qd}
-        </div>
-      </div>
-    ),
-    sortable: true,
-    width: "500px",
-  },
-  {
-    name: "Question Type",
-    selector: "qt",
-    cell: (row) => (
-      <div>
-        <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-          {row.qt}
-        </div>
-      </div>
-    ),
-    sortable: true,
-    width: "200px",
-  },
-  {
-    name: "Options",
-    selector: "opt",
-    // right: "true",
-    cell: (row) => (
-      <CustomRow>
-        <TableButton>
-          <MdIcons.MdModeEdit />
-        </TableButton>
-        <TableButton>
-          <MdIcons.MdDelete />
-        </TableButton>
-      </CustomRow>
-    ),
-    width: "180px",
-  },
-];
-
-export default class ProfileContainer extends Component {
+class QuestionBankContainer extends Component {
   constructor() {
     super();
     this.state = {
@@ -131,41 +57,32 @@ export default class ProfileContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <Title>Question Bank</Title>
-              <Wrapper
-                firstHeight={"60px"}
-                secHeight={"120px"}
-                widthChange={1250}
-              >
-                <div className={css(styles.block)}>
-                  <SearchBar
-                    name={"search"}
-                    type={"text"}
-                    placeholder={"Enter question description here to search"}
-                    onChangeValue={this.onChangeSearchText}
-                    value={searchText}
-                  />
-                </div>
-                <div className={css(styles.block)}>
-                  <Dropdown
-                    options={QuestionType}
-                    placeholder={"Select question type"}
-                    value={questionType}
-                    onChangeValue={this.onChangeQuestionType}
-                  />
-                </div>
-              </Wrapper>
-              <br />
-              <DataTable
-                columns={columns}
-                data={data}
-                className={css(styles.tableCon)}
-                highlightOnHover
-                persistTableHead
-                noHeader
-                striped
-                responsive
-                customStyles={customStyles}
-              />
+              <div style={{ paddingBottom: "25px" }}>
+                <Wrapper
+                  firstHeight={"60px"}
+                  secHeight={"120px"}
+                  widthChange={1250}
+                >
+                  <div className={css(styles.block)}>
+                    <SearchBar
+                      name={"search"}
+                      type={"text"}
+                      placeholder={"Enter question description here to search"}
+                      onChangeValue={this.onChangeSearchText}
+                      value={searchText}
+                    />
+                  </div>
+                  <div className={css(styles.block)}>
+                    <Dropdown
+                      options={QuestionType}
+                      placeholder={"Select question type"}
+                      value={questionType}
+                      onChangeValue={this.onChangeQuestionType}
+                    />
+                  </div>
+                </Wrapper>
+              </div>
+              <Table data={data} columns={"questionColumn"} />
               <Button
                 backgroundColor={"#060b26"}
                 color={"white"}
@@ -191,16 +108,6 @@ const styles = StyleSheet.create({
     width: "400px",
     height: "auto",
   },
-  tableCon: {
-    width: "100%",
-    height: "auto",
-    display: "flex",
-    borderRadius: "5px",
-    marginBottom: "20px",
-    border: "2px solid black",
-    headCells: {
-      fontSize: "20px",
-      fontFamily: "Ubuntu-Regular",
-    },
-  },
 });
+
+export default QuestionBankContainer;

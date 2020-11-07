@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, css } from "aphrodite";
+import { StyleSheet } from "aphrodite";
 import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";

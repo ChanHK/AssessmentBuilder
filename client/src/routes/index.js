@@ -10,7 +10,11 @@ import RegisterContainer from "../pages/Register";
 import HomeContainer from "../pages/Home";
 import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
 // import CandidateContainer from "../pages/Candidate";
-import {QuestionBankContainer, CreateQuestionContainer} from "../pages/QuestionBank";
+import {
+  QuestionBankContainer,
+  CreateQuestionContainer,
+  EditQuestionContainer,
+} from "../pages/QuestionBank";
 
 export default function Routes() {
   return (
@@ -26,7 +30,16 @@ export default function Routes() {
         <Route path="/profile/edit" exact component={EditProfileContainer} />
 
         <Route path="/questionbank" exact component={QuestionBankContainer} />
-        <Route path="/questionbank/createQuestion" exact component={CreateQuestionContainer} />
+        <Route
+          path="/questionbank/createQuestion"
+          exact
+          component={CreateQuestionContainer}
+        />
+        <Route
+          path="/questionbank/editQuestion"
+          exact
+          component={EditQuestionContainer}
+        />
 
         {/* <Route path="/candidate" component={CandidateContainer} /> */}
 
