@@ -82,7 +82,11 @@ class QuestionBankContainer extends Component {
                   </div>
                 </Wrapper>
               </div>
-              <Table data={data} columns={"questionColumn"} />
+              <Table
+                data={data}
+                columns={"questionColumn"}
+                path={`questionbank/viewQuestion`}
+              />
               <Button
                 backgroundColor={"#060b26"}
                 color={"white"}

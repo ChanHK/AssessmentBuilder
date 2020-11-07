@@ -14,6 +14,7 @@ import {
   QuestionBankContainer,
   CreateQuestionContainer,
   EditQuestionContainer,
+  ViewQuestionContainer,
 } from "../pages/QuestionBank";
 
 export default function Routes() {
@@ -39,6 +40,11 @@ export default function Routes() {
           path="/questionbank/editQuestion"
           exact
           component={EditQuestionContainer}
+        />
+        <Route
+          path="/questionbank/viewQuestion"
+          exact
+          component={ViewQuestionContainer}
         />
 
         {/* <Route path="/candidate" component={CandidateContainer} /> */}
