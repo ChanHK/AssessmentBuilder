@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import * as CgIcons from "react-icons/cg";
+import * as configStyles from "../../config/styles";
 
 const SearchBar = (props) => (
   <div className={css(styles.container)}>
@@ -29,22 +30,23 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     color: "black",
     outline: "none",
-    border: "2px solid black",
-    backgroundColor: "white",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
+    backgroundColor: configStyles.colors.white,
     fontSize: "15px",
     ":focus": {
-      borderColor: "#1a83ff",
+      borderColor: configStyles.colors.lightBlue,
     },
     padding: 8,
     borderRadius: "5px",
   },
   icon: {
-    color: "#060b26",
+    color: configStyles.colors.darkBlue,
     width: "auto",
     height: "auto",
     padding: "8px",
     ":active": {
-      color: "white",
+      color: configStyles.colors.white,
     },
   },
   button: {
@@ -52,9 +54,10 @@ const styles = StyleSheet.create({
     marginLeft: "5px",
     borderRadius: "5px",
     ":active": {
-      backgroundColor: "#060b26",
+      backgroundColor: configStyles.colors.darkBlue,
     },
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
   },
 });
 

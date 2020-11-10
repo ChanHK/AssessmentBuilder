@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 const Title = (props) => (
   <div className={css(styles.container)}>
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     paddingBottom: "20px",
     fontSize: "30px",
     lineHeight: "34px",
-    color: "black",
+    color: configStyles.colors.black,
   },
   noSelect: {
     userSelect:

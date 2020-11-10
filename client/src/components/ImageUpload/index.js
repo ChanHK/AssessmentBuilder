@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import ImageUploader from "react-images-upload";
+import * as configStyles from "../../config/styles";
 
 const ImageUpload = (props) => (
   <ImageUploader
@@ -22,14 +23,15 @@ const ImageUpload = (props) => (
 
 const styles = StyleSheet.create({
   upload: {
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
     ":active": {
-      borderColor: "#1a83ff",
+      borderColor: configStyles.colors.lightBlue,
     },
     borderRadius: "5px",
-    color: "black",
+    color: configStyles.colors.black,
     fontFamily: "Ubuntu-Regular",
-    backgroundColor: "white",
+    backgroundColor: configStyles.colors.white,
   },
   noSelect: {
     userSelect:
@@ -45,10 +47,12 @@ const styles = StyleSheet.create({
     marginLeft: "5px",
     borderRadius: "5px",
     ":active": {
-      backgroundColor: "#060b26",
-      border: "3px solid lightblue",
+      backgroundColor: configStyles.colors.darkBlue,
+      border: "3px solid",
+      borderColor: configStyles.colors.lightBlue,
     },
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
     lineHeight: "1.2",

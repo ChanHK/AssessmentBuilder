@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 const Button = (props) => (
   <div className={css(styles.buttonCon)}>
@@ -24,10 +25,13 @@ const styles = StyleSheet.create({
     marginLeft: "5px",
     borderRadius: "5px",
     ":active": {
-      backgroundColor: "#060b26",
-      border: "3px solid lightblue",
+      backgroundColor: configStyles.colors.darkBlue,
+      border: "3px solid",
+      borderColor: configStyles.colors.lightBlue,
+      color: configStyles.colors.white,
     },
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
     lineHeight: "1.2",

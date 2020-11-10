@@ -2,15 +2,18 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 const CustomLabelTitle = (props) => (
-  <Form.Label className={css(styles.text, styles.noSelect)}>{props.children}</Form.Label>
+  <Form.Label className={css(styles.text, styles.noSelect)}>
+    {props.children}
+  </Form.Label>
 );
 
 const styles = StyleSheet.create({
   text: {
     fontFamily: "Ubuntu-Bold",
-    color: "black",
+    color: configStyles.colors.black,
     fontSize: "20px",
   },
   noSelect: {

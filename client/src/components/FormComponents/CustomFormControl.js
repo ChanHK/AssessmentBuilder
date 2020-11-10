@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Form } from "react-bootstrap";
+import * as configStyles from "../../config/styles";
 
 const CustomFormControl = (props) => (
   <Form.Control
@@ -14,12 +15,13 @@ const CustomFormControl = (props) => (
 
 const styles = StyleSheet.create({
   style: {
-    border: "1px solid black",
+    border: "1px solid",
+    borderColor: configStyles.colors.black,
     width: "auto",
     borderRadius: "5px",
     fontFamily: "Ubuntu-Bold",
     paddingLeft: "10px",
-    color: "black",
+    color: configStyles.colors.black,
   },
 });
 

@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     width: "auto",
     height: "auto",
     display: "flex",
-    // backgroundColor: "pink",
   },
   innerLayer: {
     flexWrap: "wrap",

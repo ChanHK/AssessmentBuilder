@@ -6,6 +6,7 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
 import { withRouter } from "react-router-dom";
+import * as configStyles from "../../config/styles";
 
 const customStyles = {
   headCells: {
@@ -116,7 +117,8 @@ const styles = StyleSheet.create({
     display: "flex",
     borderRadius: "5px",
     marginBottom: "20px",
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
   },
   noSelect: {
     userSelect:

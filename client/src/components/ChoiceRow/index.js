@@ -4,6 +4,7 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import TextArea from "../../components/TextArea";
 import ImageUpload from "../../components/ImageUpload";
+import * as configStyles from "../../config/styles";
 
 const ChoiceRow = (props) => (
   <div className={css(styles.row)}>
@@ -43,9 +44,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "auto",
     display: "flex",
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
     ":focus": {
-      borderColor: "#1a83ff",
+      borderColor: configStyles.colors.lightBlue,
     },
     borderRadius: "5px",
     marginBottom: "50px",
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
   bar: {
     width: "100%",
     height: "40px",
-    backgroundColor: "#e0e0e0",
+    backgroundColor: configStyles.colors.lightGrey,
     justifyContent: "center",
     alignItems: "center",
     display: "flex",

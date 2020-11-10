@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 export class StatusBarWrapper extends Component {
   constructor(props) {
@@ -45,13 +46,14 @@ export class StatusBarWrapper extends Component {
 const styles = StyleSheet.create({
   outerLayer: {
     width: "auto",
-    backgroundColor: "#e0e0e0",
+    backgroundColor: configStyles.colors.lightGrey,
     height: "auto",
-    // margin: "50px 40px 40px 40px",
     borderRadius: "5px",
     display: "flex",
-    border: "2px solid black",
-    boxShadow: "0px 3px 20px 0px grey",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
+    boxShadow: "0px 3px 20px 0px",
+    boxShadowColor: configStyles.colors.lightGrey,
   },
   innerLayer: {
     flexWrap: "wrap",

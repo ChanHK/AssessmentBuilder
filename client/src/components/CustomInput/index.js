@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 const CustomInput = (props) => (
   <input
@@ -26,13 +27,14 @@ const styles = StyleSheet.create({
   style: {
     width: "100%",
     fontFamily: "Ubuntu-Regular",
-    color: "black",
+    color: configStyles.colors.black,
     outline: "none",
-    border: "2px solid black",
-    backgroundColor: "white",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
+    backgroundColor: configStyles.colors.white,
     fontSize: "15px",
     ":focus": {
-      borderColor: "#1a83ff",
+      borderColor: configStyles.colors.lightBlue,
     },
     padding: 10,
     borderRadius: "5px",

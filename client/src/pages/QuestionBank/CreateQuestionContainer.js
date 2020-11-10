@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+import CustomRow from "../../components/GridComponents/CustomRow";
 import Title from "../../components/Title";
 import "../../css/general.css";
 import QuestionType from "./Data/QuestionType";
@@ -13,6 +14,7 @@ import TextArea from "../../components/TextArea";
 import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
+import * as configStyles from "../../config/styles";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -22,6 +24,7 @@ class CreateQuestionContainer extends Component {
       questionDescriptive: null,
       pictures: [],
       choiceCount: 0,
+      explanation: null,
     };
   }
 
@@ -45,6 +48,10 @@ class CreateQuestionContainer extends Component {
     console.log(this.state.choiceCount);
   };
 
+  onChangeExplanation = (e) => {
+    this.setState({ explanation: e.target.value });
+  };
+
   onSubmit = (e) => {
     console.log(this.state.questionType);
     console.log(this.state.questionDescriptive);
@@ -54,7 +61,12 @@ class CreateQuestionContainer extends Component {
   };
 
   render() {
-    const { questionType, questionDescriptive, choiceCount } = this.state;
+    const {
+      questionType,
+      questionDescriptive,
+      choiceCount,
+      explanation,
+    } = this.state;
     console.log("rendered");
     return (
       <>
@@ -94,17 +106,55 @@ class CreateQuestionContainer extends Component {
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <Button
-                      backgroundColor={"#060b26"}
-                      color={"white"}
+                      backgroundColor={configStyles.colors.darkBlue}
+                      color={configStyles.colors.white}
                       padding={"8px"}
                       onClick={this.addRow}
                     >
                       Add Choice
                     </Button>
                   </div>
-                  {[...Array(choiceCount)].map((k, i) => (
-                    <ChoiceRow count={i + 1} />
-                  ))}
+                  <div style={{ paddingBottom: "25px" }}>
+                    {[...Array(choiceCount)].map((k, i) => (
+                      <ChoiceRow count={i + 1} />
+                    ))}
+                  </div>
+                  <CustomLabelTitle>Explanation (Optional)</CustomLabelTitle>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <TextArea
+                      name={"explanation"}
+                      type={"text"}
+                      placeholder={"Enter the explanation here"}
+                      onChange={this.onChangeExplanation}
+                      value={explanation}
+                    />
+                  </div>
+
+                  <CustomRow>
+                    <div style={{ justifyContent: "flex-start" }}>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        width={"100px"}
+                        // onClick={}
+                      >
+                        Save
+                      </Button>
+                    </div>
+                    <div style={{ justifyContent: "flex-start" }}>
+                      <Button
+                        backgroundColor={configStyles.colors.white}
+                        color={configStyles.colors.darkBlue}
+                        padding={"8px"}
+                        width={"100px"}
+                        // onClick={}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </CustomRow>
+
                   {/* <input type="submit" value="Submit" /> */}
                 </CustomColumn>
               </form>

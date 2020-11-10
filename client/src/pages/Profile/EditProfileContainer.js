@@ -13,6 +13,7 @@ import Dropdown from "../../components/Dropdown";
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
 import ImageUpload from "../../components/ImageUpload";
+import * as configStyles from "../../config/styles";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -140,14 +141,16 @@ const styles = StyleSheet.create({
   },
   infoCon: {
     width: "auto",
-    backgroundColor: "#e0e0e0",
+    backgroundColor: configStyles.colors.lightGrey,
     height: "auto",
     // margin: "50px 40px 40px 40px",
     borderRadius: "5px",
     display: "flex",
-    border: "2px solid black",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
     padding: "40px",
-    boxShadow: "0px 3px 20px 0px grey",
+    boxShadow: "0px 3px 20px 0px",
+    boxShadowColor: configStyles.colors.lightGrey,
   },
 });
 

@@ -12,6 +12,7 @@ import SearchBar from "../../components/SearchBar";
 import "../../css/general.css";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
+import * as configStyles from "../../config/styles";
 
 const data = [
   { id: 1, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
@@ -88,8 +89,8 @@ class QuestionBankContainer extends Component {
                 path={`questionbank/viewQuestion`}
               />
               <Button
-                backgroundColor={"#060b26"}
-                color={"white"}
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
                 padding={"8px"}
                 onClick={this.handleClick}
               >

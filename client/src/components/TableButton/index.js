@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 const TabelButton = (props) => (
   <div className={css(styles.buttonCon)}>
@@ -26,11 +27,8 @@ const styles = StyleSheet.create({
     marginLeft: "5px",
     borderRadius: "5px",
     ":active": {
-      backgroundColor: "#060b26",
-      color: "white",
-      border: "3px solid lightblue",
+      color: configStyles.colors.lightBlue,
     },
-    // border: "2px solid black",
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
     lineHeight: "1.2",

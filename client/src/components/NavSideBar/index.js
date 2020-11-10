@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { StyleSheet, css } from "aphrodite";
 import { Data } from "./Data";
 import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 export default class NavSideBar extends Component {
   constructor(props) {
@@ -45,7 +46,11 @@ export default class NavSideBar extends Component {
                   <Link
                     type={item.hoverName}
                     to={item.path}
-                    className={css(styles.listIconText, styles.noSelect, styles.hover)}
+                    className={css(
+                      styles.listIconText,
+                      styles.noSelect,
+                      styles.hover
+                    )}
                   >
                     {item.icon}
                     <span style={{ marginLeft: "16px" }}>{item.title}</span>
@@ -62,7 +67,7 @@ export default class NavSideBar extends Component {
 
 const styles = StyleSheet.create({
   active: {
-    backgroundColor: "#060b26",
+    backgroundColor: configStyles.colors.darkBlue,
     width: "250px",
     height: "100vh",
     display: "flex",
@@ -73,7 +78,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   xactive: {
-    backgroundColor: "#060b26",
+    backgroundColor: configStyles.colors.darkBlue,
     width: "250px",
     height: "100vh",
     display: "flex",
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
   },
   listIconText: {
     textDecoration: "none",
-    color: "#f5f5f5",
+    color: configStyles.colors.white,
     fontSize: "18px",
     fontFamily: "Ubuntu-Bold",
     width: "95%",
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
   },
   hover: {
     ":hover": {
-      backgroundColor: "#1a83ff",
+      backgroundColor: configStyles.colors.lightBlue,
     },
   },
 });

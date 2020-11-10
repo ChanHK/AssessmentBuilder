@@ -1,13 +1,14 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 const Dropdown = (props) => (
   <div className={css(styles.container)}>
     <select
       className={
         props.value === null
-          ? css(styles.select, styles.default, styles.hover)
-          : css(styles.select, styles.nondefault, styles.hover)
+          ? css(styles.select, styles.default)
+          : css(styles.select, styles.nondefault)
       }
       onChange={props.onChangeValue}
       value={props.value}
@@ -43,32 +44,26 @@ const styles = StyleSheet.create({
     display: "flex",
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
-    backgroundColor: "white",
-    border: "2px solid black",
+    backgroundColor: configStyles.colors.white,
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
     outline: 0,
     padding: "10px",
     borderRadius: "5px",
+    ":focus": {
+      borderColor: configStyles.colors.lightBlue,
+    },
   },
   default: {
-    color: "grey", //
+    color: configStyles.colors.placeholderGrey,
   },
   nondefault: {
-    color: "black",
-  },
-  hover: {
-    // ":hover": {
-    //   border: "2px solid #1a83ff",
-    //   padding: "10px 0px",
-    // },
-    ":focus": {
-      // padding: "10px 0px",
-      borderColor: "#1a83ff",
-    },
+    color: configStyles.colors.black,
   },
   optionStyle: {
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
-    color: "black",
+    color: configStyles.colors.black,
   },
 });
 
