@@ -9,13 +9,15 @@ import RegisterContainer from "../pages/Register";
 
 import HomeContainer from "../pages/Home";
 import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
-// import CandidateContainer from "../pages/Candidate";
+
 import {
   QuestionBankContainer,
   CreateQuestionContainer,
   EditQuestionContainer,
   ViewQuestionContainer,
 } from "../pages/QuestionBank";
+
+import StatisticsContainer from "../pages/Assessment";
 
 export default function Routes() {
   return (
@@ -47,7 +49,11 @@ export default function Routes() {
           component={ViewQuestionContainer}
         />
 
-        {/* <Route path="/candidate" component={CandidateContainer} /> */}
+        <Route
+          path="/assessment/statistics"
+          exact
+          component={StatisticsContainer}
+        />
 
         {/* redirect user to SignIn page if route does not exist and user is not authenticated */}
         <Route component={RegisterContainer} />
