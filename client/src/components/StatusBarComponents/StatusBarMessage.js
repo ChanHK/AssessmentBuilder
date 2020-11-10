@@ -12,7 +12,7 @@ const StatusBarMessage = (props) => (
 const styles = StyleSheet.create({
   container: {
     flexWrap: "nowrap",
-    width: "200px",
+    width: "100px",// 200
     height: 46,
     margin: 5,
   },
