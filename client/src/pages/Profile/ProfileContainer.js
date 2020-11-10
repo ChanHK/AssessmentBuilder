@@ -35,9 +35,6 @@ export default class ProfileContainer extends Component {
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
               </StatusBarWrapper>
-              <br />
-              <br />
-              <br />
               <div className={css(styles.infoCon)}>
                 <CustomColumn>
                   <CustomLabelTitle>Username</CustomLabelTitle>
@@ -55,8 +52,8 @@ export default class ProfileContainer extends Component {
                   <CustomLabelTitle>Occupation</CustomLabelTitle>
                   <CustomLabelInfo>Pirate</CustomLabelInfo>
                   <Button
-                    backgroundColor={"#060b26"}
-                    color={"white"}
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
                     padding={"8px"}
                     width={"100px"}
                     onClick={this.handleClick}
@@ -65,9 +62,6 @@ export default class ProfileContainer extends Component {
                   </Button>
                 </CustomColumn>
               </div>
-              <br />
-              <br />
-              <br />
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -93,7 +87,8 @@ const styles = StyleSheet.create({
     border: "2px solid",
     borderColor: configStyles.colors.black,
     padding: "40px",
-    boxShadow: "0px 3px 20px 0px",
-    boxShadowColor: configStyles.colors.lightGrey,
+    // boxShadow: "0px 3px 20px 0px",
+    // boxShadowColor: configStyles.colors.lightGrey,
+    margin: "75px 0px",
   },
 });

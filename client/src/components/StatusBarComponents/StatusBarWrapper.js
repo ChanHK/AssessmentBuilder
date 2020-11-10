@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
     display: "flex",
     border: "2px solid",
     borderColor: configStyles.colors.black,
-    boxShadow: "0px 3px 20px 0px",
-    boxShadowColor: configStyles.colors.lightGrey,
+    // boxShadow: "0px 3px 20px 0px",
+    // boxShadowColor: configStyles.colors.lightGrey,
   },
   innerLayer: {
     flexWrap: "wrap",
