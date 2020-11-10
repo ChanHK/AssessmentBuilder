@@ -5,7 +5,7 @@ import * as configStyles from "../../config/styles";
 const Button = (props) => (
   <div className={css(styles.buttonCon)}>
     <button
-      className={css(styles.button)}
+      className={css(styles.button, styles.noSelect)}
       style={{
         backgroundColor: props.backgroundColor,
         color: props.color,
@@ -39,6 +39,15 @@ const styles = StyleSheet.create({
   buttonCon: {
     justifyContent: "flex-end",
     display: "flex",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
 

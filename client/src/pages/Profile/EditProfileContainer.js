@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     border: "2px solid",
     borderColor: configStyles.colors.black,
     padding: "40px",
-    boxShadow: "0px 3px 20px 0px",
-    boxShadowColor: configStyles.colors.lightGrey,
+    // boxShadow: "0px 3px 20px 0px",
+    // boxShadowColor: configStyles.colors.lightGrey,
   },
 });
 
