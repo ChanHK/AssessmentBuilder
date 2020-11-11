@@ -17,7 +17,7 @@ import {
   ViewQuestionContainer,
 } from "../pages/QuestionBank";
 
-import StatisticsContainer from "../pages/Assessment";
+import { GradeContainer, StatisticsContainer } from "../pages/Assessment";
 
 export default function Routes() {
   return (
@@ -48,7 +48,11 @@ export default function Routes() {
           exact
           component={ViewQuestionContainer}
         />
-
+        <Route
+          path="/assessment/gradeResponses"
+          exact
+          component={GradeContainer}
+        />
         <Route
           path="/assessment/statistics"
           exact

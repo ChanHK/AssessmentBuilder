@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
-const CustomLabelInfo = (props) => (
+const ThirdLabel = (props) => (
   <Form.Label className={css(styles.text)}>{props.children}</Form.Label>
 );
 
@@ -19,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomLabelInfo;
+export default ThirdLabel;

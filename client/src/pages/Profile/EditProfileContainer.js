@@ -5,8 +5,8 @@ import { StyleSheet, css } from "aphrodite";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import Title from "../../components/Title";
-import CustomLabelTitle from "../../components/ProfileComponents/CustomLabelTitle";
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import CustomInput from "../../components/CustomInput";
 import "../../css/general.css";
 import Dropdown from "../../components/Dropdown";
@@ -63,11 +63,11 @@ class EditProfileContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <Title>Update Profile</Title>
+              <FirstLabel>Update Profile</FirstLabel>
               <div className={css(styles.infoCon)}>
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>
-                    <CustomLabelTitle>Profile Picture</CustomLabelTitle>
+                    <SecondLabel>Profile Picture</SecondLabel>
                     <ImageUpload
                       icon={false}
                       singleImage={true}
@@ -75,7 +75,7 @@ class EditProfileContainer extends Component {
                       maxFileSize={1048576}
                     />
                   </div>
-                  <CustomLabelTitle>Username</CustomLabelTitle>
+                  <SecondLabel>Username</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <CustomInput
                       name={"username"}
@@ -85,7 +85,7 @@ class EditProfileContainer extends Component {
                       value={username}
                     />
                   </div>
-                  <CustomLabelTitle>Gender</CustomLabelTitle>
+                  <SecondLabel>Gender</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <Dropdown
                       options={GenderData}
@@ -95,7 +95,7 @@ class EditProfileContainer extends Component {
                     />
                   </div>
 
-                  <CustomLabelTitle>Year of Birth</CustomLabelTitle>
+                  <SecondLabel>Year of Birth</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <Dropdown
                       options={GenerateYear()}
@@ -105,7 +105,7 @@ class EditProfileContainer extends Component {
                     />
                   </div>
 
-                  <CustomLabelTitle>Occupation</CustomLabelTitle>
+                  <SecondLabel>Occupation</SecondLabel>
                   <div style={{ paddingBottom: "75px" }}>
                     <CustomInput
                       name={"occupation"}

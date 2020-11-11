@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import Title from "../../components/Title";
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import Wrapper from "../../components/Wrapper";
 import Dropdown from "../../components/Dropdown";
 import QuestionType from "./Data/QuestionType";
@@ -57,7 +57,7 @@ class QuestionBankContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <Title>Question Bank</Title>
+              <FirstLabel>Question Bank</FirstLabel>
               <div style={{ paddingBottom: "25px" }}>
                 <Wrapper
                   firstHeight={"60px"}

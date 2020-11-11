@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import Title from "../../components/Title";
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import "../../css/general.css";
 
 import * as configStyles from "../../config/styles";
@@ -35,7 +35,7 @@ export default class StatisticsContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <Title>Statistics</Title>
+              <FirstLabel>Statistics</FirstLabel>
               <div>
                 <Pie
                   data={data}

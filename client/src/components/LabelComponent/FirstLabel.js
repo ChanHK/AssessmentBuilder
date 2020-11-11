@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
-const Title = (props) => (
+const FirstLabel = (props) => (
   <div className={css(styles.container)}>
     <Form.Label className={css(styles.text, styles.noSelect)}>
       {props.children}
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Title;
+export default FirstLabel;

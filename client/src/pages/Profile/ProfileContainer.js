@@ -5,14 +5,13 @@ import { StyleSheet, css } from "aphrodite";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import Title from "../../components/Title";
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
 import profile from "../../image/profile/dummyUser.png";
-// import StatusBarMessage from "../../components/StatusBarComponents/StatusBarMessage";
-import CustomLabelTitle from "../../components/ProfileComponents/CustomLabelTitle";
-import CustomLabelInfo from "../../components/ProfileComponents/CustomLabelInfo";
 import * as configStyles from "../../config/styles";
 import "../../css/general.css";
 
@@ -28,7 +27,7 @@ export default class ProfileContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <Title>Profile</Title>
+              <FirstLabel>Profile</FirstLabel>
               <StatusBarWrapper>
                 <StatusBarImage image={profile} style={[styles.imgPos]} />
                 {/* <StatusBarMessage>Sparrow</StatusBarMessage> */}
@@ -37,20 +36,20 @@ export default class ProfileContainer extends Component {
               </StatusBarWrapper>
               <div className={css(styles.infoCon)}>
                 <CustomColumn>
-                  <CustomLabelTitle>Username</CustomLabelTitle>
-                  <CustomLabelInfo>Captain Jack Sparrow</CustomLabelInfo>
-                  <CustomLabelTitle>Email</CustomLabelTitle>
-                  <CustomLabelInfo>CaptainJack@gmail.com</CustomLabelInfo>
-                  <CustomLabelTitle>Gender</CustomLabelTitle>
-                  <CustomLabelInfo>Male</CustomLabelInfo>
-                  <CustomLabelTitle>Year of Birth</CustomLabelTitle>
-                  <CustomLabelInfo>Empty</CustomLabelInfo>
-                  {/* <CustomLabelTitle>Country</CustomLabelTitle>
-                  <CustomLabelInfo>Empty</CustomLabelInfo> 
+                  <SecondLabel>Username</SecondLabel>
+                  <ThirdLabel>Captain Jack Sparrow</ThirdLabel>
+                  <SecondLabel>Email</SecondLabel>
+                  <ThirdLabel>CaptainJack@gmail.com</ThirdLabel>
+                  <SecondLabel>Gender</SecondLabel>
+                  <ThirdLabel>Male</ThirdLabel>
+                  <SecondLabel>Year of Birth</SecondLabel>
+                  <ThirdLabel>Empty</ThirdLabel>
+                  {/* <SecondLabel>Country</SecondLabel>
+                  <ThirdLabel>Empty</ThirdLabel> 
                   might remove in the future *reason-> takes too much spaces
                   */}
-                  <CustomLabelTitle>Occupation</CustomLabelTitle>
-                  <CustomLabelInfo>Pirate</CustomLabelInfo>
+                  <SecondLabel>Occupation</SecondLabel>
+                  <ThirdLabel>Pirate</ThirdLabel>
                   <Button
                     backgroundColor={configStyles.colors.darkBlue}
                     color={configStyles.colors.white}

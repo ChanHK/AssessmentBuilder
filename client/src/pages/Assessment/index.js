@@ -1,3 +1,4 @@
+import GradeContainer from "./GradeContainer";
 import StatisticsContainer from "./StatisticsContainer";
 
-export default StatisticsContainer;
+export { GradeContainer, StatisticsContainer };

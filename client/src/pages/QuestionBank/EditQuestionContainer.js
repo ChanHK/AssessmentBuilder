@@ -4,9 +4,9 @@ import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import Title from "../../components/Title";
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import "../../css/general.css";
-import CustomLabelTitle from "../../components/ProfileComponents/CustomLabelTitle";
 import TextArea from "../../components/TextArea";
 
 class EditQuestionContainer extends Component {
@@ -31,10 +31,10 @@ class EditQuestionContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <Title>Edit Question</Title>
+              <FirstLabel>Edit Question</FirstLabel>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
-                  <CustomLabelTitle>Question Description</CustomLabelTitle>
+                  <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
                       name={"description"}

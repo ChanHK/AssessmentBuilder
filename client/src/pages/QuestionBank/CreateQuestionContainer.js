@@ -5,10 +5,10 @@ import CustomFullContainer from "../../components/GridComponents/CustomFullConta
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import Title from "../../components/Title";
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import "../../css/general.css";
 import QuestionType from "./Data/QuestionType";
-import CustomLabelTitle from "../../components/ProfileComponents/CustomLabelTitle";
 import Dropdown from "../../components/Dropdown";
 import TextArea from "../../components/TextArea";
 import ImageUpload from "../../components/ImageUpload";
@@ -74,10 +74,10 @@ class CreateQuestionContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <Title>Create Question</Title>
+              <FirstLabel>Create Question</FirstLabel>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
-                  <CustomLabelTitle>Question Type</CustomLabelTitle>
+                  <SecondLabel>Question Type</SecondLabel>
                   <div style={{ paddingBottom: "50px" }}>
                     <Dropdown
                       options={QuestionType}
@@ -87,7 +87,7 @@ class CreateQuestionContainer extends Component {
                     />
                   </div>
 
-                  <CustomLabelTitle>Question Description</CustomLabelTitle>
+                  <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
                       name={"description"}
@@ -119,7 +119,7 @@ class CreateQuestionContainer extends Component {
                       <ChoiceRow count={i + 1} />
                     ))}
                   </div>
-                  <CustomLabelTitle>Explanation (Optional)</CustomLabelTitle>
+                  <SecondLabel>Explanation (Optional)</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
                       name={"explanation"}
