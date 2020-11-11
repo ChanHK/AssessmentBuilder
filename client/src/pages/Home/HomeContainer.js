@@ -20,7 +20,9 @@ export default class HomeContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Profile</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Profile</FirstLabel>
+              </div>
 
               <StatusBarWrapper>
                 <StatusBarImage image={profile} style={[styles.imgPos]} />
@@ -29,7 +31,6 @@ export default class HomeContainer extends Component {
                 <StatusBox number={"2"} text={"Setup In Progress"} />
                 <StatusBox number={"200"} text={"Assessments Activated"} />
               </StatusBarWrapper>
-              <FirstLabel>Profile</FirstLabel>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, css } from "aphrodite";
+import { StyleSheet } from "aphrodite";
 import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -35,7 +35,9 @@ export default class StatisticsContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Statistics</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Statistics</FirstLabel>
+              </div>
               <div>
                 <Pie
                   data={data}

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     height: "30%",
-    paddingTop: "60px", //
+    // paddingTop: "60px", //
   },
   text: {
     fontFamily: "Ubuntu-Bold",

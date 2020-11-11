@@ -63,7 +63,9 @@ class EditProfileContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Update Profile</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Update Profile</FirstLabel>
+              </div>
               <div className={css(styles.infoCon)}>
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>

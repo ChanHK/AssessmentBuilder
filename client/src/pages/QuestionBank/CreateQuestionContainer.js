@@ -74,7 +74,9 @@ class CreateQuestionContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Create Question</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Create Question</FirstLabel>
+              </div>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
                   <SecondLabel>Question Type</SecondLabel>

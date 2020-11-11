@@ -27,7 +27,9 @@ export default class ProfileContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Profile</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Profile</FirstLabel>
+              </div>
               <StatusBarWrapper>
                 <StatusBarImage image={profile} style={[styles.imgPos]} />
                 {/* <StatusBarMessage>Sparrow</StatusBarMessage> */}

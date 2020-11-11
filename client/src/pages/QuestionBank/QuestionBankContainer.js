@@ -57,7 +57,9 @@ class QuestionBankContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Question Bank</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Question Bank</FirstLabel>
+              </div>
               <div style={{ paddingBottom: "25px" }}>
                 <Wrapper
                   firstHeight={"60px"}

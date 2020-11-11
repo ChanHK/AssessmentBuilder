@@ -17,7 +17,9 @@ export default class GradeContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>Grade Responses</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>Grade Responses</FirstLabel>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>

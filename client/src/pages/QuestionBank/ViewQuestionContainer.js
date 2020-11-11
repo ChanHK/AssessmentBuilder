@@ -31,7 +31,9 @@ class EditQuestionContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <FirstLabel>View Question</FirstLabel>
+              <div style={{ paddingTop: "60px" }}>
+                <FirstLabel>View Question</FirstLabel>
+              </div>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
                   <SecondLabel>Question Description</SecondLabel>
