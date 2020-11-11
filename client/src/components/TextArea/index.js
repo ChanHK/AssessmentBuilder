@@ -12,6 +12,7 @@ const TextArea = (props) => (
     value={props.value}
     autocomplete="off"
     style={{ height: props.height ? props.height : "200px" }}
+    readOnly={props.readOnly ? props.readOnly : false}
   />
 );
 
