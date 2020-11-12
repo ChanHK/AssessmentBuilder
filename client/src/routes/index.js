@@ -17,7 +17,12 @@ import {
   ViewQuestionContainer,
 } from "../pages/QuestionBank";
 
-import { GradeContainer, StatisticsContainer } from "../pages/Assessment";
+import {
+  GradeContainer,
+  StatisticsContainer,
+  ResultsContainer,
+  ViewResponseContainer,
+} from "../pages/Assessment";
 
 export default function Routes() {
   return (
@@ -57,6 +62,12 @@ export default function Routes() {
           path="/assessment/statistics"
           exact
           component={StatisticsContainer}
+        />
+        <Route path="/assessment/results" exact component={ResultsContainer} />
+        <Route
+          path="/assessment/response"
+          exact
+          component={ViewResponseContainer}
         />
 
         {/* redirect user to SignIn page if route does not exist and user is not authenticated */}

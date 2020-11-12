@@ -132,3 +132,5 @@ const styles = StyleSheet.create({
 });
 
 export default withRouter(Table);
+
+//https://jbetancur.github.io/react-data-table-component/?path=/story/filtering--example-1
