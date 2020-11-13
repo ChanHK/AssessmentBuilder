@@ -14,6 +14,23 @@ import Wrapper from "../../components/Wrapper";
 import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Button";
 import * as configStyles from "../../config/styles";
+import Table from "../../components/Table";
+
+//tempory since this will be obtain from the store
+const data = [
+  { id: 1, title: "english test 1", status: "Setup in progress" },
+  { id: 2, title: "mathematics", status: "Active" },
+  { id: 3, title: "physics", status: "Ended" },
+  { id: 4, title: "chemistry", status: "Active" },
+  { id: 5, title: "biology", status: "Ended" },
+  { id: 6, title: "programming", status: "Setup in progress" },
+  { id: 7, title: "english test 1", status: "Setup in progress" },
+  { id: 8, title: "mathematics", status: "Active" },
+  { id: 9, title: "physics", status: "Ended" },
+  { id: 10, title: "chemistry", status: "Active" },
+  { id: 11, title: "biology", status: "Ended" },
+  { id: 12, title: "programming", status: "Setup in progress" },
+];
 
 export default class HomeContainer extends Component {
   constructor() {
@@ -28,6 +45,23 @@ export default class HomeContainer extends Component {
   };
 
   render() {
+    const tableHeader = [
+      {
+        name: "#",
+        selector: "id",
+      },
+      {
+        name: "Assessment Title",
+        selector: "title",
+        sortable: true,
+      },
+      {
+        name: "Status",
+        selector: "status",
+        sortable: true,
+      },
+    ];
+
     const { searchText } = this.state;
     return (
       <>
@@ -69,6 +103,13 @@ export default class HomeContainer extends Component {
                   </Button>
                 </div>
               </Wrapper>
+              <div style={{ padding: "50px 0px" }}>
+                <Table
+                  data={data}
+                  columns={tableHeader}
+                  path={`questionbank/viewQuestion`}
+                />
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>

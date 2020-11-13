@@ -94,7 +94,7 @@ class Table extends Component {
     return (
       <DataTable
         columns={
-          this.props.columns === "questionColumn" ? questionColumn : null
+          this.props.columns === "questionColumn" ? questionColumn : this.props.columns
         }
         data={this.props.data}
         className={css(styles.container, styles.noSelect)}
@@ -103,6 +103,7 @@ class Table extends Component {
         noHeader
         striped
         responsive
+        pagination
         customStyles={customStyles}
         onRowClicked={() => this.props.history.push(this.props.path)}
       />
