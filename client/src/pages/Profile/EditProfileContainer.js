@@ -20,6 +20,7 @@ class EditProfileContainer extends Component {
     super();
     this.state = {
       username: null,
+      password: null,
       gender: null,
       birthYear: null,
       occupation: null,
@@ -28,6 +29,12 @@ class EditProfileContainer extends Component {
 
   onChangeUsername = (e) => {
     this.setState({ username: e.target.value });
+    // console.log(this.state.gender);
+    // need to double check again when submit
+  };
+
+  onChangePassword = (e) => {
+    this.setState({ password: e.target.value });
     // console.log(this.state.gender);
     // need to double check again when submit
   };
@@ -55,7 +62,7 @@ class EditProfileContainer extends Component {
   };
 
   render() {
-    const { username, gender, birthYear, occupation } = this.state;
+    const { username, password, gender, birthYear, occupation } = this.state;
     // console.log("rerenders");
     return (
       <>
@@ -85,6 +92,16 @@ class EditProfileContainer extends Component {
                       placeholder={" Enter your username"}
                       onChangeValue={this.onChangeUsername}
                       value={username}
+                    />
+                  </div>
+                  <SecondLabel>Password</SecondLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <CustomInput
+                      name={"password"}
+                      type={"text"}
+                      placeholder={" Enter your password"}
+                      onChangeValue={this.onChangePassword}
+                      value={password}
                     />
                   </div>
                   <SecondLabel>Gender</SecondLabel>
