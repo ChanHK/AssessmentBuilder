@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import "../../css/general.css";
 import CustomTitle from "../../components/FormComponents/CustomTitle";
-import CustomForm from "../../components/FormComponents/CustomForm";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
 import CustomInput from "../../components/CustomInput";
@@ -13,8 +12,8 @@ class LoginContainer extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
+      email: null,
+      password: null,
     };
   }
 
@@ -26,12 +25,18 @@ class LoginContainer extends Component {
   //   this.props.history.push(`questionbank/createQuestion`);
   // };
 
+  onSubmit = (e) => {
+    console.log(this.state.email, this.state.password);
+    e.preventDefault();
+  };
+
   render() {
+    const { email, password } = this.state;
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
           <CustomTitle>Login</CustomTitle>
-          <CustomForm>
+          <form className={css(styles.form)} onSubmit={this.onSubmit}>
             <CustomSubLabel>Email</CustomSubLabel>
             <div style={{ paddingBottom: "25px" }}>
               <CustomInput
@@ -39,6 +44,7 @@ class LoginContainer extends Component {
                 type={"text"}
                 onChangeValue={this.onChange}
                 placeholder={"Enter your email"}
+                value={email}
               />
             </div>
             <CustomSubLabel>Password</CustomSubLabel>
@@ -47,6 +53,7 @@ class LoginContainer extends Component {
               type={"password"}
               onChangeValue={this.onChange}
               placeholder={"Enter your password"}
+              value={password}
             />
             <div style={{ padding: "25px 0px" }}>
               <Button
@@ -54,12 +61,12 @@ class LoginContainer extends Component {
                 color={configStyles.colors.white}
                 padding={"8px"}
                 width={"100%"}
-                onClick={this.handleClick}
+                type="submit"
               >
                 Login
               </Button>
             </div>
-          </CustomForm>
+          </form>
         </div>
       </div>
     );
@@ -85,6 +92,13 @@ const styles = StyleSheet.create({
     padding: "20px",
     justifyContent: "flex-start",
     alignItems: "center",
+    flexDirection: "column",
+  },
+  form: {
+    width: "80%",
+    height: "70%",
+    display: "flex",
+    padding: "30px 0px",
     flexDirection: "column",
   },
 });
