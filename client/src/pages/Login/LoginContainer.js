@@ -8,12 +8,16 @@ import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import * as configStyles from "../../config/styles";
 
+import { connect } from "react-redux";
+
 class LoginContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: null,
       password: null,
+      error: false,
+      errorMsg: null,
     };
   }
 
@@ -24,7 +28,18 @@ class LoginContainer extends Component {
   onSubmit = (e) => {
     console.log(this.state.email, this.state.password);
     e.preventDefault();
+
+    if (this.validateForm()) {
+    }
   };
+
+  validateForm() {
+    const { email, password } = this.state;
+
+    //// write validation here
+
+    return true;
+  }
 
   render() {
     const { email, password } = this.state;
@@ -99,4 +114,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginContainer;
+export default connect((state) => ({ loginReducer: state.loginReducer }))(
+  LoginContainer
+);
