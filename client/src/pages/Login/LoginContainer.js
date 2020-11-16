@@ -21,10 +21,6 @@ class LoginContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  // handleClick = () => {
-  //   this.props.history.push(`questionbank/createQuestion`);
-  // };
-
   onSubmit = (e) => {
     console.log(this.state.email, this.state.password);
     e.preventDefault();
