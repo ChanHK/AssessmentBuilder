@@ -8,7 +8,7 @@ import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import * as configStyles from "../../config/styles";
 
-export default class RegisterContainer extends Component {
+class RegisterContainer extends Component {
   constructor() {
     super();
     this.state = {
@@ -132,3 +132,5 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
 });
+
+export default RegisterContainer;
