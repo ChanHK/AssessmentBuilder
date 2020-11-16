@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import CustomTitle from "../../components/FormComponents/CustomTitle";
-import CustomForm from "../../components/FormComponents/CustomForm";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
-import CustomFormControl from "../../components/FormComponents/CustomFormControl";
-import CustomFormButton from "../../components/FormComponents/CustomFormButton";
 import "../../css/general.css";
+
+import CustomInput from "../../components/CustomInput";
+import Button from "../../components/Button";
+import * as configStyles from "../../config/styles";
 
 export default class RegisterContainer extends Component {
   constructor() {
     super();
     this.state = {
-      username: "",
-      email: "",
-      password: "",
-      secpass: "",
+      username: null,
+      email: null,
+      password: null,
+      secpass: null,
     };
   }
 
@@ -22,45 +23,80 @@ export default class RegisterContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  onSubmit = (e) => {
+    console.log(this.state.email, this.state.password);
+    e.preventDefault();
+
+    if (this.validateForm()) {
+    }
+  };
+
+  validateForm() {
+    const { email, password } = this.state;
+
+    //// write validation here
+
+    return true;
+  }
+
   render() {
+    const { username, email, password, secpass } = this.state;
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
           <CustomTitle>Sign Up</CustomTitle>
-          <CustomForm>
+
+          <form className={css(styles.form)} onSubmit={this.onSubmit}>
             <CustomSubLabel>Username</CustomSubLabel>
-            <CustomFormControl
-              name={"username"}
-              type={"text"}
-              onChange={this.onChange}
-              placeholder={"Enter your username"}
-            />
-            <br />
+            <div style={{ paddingBottom: "25px" }}>
+              <CustomInput
+                name={"username"}
+                type={"text"}
+                onChangeValue={this.onChange}
+                placeholder={"Enter your username"}
+                value={username}
+              />
+            </div>
             <CustomSubLabel>Email</CustomSubLabel>
-            <CustomFormControl
-              name={"email"}
-              type={"text"}
-              onChange={this.onChange}
-              placeholder={"Enter your email"}
-            />
-            <br />
+            <div style={{ paddingBottom: "25px" }}>
+              <CustomInput
+                name={"email"}
+                type={"text"}
+                onChangeValue={this.onChange}
+                placeholder={"Enter your email"}
+                value={email}
+              />
+            </div>
             <CustomSubLabel>Password</CustomSubLabel>
-            <CustomFormControl
-              name={"password"}
-              type={"password"}
-              onChange={this.onChange}
-              placeholder={"Enter your password"}
-            />
-            <br />
+            <div style={{ paddingBottom: "25px" }}>
+              <CustomInput
+                name={"password"}
+                type={"password"}
+                onChangeValue={this.onChange}
+                placeholder={"Enter your password"}
+                value={password}
+              />
+            </div>
             <CustomSubLabel>Reenter password</CustomSubLabel>
-            <CustomFormControl
-              name={"secpass"}
-              type={"password"}
-              onChange={this.onChange}
-              placeholder={"Reenter your password"}
-            />
-            <CustomFormButton>Sign up</CustomFormButton>
-          </CustomForm>
+            <div style={{ paddingBottom: "25px" }}>
+              <CustomInput
+                name={"secpass"}
+                type={"password"}
+                onChangeValue={this.onChange}
+                placeholder={"Reenter your password"}
+                value={secpass}
+              />
+            </div>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              width={"100%"}
+              type="submit"
+            >
+              Sign Up
+            </Button>
+          </form>
         </div>
       </div>
     );
@@ -86,6 +122,13 @@ const styles = StyleSheet.create({
     padding: "20px",
     justifyContent: "flex-start",
     alignItems: "center",
+    flexDirection: "column",
+  },
+  form: {
+    width: "80%",
+    height: "70%",
+    display: "flex",
+    padding: "30px 0px",
     flexDirection: "column",
   },
 });

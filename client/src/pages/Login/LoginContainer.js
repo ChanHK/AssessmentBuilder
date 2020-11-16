@@ -35,7 +35,7 @@ class LoginContainer extends Component {
 
   validateForm() {
     const { email, password } = this.state;
-
+ 
     //// write validation here
 
     return true;
