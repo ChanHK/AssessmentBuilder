@@ -92,4 +92,18 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.get("/user", (req, res, next) => {
+  //this will return all the data
+  User.find({})
+    .then((data) => res.json(data))
+    .catch(next);
+});
+
+router.delete("/user/:id", function (req, res, next) {
+  User.findOneAndDelete({ _id: req.params.id })
+    .exec()
+    .then((data) => res.json(data))
+    .catch(next);
+});
+
 module.exports = router;

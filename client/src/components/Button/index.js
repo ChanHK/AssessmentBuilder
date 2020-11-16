@@ -22,7 +22,6 @@ const Button = (props) => (
 const styles = StyleSheet.create({
   button: {
     outline: "none",
-    marginLeft: "5px",
     borderRadius: "5px",
     ":active": {
       backgroundColor: configStyles.colors.darkBlue,

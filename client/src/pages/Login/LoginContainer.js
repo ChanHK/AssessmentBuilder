@@ -8,17 +8,35 @@ import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import * as configStyles from "../../config/styles";
 
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { loginUser } from "../../actions/auth.actions";
 
 class LoginContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: null,
-      password: null,
-      error: false,
-      errorMsg: null,
+      email: "",
+      password: "",
     };
+  }
+
+  componentDidMount() {
+    // If logged in and user navigates to Login page, should redirect them to dashboard
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/home");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/home");
+    }
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors,
+      });
+    }
   }
 
   onChange = (e) => {
@@ -30,12 +48,15 @@ class LoginContainer extends Component {
     e.preventDefault();
 
     if (this.validateForm()) {
+      const userData = {
+        email: this.state.email,
+        password: this.state.password,
+      };
+      this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
     }
   };
 
   validateForm() {
-    const { email, password } = this.state;
- 
     //// write validation here
 
     return true;
@@ -114,6 +135,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect((state) => ({ loginReducer: state.loginReducer }))(
-  LoginContainer
-);
+LoginContainer.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { loginUser })(LoginContainer);
