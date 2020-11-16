@@ -4,8 +4,10 @@ import "../../css/general.css";
 import CustomTitle from "../../components/FormComponents/CustomTitle";
 import CustomForm from "../../components/FormComponents/CustomForm";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
-import CustomFormControl from "../../components/FormComponents/CustomFormControl";
-import CustomFormButton from "../../components/FormComponents/CustomFormButton";
+
+import CustomInput from "../../components/CustomInput";
+import Button from "../../components/Button";
+import * as configStyles from "../../config/styles";
 
 class LoginContainer extends Component {
   constructor() {
@@ -20,6 +22,10 @@ class LoginContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  // handleClick = () => {
+  //   this.props.history.push(`questionbank/createQuestion`);
+  // };
+
   render() {
     return (
       <div className={css(styles.background)}>
@@ -27,21 +33,32 @@ class LoginContainer extends Component {
           <CustomTitle>Login</CustomTitle>
           <CustomForm>
             <CustomSubLabel>Email</CustomSubLabel>
-            <CustomFormControl
-              name={"email"}
-              type={"text"}
-              onChange={this.onChange}
-              placeholder={"Enter your email"}
-            />
-            <br />
+            <div style={{ paddingBottom: "25px" }}>
+              <CustomInput
+                name={"email"}
+                type={"text"}
+                onChangeValue={this.onChange}
+                placeholder={"Enter your email"}
+              />
+            </div>
             <CustomSubLabel>Password</CustomSubLabel>
-            <CustomFormControl
+            <CustomInput
               name={"password"}
               type={"password"}
-              onChange={this.onChange}
+              onChangeValue={this.onChange}
               placeholder={"Enter your password"}
             />
-            <CustomFormButton>Login</CustomFormButton>
+            <div style={{ padding: "25px 0px" }}>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100%"}
+                onClick={this.handleClick}
+              >
+                Login
+              </Button>
+            </div>
           </CustomForm>
         </div>
       </div>

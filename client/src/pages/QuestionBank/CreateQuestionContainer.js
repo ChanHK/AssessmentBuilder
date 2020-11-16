@@ -133,7 +133,12 @@ class CreateQuestionContainer extends Component {
                   </div>
 
                   <CustomRow>
-                    <div style={{ justifyContent: "flex-start" }}>
+                    <div
+                      style={{
+                        justifyContent: "flex-start",
+                        marginRight: "10px",
+                      }}
+                    >
                       <Button
                         backgroundColor={configStyles.colors.darkBlue}
                         color={configStyles.colors.white}
