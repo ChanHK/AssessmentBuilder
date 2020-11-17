@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     paddingBottom: "10px",
     paddingTop: "10px",
     color: configStyles.colors.black,
+    fontSize: "18px",
   },
 });
 

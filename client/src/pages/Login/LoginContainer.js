@@ -22,7 +22,6 @@ class LoginContainer extends Component {
   }
 
   componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
@@ -41,6 +40,10 @@ class LoginContainer extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+
+  forgotPassword = () => {
+    //
   };
 
   onSubmit = (e) => {
@@ -98,6 +101,14 @@ class LoginContainer extends Component {
                 Login
               </Button>
             </div>
+            <div className={css(styles.textCon)}>
+              <h6
+                className={css(styles.text, styles.noSelect)}
+                onClick={this.forgotPassword}
+              >
+                Forgot Password ?
+              </h6>
+            </div>
           </form>
         </div>
       </div>
@@ -132,6 +143,33 @@ const styles = StyleSheet.create({
     display: "flex",
     padding: "30px 0px",
     flexDirection: "column",
+  },
+  text: {
+    color: configStyles.colors.black,
+    fontFamily: "Ubuntu-Bold",
+    cursor: "pointer",
+    fontSize: "16px",
+    ":hover": {
+      color: configStyles.colors.lightBlue,
+    },
+    ":active": {
+      color: configStyles.colors.lightBlue,
+      fontSize: "12px",
+    },
+  },
+  textCon: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
 

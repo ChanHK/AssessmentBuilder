@@ -25,7 +25,6 @@ class RegisterContainer extends Component {
   }
 
   componentDidMount() {
-    // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
@@ -41,6 +40,10 @@ class RegisterContainer extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+
+  goToLogin = () => {
+    this.props.history.push("/login");
   };
 
   onSubmit = (e) => {
@@ -112,15 +115,25 @@ class RegisterContainer extends Component {
                 value={password2}
               />
             </div>
-            <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
-              padding={"8px"}
-              width={"100%"}
-              type="submit"
-            >
-              Sign Up
-            </Button>
+            <div style={{ paddingBottom: "25px" }}>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100%"}
+                type="submit"
+              >
+                Sign Up
+              </Button>
+            </div>
+            <div className={css(styles.textCon)}>
+              <h6
+                className={css(styles.text, styles.noSelect)}
+                onClick={this.goToLogin}
+              >
+                Already have an account? Login
+              </h6>
+            </div>
           </form>
         </div>
       </div>
@@ -156,6 +169,33 @@ const styles = StyleSheet.create({
     padding: "30px 0px",
     flexDirection: "column",
   },
+  text: {
+    color: configStyles.colors.black,
+    fontFamily: "Ubuntu-Bold",
+    cursor: "pointer",
+    fontSize: "16px",
+    ":hover": {
+      color: configStyles.colors.lightBlue,
+    },
+    ":active": {
+      color: configStyles.colors.lightBlue,
+      fontSize: "12px",
+    },
+  },
+  textCon: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
 });
 
 RegisterContainer.propTypes = {
@@ -168,7 +208,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
 });
-
 
 export default connect(mapStateToProps, { registerUser })(
   withRouter(RegisterContainer)
