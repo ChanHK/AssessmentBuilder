@@ -169,7 +169,6 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-// export default RegisterContainer;
 
 export default connect(mapStateToProps, { registerUser })(
   withRouter(RegisterContainer)
