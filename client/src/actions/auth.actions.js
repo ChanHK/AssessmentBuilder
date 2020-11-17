@@ -6,8 +6,8 @@ import { SAMPLE } from "../utils/actionTypes";
 // Register User
 export const registerUser = (userData, history) => (dispatch) => {
   axios
-    .post("/api/users/register", userData)
-    .then((res) => history.push("/home")) // re-direct to login on successful register
+    .post("/api/user/register", userData)
+    .then((res) => history.push("/home"))
     .catch((err) =>
       dispatch({
         type: SAMPLE.GET_ERRORS,
@@ -18,7 +18,7 @@ export const registerUser = (userData, history) => (dispatch) => {
 // Login - get user token
 export const loginUser = (userData) => (dispatch) => {
   axios
-    .post("/api/users/login", userData)
+    .post("/api/user/login", userData)
     .then((res) => {
       // Save to localStorage
       // Set token to localStorage

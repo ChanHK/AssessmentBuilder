@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const passport = require("passport");
-const users = require("./routes/users");
+const user = require("./routes/user.api");
 
 const app = express();
 
@@ -43,7 +43,7 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 // Routes
-app.use("/api/users", users);
+app.use("/api/user", user);
 
 app.use((err, req, res, next) => {
   console.log(err);

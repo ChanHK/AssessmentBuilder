@@ -9,3 +9,6 @@ const setAuthToken = (token) => {
   }
 };
 export default setAuthToken;
+
+// set and delete authorization header for axios requests depends 
+// on user logged in or out

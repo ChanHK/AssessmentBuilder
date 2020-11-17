@@ -8,13 +8,12 @@ const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
 const User = require("../models/user");
 
-// @route POST api/users/register
+// @route POST api/user/register
 // @desc Register user
 // @access Public
 router.post("/register", (req, res) => {
-  // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
-  // Check validation
+
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -42,13 +41,12 @@ router.post("/register", (req, res) => {
   });
 });
 
-// @route POST api/users/login
+// @route POST api/user/login
 // @desc Login user and return JWT token
 // @access Public
 router.post("/login", (req, res) => {
-  // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
-  // Check validation
+
   if (!isValid) {
     return res.status(400).json(errors);
   }
