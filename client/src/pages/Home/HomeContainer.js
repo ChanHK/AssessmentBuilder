@@ -15,21 +15,25 @@ import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Button";
 import * as configStyles from "../../config/styles";
 import Table from "../../components/Table";
+import CustomRow from "../../components/GridComponents/CustomRow";
+import * as MdIcons from "react-icons/md";
+import * as BsIcons from "react-icons/bs";
+import TableButton from "../../components/TableButton";
 
 //tempory since this will be obtain from the store
 const data = [
-  { id: 1, title: "english test 1", status: "Setup in progress" },
-  { id: 2, title: "mathematics", status: "Active" },
-  { id: 3, title: "physics", status: "Ended" },
-  { id: 4, title: "chemistry", status: "Active" },
-  { id: 5, title: "biology", status: "Ended" },
-  { id: 6, title: "programming", status: "Setup in progress" },
-  { id: 7, title: "english test 1", status: "Setup in progress" },
-  { id: 8, title: "mathematics", status: "Active" },
-  { id: 9, title: "physics", status: "Ended" },
-  { id: 10, title: "chemistry", status: "Active" },
-  { id: 11, title: "biology", status: "Ended" },
-  { id: 12, title: "programming", status: "Setup in progress" },
+  { title: "english test 1", status: "Setup in progress" },
+  { title: "mathematics", status: "Active" },
+  { title: "physics", status: "Ended" },
+  { title: "chemistry", status: "Active" },
+  { title: "biology", status: "Ended" },
+  { title: "programming", status: "Setup in progress" },
+  { title: "english test 1", status: "Setup in progress" },
+  { title: "mathematics", status: "Active" },
+  { title: "physics", status: "Ended" },
+  { title: "chemistry", status: "Active" },
+  { title: "biology", status: "Ended" },
+  { title: "programming", status: "Setup in progress" },
 ];
 
 export default class HomeContainer extends Component {
@@ -37,6 +41,7 @@ export default class HomeContainer extends Component {
     super();
     this.state = {
       searchText: null,
+      rowNum: 0,
     };
   }
 
@@ -48,7 +53,8 @@ export default class HomeContainer extends Component {
     const tableHeader = [
       {
         name: "#",
-        selector: "id",
+        selector: 'serial'
+        // https://stackoverflow.com/questions/61652186/adding-serial-number-column-in-the-table
       },
       {
         name: "Assessment Title",
@@ -59,6 +65,32 @@ export default class HomeContainer extends Component {
         name: "Status",
         selector: "status",
         sortable: true,
+      },
+      {
+        name: "Options",
+        selector: "opt",
+        // right: "true",
+        cell: (row) => (
+          <CustomRow>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`questionbank/editQuestion`);
+              }}
+            >
+              <MdIcons.MdModeEdit />
+            </TableButton>
+            <TableButton>
+              <MdIcons.MdDelete />
+            </TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(this.props.path);
+              }}
+            >
+              <BsIcons.BsFillEyeFill />
+            </TableButton>
+          </CustomRow>
+        ),
       },
     ];
 
@@ -72,7 +104,7 @@ export default class HomeContainer extends Component {
               <div style={{ paddingTop: "80px", paddingBottom: "20px" }}>
                 <StatusBarWrapper>
                   <StatusBarImage image={profile} style={[styles.imgPos]} />
-                  <StatusBox number={"67"} text={"Assessments Created"} />
+                  <StatusBox number={"67"} text={"Total Assessments"} />
                   <StatusBox number={"2"} text={"Setup In Progress"} />
                   <StatusBox number={"200"} text={"Assessments Activated"} />
                 </StatusBarWrapper>
