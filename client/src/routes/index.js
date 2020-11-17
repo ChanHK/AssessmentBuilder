@@ -22,6 +22,7 @@ import {
   StatisticsContainer,
   ResultsContainer,
   ViewResponseContainer,
+  CreateAssessmentContainer,
 } from "../pages/Assessment";
 
 export default function Routes() {
@@ -53,6 +54,7 @@ export default function Routes() {
           exact
           component={ViewQuestionContainer}
         />
+
         <Route
           path="/assessment/gradeResponses"
           exact
@@ -68,6 +70,11 @@ export default function Routes() {
           path="/assessment/response"
           exact
           component={ViewResponseContainer}
+        />
+        <Route
+          path="/assessment/createAssessment"
+          exact
+          component={CreateAssessmentContainer}
         />
 
         {/* redirect user to SignIn page if route does not exist and user is not authenticated */}

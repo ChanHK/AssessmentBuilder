@@ -11,7 +11,7 @@ import "../../css/general.css";
 
 
 
-export default class ResultsContainer extends Component {
+export default class CreateAssessmentContainer extends Component {
   render() {
     return (
       <>
@@ -20,7 +20,7 @@ export default class ResultsContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
-                <FirstLabel>Results</FirstLabel>
+                <FirstLabel>Create Assessment</FirstLabel>
               </div>
               
             </CustomColumn>
@@ -36,5 +36,3 @@ const styles = StyleSheet.create({
     paddingLeft: "10px",
   },
 });
-
-//https://stackoverflow.com/questions/46420578/it-is-possible-to-change-the-color-of-periphery-of-pie-chart-in-chart-js

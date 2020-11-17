@@ -49,6 +49,10 @@ export default class HomeContainer extends Component {
     this.setState({ searchText: e.target.value });
   };
 
+  toCreateAssessment = () => {
+    this.props.history.push("assessment/createAssessment");
+  };
+
   render() {
     const tableHeader = [
       {
@@ -150,7 +154,7 @@ export default class HomeContainer extends Component {
                     backgroundColor={configStyles.colors.darkBlue}
                     color={configStyles.colors.white}
                     padding={"8px"}
-                    onClick={this.handleClick}
+                    onClick={this.toCreateAssessment}
                   >
                     Create Assessments
                   </Button>
