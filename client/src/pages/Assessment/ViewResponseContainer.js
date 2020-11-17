@@ -9,7 +9,7 @@ import "../../css/general.css";
 
 import * as configStyles from "../../config/styles";
 
-
+// this is for viewing candidates responses 
 
 export default class ViewResponseContainer extends Component {
   render() {
@@ -36,5 +36,3 @@ const styles = StyleSheet.create({
     paddingLeft: "10px",
   },
 });
-
-//https://stackoverflow.com/questions/46420578/it-is-possible-to-change-the-color-of-periphery-of-pie-chart-in-chart-js

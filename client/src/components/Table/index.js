@@ -7,7 +7,7 @@ import * as configStyles from "../../config/styles";
 const customStyles = {
   headCells: {
     style: {
-      fontSize: "20px",
+      fontSize: "15px",
       fontFamily: "Ubuntu-Bold",
     },
   },

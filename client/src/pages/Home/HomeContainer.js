@@ -53,18 +53,39 @@ export default class HomeContainer extends Component {
     const tableHeader = [
       {
         name: "#",
-        selector: 'serial'
+        selector: "serial",
         // https://stackoverflow.com/questions/61652186/adding-serial-number-column-in-the-table
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.serial}
+            </div>
+          </div>
+        ),
       },
       {
         name: "Assessment Title",
         selector: "title",
         sortable: true,
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.title}
+            </div>
+          </div>
+        ),
       },
       {
         name: "Status",
         selector: "status",
         sortable: true,
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.status}
+            </div>
+          </div>
+        ),
       },
       {
         name: "Options",

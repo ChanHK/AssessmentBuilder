@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     color: configStyles.colors.black,
     fontSize: "18px",
-    paddingBottom: "20px",
+    // paddingBottom: "20px",
     textOverflow: "ellipsis",
     overflow: "hidden",
   },

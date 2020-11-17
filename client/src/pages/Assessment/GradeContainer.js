@@ -53,8 +53,8 @@ export default class GradeContainer extends Component {
                   <ThirdLabel>Respondent: Name</ThirdLabel>
                   <ThirdLabel>Answer: xxxx</ThirdLabel>
                   <ThirdLabel>Graded: false</ThirdLabel>
-                  <ThirdLabel>
-                    Score Assigned (Max 5 marks):{" "}
+                  <ThirdLabel>Score Assigned (Max 5 marks): </ThirdLabel>
+                  <div style={{ paddingBottom: "25px" }}>
                     <CustomInput
                       name={"username"}
                       type={"text"}
@@ -62,7 +62,8 @@ export default class GradeContainer extends Component {
                       //   onChangeValue={}
                       //   value={}
                     />
-                  </ThirdLabel>
+                  </div>
+
                   <ThirdLabel>Feedback (Optional):</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
