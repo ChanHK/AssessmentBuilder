@@ -13,6 +13,10 @@ import "../../css/general.css";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
 import * as configStyles from "../../config/styles";
+import TableButton from "../../components/TableButton";
+import CustomRow from "../../components/GridComponents/CustomRow";
+import * as MdIcons from "react-icons/md";
+import * as BsIcons from "react-icons/bs";
 
 const data = [
   { id: 1, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
@@ -51,6 +55,78 @@ class QuestionBankContainer extends Component {
 
   render() {
     const { searchText, questionType } = this.state;
+    const column = [
+      {
+        name: "#",
+        selector: "id",
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.id}
+            </div>
+          </div>
+        ),
+        width: "20px",
+      },
+      {
+        name: "Question Description",
+        selector: "qd",
+        cell: (row) => (
+          <div>
+            <div
+              style={{
+                fontSize: "15px",
+                fontFamily: "Ubuntu-Regular",
+              }}
+            >
+              {row.qd}
+            </div>
+          </div>
+        ),
+        sortable: true,
+        width: "500px",
+      },
+      {
+        name: "Question Type",
+        selector: "qt",
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.qt}
+            </div>
+          </div>
+        ),
+        sortable: true,
+        width: "200px",
+      },
+      {
+        name: "Options",
+        selector: "opt",
+        // right: "true",
+        cell: (row) => (
+          <CustomRow>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`questionbank/editQuestion`);
+              }}
+            >
+              <MdIcons.MdModeEdit />
+            </TableButton>
+            <TableButton>
+              <MdIcons.MdDelete />
+            </TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`questionbank/viewQuestion`);
+              }}
+            >
+              <BsIcons.BsFillEyeFill />
+            </TableButton>
+          </CustomRow>
+        ),
+        width: "180px",
+      },
+    ];
     return (
       <>
         <Header />
@@ -87,7 +163,7 @@ class QuestionBankContainer extends Component {
               </div>
               <Table
                 data={data}
-                columns={"questionColumn"}
+                columns={column}
                 path={`questionbank/viewQuestion`}
               />
               <Button
