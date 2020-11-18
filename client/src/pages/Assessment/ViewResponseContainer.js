@@ -7,7 +7,7 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import "../../css/general.css";
 
-import * as configStyles from "../../config/styles";
+// import * as configStyles from "../../config/styles";
 
 // this is for viewing candidates responses 
 

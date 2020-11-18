@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "aphrodite";
+import { StyleSheet, css } from "aphrodite";
 import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -9,8 +9,10 @@ import "../../css/general.css";
 import CustomInput from "../../components/CustomInput";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import TextArea from "../../components/TextArea";
+import Section from "../../components/Section";
+import Button from "../../components/Button";
 
-// import * as configStyles from "../../config/styles";
+import * as configStyles from "../../config/styles";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
@@ -56,6 +58,19 @@ export default class CreateAssessmentContainer extends Component {
                   value={testDescription}
                 />
               </div>
+              <Section />
+              <div style={{ padding: "25px 0" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  // width={"100px"}
+                  onClick={this.handleClick}
+                >
+                  Add Section
+                </Button>
+              </div>
+              <div className={css(styles.bar)}>a</div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -67,5 +82,14 @@ export default class CreateAssessmentContainer extends Component {
 const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
+  },
+  bar: {
+    width: "100%",
+    padding: 10,
+    backgroundColor: configStyles.colors.lightGrey,
+    marginBottom: "25px",
+    border: "2px solid",
+    borderRadius: "5px",
+    borderColor: configStyles.colors.black,
   },
 });
