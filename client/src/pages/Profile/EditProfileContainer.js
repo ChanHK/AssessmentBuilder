@@ -135,8 +135,8 @@ class EditProfileContainer extends Component {
                     />
                   </div>
                   <Button
-                    backgroundColor={"#060b26"}
-                    color={"white"}
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
                     padding={"8px"}
                     width={"100px"}
                     onClick={this.handleClick}

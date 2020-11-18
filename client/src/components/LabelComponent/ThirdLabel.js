@@ -1,11 +1,9 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 const ThirdLabel = (props) => (
-  <Form.Label className={css(styles.text)}>{props.children}</Form.Label>
+  <h6 className={css(styles.text)}>{props.children}</h6>
 );
 
 const styles = StyleSheet.create({

@@ -8,6 +8,7 @@ import NavSideBar from "../../components/NavSideBar";
 import CustomFullContainer from "../GridComponents/CustomFullContainer";
 import CustomRow from "../GridComponents/CustomRow";
 import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 class Header extends Component {
   constructor() {
@@ -80,7 +81,7 @@ class Header extends Component {
 
 const styles = StyleSheet.create({
   rowStyle: {
-    backgroundColor: "#060b26",
+    backgroundColor: configStyles.colors.darkBlue,
     height: "60px",
     justifyContent: "flex-start",
     alignItems: "center",
