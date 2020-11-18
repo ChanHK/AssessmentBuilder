@@ -37,7 +37,7 @@ class QuestionBankContainer extends Component {
     super();
     this.state = {
       searchText: "",
-      questionType: "",
+      questionType: null,
     };
   }
 

@@ -7,6 +7,7 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import "../../css/general.css";
 import QuestionType from "./Data/QuestionType";
 import Dropdown from "../../components/Dropdown";
@@ -21,19 +22,19 @@ class CreateQuestionContainer extends Component {
     super();
     this.state = {
       questionType: null,
-      questionDescriptive: null,
+      questionDescriptive: "",
       pictures: [],
       choiceCount: 0,
-      explanation: null,
+      explanation: "",
     };
   }
 
-  onChangeType = (e) => {
-    this.setState({ questionType: e.target.value });
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
-  onChangeDescription = (e) => {
-    this.setState({ questionDescriptive: e.target.value });
+  onChangeType = (e) => {
+    this.setState({ questionType: e.target.value, choiceCount: 0 });
   };
 
   onDrop = (e) => {
@@ -48,15 +49,11 @@ class CreateQuestionContainer extends Component {
     console.log(this.state.choiceCount);
   };
 
-  onChangeExplanation = (e) => {
-    this.setState({ explanation: e.target.value });
-  };
-
   onSubmit = (e) => {
     console.log(this.state.questionType);
     console.log(this.state.questionDescriptive);
     console.log(this.state.pictures);
-    console.log(this.state.choiceCount);
+    console.log(this.state.explanation);
     e.preventDefault();
   };
 
@@ -67,7 +64,6 @@ class CreateQuestionContainer extends Component {
       choiceCount,
       explanation,
     } = this.state;
-    console.log("rendered");
     return (
       <>
         <Header />
@@ -92,10 +88,10 @@ class CreateQuestionContainer extends Component {
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
-                      name={"description"}
+                      name={"questionDescriptive"}
                       type={"text"}
                       placeholder={"Enter the description here"}
-                      onChange={this.onChangeDescription}
+                      onChange={this.onChange}
                       value={questionDescriptive}
                     />
                   </div>
@@ -106,28 +102,66 @@ class CreateQuestionContainer extends Component {
                       icon={true}
                     />
                   </div>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <Button
-                      backgroundColor={configStyles.colors.darkBlue}
-                      color={configStyles.colors.white}
-                      padding={"8px"}
-                      onClick={this.addRow}
-                    >
-                      Add Choice
-                    </Button>
-                  </div>
-                  <div style={{ paddingBottom: "25px" }}>
-                    {[...Array(choiceCount)].map((k, i) => (
-                      <ChoiceRow count={i + 1} />
-                    ))}
-                  </div>
+
+                  {questionType === "Single Choice" ? (
+                    <>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          onClick={this.addRow}
+                        >
+                          Add Choice
+                        </Button>
+                      </div>
+                      <div style={{ paddingBottom: "25px" }}>
+                        {[...Array(choiceCount)].map((k, i) => (
+                          <ChoiceRow count={i + 1} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  
+                  {questionType === "Short Answer" ? (
+                    <>
+                      <SecondLabel>Answers</SecondLabel>
+                      <ThirdLabel>
+                        Candidates will score if their answer is exactly the
+                        same with yours
+                      </ThirdLabel>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <TextArea
+                          // name={"questionDescriptive"}
+                          type={"text"}
+                          placeholder={"Enter the answer here"}
+                          // onChange={this.onChange}
+                          // value={questionDescriptive}
+                          height={"100px"}
+                        />
+                      </div>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        onClick={this.addRow}
+                      >
+                        Add Answers
+                      </Button>
+                    </>
+                  ) : (
+                    <> </>
+                  )}
+
                   <SecondLabel>Explanation (Optional)</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
                       name={"explanation"}
                       type={"text"}
                       placeholder={"Enter the explanation here"}
-                      onChange={this.onChangeExplanation}
+                      onChange={this.onChange}
                       value={explanation}
                     />
                   </div>
