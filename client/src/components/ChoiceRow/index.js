@@ -5,6 +5,7 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import TextArea from "../../components/TextArea";
 import ImageUpload from "../../components/ImageUpload";
 import * as configStyles from "../../config/styles";
+import * as MdIcons from "react-icons/md";
 
 const ChoiceRow = (props) => (
   <div className={css(styles.row)}>
@@ -17,14 +18,27 @@ const ChoiceRow = (props) => (
               name="answer"
               type="checkbox"
               className={css(styles.checkBox)}
+              value={props.checkedValue}
+              onChange={props.onChangeValue}
+              checked={props.checked === props.checkedValue ? true : false}
             />
             <div>Answer</div>
+          </div>
+          <div className={css(styles.button)}>
+            <MdIcons.MdDelete size={30} onClick={props.onClick} />
           </div>
         </div>
       </CustomRow>
       <div style={{ padding: "10px" }}>
         <div style={{ paddingBottom: "20px" }}>
-          <TextArea name={"description"} type={"text"} height={"75px"} />
+          <TextArea
+            name={props.choice}
+            type={"text"}
+            height={"75px"}
+            onChange={props.onChange}
+            value={props.choiceValue}
+            placeholder={props.placeholder}
+          />
         </div>
         <div style={{ paddingBottom: "10px" }}>
           <ImageUpload
@@ -83,6 +97,19 @@ const styles = StyleSheet.create({
     width: "30px",
     height: "26px",
     marginRight: "10px",
+  },
+  button: {
+    color: configStyles.colors.darkBlue,
+    cursor: "pointer",
+    height: "50px",
+    ":active": {
+      color: configStyles.colors.red,
+      size: 40,
+    },
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    marginLeft: "10px",
   },
 });
 

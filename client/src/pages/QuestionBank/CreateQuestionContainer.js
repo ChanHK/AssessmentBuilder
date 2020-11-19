@@ -26,10 +26,10 @@ class CreateQuestionContainer extends Component {
       questionType: null,
       questionDescriptive: "",
       pictures: [],
-      count: 0,
       explanation: "",
       questionAns: [],
-      // questionChoice
+      questionChoice: [],
+      checkboxNum: null,
     };
   }
 
@@ -47,20 +47,12 @@ class CreateQuestionContainer extends Component {
     });
   };
 
-  addRow = () => {
-    const count = this.state.count + 1;
-    this.setState({ count: count });
-    // console.log(this.state.count);
-  };
-  /////////////////True or False/////////////////
   onGetTF = (e) => {
     this.setState({
       questionAns: e.target.value,
     });
   };
-  ///////////////////////////////////////////////
 
-  /////////////////Short Answer/////////////////
   onChangeAnswer = (value, index) => {
     this.setState((state) => {
       const questionAns = state.questionAns.map((item, j) => {
@@ -77,7 +69,30 @@ class CreateQuestionContainer extends Component {
     });
   };
 
-  deleteShortAnsRow = (index) => {
+  onChangeChoice = (value, index) => {
+    this.setState((state) => {
+      const questionChoice = state.questionChoice.map((item, j) => {
+        if (j === index) {
+          return value;
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        questionChoice,
+      };
+    });
+  };
+
+  setChoiceAns = (index) => {
+    this.setState({
+      questionAns: this.state.questionChoice[index],
+      checkboxNum: index,
+    });
+  };
+
+  deleteAnsRow = (index) => {
     this.setState((state) => {
       const questionAns = state.questionAns.filter((item, j) => index !== j);
 
@@ -87,19 +102,37 @@ class CreateQuestionContainer extends Component {
     });
   };
 
-  onAddShortAnsRow = () => {
+  deleteChoiceRow = (index) => {
+    this.setState((state) => {
+      const questionChoice = state.questionChoice.filter(
+        (item, j) => index !== j
+      );
+
+      return {
+        questionChoice,
+      };
+    });
+  };
+
+  onAddAnsRow = () => {
     this.setState({
       questionAns: this.state.questionAns.concat(""),
     });
   };
-  //////////////////////////////////////////////
+
+  onAddChoiceRow = () => {
+    this.setState({
+      questionChoice: this.state.questionChoice.concat(""),
+    });
+  };
 
   onSubmit = (e) => {
     // console.log(this.state.questionType);
     // console.log(this.state.questionDescriptive);
     // console.log(this.state.pictures);
     // console.log(this.state.explanation);
-    console.log(this.state.questionAns);
+    console.log("ans", this.state.questionAns);
+    console.log(this.state.questionChoice);
 
     e.preventDefault();
   };
@@ -108,9 +141,10 @@ class CreateQuestionContainer extends Component {
     const {
       questionType,
       questionDescriptive,
-      count,
       explanation,
       questionAns,
+      questionChoice,
+      checkboxNum,
     } = this.state;
     return (
       <>
@@ -158,15 +192,28 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={this.addRow}
+                          onClick={this.onAddChoiceRow}
                           type={"button"}
                         >
                           Add Choice
                         </Button>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
-                        {[...Array(count)].map((k, i) => (
-                          <ChoiceRow count={i + 1} />
+                        {questionChoice.map((item, index) => (
+                          <ChoiceRow
+                            count={index + 1}
+                            onClick={() => this.deleteChoiceRow(index)}
+                            choiceValue={item}
+                            onChange={(e) =>
+                              this.onChangeChoice(e.target.value, index)
+                            }
+                            name={"answer"}
+                            choiceName={"choice"}
+                            placeholder={"Enter your choice here"}
+                            checkedValue={index}
+                            onChangeValue={() => this.setChoiceAns(index)}
+                            checked={checkboxNum}
+                          />
                         ))}
                       </div>
                     </>
@@ -212,7 +259,7 @@ class CreateQuestionContainer extends Component {
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
                           <ShortAns
-                            onClick={() => this.deleteShortAnsRow(index)}
+                            onClick={() => this.deleteAnsRow(index)}
                             onChange={(e) =>
                               this.onChangeAnswer(e.target.value, index)
                             }
@@ -228,7 +275,7 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={this.onAddShortAnsRow}
+                          onClick={this.onAddAnsRow}
                           type={"button"}
                         >
                           Add Answers
