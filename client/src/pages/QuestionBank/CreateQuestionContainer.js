@@ -17,6 +17,7 @@ import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
 import * as configStyles from "../../config/styles";
 import ShortAns from "../../components/ShortAns";
+import TrueFalse from "../../components/TrueFalse";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -51,6 +52,13 @@ class CreateQuestionContainer extends Component {
     this.setState({ count: count });
     // console.log(this.state.count);
   };
+  /////////////////True or False/////////////////
+  onGetTF = (e) => {
+    this.setState({
+      questionAns: e.target.value,
+    });
+  };
+  ///////////////////////////////////////////////
 
   /////////////////Short Answer/////////////////
   onChangeAnswer = (value, index) => {
@@ -90,8 +98,8 @@ class CreateQuestionContainer extends Component {
     // console.log(this.state.questionType);
     // console.log(this.state.questionDescriptive);
     // console.log(this.state.pictures);
-    console.log(this.state.explanation);
-    // console.log(this.state.questionAns);
+    // console.log(this.state.explanation);
+    console.log(this.state.questionAns);
 
     e.preventDefault();
   };
@@ -102,6 +110,7 @@ class CreateQuestionContainer extends Component {
       questionDescriptive,
       count,
       explanation,
+      questionAns,
     } = this.state;
     return (
       <>
@@ -165,6 +174,21 @@ class CreateQuestionContainer extends Component {
                     <></>
                   )}
 
+                  {questionType === "True or False" ? (
+                    <>
+                      <SecondLabel>Answer</SecondLabel>
+                      <ThirdLabel>Select the correct answer</ThirdLabel>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <TrueFalse
+                          onClick={this.onGetTF}
+                          isTrue={questionAns}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+
                   {questionType === "Short Answer" ? (
                     <>
                       <SecondLabel>Answers</SecondLabel>
@@ -173,7 +197,7 @@ class CreateQuestionContainer extends Component {
                         same with yours
                       </ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        {this.state.questionAns.map((item, index) => (
+                        {questionAns.map((item, index) => (
                           <ShortAns
                             onClick={() => this.deleteShortAnsRow(index)}
                             onChange={(e) =>
