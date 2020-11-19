@@ -13,17 +13,27 @@ const ChoiceRow = (props) => (
       <CustomRow>
         <div className={css(styles.bar)}>
           <div className={css(styles.text)}>Choice {props.count} </div>
-          <div className={css(styles.checkBoxCon)}>
-            <input
-              name="answer"
-              type="checkbox"
-              className={css(styles.checkBox)}
-              value={props.checkedValue}
-              onChange={props.onChangeValue}
-              checked={props.checked === null ? null : props.checked === props.checkedValue ? true : false}
-            />
-            <div>Answer</div>
-          </div>
+          {props.choiceValue === "" ? (
+            <div className={css(styles.checkBoxCon)}></div>
+          ) : (
+            <div className={css(styles.checkBoxCon)}>
+              <input
+                name="answer"
+                type="checkbox"
+                className={css(styles.checkBox)}
+                value={props.checkedValue}
+                onChange={props.onChangeValue}
+                checked={
+                  props.checked === null
+                    ? null
+                    : props.checked === props.checkedValue
+                    ? true
+                    : false
+                }
+              />
+              <div>Answer</div>
+            </div>
+          )}
           <div className={css(styles.button)}>
             <MdIcons.MdDelete size={30} onClick={props.onClick} />
           </div>

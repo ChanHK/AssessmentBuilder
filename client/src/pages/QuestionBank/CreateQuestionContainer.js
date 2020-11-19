@@ -98,12 +98,15 @@ class CreateQuestionContainer extends Component {
     console.log(this.state.checkboxNum);
   };
 
-  setChoiceMultiAns = (index) => {
-    this.setState({
-      questionAns: this.state.questionAns.concat(
-        this.state.questionChoice[index]
-      ),
-    });
+  setChoiceMultiAns = (event) => {
+    const target = event.target;
+    var value = target.value;
+
+    if (target.checked) {
+      this.state.questionAns[value] = this.state.questionChoice[value];
+    } else {
+      this.state.questionAns.splice(value, 1);
+    }
   };
 
   deleteAnsRow = (index) => {
@@ -262,7 +265,8 @@ class CreateQuestionContainer extends Component {
                             choiceName={"choice"}
                             placeholder={"Enter your choice here"}
                             checkedValue={index}
-                            onChangeValue={() => this.setChoiceMultiAns(index)}
+                            // onChangeValue={() => this.setChoiceMultiAns(index)}
+                            onChangeValue={this.setChoiceMultiAns}
                             checked={checkboxNum}
                           />
                         ))}
