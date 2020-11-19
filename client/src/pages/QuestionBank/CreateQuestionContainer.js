@@ -38,7 +38,7 @@ class CreateQuestionContainer extends Component {
   };
 
   onChangeType = (e) => {
-    this.setState({ questionType: e.target.value, count: 0 });
+    this.setState({ questionType: e.target.value, questionAns: [] });
   };
 
   onDrop = (e) => {
@@ -168,6 +168,19 @@ class CreateQuestionContainer extends Component {
                         {[...Array(count)].map((k, i) => (
                           <ChoiceRow count={i + 1} />
                         ))}
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+
+                  {questionType === "Descriptive" ? (
+                    <>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <ThirdLabel>
+                          The answer will be retrieved from the candidates after
+                          they have attempted your assessment
+                        </ThirdLabel>
                       </div>
                     </>
                   ) : (
