@@ -16,6 +16,7 @@ import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
 import * as configStyles from "../../config/styles";
+import ShortAns from "../../components/ShortAns";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -24,8 +25,10 @@ class CreateQuestionContainer extends Component {
       questionType: null,
       questionDescriptive: "",
       pictures: [],
-      choiceCount: 0,
+      count: 0,
       explanation: "",
+      questionAns: [],
+      // questionChoice
     };
   }
 
@@ -34,7 +37,7 @@ class CreateQuestionContainer extends Component {
   };
 
   onChangeType = (e) => {
-    this.setState({ questionType: e.target.value, choiceCount: 0 });
+    this.setState({ questionType: e.target.value, count: 0 });
   };
 
   onDrop = (e) => {
@@ -44,16 +47,52 @@ class CreateQuestionContainer extends Component {
   };
 
   addRow = () => {
-    const count = this.state.choiceCount + 1;
-    this.setState({ choiceCount: count });
-    console.log(this.state.choiceCount);
+    const count = this.state.count + 1;
+    this.setState({ count: count });
+    // console.log(this.state.count);
   };
 
+  /////////////////Short Answer/////////////////
+  onChangeAnswer = (value, index) => {
+    this.setState((state) => {
+      const questionAns = state.questionAns.map((item, j) => {
+        if (j === index) {
+          return value;
+        } else {
+          return item;
+        }
+      });
+
+      return {
+        questionAns,
+      };
+    });
+  };
+
+  deleteShortAnsRow = (index) => {
+    this.setState((state) => {
+      const questionAns = state.questionAns.filter((item, j) => index !== j);
+
+      return {
+        questionAns,
+      };
+    });
+  };
+
+  onAddShortAnsRow = () => {
+    this.setState({
+      questionAns: this.state.questionAns.concat(""),
+    });
+  };
+  //////////////////////////////////////////////
+
   onSubmit = (e) => {
-    console.log(this.state.questionType);
-    console.log(this.state.questionDescriptive);
-    console.log(this.state.pictures);
+    // console.log(this.state.questionType);
+    // console.log(this.state.questionDescriptive);
+    // console.log(this.state.pictures);
     console.log(this.state.explanation);
+    // console.log(this.state.questionAns);
+
     e.preventDefault();
   };
 
@@ -61,7 +100,7 @@ class CreateQuestionContainer extends Component {
     const {
       questionType,
       questionDescriptive,
-      choiceCount,
+      count,
       explanation,
     } = this.state;
     return (
@@ -111,12 +150,13 @@ class CreateQuestionContainer extends Component {
                           color={configStyles.colors.white}
                           padding={"8px"}
                           onClick={this.addRow}
+                          type={"button"}
                         >
                           Add Choice
                         </Button>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
-                        {[...Array(choiceCount)].map((k, i) => (
+                        {[...Array(count)].map((k, i) => (
                           <ChoiceRow count={i + 1} />
                         ))}
                       </div>
@@ -124,7 +164,7 @@ class CreateQuestionContainer extends Component {
                   ) : (
                     <></>
                   )}
-                  
+
                   {questionType === "Short Answer" ? (
                     <>
                       <SecondLabel>Answers</SecondLabel>
@@ -133,23 +173,30 @@ class CreateQuestionContainer extends Component {
                         same with yours
                       </ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        <TextArea
-                          // name={"questionDescriptive"}
-                          type={"text"}
-                          placeholder={"Enter the answer here"}
-                          // onChange={this.onChange}
-                          // value={questionDescriptive}
-                          height={"100px"}
-                        />
+                        {this.state.questionAns.map((item, index) => (
+                          <ShortAns
+                            onClick={() => this.deleteShortAnsRow(index)}
+                            onChange={(e) =>
+                              this.onChangeAnswer(e.target.value, index)
+                            }
+                            name={"answer"}
+                            placeholder={"Enter the answer here"}
+                            height={"50px"}
+                            value={item}
+                          />
+                        ))}
                       </div>
-                      <Button
-                        backgroundColor={configStyles.colors.darkBlue}
-                        color={configStyles.colors.white}
-                        padding={"8px"}
-                        onClick={this.addRow}
-                      >
-                        Add Answers
-                      </Button>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          onClick={this.onAddShortAnsRow}
+                          type={"button"}
+                        >
+                          Add Answers
+                        </Button>
+                      </div>
                     </>
                   ) : (
                     <> </>
@@ -178,7 +225,7 @@ class CreateQuestionContainer extends Component {
                         color={configStyles.colors.white}
                         padding={"8px"}
                         width={"100px"}
-                        // onClick={}
+                        type={"submit"}
                       >
                         Save
                       </Button>
@@ -189,14 +236,12 @@ class CreateQuestionContainer extends Component {
                         color={configStyles.colors.darkBlue}
                         padding={"8px"}
                         width={"100px"}
-                        // onClick={}
+                        type={"button"}
                       >
                         Cancel
                       </Button>
                     </div>
                   </CustomRow>
-
-                  {/* <input type="submit" value="Submit" /> */}
                 </CustomColumn>
               </form>
             </CustomColumn>
