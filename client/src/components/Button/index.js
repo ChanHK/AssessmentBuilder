@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     outline: "none",
     borderRadius: "5px",
     ":active": {
-      backgroundColor: configStyles.colors.darkBlue,
+      backgroundColor: configStyles.colors.lightBlue,
       border: "3px solid",
-      borderColor: configStyles.colors.lightBlue,
+      borderColor: configStyles.colors.darkBlue,
       color: configStyles.colors.white,
     },
     border: "2px solid",
