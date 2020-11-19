@@ -103,7 +103,21 @@ class CreateQuestionContainer extends Component {
     var value = target.value;
 
     if (target.checked) {
-      this.state.questionAns[value] = this.state.questionChoice[value];
+      // let questionAns = [...this.state.questionAns];
+      // questionAns[value] = {
+      //   ...questionAns[value],
+      //   value: this.state.questionChoice[value],
+      // };
+      // this.setState({ questionAns });
+
+      this.setState((prevState) => ({
+        questionAns: [
+          ...prevState.questionAns,
+          this.state.questionChoice[value],
+        ],
+      }));
+
+      // this.state.questionAns[value] = this.state.questionChoice[value];
     } else {
       this.state.questionAns.splice(value, 1);
     }
