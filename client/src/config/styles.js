@@ -6,6 +6,7 @@ export const colors = {
   lightBlue: "#1A83FF",
   placeholderGrey: "#696969",
   red: "#f21f38",
+  lightGreen: "#7de881",
 };
 
 // import * as configStyles from "../../config/styles"
