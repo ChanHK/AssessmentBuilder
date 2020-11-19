@@ -38,7 +38,12 @@ class CreateQuestionContainer extends Component {
   };
 
   onChangeType = (e) => {
-    this.setState({ questionType: e.target.value, questionAns: [] });
+    this.setState({
+      questionType: e.target.value,
+      questionAns: [],
+      questionChoice: [],
+      checkboxNum: null,
+    });
   };
 
   onDrop = (e) => {
@@ -90,6 +95,15 @@ class CreateQuestionContainer extends Component {
       questionAns: this.state.questionChoice[index],
       checkboxNum: index,
     });
+    console.log(this.state.checkboxNum);
+  };
+
+  setChoiceMultiAns = (index) => {
+    this.setState({
+      questionAns: this.state.questionAns.concat(
+        this.state.questionChoice[index]
+      ),
+    });
   };
 
   deleteAnsRow = (index) => {
@@ -132,7 +146,8 @@ class CreateQuestionContainer extends Component {
     // console.log(this.state.pictures);
     // console.log(this.state.explanation);
     console.log("ans", this.state.questionAns);
-    console.log(this.state.questionChoice);
+    // console.log(this.state.checkboxNum);
+    // console.log(this.state.questionChoice);
 
     e.preventDefault();
   };
@@ -212,6 +227,42 @@ class CreateQuestionContainer extends Component {
                             placeholder={"Enter your choice here"}
                             checkedValue={index}
                             onChangeValue={() => this.setChoiceAns(index)}
+                            checked={checkboxNum}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+
+                  {questionType === "Multiple Choice" ? (
+                    <>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          onClick={this.onAddChoiceRow}
+                          type={"button"}
+                        >
+                          Add Choice
+                        </Button>
+                      </div>
+                      <div style={{ paddingBottom: "25px" }}>
+                        {questionChoice.map((item, index) => (
+                          <ChoiceRow
+                            count={index + 1}
+                            onClick={() => this.deleteChoiceRow(index)}
+                            choiceValue={item}
+                            onChange={(e) =>
+                              this.onChangeChoice(e.target.value, index)
+                            }
+                            name={"answer"}
+                            choiceName={"choice"}
+                            placeholder={"Enter your choice here"}
+                            checkedValue={index}
+                            onChangeValue={() => this.setChoiceMultiAns(index)}
                             checked={checkboxNum}
                           />
                         ))}
