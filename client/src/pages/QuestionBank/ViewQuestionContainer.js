@@ -8,12 +8,14 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import "../../css/general.css";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import TextArea from "../../components/TextArea";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+import CustomRow from "../../components/GridComponents/CustomRow";
 
 class EditQuestionContainer extends Component {
   constructor() {
     super();
     this.state = {
-      questionDescriptive: null,
+      questionDescriptive: "",
     };
   }
 
@@ -36,6 +38,15 @@ class EditQuestionContainer extends Component {
               </div>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
+                  <CustomRow>
+                    <div className={css(styles.typeCon)}>
+                      <SecondLabel marginRight={"10px"}>
+                        Question Type :{" "}
+                      </SecondLabel>
+                      <ThirdLabel>Single Choice </ThirdLabel>
+                    </div>
+                  </CustomRow>
+
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
@@ -62,6 +73,13 @@ const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
     paddingBottom: "75px",
+  },
+  typeCon: {
+    width: "100%",
+    height: "auto",
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "25px",
   },
 });
 
