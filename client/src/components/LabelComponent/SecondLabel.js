@@ -1,13 +1,9 @@
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Form } from "react-bootstrap";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 const SecondLabel = (props) => (
-  <Form.Label className={css(styles.text, styles.noSelect)}>
-    {props.children}
-  </Form.Label>
+  <h6 className={css(styles.text, styles.noSelect)}>{props.children}</h6>
 );
 
 const styles = StyleSheet.create({
