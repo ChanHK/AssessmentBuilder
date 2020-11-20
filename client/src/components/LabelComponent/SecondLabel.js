@@ -3,7 +3,12 @@ import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 const SecondLabel = (props) => (
-  <h6 className={css(styles.text, styles.noSelect)}>{props.children}</h6>
+  <h6
+    className={css(styles.text, styles.noSelect)}
+    style={{ marginRight: props.marginRight }}
+  >
+    {props.children}
+  </h6>
 );
 
 const styles = StyleSheet.create({
