@@ -4,6 +4,7 @@ const QuestionType = [
   { value: "Descriptive" },
   { value: "True or False" },
   { value: "Short Answer" },
+  { value: "Order" },
 ];
 
 export default QuestionType;
