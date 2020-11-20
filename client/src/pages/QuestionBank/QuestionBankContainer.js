@@ -26,8 +26,8 @@ const data = [
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     qt: "Single Choice",
   },
-  { id: 3, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
-  { id: 4, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
+  { id: 3, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Multiple Choice" },
+  { id: 4, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Order" },
   { id: 5, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
   { id: 6, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
 ];
