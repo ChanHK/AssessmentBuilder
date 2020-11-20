@@ -18,6 +18,7 @@ import ChoiceRow from "../../components/ChoiceRow";
 import * as configStyles from "../../config/styles";
 import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
+import Order from "../../components/Order";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -336,6 +337,41 @@ class CreateQuestionContainer extends Component {
                             placeholder={"Enter the answer here"}
                             height={"50px"}
                             value={item}
+                          />
+                        ))}
+                      </div>
+                      <div style={{ paddingBottom: "25px" }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          onClick={this.onAddAnsRow}
+                          type={"button"}
+                        >
+                          Add Answers
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <> </>
+                  )}
+
+                  {questionType === "Order" ? (
+                    <>
+                      <SecondLabel>Answers</SecondLabel>
+                      <ThirdLabel>Write down the answer in order</ThirdLabel>
+                      <div style={{ paddingBottom: "25px" }}>
+                        {questionAns.map((item, index) => (
+                          <Order
+                            onClick={() => this.deleteAnsRow(index)}
+                            onChange={(e) =>
+                              this.onChangeAnswer(e.target.value, index)
+                            }
+                            name={"answer"}
+                            placeholder={"Enter the answer here"}
+                            height={"50px"}
+                            value={item}
+                            rowNum={index}
                           />
                         ))}
                       </div>
