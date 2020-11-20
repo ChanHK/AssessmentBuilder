@@ -4,8 +4,10 @@ import Header from "../../components/Header";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+import CustomRow from "../../components/GridComponents/CustomRow";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import "../../css/general.css";
 import TextArea from "../../components/TextArea";
 
@@ -13,7 +15,7 @@ class EditQuestionContainer extends Component {
   constructor() {
     super();
     this.state = {
-      questionDescriptive: null,
+      questionDescriptive: "",
     };
   }
 
@@ -36,6 +38,15 @@ class EditQuestionContainer extends Component {
               </div>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
+                  <CustomRow>
+                    <div className={css(styles.typeCon)}>
+                      <SecondLabel marginRight={"10px"}>
+                        Question Type :{" "}
+                      </SecondLabel>
+                      <ThirdLabel>Single Choice </ThirdLabel>
+                    </div>
+                  </CustomRow>
+
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
@@ -62,6 +73,13 @@ const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
     paddingBottom: "75px",
+  },
+  typeCon: {
+    width: "100%",
+    height: "auto",
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "25px",
   },
 });
 
