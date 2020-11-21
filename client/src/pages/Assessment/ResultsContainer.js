@@ -134,7 +134,7 @@ export default class ResultsContainer extends Component {
         ),
       },
       {
-        name: "Submition Date",
+        name: "Submission Date",
         selector: "submitDate",
         sortable: true,
         cell: (row) => (
