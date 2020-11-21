@@ -151,7 +151,7 @@ export default class ResultsContainer extends Component {
           <CustomRow>
             <TableButton
               onClick={() => {
-                this.props.history.push(`/assessment/statistics`);
+                this.props.history.push(`/assessment/response`);
               }}
             >
               <MdIcons.MdOpenInNew />
@@ -229,7 +229,7 @@ export default class ResultsContainer extends Component {
                 <Table
                   data={data}
                   columns={tableHeader}
-                  path={`/assessment/statistics`}
+                  path={`/assessment/response`}
                 />
               </div>
             </CustomColumn>
