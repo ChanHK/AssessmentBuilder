@@ -20,6 +20,7 @@ const CustomInput = (props) => (
     onChange={props.onChangeValue}
     value={props.value}
     // autocomplete="off"
+    readOnly={props.readOnly}
   />
 );
 
