@@ -66,6 +66,7 @@ export default class HomeContainer extends Component {
             </div>
           </div>
         ),
+        width: "30px",
       },
       {
         name: "Assessment Title",
