@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
-export class StatusBarWrapper extends Component {
+class StatusBarWrapper extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,11 @@ export class StatusBarWrapper extends Component {
         <div
           className={css(styles.innerLayer)}
           style={{
-            justifyContent: this.state.showSpace ? "space-between" : "center",
+            justifyContent: this.state.showSpace
+              ? this.props.first
+                ? this.props.first
+                : "space-between"
+              : "center",
           }}
         >
           {this.props.children}
