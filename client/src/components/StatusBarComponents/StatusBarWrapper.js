@@ -6,7 +6,7 @@ class StatusBarWrapper extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showSpace: window.innerWidth > 600 ? true : false,
+      showSpace: window.innerWidth > 800 ? true : false,
     };
   }
   componentDidMount() {
@@ -20,7 +20,7 @@ class StatusBarWrapper extends Component {
   }
 
   handleResize = () => {
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= 800) {
       //needs to further test on different screens when deployed
       this.setState({ showSpace: false });
     } else {
