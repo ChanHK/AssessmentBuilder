@@ -70,7 +70,7 @@ class DiscriptiveResponsesContainer extends Component {
           </div>
         ),
         sortable: true,
-        width: "500px",
+        width: "700px",
       },
       {
         name: "Options",
