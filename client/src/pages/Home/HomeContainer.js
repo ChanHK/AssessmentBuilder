@@ -100,9 +100,9 @@ export default class HomeContainer extends Component {
         cell: (row) => (
           <CustomRow>
             <TableButton
-              onClick={() => {
-                this.props.history.push(`questionbank/editQuestion`);
-              }}
+            // onClick={() => {
+            //   this.props.history.push(`questionbank/editQuestion`);
+            // }}
             >
               {/* <MdIcons.MdModeEdit /> */}
               Edit
@@ -112,9 +112,9 @@ export default class HomeContainer extends Component {
               Delete
             </TableButton>
             <TableButton
-              onClick={() => {
-                this.props.history.push(`questionbank/viewQuestion`);
-              }}
+            // onClick={() => {
+            //   this.props.history.push(`questionbank/viewQuestion`);
+            // }}
             >
               {/* <BsIcons.BsFillEyeFill /> */}
               View
@@ -191,7 +191,7 @@ export default class HomeContainer extends Component {
                 <Table
                   data={data}
                   columns={tableHeader}
-                  path={`questionbank/viewQuestion`}
+                  // path={`questionbank/viewQuestion`}
                 />
               </div>
             </CustomColumn>
