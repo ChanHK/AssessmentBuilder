@@ -16,8 +16,8 @@ import Button from "../../components/Button";
 import * as configStyles from "../../config/styles";
 import Table from "../../components/Table";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import * as MdIcons from "react-icons/md";
-import * as BsIcons from "react-icons/bs";
+// import * as MdIcons from "react-icons/md";
+// import * as BsIcons from "react-icons/bs";
 import TableButton from "../../components/TableButton";
 
 //tempory since this will be obtain from the store
@@ -66,7 +66,7 @@ export default class HomeContainer extends Component {
             </div>
           </div>
         ),
-        width: "30px",
+        width: "50px",
       },
       {
         name: "Assessment Title",
@@ -79,6 +79,7 @@ export default class HomeContainer extends Component {
             </div>
           </div>
         ),
+        width: "200px",
       },
       {
         name: "Status",
@@ -91,6 +92,7 @@ export default class HomeContainer extends Component {
             </div>
           </div>
         ),
+        width: "200px",
       },
       {
         name: "Options",
@@ -103,17 +105,41 @@ export default class HomeContainer extends Component {
                 this.props.history.push(`questionbank/editQuestion`);
               }}
             >
-              <MdIcons.MdModeEdit />
+              {/* <MdIcons.MdModeEdit /> */}
+              Edit
             </TableButton>
             <TableButton>
-              <MdIcons.MdDelete />
+              {/* <MdIcons.MdDelete /> */}
+              Delete
             </TableButton>
             <TableButton
               onClick={() => {
-                this.props.history.push(this.props.path);
+                this.props.history.push(`questionbank/viewQuestion`);
               }}
             >
-              <BsIcons.BsFillEyeFill />
+              {/* <BsIcons.BsFillEyeFill /> */}
+              View
+            </TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`/assessment/discriptiveResponses`);
+              }}
+            >
+              Mark
+            </TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`/assessment/results`);
+              }}
+            >
+              Results
+            </TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`/assessment/statistics`);
+              }}
+            >
+              Statistics
             </TableButton>
           </CustomRow>
         ),

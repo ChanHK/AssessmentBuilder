@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import CustomInput from "../../components/CustomInput";
 import CustomRow from "../../components/GridComponents/CustomRow";

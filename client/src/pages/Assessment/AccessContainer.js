@@ -125,10 +125,9 @@ const styles = StyleSheet.create({
     top: 0,
     width: "100%",
     height: "100vh",
-    backgroundColor: "rgb(0, 0, 0)",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: configStyles.colors.lightGrey,
   },
   modalContent: {
     width: "80%",
