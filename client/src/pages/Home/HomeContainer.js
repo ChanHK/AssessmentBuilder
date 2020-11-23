@@ -79,7 +79,7 @@ export default class HomeContainer extends Component {
             </div>
           </div>
         ),
-        width: "200px",
+        width: "250px",
       },
       {
         name: "Status",
@@ -97,7 +97,6 @@ export default class HomeContainer extends Component {
       {
         name: "Options",
         selector: "opt",
-        // right: "true",
         cell: (row) => (
           <CustomRow>
             <TableButton
@@ -143,6 +142,7 @@ export default class HomeContainer extends Component {
             </TableButton>
           </CustomRow>
         ),
+        width: "400px",
       },
     ];
 
