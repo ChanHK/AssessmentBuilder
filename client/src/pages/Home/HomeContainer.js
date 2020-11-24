@@ -119,7 +119,7 @@ export default class HomeContainer extends Component {
             </TableButton>
             <TableButton
               onClick={() => {
-                this.props.history.push(`/assessment/discriptiveResponses`);
+                this.props.history.push(`/assessment/descriptiveResponses`);
               }}
             >
               Mark

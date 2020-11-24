@@ -25,7 +25,7 @@ const data = [
   { qd: "aaaaaaaaaaaaaaaaaaaa" },
 ];
 
-class DiscriptiveResponsesContainer extends Component {
+class DescriptiveResponsesContainer extends Component {
   constructor() {
     super();
     this.state = {
@@ -100,7 +100,7 @@ class DiscriptiveResponsesContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
-                <FirstLabel>Discriptive Questions</FirstLabel>
+                <FirstLabel>Descriptive Questions</FirstLabel>
               </div>
               <div style={{ marginBottom: "50px" }}>
                 <SearchBar
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DiscriptiveResponsesContainer;
+export default DescriptiveResponsesContainer;

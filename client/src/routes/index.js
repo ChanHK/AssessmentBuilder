@@ -24,7 +24,7 @@ import {
   ViewResponseContainer,
   CreateAssessmentContainer,
   AccessContainer,
-  DiscriptiveResponsesContainer,
+  DescriptiveResponsesContainer,
 } from "../pages/Assessment";
 
 export default function Routes() {
@@ -63,9 +63,9 @@ export default function Routes() {
           component={GradeContainer}
         />
         <Route
-          path="/assessment/discriptiveResponses"
+          path="/assessment/descriptiveResponses"
           exact
-          component={DiscriptiveResponsesContainer}
+          component={DescriptiveResponsesContainer}
         />
         <Route
           path="/assessment/statistics"
