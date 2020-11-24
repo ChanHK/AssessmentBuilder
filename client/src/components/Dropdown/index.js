@@ -10,6 +10,7 @@ const Dropdown = (props) => (
           ? css(styles.select, styles.default)
           : css(styles.select, styles.nondefault)
       }
+      style={{ padding: props.padding ? props.padding : "10px" }}
       onChange={props.onChangeValue}
       value={props.value}
     >
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     border: "2px solid",
     borderColor: configStyles.colors.black,
     outline: 0,
-    padding: "10px",
     borderRadius: "5px",
     ":focus": {
       borderColor: configStyles.colors.lightBlue,
