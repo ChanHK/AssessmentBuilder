@@ -3,7 +3,6 @@ import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 import * as MdIcons from "react-icons/md";
 import * as GiIcons from "react-icons/gi";
-import * as RiIcons from "react-icons/ri";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 
 const AssessmentButtonGroup = (props) => (
