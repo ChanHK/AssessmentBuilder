@@ -17,6 +17,11 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import Radio from "../../components/Radio";
 import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
+import CustomEditor from "../../components/CustomEditor";
+import Wrapper from "../../components/Wrapper";
+import Dropdown from "../../components/Dropdown";
+
+const unitOptions = [{ value: "percentage %" }, { value: "points p." }];
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
@@ -24,8 +29,11 @@ export default class CreateAssessmentContainer extends Component {
     this.state = {
       testName: "",
       testDescription: "",
-      testRules: "",
+      testInstruction: "",
       type: "settings",
+      passOrFail: true,
+      score: "",
+      unit: null,
       sizeCheck: false,
     };
   }
@@ -34,15 +42,26 @@ export default class CreateAssessmentContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  onClickPassorFail = (e) => {
+    this.setState({ passOrFail: e, score: "", unit: null });
+  };
+
+  onChangeUnit = (e) => {
+    this.setState({ unit: e.target.value });
+  };
+
   render() {
     const {
       testName,
       testDescription,
-      testRules,
+      testInstruction,
       type,
+      passOrFail,
+      score,
+      unit,
       sizeCheck,
     } = this.state;
-    console.log(testRules);
+    console.log(testInstruction);
     return (
       <>
         <Header />
@@ -71,7 +90,16 @@ export default class CreateAssessmentContainer extends Component {
                       value={testName}
                     />
                   </div>
-                  <SecondLabel>Description</SecondLabel>
+                  <CustomRow>
+                    <div className={css(styles.subLabel)}>
+                      <div style={{ marginRight: "15px" }}>
+                        <SecondLabel>Description</SecondLabel>
+                      </div>
+                      <ThirdLabel>
+                        Notes that are only visible by you (Optional)
+                      </ThirdLabel>
+                    </div>
+                  </CustomRow>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
                       name={"testDescription"}
@@ -81,15 +109,78 @@ export default class CreateAssessmentContainer extends Component {
                       value={testDescription}
                     />
                   </div>
-                  <SecondLabel>Rules</SecondLabel>
+                  <CustomRow>
+                    <div className={css(styles.subLabel)}>
+                      <div style={{ marginRight: "15px" }}>
+                        <SecondLabel>Instruction</SecondLabel>
+                      </div>
+                      <ThirdLabel>
+                        Rules that are visible to candidates
+                      </ThirdLabel>
+                    </div>
+                  </CustomRow>
+
                   <div style={{ paddingBottom: "25px" }}>
-                    <TextArea
-                      name={"testRules"}
-                      type={"text"}
-                      placeholder={"Enter the rules here"}
-                      onChange={this.onChange}
-                      value={testRules}
+                    <CustomEditor
+                      onEditorStateChange={(e) =>
+                        this.setState({ testInstruction: e })
+                      }
+                      editorState={testInstruction}
                     />
+                  </div>
+
+                  <SecondLabel>Grading Criteria</SecondLabel>
+                  <div className={css(styles.gradeBar)}>
+                    <CustomRow>
+                      <CustomSwitch
+                        onChange={this.onClickPassorFail}
+                        checked={passOrFail}
+                      />
+
+                      <div style={{ marginLeft: "15px" }}>
+                        <ThirdLabel>Pass or fail</ThirdLabel>
+                      </div>
+                    </CustomRow>
+                    {passOrFail ? (
+                      <>
+                        <CustomColumn>
+                          <div style={{ padding: "20px 0px 0px 60px" }}>
+                            <ThirdLabel fontSize={"15px"}>
+                              Enter passing score
+                            </ThirdLabel>
+                            <Wrapper
+                              firstHeight={"60px"}
+                              secHeight={"120px"}
+                              widthChange={1425}
+                            >
+                              <div className={css(styles.block)}>
+                                <CustomInput
+                                  name={"score"}
+                                  type={"number"}
+                                  step={"0.01"}
+                                  placeholder={
+                                    "Enter the passing score here (two digits)"
+                                  }
+                                  onChangeValue={this.onChange}
+                                  value={score}
+                                />
+                              </div>
+                              <div className={css(styles.block)}>
+                                <Dropdown
+                                  options={unitOptions}
+                                  placeholder={"Select unit type"}
+                                  value={unit}
+                                  onChangeValue={this.onChangeUnit}
+                                  padding={"12px"}
+                                />
+                              </div>
+                            </Wrapper>
+                          </div>
+                        </CustomColumn>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </>
               ) : (
@@ -151,5 +242,23 @@ const styles = StyleSheet.create({
     border: "2px solid",
     borderRadius: "5px",
     borderColor: configStyles.colors.black,
+  },
+  subLabel: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+  },
+  gradeBar: {
+    width: "100%",
+    padding: "20px 20px",
+    marginBottom: "500px",
+    border: "2px solid",
+    borderRadius: "5px",
+    borderColor: configStyles.colors.black,
+  },
+  block: {
+    flexWrap: "nowrap",
+    width: "400px",
+    height: "auto",
   },
 });
