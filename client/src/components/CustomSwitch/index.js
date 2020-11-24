@@ -17,6 +17,7 @@ const CustomSwitch = (props) => (
       height={15}
       width={43}
       draggable={false}
+      offHandleColor={configStyles.colors.lightGrey}
     />
   </>
 );
