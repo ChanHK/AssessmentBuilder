@@ -20,6 +20,7 @@ import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
 import CustomEditor from "../../components/CustomEditor";
 import Wrapper from "../../components/Wrapper";
 import Dropdown from "../../components/Dropdown";
+import Range from "../../components/Range";
 
 const unitOptions = [{ value: "percentage %" }, { value: "points p." }];
 
@@ -34,6 +35,9 @@ export default class CreateAssessmentContainer extends Component {
       passOrFail: true,
       score: "",
       unit: null,
+      addGrading: true, //
+      gradeUnit: null,
+      gradeRange: [],
       sizeCheck: false,
     };
   }
@@ -46,10 +50,6 @@ export default class CreateAssessmentContainer extends Component {
     this.setState({ passOrFail: e, score: "", unit: null });
   };
 
-  onChangeUnit = (e) => {
-    this.setState({ unit: e.target.value });
-  };
-
   render() {
     const {
       testName,
@@ -59,6 +59,9 @@ export default class CreateAssessmentContainer extends Component {
       passOrFail,
       score,
       unit,
+      addGrading,
+      gradeUnit,
+      gradeRange,
       sizeCheck,
     } = this.state;
     console.log(testInstruction);
@@ -170,11 +173,83 @@ export default class CreateAssessmentContainer extends Component {
                                   options={unitOptions}
                                   placeholder={"Select unit type"}
                                   value={unit}
-                                  onChangeValue={this.onChangeUnit}
+                                  onChangeValue={(e) =>
+                                    this.setState({ unit: e.target.value })
+                                  }
                                   padding={"12px"}
                                 />
                               </div>
                             </Wrapper>
+                          </div>
+                        </CustomColumn>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+
+                    <div style={{ paddingTop: "25px" }}>
+                      <CustomRow>
+                        <CustomSwitch
+                          onChange={(e) => this.setState({ addGrading: e })}
+                          checked={addGrading}
+                        />
+
+                        <div style={{ marginLeft: "15px" }}>
+                          <ThirdLabel>Define grade range</ThirdLabel>
+                        </div>
+                      </CustomRow>
+                    </div>
+
+                    {addGrading ? (
+                      <>
+                        <CustomColumn>
+                          <div style={{ padding: "20px 0px 0px 60px" }}>
+                            <ThirdLabel fontSize={"15px"}>
+                              Enter grade ranges
+                            </ThirdLabel>
+                            <div style={{ paddingBottom: "25px" }}>
+                              <Wrapper
+                                firstHeight={"60px"}
+                                secHeight={"120px"}
+                                widthChange={1425}
+                              >
+                                <div className={css(styles.block)}>
+                                  <Dropdown
+                                    options={unitOptions}
+                                    placeholder={"Select unit type"}
+                                    value={gradeUnit}
+                                    onChangeValue={(e) =>
+                                      this.setState({
+                                        gradeUnit: e.target.value,
+                                      })
+                                    }
+                                    padding={"12px"}
+                                  />
+                                </div>
+                                <div className={css(styles.block)}>
+                                  <Button
+                                    backgroundColor={
+                                      configStyles.colors.darkBlue
+                                    }
+                                    color={configStyles.colors.white}
+                                    padding={"8px"}
+                                    width={"100px"}
+                                    onClick={() =>
+                                      this.setState({
+                                        gradeRange: this.state.gradeRange.concat(
+                                          ""
+                                        ),
+                                      })
+                                    }
+                                  >
+                                    Add range
+                                  </Button>
+                                </div>
+                              </Wrapper>
+                            </div>
+                            {gradeRange.map((item, index) => (
+                              <Range count={index + 1} value={item} />
+                            ))}
                           </div>
                         </CustomColumn>
                       </>
@@ -260,5 +335,8 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     width: "400px",
     height: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
