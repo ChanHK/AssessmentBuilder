@@ -41,7 +41,6 @@ export default class HomeContainer extends Component {
     super();
     this.state = {
       searchText: null,
-      rowNum: 0,
     };
   }
 
@@ -58,7 +57,6 @@ export default class HomeContainer extends Component {
       {
         name: "#",
         selector: "serial",
-        // https://stackoverflow.com/questions/61652186/adding-serial-number-column-in-the-table
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
@@ -147,6 +145,11 @@ export default class HomeContainer extends Component {
     ];
 
     const { searchText } = this.state;
+
+    data.forEach((data, index) => {
+      data.serial = index + 1;
+    });
+
     return (
       <>
         <Header />

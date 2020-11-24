@@ -13,17 +13,16 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import TableButton from "../../components/TableButton";
 
 const data = [
-  { id: 1, qd: "aaaaaaaaaaaaaaaaaaaa" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa" },
   {
-    id: 2,
     qd:
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     qt: "Single Choice",
   },
-  { id: 3, qd: "aaaaaaaaaaaaaaaaaaaa" },
-  { id: 4, qd: "aaaaaaaaaaaaaaaaaaaa" },
-  { id: 5, qd: "aaaaaaaaaaaaaaaaaaaa" },
-  { id: 6, qd: "aaaaaaaaaaaaaaaaaaaa" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa" },
 ];
 
 class DiscriptiveResponsesContainer extends Component {
@@ -44,11 +43,11 @@ class DiscriptiveResponsesContainer extends Component {
     const column = [
       {
         name: "#",
-        selector: "id",
+        selector: "serial",
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.id}
+              {row.serial}
             </div>
           </div>
         ),
@@ -89,6 +88,11 @@ class DiscriptiveResponsesContainer extends Component {
         width: "100px",
       },
     ];
+
+    data.forEach((data, index) => {
+      data.serial = index + 1;
+    });
+
     return (
       <>
         <Header />

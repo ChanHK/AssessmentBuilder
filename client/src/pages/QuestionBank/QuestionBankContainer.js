@@ -19,17 +19,16 @@ import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
 
 const data = [
-  { id: 1, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
   {
-    id: 2,
     qd:
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     qt: "Single Choice",
   },
-  { id: 3, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Multiple Choice" },
-  { id: 4, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Order" },
-  { id: 5, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
-  { id: 6, qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Multiple Choice" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Order" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
+  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
 ];
 
 class QuestionBankContainer extends Component {
@@ -58,11 +57,11 @@ class QuestionBankContainer extends Component {
     const column = [
       {
         name: "#",
-        selector: "id",
+        selector: "serial",
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.id}
+              {row.serial}
             </div>
           </div>
         ),
@@ -127,6 +126,11 @@ class QuestionBankContainer extends Component {
         width: "180px",
       },
     ];
+
+    data.forEach((data, index) => {
+      data.serial = index + 1;
+    });
+
     return (
       <>
         <Header />

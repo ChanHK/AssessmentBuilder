@@ -75,7 +75,6 @@ export default class ResultsContainer extends Component {
       {
         name: "#",
         selector: "serial",
-        // https://stackoverflow.com/questions/61652186/adding-serial-number-column-in-the-table
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
@@ -160,6 +159,10 @@ export default class ResultsContainer extends Component {
         ),
       },
     ];
+
+    data.forEach((data, index) => {
+      data.serial = index + 1;
+    });
 
     const { title, email, name } = this.state;
 
