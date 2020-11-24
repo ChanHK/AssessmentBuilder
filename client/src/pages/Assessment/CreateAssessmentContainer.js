@@ -11,8 +11,12 @@ import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import TextArea from "../../components/TextArea";
 import Section from "../../components/Section";
 import Button from "../../components/Button";
-
+import CustomSwitch from "../../components/CustomSwitch";
 import * as configStyles from "../../config/styles";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+import CustomRow from "../../components/GridComponents/CustomRow";
+import Radio from "../../components/Radio";
+import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
@@ -20,6 +24,9 @@ export default class CreateAssessmentContainer extends Component {
     this.state = {
       testName: "",
       testDescription: "",
+      testRules: "",
+      type: "settings",
+      sizeCheck: false,
     };
   }
 
@@ -28,7 +35,14 @@ export default class CreateAssessmentContainer extends Component {
   };
 
   render() {
-    const { testName, testDescription } = this.state;
+    const {
+      testName,
+      testDescription,
+      testRules,
+      type,
+      sizeCheck,
+    } = this.state;
+    console.log(testRules);
     return (
       <>
         <Header />
@@ -38,26 +52,51 @@ export default class CreateAssessmentContainer extends Component {
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Create Assessment</FirstLabel>
               </div>
-              <SecondLabel>Assessment Name</SecondLabel>
-              <div style={{ paddingBottom: "25px" }}>
-                <CustomInput
-                  name={"testName"}
-                  type={"text"}
-                  placeholder={" Enter your assessment name"}
-                  onChangeValue={this.onChange}
-                  value={testName}
+              <div style={{ paddingBottom: "50px" }}>
+                <AssessmentButtonGroup
+                  onClick={(e) => this.setState({ type: e.target.value })}
+                  type={type}
                 />
               </div>
-              <SecondLabel>Assessment Description</SecondLabel>
-              <div style={{ paddingBottom: "25px" }}>
-                <TextArea
-                  name={"testDescription"}
-                  type={"text"}
-                  placeholder={"Enter the description here"}
-                  onChange={this.onChange}
-                  value={testDescription}
-                />
-              </div>
+
+              {type === "settings" ? (
+                <>
+                  <SecondLabel>Title</SecondLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <CustomInput
+                      name={"testName"}
+                      type={"text"}
+                      placeholder={"Enter the title here"}
+                      onChangeValue={this.onChange}
+                      value={testName}
+                    />
+                  </div>
+                  <SecondLabel>Description</SecondLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <TextArea
+                      name={"testDescription"}
+                      type={"text"}
+                      placeholder={"Enter the description here"}
+                      onChange={this.onChange}
+                      value={testDescription}
+                    />
+                  </div>
+                  <SecondLabel>Rules</SecondLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <TextArea
+                      name={"testRules"}
+                      type={"text"}
+                      placeholder={"Enter the rules here"}
+                      onChange={this.onChange}
+                      value={testRules}
+                    />
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+
+              {/* 
               <Section />
               <div style={{ padding: "25px 0" }}>
                 <Button
@@ -70,7 +109,28 @@ export default class CreateAssessmentContainer extends Component {
                   Add Section
                 </Button>
               </div>
-              <div className={css(styles.bar)}>a</div>
+
+              <SecondLabel>Question Order</SecondLabel>
+              <div className={css(styles.bar)}>
+                <CustomColumn>
+                  <CustomRow>
+                    <Radio />
+                    <ThirdLabel></ThirdLabel>
+                  </CustomRow>
+                </CustomColumn>
+              </div>
+
+              <div className={css(styles.bar)}>
+                <CustomRow>
+                  <div style={{ paddingRight: "20px" }}>
+                    <ThirdLabel>Honestly Check</ThirdLabel>
+                  </div>
+                  <CustomSwitch
+                    onChange={(e) => this.setState({ sizeCheck: e })}
+                    checked={sizeCheck}
+                  />
+                </CustomRow>
+              </div> */}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -85,9 +145,9 @@ const styles = StyleSheet.create({
   },
   bar: {
     width: "100%",
-    padding: 10,
+    padding: "10px 20px",
     backgroundColor: configStyles.colors.lightGrey,
-    marginBottom: "25px",
+    marginBottom: "50px",
     border: "2px solid",
     borderRadius: "5px",
     borderColor: configStyles.colors.black,
