@@ -21,6 +21,7 @@ const CustomInput = (props) => (
     value={props.value}
     // autocomplete="off"
     readOnly={props.readOnly}
+    step={props.step}
   />
 );
 
