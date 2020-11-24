@@ -20,6 +20,7 @@ const data = [
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
+    grade: "not graded",
     submitDate: "2020-09-13 23:07",
   },
   {
@@ -27,6 +28,7 @@ const data = [
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
+    grade: "not graded",
     submitDate: "2020-09-13 23:07",
   },
   {
@@ -34,6 +36,7 @@ const data = [
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
+    grade: "not graded",
     submitDate: "2020-09-13 23:07",
   },
   {
@@ -41,6 +44,7 @@ const data = [
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
+    grade: "not graded",
     submitDate: "2020-09-13 23:07",
   },
   {
@@ -48,6 +52,15 @@ const data = [
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
+    grade: "not graded",
+    submitDate: "2020-09-13 23:07",
+  },
+  {
+    title: "english test 1",
+    email: "abc@gmail.com",
+    name: "abc",
+    score: "not graded",
+    grade: "not graded",
     submitDate: "2020-09-13 23:07",
   },
 ];
@@ -128,6 +141,18 @@ export default class ResultsContainer extends Component {
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
               {row.score}
+            </div>
+          </div>
+        ),
+      },
+      {
+        name: "Grade",
+        selector: "grade",
+        sortable: true,
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.grade}
             </div>
           </div>
         ),
