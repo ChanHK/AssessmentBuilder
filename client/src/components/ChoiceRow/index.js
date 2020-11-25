@@ -3,77 +3,64 @@ import { StyleSheet, css } from "aphrodite";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import TextArea from "../../components/TextArea";
-import ImageUpload from "../../components/ImageUpload";
 import * as configStyles from "../../config/styles";
 import * as MdIcons from "react-icons/md";
+import CustomEditor from "../../components/CustomEditor";
 
-const ChoiceRow = (props) => (
-  <div className={css(styles.row)}>
-    <CustomColumn>
-      <CustomRow>
-        <div className={css(styles.bar)}>
-          <div className={css(styles.text)}>Choice {props.count} </div>
-          {props.choiceValue === "" ? (
-            <div className={css(styles.checkBoxCon)}></div>
-          ) : (
-            <div className={css(styles.checkBoxCon)}>
-              <input
-                name="answer"
-                type="checkbox"
-                className={css(styles.checkBox)}
-                value={props.checkedValue}
-                onChange={props.onChangeValue}
-                checked={
-                  props.checked === null
-                    ? null
-                    : props.checked === props.checkedValue
-                    ? true
-                    : false
-                }
-              />
-              <div>Answer</div>
+const ChoiceRow = (props) => {
+  return (
+    <div className={css(styles.row)}>
+      <CustomColumn>
+        <CustomRow>
+          <div className={css(styles.bar)}>
+            <div className={css(styles.text)}>Choice {props.count} </div>
+            {props.editorState === "" ? (
+              <div className={css(styles.checkBoxCon)}></div>
+            ) : (
+              <div className={css(styles.checkBoxCon)}>
+                <input
+                  name="answer"
+                  type="checkbox"
+                  className={css(styles.checkBox)}
+                  value={props.checkedValue}
+                  onChange={props.onChangeValue}
+                  checked={
+                    props.checked === null
+                      ? null
+                      : props.checked === props.checkedValue
+                      ? true
+                      : false
+                  }
+                />
+                <div>Answer</div>
+              </div>
+            )}
+            <div className={css(styles.button)}>
+              <MdIcons.MdDelete size={30} onClick={props.onClick} />
             </div>
-          )}
-          <div className={css(styles.button)}>
-            <MdIcons.MdDelete size={30} onClick={props.onClick} />
+          </div>
+        </CustomRow>
+        <div style={{ paddingTop: "10px" }}>
+          <div style={{ paddingBottom: "20px" }}>
+            <CustomEditor
+              onEditorStateChange={props.onChange}
+              editorState={props.editorState}
+            />
           </div>
         </div>
-      </CustomRow>
-      <div style={{ padding: "10px" }}>
-        <div style={{ paddingBottom: "20px" }}>
-          <TextArea
-            name={props.choice}
-            type={"text"}
-            height={"75px"}
-            onChange={props.onChange}
-            value={props.choiceValue}
-            placeholder={props.placeholder}
-          />
-        </div>
-        <div style={{ paddingBottom: "10px" }}>
-          <ImageUpload
-            icon={false}
-            singleImage={true}
-            label={"Max file size: 1mb, accepted: jpg | png"}
-            maxFileSize={1048576}
-          />
-        </div>
-      </div>
-    </CustomColumn>
-  </div>
-);
+      </CustomColumn>
+    </div>
+  );
+};
 
 const styles = StyleSheet.create({
   row: {
     width: "100%",
     height: "auto",
     display: "flex",
-    border: "2px solid",
-    borderColor: configStyles.colors.black,
     ":focus": {
       borderColor: configStyles.colors.lightBlue,
     },
-    borderRadius: "5px",
     marginBottom: "50px",
   },
   bar: {
@@ -88,6 +75,9 @@ const styles = StyleSheet.create({
     fontSize: "15px",
     borderTopLeftRadius: "5px",
     borderTopRightRadius: "5px",
+    borderRadius: "5px",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
   },
   checkBoxCon: {
     width: "50%",

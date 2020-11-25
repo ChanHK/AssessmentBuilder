@@ -152,11 +152,11 @@ class CreateQuestionContainer extends Component {
 
   onSubmit = (e) => {
     // console.log(this.state.questionType);
-    console.log(this.state.questionDescriptive);
+    // console.log(this.state.questionDescriptive.getCurrentContent().getPlainText());
     // console.log(this.state.explanation);
     // console.log("ans", this.state.questionAns);
     // console.log(this.state.checkboxNum);
-    // console.log(this.state.questionChoice);
+    // console.log(this.state.questionChoice[0].getCurrentContent().getPlainText());
 
     e.preventDefault();
   };
@@ -219,13 +219,9 @@ class CreateQuestionContainer extends Component {
                           <ChoiceRow
                             count={index + 1}
                             onClick={() => this.deleteChoiceRow(index)}
-                            choiceValue={item}
-                            onChange={(e) =>
-                              this.onChangeChoice(e.target.value, index)
-                            }
-                            name={"answer"}
+                            editorState={item}
+                            onChange={(e) => this.onChangeChoice(e, index)}
                             choiceName={"choice"}
-                            placeholder={"Enter your choice here"}
                             checkedValue={index}
                             onChangeValue={() => this.setChoiceAns(index)}
                             checked={checkboxNum}
@@ -255,13 +251,9 @@ class CreateQuestionContainer extends Component {
                           <ChoiceRow
                             count={index + 1}
                             onClick={() => this.deleteChoiceRow(index)}
-                            choiceValue={item}
-                            onChange={(e) =>
-                              this.onChangeChoice(e.target.value, index)
-                            }
-                            name={"answer"}
+                            editorState={item}
+                            onChange={(e) => this.onChangeChoice(e, index)}
                             choiceName={"choice"}
-                            placeholder={"Enter your choice here"}
                             checkedValue={index}
                             // onChangeValue={() => this.setChoiceMultiAns(index)}
                             onChangeValue={this.setChoiceMultiAns}
