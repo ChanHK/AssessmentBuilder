@@ -1,6 +1,5 @@
 import React from "react";
 import { css, StyleSheet } from "aphrodite";
-import TextArea from "../../components/TextArea";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import * as MdIcons from "react-icons/md";
 import * as configStyles from "../../config/styles";
