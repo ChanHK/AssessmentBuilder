@@ -9,13 +9,13 @@ import "../../css/general.css";
 import CustomInput from "../../components/CustomInput";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import TextArea from "../../components/TextArea";
-import Section from "../../components/Section";
+// import Section from "../../components/Section";
 import Button from "../../components/Button";
 import CustomSwitch from "../../components/CustomSwitch";
 import * as configStyles from "../../config/styles";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import Radio from "../../components/Radio";
+// import Radio from "../../components/Radio";
 import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
 import CustomEditor from "../../components/CustomEditor";
 import Wrapper from "../../components/Wrapper";
@@ -33,11 +33,12 @@ export default class CreateAssessmentContainer extends Component {
       testInstruction: "",
       type: "settings",
       passOrFail: true,
-      score: "",
-      unit: null,
-      addGrading: true, //
-      gradeUnit: null,
-      gradeRange: [],
+      score: "", // score for pass and fail
+      unit: null, // unit for pass and fail
+      addGrading: false, //
+      gradeUnit: null, // percentage or points
+      gradeRange: [], // stores the range like 10,20,30
+      gradeValue: [], //stores the value like A+, A, A-
       sizeCheck: false,
     };
   }
@@ -48,6 +49,48 @@ export default class CreateAssessmentContainer extends Component {
 
   onClickPassorFail = (e) => {
     this.setState({ passOrFail: e, score: "", unit: null });
+  };
+
+  deleteRangeRow = (index) => {
+    this.setState((state) => {
+      const gradeRange = state.gradeRange.filter((item, j) => index !== j);
+      const gradeValue = state.gradeValue.filter((item, j) => index !== j);
+
+      return {
+        gradeRange,
+        gradeValue,
+      };
+    });
+  };
+
+  onChangeGradeRange = (value, index) => {
+    this.setState((state) => {
+      const gradeRange = state.gradeRange.map((item, j) => {
+        if (j === index) {
+          return value;
+        } else {
+          return item;
+        }
+      });
+      return {
+        gradeRange,
+      };
+    });
+  };
+
+  onChangeGradeValue = (value, index) => {
+    this.setState((state) => {
+      const gradeValue = state.gradeValue.map((item, j) => {
+        if (j === index) {
+          return value;
+        } else {
+          return item;
+        }
+      });
+      return {
+        gradeValue,
+      };
+    });
   };
 
   render() {
@@ -62,9 +105,10 @@ export default class CreateAssessmentContainer extends Component {
       addGrading,
       gradeUnit,
       gradeRange,
+      gradeValue,
       sizeCheck,
     } = this.state;
-    console.log(testInstruction);
+
     return (
       <>
         <Header />
@@ -190,7 +234,9 @@ export default class CreateAssessmentContainer extends Component {
                     <div style={{ paddingTop: "25px" }}>
                       <CustomRow>
                         <CustomSwitch
-                          onChange={(e) => this.setState({ addGrading: e })}
+                          onChange={(e) =>
+                            this.setState({ addGrading: e, gradeRange: [] })
+                          }
                           checked={addGrading}
                         />
 
@@ -239,6 +285,9 @@ export default class CreateAssessmentContainer extends Component {
                                         gradeRange: this.state.gradeRange.concat(
                                           ""
                                         ),
+                                        gradeValue: this.state.gradeValue.concat(
+                                          ""
+                                        ),
                                       })
                                     }
                                   >
@@ -248,7 +297,20 @@ export default class CreateAssessmentContainer extends Component {
                               </Wrapper>
                             </div>
                             {gradeRange.map((item, index) => (
-                              <Range count={index + 1} value={item} />
+                              <Range
+                                count={index + 1}
+                                value={item}
+                                unit={gradeUnit}
+                                onClick={() => this.deleteRangeRow(index)}
+                                gradeValue={gradeValue[index]}
+                                onChangeValue={(e) =>
+                                  this.onChangeGradeValue(e.target.value, index)
+                                }
+                                onChange={(e) =>
+                                  this.onChangeGradeRange(e.target.value, index)
+                                }
+                                previous={gradeRange[index - 1]}
+                              />
                             ))}
                           </div>
                         </CustomColumn>
