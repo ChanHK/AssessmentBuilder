@@ -11,8 +11,6 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import "../../css/general.css";
 import QuestionType from "./Data/QuestionType";
 import Dropdown from "../../components/Dropdown";
-import TextArea from "../../components/TextArea";
-import ImageUpload from "../../components/ImageUpload";
 import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
 import * as configStyles from "../../config/styles";
