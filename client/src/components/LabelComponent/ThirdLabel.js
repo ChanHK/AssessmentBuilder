@@ -5,7 +5,10 @@ import * as configStyles from "../../config/styles";
 const ThirdLabel = (props) => (
   <h6
     className={css(styles.text)}
-    style={{ fontSize: props.fontSize ? props.fontSize : "18px" }}
+    style={{
+      fontSize: props.fontSize ? props.fontSize : "18px",
+      textDecorationLine: props.textDecorationLine,
+    }}
   >
     {props.children}
   </h6>

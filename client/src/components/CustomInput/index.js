@@ -22,6 +22,8 @@ const CustomInput = (props) => (
     // autocomplete="off"
     readOnly={props.readOnly}
     step={props.step}
+    maxLength={props.maxLength}
+    min={props.min}
   />
 );
 
