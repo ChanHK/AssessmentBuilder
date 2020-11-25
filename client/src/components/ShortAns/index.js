@@ -4,18 +4,21 @@ import TextArea from "../../components/TextArea";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import * as MdIcons from "react-icons/md";
 import * as configStyles from "../../config/styles";
+import CustomEditor from "../../components/CustomEditor";
 
 const ShortAns = (props) => (
   <div className={css(styles.con)}>
     <CustomRow>
-      <div style={{ width: "90%" }}>
-        <TextArea
-          name={props.name}
-          type={"text"}
-          placeholder={props.placeholder}
-          onChange={props.onChange}
-          value={props.value}
-          height={props.height}
+      <div
+        style={{ width: "8%", marginRight: "2%" }}
+        className={css(styles.numCon, styles.noSelect)}
+      >
+        {props.rowNum + 1}
+      </div>
+      <div style={{ width: "80%" }}>
+        <CustomEditor
+          onEditorStateChange={props.onChange}
+          editorState={props.value}
         />
       </div>
       <div style={{ width: "10%" }} className={css(styles.button)}>
@@ -41,6 +44,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
+  },
+  numCon: {
+    borderRadius: "5px",
+    border: "2px solid",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    fontFamily: "Ubuntu-Bold",
+    height: "50px",
+    backgroundColor: configStyles.colors.lightGrey,
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
 

@@ -16,7 +16,6 @@ import ChoiceRow from "../../components/ChoiceRow";
 import * as configStyles from "../../config/styles";
 import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
-import Order from "../../components/Order";
 import CustomEditor from "../../components/CustomEditor";
 
 class CreateQuestionContainer extends Component {
@@ -305,13 +304,10 @@ class CreateQuestionContainer extends Component {
                         {questionAns.map((item, index) => (
                           <ShortAns
                             onClick={() => this.deleteAnsRow(index)}
-                            onChange={(e) =>
-                              this.onChangeAnswer(e.target.value, index)
-                            }
-                            name={"answer"}
-                            placeholder={"Enter the answer here"}
+                            onChange={(e) => this.onChangeAnswer(e, index)}
                             height={"50px"}
                             value={item}
+                            rowNum={index}
                           />
                         ))}
                       </div>
@@ -337,13 +333,9 @@ class CreateQuestionContainer extends Component {
                       <ThirdLabel>Write down the answer in order</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
-                          <Order
+                          <ShortAns
                             onClick={() => this.deleteAnsRow(index)}
-                            onChange={(e) =>
-                              this.onChangeAnswer(e.target.value, index)
-                            }
-                            name={"answer"}
-                            placeholder={"Enter the answer here"}
+                            onChange={(e) => this.onChangeAnswer(e, index)}
                             height={"50px"}
                             value={item}
                             rowNum={index}

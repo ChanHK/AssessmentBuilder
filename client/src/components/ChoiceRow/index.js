@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import TextArea from "../../components/TextArea";
 import * as configStyles from "../../config/styles";
 import * as MdIcons from "react-icons/md";
 import CustomEditor from "../../components/CustomEditor";
