@@ -19,6 +19,7 @@ import * as configStyles from "../../config/styles";
 import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
 import Order from "../../components/Order";
+import CustomEditor from "../../components/CustomEditor";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -26,7 +27,6 @@ class CreateQuestionContainer extends Component {
     this.state = {
       questionType: null,
       questionDescriptive: "",
-      pictures: [],
       explanation: "",
       questionAns: [],
       questionChoice: [],
@@ -44,12 +44,6 @@ class CreateQuestionContainer extends Component {
       questionAns: [],
       questionChoice: [],
       checkboxNum: null,
-    });
-  };
-
-  onDrop = (e) => {
-    this.setState({
-      pictures: this.state.pictures.concat(e),
     });
   };
 
@@ -160,10 +154,9 @@ class CreateQuestionContainer extends Component {
 
   onSubmit = (e) => {
     // console.log(this.state.questionType);
-    // console.log(this.state.questionDescriptive);
-    // console.log(this.state.pictures);
+    console.log(this.state.questionDescriptive);
     // console.log(this.state.explanation);
-    console.log("ans", this.state.questionAns);
+    // console.log("ans", this.state.questionAns);
     // console.log(this.state.checkboxNum);
     // console.log(this.state.questionChoice);
 
@@ -202,19 +195,11 @@ class CreateQuestionContainer extends Component {
 
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
-                    <TextArea
-                      name={"questionDescriptive"}
-                      type={"text"}
-                      placeholder={"Enter the description here"}
-                      onChange={this.onChange}
-                      value={questionDescriptive}
-                    />
-                  </div>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <ImageUpload
-                      onChange={this.onDrop}
-                      singleImage={false}
-                      icon={true}
+                    <CustomEditor
+                      onEditorStateChange={(e) =>
+                        this.setState({ questionDescriptive: e })
+                      }
+                      editorState={questionDescriptive}
                     />
                   </div>
 
@@ -393,12 +378,11 @@ class CreateQuestionContainer extends Component {
 
                   <SecondLabel>Explanation (Optional)</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
-                    <TextArea
-                      name={"explanation"}
-                      type={"text"}
-                      placeholder={"Enter the explanation here"}
-                      onChange={this.onChange}
-                      value={explanation}
+                    <CustomEditor
+                      onEditorStateChange={(e) =>
+                        this.setState({ explanation: e })
+                      }
+                      editorState={explanation}
                     />
                   </div>
 
