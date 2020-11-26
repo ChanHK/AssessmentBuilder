@@ -9,6 +9,7 @@ import "../../css/general.css";
 import * as configStyles from "../../config/styles";
 import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
 import SettingsContainer from "./SettingsContainer";
+import TimerContainer from "./TimerContainer";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
@@ -37,13 +38,9 @@ export default class CreateAssessmentContainer extends Component {
                 />
               </div>
 
-              {type === "settings" ? (
-                <>
-                  <SettingsContainer />
-                </>
-              ) : (
-                <></>
-              )}
+              {type === "settings" ? <SettingsContainer /> : <></>}
+
+              {type === "timer" ? <TimerContainer /> : <></>}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
