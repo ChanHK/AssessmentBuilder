@@ -7,9 +7,8 @@ const Radio = (props) => (
     <input
       type="radio"
       className={css(styles.radio)}
-      value={props.value}
-      onClick={props.onClick}
-      name={props.name}
+      checked={props.checked}
+      onChange={props.onChange}
     />
   </>
 );
