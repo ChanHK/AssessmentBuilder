@@ -15,7 +15,8 @@ export default class CreateAssessmentContainer extends Component {
   constructor() {
     super();
     this.state = {
-      type: "settings",
+      // type: "settings",
+      type: "timer",
     };
   }
 

@@ -6,6 +6,7 @@ import * as configStyles from "../../config/styles";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+import CustomTimePicker from "../../components/CustomTimePicker";
 
 class TimerContainer extends Component {
   constructor() {
@@ -60,6 +61,7 @@ class TimerContainer extends Component {
                 <ThirdLabel>Time to complete each question</ThirdLabel>
               </div>
             </CustomRow>
+            <CustomTimePicker />
           </CustomColumn>
         </div>
       </form>
