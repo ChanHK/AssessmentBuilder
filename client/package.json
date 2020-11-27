@@ -15,7 +15,6 @@
     "history": "^5.0.0",
     "jwt-decode": "^3.1.2",
     "qrcode.react": "^1.0.0",
-    "rc-time-picker": "^3.7.3",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-chartjs-2": "^2.11.1",

@@ -17,20 +17,3 @@
   margin: 0;
   padding: 0;
 }
-
-.rc-time-picker-panel-select-option-selected {
-  background-color: #7de881 !important;
-}
-
-.rc-time-picker-clear,
-.rc-time-picker-clear-icon:after {
-  font-size: 15px;
-}
-
-.rc-time-picker-panel-select,
-.rc-time-picker-input,
-.rc-time-picker-panel-input {
-  font-family: "Ubuntu-Bold";
-  font-size: 25px;
-  color: #080808;
-}
