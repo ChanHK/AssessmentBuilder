@@ -32,7 +32,6 @@ export default class ProfileContainer extends Component {
               </div>
               <StatusBarWrapper>
                 <StatusBarImage image={profile} style={[styles.imgPos]} />
-                {/* <StatusBarMessage>Sparrow</StatusBarMessage> */}
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
               </StatusBarWrapper>
