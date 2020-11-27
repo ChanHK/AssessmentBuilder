@@ -19,7 +19,7 @@ const AssessmentButtonGroup = (props) => (
             : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdSettings size={30} />
+        <MdIcons.MdSettings size={30} className={css(styles.pE)} />
         Settings
       </button>
     </div>
@@ -35,7 +35,7 @@ const AssessmentButtonGroup = (props) => (
             : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdQuestionAnswer size={30} />
+        <MdIcons.MdQuestionAnswer size={30} className={css(styles.pE)} />
         Questions
       </button>
     </div>
@@ -51,7 +51,7 @@ const AssessmentButtonGroup = (props) => (
             : { backgroundColor: configStyles.colors.white }
         }
       >
-        <GiIcons.GiFoldedPaper size={30} />
+        <GiIcons.GiFoldedPaper size={30} className={css(styles.pE)} />
         Sets
       </button>
     </div>
@@ -67,7 +67,7 @@ const AssessmentButtonGroup = (props) => (
             : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdAccessibility size={30} />
+        <MdIcons.MdAccessibility size={30} className={css(styles.pE)} />
         Access
       </button>
     </div>
@@ -83,7 +83,7 @@ const AssessmentButtonGroup = (props) => (
             : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdAccessTime size={30} />
+        <MdIcons.MdAccessTime size={30} className={css(styles.pE)} />
         Timer
       </button>
     </div>
@@ -122,6 +122,9 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  pE: {
+    pointerEvents: "none",
   },
 });
 
