@@ -21,6 +21,9 @@ class TimerContainer extends Component {
       hour: null,
       minute: null,
       second: null,
+      noLimitSelected: false,
+      startDate: "",
+      endDate: "",
     };
   }
 
@@ -28,6 +31,7 @@ class TimerContainer extends Component {
     this.setState({
       assessmentTimeSelected: e.target.checked,
       questionTimeSelected: false,
+      noLimitSelected: false,
       hour: null,
       minute: null,
       second: null,
@@ -38,6 +42,18 @@ class TimerContainer extends Component {
     this.setState({
       questionTimeSelected: e.target.checked,
       assessmentTimeSelected: false,
+      noLimitSelected: false,
+      hour: null,
+      minute: null,
+      second: null,
+    });
+  };
+
+  noLimitOnClicked = (e) => {
+    this.setState({
+      noLimitSelected: e.target.checked,
+      assessmentTimeSelected: false,
+      questionTimeSelected: false,
       hour: null,
       minute: null,
       second: null,
@@ -51,6 +67,7 @@ class TimerContainer extends Component {
       hour,
       minute,
       second,
+      noLimitSelected,
     } = this.state;
 
     return (
@@ -160,8 +177,22 @@ class TimerContainer extends Component {
             ) : (
               <></>
             )}
+            <CustomRow>
+              <div className={css(styles.radionCon)}>
+                <div style={{ paddingRight: "20px" }}>
+                  <Radio
+                    checked={noLimitSelected}
+                    onChange={this.noLimitOnClicked}
+                  />
+                </div>
+                <ThirdLabel>No time limit</ThirdLabel>
+              </div>
+            </CustomRow>
           </CustomColumn>
         </div>
+
+        <SecondLabel>Availability</SecondLabel>
+        <div className={css(styles.bar)}></div>
       </form>
     );
   }
