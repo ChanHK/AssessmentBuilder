@@ -12,6 +12,8 @@ import Wrapper from "../../components/Wrapper";
 import Hour from "./Data/Hour";
 import MinuteSeconds from "./Data/MinuteSeconds";
 
+import CustomDatePicker from "../../components/CustomDatePicker";
+
 class TimerContainer extends Component {
   constructor() {
     super();
@@ -24,6 +26,9 @@ class TimerContainer extends Component {
       noLimitSelected: false,
       startDate: "",
       endDate: "",
+      inGivenPeriodSelected: false,
+      inGivenTimeSelected: false,
+      closeManuallySelected: false,
     };
   }
 
@@ -60,6 +65,30 @@ class TimerContainer extends Component {
     });
   };
 
+  inGivenPeriodOnClick = (e) => {
+    this.setState({
+      inGivenPeriodSelected: e.target.checked,
+      inGivenTimeSelected: false,
+      closeManuallySelected: false,
+    });
+  };
+
+  inGivenTimeOnClick = (e) => {
+    this.setState({
+      inGivenPeriodSelected: false,
+      inGivenTimeSelected: e.target.checked,
+      closeManuallySelected: false,
+    });
+  };
+
+  closeManuallyOnClick = (e) => {
+    this.setState({
+      inGivenPeriodSelected: false,
+      inGivenTimeSelected: false,
+      closeManuallySelected: e.target.checked,
+    });
+  };
+
   render() {
     const {
       assessmentTimeSelected,
@@ -68,6 +97,11 @@ class TimerContainer extends Component {
       minute,
       second,
       noLimitSelected,
+      inGivenPeriodSelected,
+      inGivenTimeSelected,
+      closeManuallySelected,
+      startDate,
+      endDate,
     } = this.state;
 
     return (
@@ -192,7 +226,43 @@ class TimerContainer extends Component {
         </div>
 
         <SecondLabel>Availability</SecondLabel>
-        <div className={css(styles.bar)}></div>
+        <div className={css(styles.bar)}>
+          <CustomColumn>
+            <CustomRow>
+              <div className={css(styles.radionCon)}>
+                <div style={{ paddingRight: "20px" }}>
+                  <Radio
+                    checked={inGivenPeriodSelected}
+                    onChange={this.inGivenPeriodOnClick}
+                  />
+                </div>
+                <ThirdLabel>Activate in a given period</ThirdLabel>
+              </div>
+            </CustomRow>
+            <CustomRow>
+              <div className={css(styles.radionCon)}>
+                <div style={{ paddingRight: "20px" }}>
+                  <Radio
+                    checked={inGivenTimeSelected}
+                    onChange={this.inGivenTimeOnClick}
+                  />
+                </div>
+                <ThirdLabel>Activate in a given time</ThirdLabel>
+              </div>
+            </CustomRow>
+            <CustomRow>
+              <div className={css(styles.radionCon)}>
+                <div style={{ paddingRight: "20px" }}>
+                  <Radio
+                    checked={closeManuallySelected}
+                    onChange={this.closeManuallyOnClick}
+                  />
+                </div>
+                <ThirdLabel>Activate until it is closed manually</ThirdLabel>
+              </div>
+            </CustomRow>
+          </CustomColumn>
+        </div>
       </form>
     );
   }
