@@ -13,6 +13,7 @@ import Hour from "./Data/Hour";
 import MinuteSeconds from "./Data/MinuteSeconds";
 
 import CustomDatePicker from "../../components/CustomDatePicker";
+import Button from "../../components/Button";
 
 class TimerContainer extends Component {
   constructor() {
@@ -26,9 +27,6 @@ class TimerContainer extends Component {
       noLimitSelected: false,
       startDate: "",
       endDate: "",
-      inGivenPeriodSelected: false,
-      inGivenTimeSelected: false,
-      closeManuallySelected: false,
     };
   }
 
@@ -65,28 +63,13 @@ class TimerContainer extends Component {
     });
   };
 
-  inGivenPeriodOnClick = (e) => {
-    this.setState({
-      inGivenPeriodSelected: e.target.checked,
-      inGivenTimeSelected: false,
-      closeManuallySelected: false,
-    });
+  getStartDate = (e) => {
+    console.log(e);
+    this.setState({ startDate: e });
   };
 
-  inGivenTimeOnClick = (e) => {
-    this.setState({
-      inGivenPeriodSelected: false,
-      inGivenTimeSelected: e.target.checked,
-      closeManuallySelected: false,
-    });
-  };
-
-  closeManuallyOnClick = (e) => {
-    this.setState({
-      inGivenPeriodSelected: false,
-      inGivenTimeSelected: false,
-      closeManuallySelected: e.target.checked,
-    });
+  getEndDate = (e) => {
+    this.setState({ endDate: e });
   };
 
   render() {
@@ -97,9 +80,6 @@ class TimerContainer extends Component {
       minute,
       second,
       noLimitSelected,
-      inGivenPeriodSelected,
-      inGivenTimeSelected,
-      closeManuallySelected,
       startDate,
       endDate,
     } = this.state;
@@ -227,41 +207,48 @@ class TimerContainer extends Component {
 
         <SecondLabel>Availability</SecondLabel>
         <div className={css(styles.bar)}>
-          <CustomColumn>
-            <CustomRow>
-              <div className={css(styles.radionCon)}>
-                <div style={{ paddingRight: "20px" }}>
-                  <Radio
-                    checked={inGivenPeriodSelected}
-                    onChange={this.inGivenPeriodOnClick}
-                  />
-                </div>
-                <ThirdLabel>Activate in a given period</ThirdLabel>
+          <Wrapper firstHeight={"80px"} secHeight={"180px"} widthChange={1175}>
+            <div className={css(styles.timeBlock)}>
+              <div>
+                <ThirdLabel>Start Date</ThirdLabel>
+                <CustomDatePicker
+                  selected={startDate}
+                  onChange={this.getStartDate}
+                  placeholderText={"Select start date"}
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectsStart={true}
+                  selectsEnd={false}
+                />
               </div>
-            </CustomRow>
-            <CustomRow>
-              <div className={css(styles.radionCon)}>
-                <div style={{ paddingRight: "20px" }}>
-                  <Radio
-                    checked={inGivenTimeSelected}
-                    onChange={this.inGivenTimeOnClick}
-                  />
-                </div>
-                <ThirdLabel>Activate in a given time</ThirdLabel>
+            </div>
+
+            <div className={css(styles.timeBlock)}>
+              <div>
+                <ThirdLabel>End Date</ThirdLabel>
+                <CustomDatePicker
+                  selected={endDate}
+                  onChange={this.getEndDate}
+                  placeholderText={"Select end date"}
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectsStart={false}
+                  selectsEnd={true}
+                />
               </div>
-            </CustomRow>
-            <CustomRow>
-              <div className={css(styles.radionCon)}>
-                <div style={{ paddingRight: "20px" }}>
-                  <Radio
-                    checked={closeManuallySelected}
-                    onChange={this.closeManuallyOnClick}
-                  />
-                </div>
-                <ThirdLabel>Activate until it is closed manually</ThirdLabel>
-              </div>
-            </CustomRow>
-          </CustomColumn>
+            </div>
+          </Wrapper>
+        </div>
+        <div style={{ paddingBottom: "300px" }}>
+          <Button
+            backgroundColor={configStyles.colors.darkBlue}
+            color={configStyles.colors.white}
+            padding={"8px"}
+            width={"100px"}
+            type={"submit"}
+          >
+            Save
+          </Button>
         </div>
       </form>
     );
@@ -272,10 +259,10 @@ const styles = StyleSheet.create({
   bar: {
     width: "100%",
     padding: "20px 20px",
-    marginBottom: "50px",
     border: "2px solid",
     borderRadius: "5px",
     borderColor: configStyles.colors.black,
+    marginBottom: "50px",
   },
   radionCon: {
     width: "100%",
@@ -291,6 +278,15 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  timeBlock: {
+    flexWrap: "nowrap",
+    width: "350px",
+    height: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
   },
 });
 
