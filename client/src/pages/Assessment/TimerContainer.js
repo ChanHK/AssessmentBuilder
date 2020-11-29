@@ -64,7 +64,7 @@ class TimerContainer extends Component {
   };
 
   getStartDate = (e) => {
-    console.log(e);
+    // console.log(e);
     this.setState({ startDate: e });
   };
 

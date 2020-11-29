@@ -35,7 +35,7 @@ const CustomDatePicker = (props) => (
     // dateFormat="MMMM d, yyyy h:mm aa"
     dateFormat="Pp"
     timeFormat="HH:mm"
-    filterTime={filterPassedTime}
+    filterTime={filterPassedTime} //developer bug
     // monthsShown={2}
     withPortal
   />
