@@ -7,7 +7,7 @@ import * as configStyles from "../../config/styles";
 const filterPassedTime = (time) => {
   const currentDate = new Date();
   const selectedDate = new Date(time);
-
+  // console.log(time);
   return currentDate.getTime() < selectedDate.getTime();
 };
 

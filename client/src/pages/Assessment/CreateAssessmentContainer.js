@@ -40,7 +40,9 @@ export default class CreateAssessmentContainer extends Component {
               </div>
 
               {type === "settings" ? <SettingsContainer /> : <></>}
-
+              {type === "questions" ? <></> : <></>}
+              {type === "set" ? <></> : <></>}
+              {type === "access" ? <></> : <></>}
               {type === "timer" ? <TimerContainer /> : <></>}
             </CustomColumn>
           </CustomMidContainer>
