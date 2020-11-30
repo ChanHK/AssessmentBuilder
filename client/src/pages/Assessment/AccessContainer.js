@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import "../../css/general.css";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 // import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
@@ -39,30 +38,24 @@ class AccessContainer extends Component {
     return (
       <form>
         <CustomColumn>
-          <SecondLabel>Select access types</SecondLabel>
-
-          <AccessButtonBar onClick={this.onGetType} type={accessType} />
-
-          <div className={css(styles.infoBar)}>
-            <SecondLabel>Link</SecondLabel>
-            <ClickCopy
-              value={link}
-              onClick={() => {
-                navigator.clipboard.writeText(link);
-              }}
+          <SecondLabel>URL</SecondLabel>
+          <ClickCopy
+            value={link}
+            onClick={() => {
+              navigator.clipboard.writeText(link);
+            }}
+          />
+          <div style={{ padding: "25px 0px" }}>
+            <SecondLabel>QR Code</SecondLabel>
+            <QRCode
+              id="123456"
+              value={link} // the link
+              level={"H"}
+              includeMargin
+              className={css(styles.qr)}
+              onClick={this.modalHandler}
+              style={{ minWidth: "30%" }}
             />
-            <div style={{ padding: "25px 0px" }}>
-              <SecondLabel>QR Code</SecondLabel>
-              <QRCode
-                id="123456"
-                value={link} // the link
-                level={"H"}
-                includeMargin
-                className={css(styles.qr)}
-                onClick={this.modalHandler}
-                style={{ minWidth: "30%" }}
-              />
-            </div>
           </div>
           <Modal show={showModal}>
             <QRCode
@@ -74,6 +67,11 @@ class AccessContainer extends Component {
               onClick={this.modalHandler}
             />
           </Modal>
+
+          <SecondLabel>Authentication Methods</SecondLabel>
+
+          <AccessButtonBar onClick={this.onGetType} type={accessType} />
+          <div style={{ paddingBottom: "500px" }}></div>
         </CustomColumn>
       </form>
     );
@@ -81,16 +79,6 @@ class AccessContainer extends Component {
 }
 
 const styles = StyleSheet.create({
-  infoBar: {
-    backgroundColor: configStyles.colors.white,
-    width: "100%",
-    marginTop: "50px",
-    borderRadius: "5px",
-    borderColor: configStyles.colors.black,
-    border: "2px solid",
-    padding: 20,
-    marginBottom: "50px",
-  },
   qr: {
     borderRadius: "5px",
     border: "2px solid",
