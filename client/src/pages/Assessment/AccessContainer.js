@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
-import Header from "../../components/Header";
-import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
-import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import "../../css/general.css";
@@ -13,94 +10,79 @@ import * as configStyles from "../../config/styles";
 import QRCode from "qrcode.react";
 import ClickCopy from "../../components/ClickCopy";
 
+import Modal from "../../components/Modal";
+
 class AccessContainer extends Component {
   constructor() {
     super();
     this.state = {
       accessType: "",
       link: "http://abc/abc/abc.com",
-      fullPageQR: false,
+
+      showModal: false,
     };
   }
 
   onGetType = (e) => {
+    console.log("a");
     this.setState({ accessType: e.target.value });
   };
 
+  modalHandler = () => {
+    this.setState({
+      showModal: !this.state.showModal,
+    });
+  };
+
   render() {
-    const { accessType, link, fullPageQR } = this.state;
-    console.log(fullPageQR);
+    const { accessType, link, showModal } = this.state;
     return (
-      <>
-        <Header />
-        <CustomFullContainer>
-          <CustomMidContainer style={[styles.customMidContainer]}>
-            <CustomColumn>
-              {fullPageQR ? (
-                <>
-                  <div className={css(styles.modal)}>
-                    <div className={css(styles.modalContent)}>
-                      <QRCode
-                        id="123456"
-                        value={link} // the link
-                        level={"H"}
-                        includeMargin
-                        className={css(styles.qr)}
-                        onClick={() =>
-                          this.setState({ fullPageQR: !fullPageQR })
-                        }
-                        style={{ width: "50%" }}
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ paddingTop: "60px" }}>
-                    <FirstLabel>Access</FirstLabel>
-                  </div>
-                  <AccessButtonBar onClick={this.onGetType} type={accessType} />
+      <form>
+        <CustomColumn>
+          <SecondLabel>Select access types</SecondLabel>
 
-                  <div className={css(styles.linkCon)}>
-                    <SecondLabel>Link</SecondLabel>
-                    <ClickCopy
-                      value={link}
-                      onClick={() => {
-                        navigator.clipboard.writeText(link);
-                      }}
-                    />
-                    <div style={{ padding: "25px 0px" }}>
-                      <SecondLabel>QR Code</SecondLabel>
+          <AccessButtonBar onClick={this.onGetType} type={accessType} />
 
-                      <QRCode
-                        id="123456"
-                        value={link} // the link
-                        level={"H"}
-                        includeMargin
-                        className={css(styles.qr)}
-                        onClick={() =>
-                          this.setState({ fullPageQR: !fullPageQR })
-                        }
-                        style={{ width: "40%" }}
-                      />
-                    </div>
-                  </div>
-                </>
-              )}
-            </CustomColumn>
-          </CustomMidContainer>
-        </CustomFullContainer>
-      </>
+          <div className={css(styles.infoBar)}>
+            <SecondLabel>Link</SecondLabel>
+            <ClickCopy
+              value={link}
+              onClick={() => {
+                navigator.clipboard.writeText(link);
+              }}
+            />
+            <div style={{ padding: "25px 0px" }}>
+              <SecondLabel>QR Code</SecondLabel>
+              <QRCode
+                id="123456"
+                value={link} // the link
+                level={"H"}
+                includeMargin
+                className={css(styles.qr)}
+                onClick={this.modalHandler}
+                style={{ minWidth: "30%" }}
+              />
+            </div>
+          </div>
+          <Modal show={showModal}>
+            <QRCode
+              id="123456"
+              value={link} // the link
+              level={"H"}
+              includeMargin
+              className={css(styles.modal)}
+              onClick={this.modalHandler}
+            />
+          </Modal>
+        </CustomColumn>
+      </form>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  customMidContainer: {
-    paddingLeft: "10px",
-  },
-  linkCon: {
-    backgroundColor: configStyles.colors.lightGrey,
+  infoBar: {
+    backgroundColor: configStyles.colors.white,
     width: "100%",
     marginTop: "50px",
     borderRadius: "5px",
@@ -118,20 +100,10 @@ const styles = StyleSheet.create({
     cursor: "pointer",
   },
   modal: {
-    display: "flex",
-    position: "fixed",
-    zIndex: -3,
-    left: 0,
-    top: 0,
     width: "100%",
-    height: "100vh",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: configStyles.colors.lightGrey,
-  },
-  modalContent: {
-    width: "80%",
-    height: "60%",
+    height: "auto",
+    border: "none",
+    borderRadius: "5px",
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
