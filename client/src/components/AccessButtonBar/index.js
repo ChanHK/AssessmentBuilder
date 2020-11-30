@@ -15,10 +15,10 @@ const AccessButtonBar = (props) => (
         style={
           props.type === "public"
             ? { backgroundColor: configStyles.colors.lightGreen }
-            : {}
+            : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdPublic size={30} />
+        <MdIcons.MdPublic size={30} className={css(styles.pE)} />
         Public
       </button>
     </div>
@@ -31,10 +31,10 @@ const AccessButtonBar = (props) => (
         style={
           props.type === "private"
             ? { backgroundColor: configStyles.colors.lightGreen }
-            : {}
+            : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdLock size={30} />
+        <MdIcons.MdLock size={30} className={css(styles.pE)} />
         Private
       </button>
     </div>
@@ -47,10 +47,10 @@ const AccessButtonBar = (props) => (
         style={
           props.type === "group"
             ? { backgroundColor: configStyles.colors.lightGreen }
-            : {}
+            : { backgroundColor: configStyles.colors.white }
         }
       >
-        <MdIcons.MdGroupWork size={30} />
+        <MdIcons.MdGroupWork size={30} className={css(styles.pE)} />
         Group
       </button>
     </div>
@@ -58,17 +58,6 @@ const AccessButtonBar = (props) => (
 );
 
 const styles = StyleSheet.create({
-  typeBar: {
-    backgroundColor: configStyles.colors.lightGrey,
-    width: "100%",
-    display: "flex",
-    height: "auto",
-    borderRadius: "5px",
-    border: "2px solid",
-    borderColror: configStyles.colors.black,
-    alignItems: "center",
-    padding: 20,
-  },
   button: {
     width: "150px",
     outline: "none",
@@ -89,6 +78,9 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  pE: {
+    pointerEvents: "none",
   },
 });
 
