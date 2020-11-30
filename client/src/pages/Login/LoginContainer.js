@@ -128,9 +128,9 @@ const styles = StyleSheet.create({
   whiteBox: {
     backgroundColor: "white",
     boxShadow: "0 3px 20px 0px rgba(0, 0, 0, 0.1)",
-    width: "50%",
+    width: "500px",
     minHeight: "50%",
-    borderRadius: "20px",
+    borderRadius: "5px",
     display: "flex",
     padding: "20px",
     justifyContent: "flex-start",
