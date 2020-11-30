@@ -14,6 +14,7 @@ import ClickCopy from "../../components/ClickCopy";
 import Modal from "../../components/Modal";
 import Radio from "../../components/Radio";
 import Button from "../../components/Button";
+import Notice from "../../components/Notice";
 
 class AccessContainer extends Component {
   constructor() {
@@ -22,9 +23,8 @@ class AccessContainer extends Component {
       link: "http://abc/abc/abc.com",
 
       showModal: false,
-      noAuthenticationSelected: false,
+      noAuthenticationSelected: true,
       privateAuthenticationSelected: false,
-      groupAuthenticationSelected: false,
     };
   }
 
@@ -38,7 +38,6 @@ class AccessContainer extends Component {
     this.setState({
       noAuthenticationSelected: e.target.checked,
       privateAuthenticationSelected: false,
-      groupAuthenticationSelected: false,
     });
   };
 
@@ -46,15 +45,6 @@ class AccessContainer extends Component {
     this.setState({
       privateAuthenticationSelected: e.target.checked,
       noAuthenticationSelected: false,
-      groupAuthenticationSelected: false,
-    });
-  };
-
-  groupAuthenticationOnClick = (e) => {
-    this.setState({
-      groupAuthenticationSelected: e.target.checked,
-      noAuthenticationSelected: false,
-      privateAuthenticationSelected: false,
     });
   };
 
@@ -64,7 +54,6 @@ class AccessContainer extends Component {
       showModal,
       noAuthenticationSelected,
       privateAuthenticationSelected,
-      groupAuthenticationSelected,
     } = this.state;
     return (
       <form>
@@ -113,6 +102,11 @@ class AccessContainer extends Component {
                 <ThirdLabel>No authentication</ThirdLabel>
               </div>
             </CustomRow>
+            {noAuthenticationSelected && (
+              <Notice>
+                Everyone with the link can attempt this assessment
+              </Notice>
+            )}
             <CustomRow>
               <div className={css(styles.radionCon)}>
                 <div style={{ paddingRight: "20px" }}>
@@ -124,17 +118,12 @@ class AccessContainer extends Component {
                 <ThirdLabel>Private access code</ThirdLabel>
               </div>
             </CustomRow>
-            <CustomRow>
-              <div className={css(styles.radionCon)}>
-                <div style={{ paddingRight: "20px" }}>
-                  <Radio
-                    checked={groupAuthenticationSelected}
-                    onChange={this.groupAuthenticationOnClick}
-                  />
-                </div>
-                <ThirdLabel>Group access code</ThirdLabel>
-              </div>
-            </CustomRow>
+            {privateAuthenticationSelected && (
+              <Notice>
+                Each candidates have to enter their own password in order to
+                access to the assessment
+              </Notice>
+            )}
           </div>
           <div style={{ paddingBottom: "300px" }}>
             <Button
