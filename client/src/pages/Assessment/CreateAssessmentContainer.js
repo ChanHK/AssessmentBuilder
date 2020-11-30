@@ -10,13 +10,14 @@ import * as configStyles from "../../config/styles";
 import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
 import SettingsContainer from "./SettingsContainer";
 import TimerContainer from "./TimerContainer";
+import AccessContainer from "./AccessContainer";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
     super();
     this.state = {
       // type: "settings",
-      type: "timer",
+      type: "access",
     };
   }
 
@@ -42,7 +43,7 @@ export default class CreateAssessmentContainer extends Component {
               {type === "settings" ? <SettingsContainer /> : <></>}
               {type === "questions" ? <></> : <></>}
               {type === "set" ? <></> : <></>}
-              {type === "access" ? <></> : <></>}
+              {type === "access" ? <AccessContainer /> : <></>}
               {type === "timer" ? <TimerContainer /> : <></>}
             </CustomColumn>
           </CustomMidContainer>

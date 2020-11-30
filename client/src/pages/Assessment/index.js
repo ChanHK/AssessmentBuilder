@@ -3,7 +3,6 @@ import StatisticsContainer from "./StatisticsContainer";
 import ResultsContainer from "./ResultsContainer";
 import ViewResponseContainer from "./ViewResponseContainer";
 import CreateAssessmentContainer from "./CreateAssessmentContainer";
-import AccessContainer from "./AccessContainer";
 import DescriptiveResponsesContainer from "./DescriptiveResponsesContainer";
 
 export {
@@ -12,6 +11,5 @@ export {
   ResultsContainer,
   ViewResponseContainer,
   CreateAssessmentContainer,
-  AccessContainer,
   DescriptiveResponsesContainer,
 };
