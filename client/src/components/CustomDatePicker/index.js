@@ -7,7 +7,7 @@ import * as configStyles from "../../config/styles";
 const filterPassedTime = (time) => {
   const currentDate = new Date();
   const selectedDate = new Date(time);
-  // console.log(time);
+  console.log(time);
   return currentDate.getTime() < selectedDate.getTime();
 };
 
@@ -35,7 +35,7 @@ const CustomDatePicker = (props) => (
     // dateFormat="MMMM d, yyyy h:mm aa"
     dateFormat="Pp"
     timeFormat="HH:mm"
-    filterTime={filterPassedTime} //developer bug
+    filterTime={(time) => filterPassedTime(time)} //developer bug //https://github.com/Hacker0x01/react-datepicker/issues/2533
     // monthsShown={2}
     withPortal
   />
