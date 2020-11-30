@@ -24,10 +24,10 @@ class SettingContainer extends Component {
       testName: "",
       testDescription: "",
       testInstruction: "",
-      passOrFail: true, //switch button
+      passOrFailSelected: true, //switch button
       score: "", // score for pass and fail
       unit: null, // unit for pass and fail
-      addGrading: false, //switch button
+      addGradingSelected: false, //switch button
       gradeUnit: null, // percentage or points
       gradeRange: [], // stores the range like 10,20,30
       gradeValue: [], //stores the value like A+, A, A-
@@ -39,7 +39,7 @@ class SettingContainer extends Component {
   };
 
   onClickPassorFail = (e) => {
-    this.setState({ passOrFail: e, score: "", unit: null });
+    this.setState({ passOrFailSelected: e, score: "", unit: null });
   };
 
   deleteRangeRow = (index) => {
@@ -89,10 +89,10 @@ class SettingContainer extends Component {
       testName,
       testDescription,
       testInstruction,
-      passOrFail,
+      passOrFailSelected,
       score,
       unit,
-      addGrading,
+      addGradingSelected,
       gradeUnit,
       gradeRange,
       gradeValue,
@@ -150,14 +150,14 @@ class SettingContainer extends Component {
           <CustomRow>
             <CustomSwitch
               onChange={this.onClickPassorFail}
-              checked={passOrFail}
+              checked={passOrFailSelected}
             />
 
             <div style={{ marginLeft: "15px" }}>
               <ThirdLabel>Pass or fail</ThirdLabel>
             </div>
           </CustomRow>
-          {passOrFail ? (
+          {passOrFailSelected ? (
             <>
               <CustomColumn>
                 <div style={{ padding: "20px 0px 0px 60px" }}>
@@ -202,9 +202,9 @@ class SettingContainer extends Component {
             <CustomRow>
               <CustomSwitch
                 onChange={(e) =>
-                  this.setState({ addGrading: e, gradeRange: [] })
+                  this.setState({ addGradingSelected: e, gradeRange: [] })
                 }
-                checked={addGrading}
+                checked={addGradingSelected}
               />
 
               <div style={{ marginLeft: "15px" }}>
@@ -213,7 +213,7 @@ class SettingContainer extends Component {
             </CustomRow>
           </div>
 
-          {addGrading ? (
+          {addGradingSelected ? (
             <>
               <CustomColumn>
                 <div style={{ padding: "20px 0px 0px 60px" }}>
