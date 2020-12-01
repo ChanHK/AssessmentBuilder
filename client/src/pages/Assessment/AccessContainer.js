@@ -11,10 +11,13 @@ import * as configStyles from "../../config/styles";
 import QRCode from "qrcode.react";
 import ClickCopy from "../../components/ClickCopy";
 
+import Number from "./Data/Number";
+
 import Modal from "../../components/Modal";
 import Radio from "../../components/Radio";
 import Button from "../../components/Button";
 import Notice from "../../components/Notice";
+import Dropdown from "../../components/Dropdown";
 
 class AccessContainer extends Component {
   constructor() {
@@ -23,8 +26,9 @@ class AccessContainer extends Component {
       link: "http://abc/abc/abc.com",
 
       showModal: false,
-      noAuthenticationSelected: true,
-      withAuthenticationSelected: false,
+      noAuthenticationSelected: false,
+      withAuthenticationSelected: true,
+      attemptNum: 1,
     };
   }
 
@@ -54,6 +58,7 @@ class AccessContainer extends Component {
       showModal,
       noAuthenticationSelected,
       withAuthenticationSelected,
+      attemptNum,
     } = this.state;
     return (
       <form>
@@ -112,7 +117,7 @@ class AccessContainer extends Component {
                 <div style={{ paddingRight: "20px" }}>
                   <Radio
                     checked={withAuthenticationSelected}
-                    onChange={this.privateAuthenticationOnClick}
+                    onChange={this.withAuthenticationOnClick}
                   />
                 </div>
                 <ThirdLabel>With authentication</ThirdLabel>
@@ -125,7 +130,25 @@ class AccessContainer extends Component {
               </Notice>
             )}
           </div>
-          <div style={{ paddingBottom: "300px" }}>
+
+          {withAuthenticationSelected}
+
+          <div style={{ paddingTop: "25px" }}>
+            <SecondLabel>Number of attempts</SecondLabel>
+            <Dropdown
+              options={Number}
+              placeholder={"Select number"}
+              value={attemptNum}
+              onChangeValue={(e) =>
+                this.setState({
+                  attemptNum: e.target.value,
+                })
+              }
+              padding={"12px"}
+            />
+          </div>
+
+          <div style={{ paddingBottom: "300px", paddingTop: "25px" }}>
             <Button
               backgroundColor={configStyles.colors.darkBlue}
               color={configStyles.colors.white}
