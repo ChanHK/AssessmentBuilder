@@ -200,7 +200,7 @@ class CreateQuestionContainer extends Component {
                     />
                   </div>
 
-                  {questionType === "Single Choice" ? (
+                  {questionType === "Single Choice" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
                         <Button
@@ -228,11 +228,9 @@ class CreateQuestionContainer extends Component {
                         ))}
                       </div>
                     </>
-                  ) : (
-                    <></>
                   )}
 
-                  {questionType === "Multiple Choice" ? (
+                  {questionType === "Multiple Choice" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
                         <Button
@@ -261,11 +259,9 @@ class CreateQuestionContainer extends Component {
                         ))}
                       </div>
                     </>
-                  ) : (
-                    <></>
                   )}
 
-                  {questionType === "Descriptive" ? (
+                  {questionType === "Descriptive" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
                         <ThirdLabel>
@@ -274,11 +270,9 @@ class CreateQuestionContainer extends Component {
                         </ThirdLabel>
                       </div>
                     </>
-                  ) : (
-                    <></>
                   )}
 
-                  {questionType === "True or False" ? (
+                  {questionType === "True or False" && (
                     <>
                       <SecondLabel>Answer</SecondLabel>
                       <ThirdLabel>Select the correct answer</ThirdLabel>
@@ -289,11 +283,9 @@ class CreateQuestionContainer extends Component {
                         />
                       </div>
                     </>
-                  ) : (
-                    <></>
                   )}
 
-                  {questionType === "Short Answer" ? (
+                  {questionType === "Short Answer" && (
                     <>
                       <SecondLabel>Answers</SecondLabel>
                       <ThirdLabel>
@@ -323,11 +315,9 @@ class CreateQuestionContainer extends Component {
                         </Button>
                       </div>
                     </>
-                  ) : (
-                    <> </>
                   )}
 
-                  {questionType === "Order" ? (
+                  {questionType === "Order" && (
                     <>
                       <SecondLabel>Answers</SecondLabel>
                       <ThirdLabel>Write down the answer in order</ThirdLabel>
@@ -354,8 +344,6 @@ class CreateQuestionContainer extends Component {
                         </Button>
                       </div>
                     </>
-                  ) : (
-                    <> </>
                   )}
 
                   <SecondLabel>Explanation (Optional)</SecondLabel>

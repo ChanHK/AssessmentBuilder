@@ -16,13 +16,12 @@ export default class CreateAssessmentContainer extends Component {
   constructor() {
     super();
     this.state = {
-      // type: "settings",
-      type: "access",
+      selected: "access",
     };
   }
 
   render() {
-    const { type } = this.state;
+    const { selected } = this.state;
 
     return (
       <>
@@ -35,16 +34,16 @@ export default class CreateAssessmentContainer extends Component {
               </div>
               <div style={{ paddingBottom: "50px" }}>
                 <AssessmentButtonGroup
-                  onClick={(e) => this.setState({ type: e.target.value })}
-                  type={type}
+                  onClick={(e) => this.setState({ selected: e.target.value })}
+                  type={selected}
                 />
               </div>
 
-              {type === "settings" ? <SettingsContainer /> : <></>}
-              {type === "questions" ? <></> : <></>}
-              {type === "set" ? <></> : <></>}
-              {type === "access" ? <AccessContainer /> : <></>}
-              {type === "timer" ? <TimerContainer /> : <></>}
+              {selected === "settings" && <SettingsContainer />}
+              {selected === "questions"}
+              {selected === "set"}
+              {selected === "access" && <AccessContainer />}
+              {selected === "timer" && <TimerContainer />}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>

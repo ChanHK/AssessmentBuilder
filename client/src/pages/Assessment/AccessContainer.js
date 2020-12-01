@@ -24,7 +24,7 @@ class AccessContainer extends Component {
 
       showModal: false,
       noAuthenticationSelected: true,
-      privateAuthenticationSelected: false,
+      withAuthenticationSelected: false,
     };
   }
 
@@ -37,13 +37,13 @@ class AccessContainer extends Component {
   noAuthenticationOnClick = (e) => {
     this.setState({
       noAuthenticationSelected: e.target.checked,
-      privateAuthenticationSelected: false,
+      withAuthenticationSelected: false,
     });
   };
 
-  privateAuthenticationOnClick = (e) => {
+  withAuthenticationOnClick = (e) => {
     this.setState({
-      privateAuthenticationSelected: e.target.checked,
+      withAuthenticationSelected: e.target.checked,
       noAuthenticationSelected: false,
     });
   };
@@ -53,7 +53,7 @@ class AccessContainer extends Component {
       link,
       showModal,
       noAuthenticationSelected,
-      privateAuthenticationSelected,
+      withAuthenticationSelected,
     } = this.state;
     return (
       <form>
@@ -111,16 +111,16 @@ class AccessContainer extends Component {
               <div className={css(styles.radionCon)}>
                 <div style={{ paddingRight: "20px" }}>
                   <Radio
-                    checked={privateAuthenticationSelected}
+                    checked={withAuthenticationSelected}
                     onChange={this.privateAuthenticationOnClick}
                   />
                 </div>
-                <ThirdLabel>Private access code</ThirdLabel>
+                <ThirdLabel>With authentication</ThirdLabel>
               </div>
             </CustomRow>
-            {privateAuthenticationSelected && (
+            {withAuthenticationSelected && (
               <Notice>
-                Each candidates have to enter their own password in order to
+                Each candidates have to enter their own access code in order to
                 access to the assessment
               </Notice>
             )}

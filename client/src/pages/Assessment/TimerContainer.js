@@ -102,7 +102,7 @@ class TimerContainer extends Component {
                 </ThirdLabel>
               </div>
             </CustomRow>
-            {assessmentTimeSelected ? (
+            {assessmentTimeSelected && (
               <div style={{ marginLeft: "45px", marginBottom: "25px" }}>
                 <Wrapper
                   firstHeight={"60px"}
@@ -137,8 +137,6 @@ class TimerContainer extends Component {
                   </div>
                 </Wrapper>
               </div>
-            ) : (
-              <></>
             )}
             <CustomRow>
               <div className={css(styles.radionCon)}>
@@ -153,7 +151,7 @@ class TimerContainer extends Component {
                 </ThirdLabel>
               </div>
             </CustomRow>
-            {questionTimeSelected ? (
+            {questionTimeSelected && (
               <div style={{ marginLeft: "45px", marginBottom: "25px" }}>
                 <Wrapper
                   firstHeight={"60px"}
@@ -188,8 +186,6 @@ class TimerContainer extends Component {
                   </div>
                 </Wrapper>
               </div>
-            ) : (
-              <></>
             )}
             <CustomRow>
               <div className={css(styles.radionCon)}>

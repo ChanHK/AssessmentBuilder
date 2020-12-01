@@ -157,7 +157,7 @@ class SettingContainer extends Component {
               <ThirdLabel>Pass or fail</ThirdLabel>
             </div>
           </CustomRow>
-          {passOrFailSelected ? (
+          {passOrFailSelected && (
             <>
               <CustomColumn>
                 <div style={{ padding: "20px 0px 0px 60px" }}>
@@ -194,8 +194,6 @@ class SettingContainer extends Component {
                 </div>
               </CustomColumn>
             </>
-          ) : (
-            <></>
           )}
 
           <div style={{ paddingTop: "25px" }}>
@@ -213,7 +211,7 @@ class SettingContainer extends Component {
             </CustomRow>
           </div>
 
-          {addGradingSelected ? (
+          {addGradingSelected && (
             <>
               <CustomColumn>
                 <div style={{ padding: "20px 0px 0px 60px" }}>
@@ -276,8 +274,6 @@ class SettingContainer extends Component {
                 </div>
               </CustomColumn>
             </>
-          ) : (
-            <></>
           )}
         </div>
         <div style={{ paddingBottom: "50px" }}>
