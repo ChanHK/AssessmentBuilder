@@ -37,20 +37,32 @@ export default class ProfileContainer extends Component {
               </StatusBarWrapper>
               <div className={css(styles.infoCon)}>
                 <CustomColumn>
-                  <SecondLabel>Username</SecondLabel>
-                  <ThirdLabel>Captain Jack Sparrow</ThirdLabel>
-                  <SecondLabel>Email</SecondLabel>
-                  <ThirdLabel>CaptainJack@gmail.com</ThirdLabel>
-                  <SecondLabel>Gender</SecondLabel>
-                  <ThirdLabel>Male</ThirdLabel>
-                  <SecondLabel>Year of Birth</SecondLabel>
-                  <ThirdLabel>Empty</ThirdLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <SecondLabel>Username</SecondLabel>
+                    <ThirdLabel>Captain Jack Sparrow</ThirdLabel>
+                  </div>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <SecondLabel>Email</SecondLabel>
+                    <ThirdLabel>CaptainJack@gmail.com</ThirdLabel>
+                  </div>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <SecondLabel>Gender</SecondLabel>
+                    <ThirdLabel>Male</ThirdLabel>
+                  </div>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <SecondLabel>Year of Birth</SecondLabel>
+                    <ThirdLabel>Empty</ThirdLabel>
+                  </div>
+
                   {/* <SecondLabel>Country</SecondLabel>
                   <ThirdLabel>Empty</ThirdLabel> 
                   might remove in the future *reason-> takes too much spaces
                   */}
-                  <SecondLabel>Occupation</SecondLabel>
-                  <ThirdLabel>Pirate</ThirdLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <SecondLabel>Occupation</SecondLabel>
+                    <ThirdLabel>Pirate</ThirdLabel>
+                  </div>
+
                   <Button
                     backgroundColor={configStyles.colors.darkBlue}
                     color={configStyles.colors.white}
