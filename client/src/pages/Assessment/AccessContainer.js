@@ -18,6 +18,12 @@ import Radio from "../../components/Radio";
 import Button from "../../components/Button";
 import Notice from "../../components/Notice";
 import Dropdown from "../../components/Dropdown";
+import UploadButton from "../../components/UploadButton";
+import Table from "../../components/Table";
+
+import { ExcelRenderer } from "react-excel-renderer";
+
+import generator from "generate-password";
 
 class AccessContainer extends Component {
   constructor() {
@@ -29,6 +35,60 @@ class AccessContainer extends Component {
       noAuthenticationSelected: false,
       withAuthenticationSelected: true,
       attemptNum: 1,
+
+      errorMessage: null,
+      rows: [{ accessCode: "1234567890", email: "chan@gmail.com" }], //example * should be empty
+
+      column: [
+        {
+          name: "#",
+          selector: "serial",
+          cell: (row) => (
+            <div>
+              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+                {row.serial}
+              </div>
+            </div>
+          ),
+          width: "20px",
+        },
+        {
+          name: "Access Code",
+          selector: "accessCode",
+          cell: (row) => (
+            <div>
+              <div
+                style={{
+                  fontSize: "15px",
+                  fontFamily: "Ubuntu-Regular",
+                }}
+              >
+                {row.accessCode}
+              </div>
+            </div>
+          ),
+        },
+        {
+          name: "Email",
+          selector: "email",
+          cell: (row) => (
+            <div>
+              <div
+                style={{
+                  fontSize: "15px",
+                  fontFamily: "Ubuntu-Regular",
+                }}
+              >
+                {row.email}
+              </div>
+            </div>
+          ),
+        },
+        {
+          name: "Action",
+          selector: "delete",
+        },
+      ],
     };
   }
 
@@ -52,6 +112,50 @@ class AccessContainer extends Component {
     });
   };
 
+  ///////////////Excel part/////////////////
+
+  fileUploadHandler = (event) => {
+    let fileObj = event.target.files[0];
+    ExcelRenderer(fileObj, (err, resp) => {
+      if (err) {
+        console.log(err);
+      } else {
+        let newRows = [];
+
+        resp.rows.slice(1).forEach((item, index) => {
+          if (item && item !== "undefined") {
+            var password = generator.generate({
+              length: 10,
+              numbers: true,
+              uppercase: true,
+              lowercase: true,
+              excludeSimilarCharacters: true,
+              symbols: false,
+            });
+            newRows.push({
+              email: item[0],
+              accessCode: password,
+            });
+          }
+        });
+
+        if (newRows.length === 0) {
+          this.setState({
+            errorMessage: "No data found in file!",
+          });
+          return false;
+        } else {
+          this.setState({
+            rows: this.state.rows.concat(newRows),
+            errorMessage: null,
+          });
+        }
+      }
+    });
+  };
+
+  /////////////////////////////////////////
+
   render() {
     const {
       link,
@@ -59,7 +163,14 @@ class AccessContainer extends Component {
       noAuthenticationSelected,
       withAuthenticationSelected,
       attemptNum,
+      rows,
+      column,
     } = this.state;
+
+    rows.forEach((rows, index) => {
+      rows.serial = index + 1;
+    });
+
     return (
       <form>
         <CustomColumn>
@@ -131,7 +242,17 @@ class AccessContainer extends Component {
             )}
           </div>
 
-          {withAuthenticationSelected}
+          {withAuthenticationSelected && (
+            <>
+              <div>
+                <UploadButton onChange={this.fileUploadHandler} />
+              </div>
+
+              <div style={{ marginTop: 20 }}>
+                <Table data={rows} columns={column} />
+              </div>
+            </>
+          )}
 
           <div style={{ paddingTop: "25px" }}>
             <SecondLabel>Number of attempts</SecondLabel>
