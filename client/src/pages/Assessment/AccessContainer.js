@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
+import Wrapper from "../../components/Wrapper";
 
 import "../../css/general.css";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
@@ -9,7 +10,7 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import * as configStyles from "../../config/styles";
 import QRCode from "qrcode.react";
-import ClickCopy from "../../components/ClickCopy";
+import generator from "generate-password";
 
 import Number from "./Data/Number";
 
@@ -20,10 +21,11 @@ import Notice from "../../components/Notice";
 import Dropdown from "../../components/Dropdown";
 import UploadButton from "../../components/UploadButton";
 import Table from "../../components/Table";
+import CustomInput from "../../components/CustomInput";
+import TableButton from "../../components/TableButton";
+import ClickCopy from "../../components/ClickCopy";
 
 import { ExcelRenderer } from "react-excel-renderer";
-
-import generator from "generate-password";
 
 class AccessContainer extends Component {
   constructor() {
@@ -32,13 +34,14 @@ class AccessContainer extends Component {
       link: "http://abc/abc/abc.com",
 
       showModal: false,
-      noAuthenticationSelected: false,
-      withAuthenticationSelected: true,
+      noAuthenticationSelected: true,
+      withAuthenticationSelected: false,
       attemptNum: 1,
 
       errorMessage: null,
       rows: [{ accessCode: "1234567890", email: "chan@gmail.com" }], //example * should be empty
 
+      //for delete can straight away delete using api, but first i need to set an ID or get ID // might use uuid
       column: [
         {
           name: "#",
@@ -50,7 +53,7 @@ class AccessContainer extends Component {
               </div>
             </div>
           ),
-          width: "20px",
+          width: "50px",
         },
         {
           name: "Access Code",
@@ -87,8 +90,15 @@ class AccessContainer extends Component {
         {
           name: "Action",
           selector: "delete",
+          cell: (row) => (
+            <CustomRow>
+              <TableButton>Delete</TableButton>
+            </CustomRow>
+          ),
         },
       ],
+
+      newEmail: "",
     };
   }
 
@@ -114,8 +124,8 @@ class AccessContainer extends Component {
 
   ///////////////Excel part/////////////////
 
-  fileUploadHandler = (event) => {
-    let fileObj = event.target.files[0];
+  fileUploadHandler = (e) => {
+    let fileObj = e.target.files[0];
     ExcelRenderer(fileObj, (err, resp) => {
       if (err) {
         console.log(err);
@@ -156,6 +166,37 @@ class AccessContainer extends Component {
 
   /////////////////////////////////////////
 
+  onChangeEmail = (e) => {
+    this.setState({ newEmail: e.target.value });
+    e.preventDefault();
+  };
+
+  addEmail = () => {
+    let newRows = [];
+    var password = generator.generate({
+      length: 10,
+      numbers: true,
+      uppercase: true,
+      lowercase: true,
+      excludeSimilarCharacters: true,
+      symbols: false,
+    });
+    if (this.state.newEmail !== "") {
+      newRows.push({
+        email: this.state.newEmail,
+        accessCode: password,
+      });
+      this.setState({
+        rows: this.state.rows.concat(newRows),
+        newEmail: "",
+      });
+    }
+  };
+
+  onSubmit(e) {
+    e.preventDefault();
+  }
+
   render() {
     const {
       link,
@@ -165,6 +206,7 @@ class AccessContainer extends Component {
       attemptNum,
       rows,
       column,
+      newEmail,
     } = this.state;
 
     rows.forEach((rows, index) => {
@@ -172,7 +214,7 @@ class AccessContainer extends Component {
     });
 
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <CustomColumn>
           <SecondLabel>URL</SecondLabel>
           <ClickCopy
@@ -244,9 +286,33 @@ class AccessContainer extends Component {
 
           {withAuthenticationSelected && (
             <>
-              <div>
-                <UploadButton onChange={this.fileUploadHandler} />
-              </div>
+              <Wrapper
+                firstHeight={"60px"}
+                secHeight={"120px"}
+                widthChange={1425}
+              >
+                <div className={css(styles.block)}>
+                  <CustomInput
+                    type={"text"}
+                    placeholder={"Enter new email"}
+                    onChangeValue={this.onChangeEmail}
+                    value={newEmail}
+                  />
+                  <div style={{ marginRight: "10px" }}></div>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    width={"100px"}
+                    onClick={this.addEmail}
+                  >
+                    Add
+                  </Button>
+                </div>
+                <div className={css(styles.block)}>
+                  <UploadButton onChange={this.fileUploadHandler} />
+                </div>
+              </Wrapper>
 
               <div style={{ marginTop: 20 }}>
                 <Table data={rows} columns={column} />
@@ -318,6 +384,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     marginBottom: "20px",
+  },
+  block: {
+    flexWrap: "nowrap",
+    width: "400px",
+    height: "auto",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });
 
