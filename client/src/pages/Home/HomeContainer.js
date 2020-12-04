@@ -18,7 +18,9 @@ import Table from "../../components/Table";
 import CustomRow from "../../components/GridComponents/CustomRow";
 // import * as MdIcons from "react-icons/md";
 // import * as BsIcons from "react-icons/bs";
+
 import TableButton from "../../components/TableButton";
+import ScrollArrow from "../../components/ScrollArrow";
 
 //tempory since this will be obtain from the store
 const data = [
@@ -197,6 +199,7 @@ export default class HomeContainer extends Component {
                   // path={`questionbank/viewQuestion`}
                 />
               </div>
+              <ScrollArrow />
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
