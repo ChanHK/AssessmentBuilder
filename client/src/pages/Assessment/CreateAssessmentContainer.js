@@ -11,12 +11,13 @@ import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
 import SettingsContainer from "./SettingsContainer";
 import TimerContainer from "./TimerContainer";
 import AccessContainer from "./AccessContainer";
+import QuestionsContainer from "./QuestionsContainer";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
     super();
     this.state = {
-      selected: "access",
+      selected: "questions",
     };
   }
 
@@ -40,7 +41,7 @@ export default class CreateAssessmentContainer extends Component {
               </div>
 
               {selected === "settings" && <SettingsContainer />}
-              {selected === "questions"}
+              {selected === "questions" && <QuestionsContainer />}
               {selected === "set"}
               {selected === "access" && <AccessContainer />}
               {selected === "timer" && <TimerContainer />}

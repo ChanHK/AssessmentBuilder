@@ -8,6 +8,7 @@ export const colors = {
   red: "#f21f38",
   lightGreen: "#7de881",
   noticeYellow: "#fada82",
+  correctGreen: "#83eb75",
 };
 
 // import * as configStyles from "../../config/styles"
