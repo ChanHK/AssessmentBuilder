@@ -8,114 +8,114 @@ import TableButton from "../../components/TableButton";
 
 import CustomRow from "../../components/GridComponents/CustomRow";
 
-import SecondLabel from "../../components/LabelComponent/SecondLabel";
+// import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import * as MdIcons from "react-icons/md";
 import * as RiIcons from "react-icons/ri";
 
-import arrayMove from "array-move";
-
-//questionType
-// questionDescriptive: "",
-//       questionAns: [],
-//       questionChoice: [],
-// { value: "Single Choice" },
-// { value: "Multiple Choice" },
-// { value: "Descriptive" },
-// { value: "True or False" },
-// { value: "Short Answer" },
-// { value: "Order" },
-
-const SortableItem = SortableElement(({ value }) => {
-  // const onSortEnd = ({ oldIndex, newIndex }) => {
-  //   value.questionChoice = arrayMove(value.questionChoice, oldIndex, newIndex);
-  // };
-  // console.log(value.questionChoice);
+const SortableItem = SortableElement(({ questionAns, choice, index }) => {
   return (
-    <div className={css(styles.itemRow)}>
-      <div className={css(styles.bar)}>
-        <CustomRow>
-          <div style={{ width: "90%" }}>
-            <ThirdLabel>Question {value.serial}</ThirdLabel>
-          </div>
-          <div className={css(styles.buttonCon)}>
-            <TableButton>
-              <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
-            </TableButton>
-            <TableButton>
-              <MdIcons.MdModeEdit size={20} className={css(styles.pE)} />
-            </TableButton>
-            <TableButton>
-              <MdIcons.MdDelete size={20} className={css(styles.pE)} />
-            </TableButton>
-          </div>
-        </CustomRow>
-      </div>
-      <div className={css(styles.infoCon)}>
-        <ThirdLabel>Question Type: {value.questionType}</ThirdLabel>
-        <ThirdLabel>Description</ThirdLabel>
-        {value.questionDescriptive}
-
-        {value.questionType === "Single Choice" &&
-          value.questionChoice.map((item, index) => {
-            return (
-              <div
-                className={css(styles.choiceRow)}
-                style={{
-                  backgroundColor:
-                    item === value.questionAns
-                      ? configStyles.colors.correctGreen
-                      : configStyles.colors.white,
-                }}
-              >
-                {item}
-              </div>
-            );
-          })
-          // <SortableChoicesRow
-          //   items={value.questionChoice}
-          //   onSortEnd={onSortEnd}
-          // />
-        }
-      </div>
+    <div
+      className={css(styles.choiceRow)}
+      style={{
+        backgroundColor:
+          choice === questionAns
+            ? configStyles.colors.correctGreen
+            : configStyles.colors.white,
+      }}
+    >
+      {choice}
     </div>
   );
 });
 
-const SortableRow = SortableContainer(({ items }) => {
-  return (
+const SortableItemList = SortableContainer(
+  ({ questionAns, questionChoice, disabled }) => (
     <ul>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${value}`} index={index} value={value} />
+      {questionChoice.map((choice, index) => (
+        <SortableItem
+          key={`item-${choice}`}
+          questionAns={questionAns}
+          choice={choice}
+          index={index}
+          disabled={disabled}
+        />
       ))}
     </ul>
+  )
+);
+
+class SectionContainer extends React.Component {
+  render() {
+    const { question, sectionIndex, onSortEnd } = this.props;
+    // console.log(question);
+    return (
+      <div className={css(styles.itemRow)}>
+        <div className={css(styles.bar)}>
+          <CustomRow>
+            <div style={{ width: "90%" }}>
+              <ThirdLabel>Question {question.serial}</ThirdLabel>
+            </div>
+            <div className={css(styles.buttonCon)}>
+              <TableButton>
+                <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
+              </TableButton>
+              <TableButton>
+                <MdIcons.MdModeEdit size={20} className={css(styles.pE)} />
+              </TableButton>
+              <TableButton>
+                <MdIcons.MdDelete size={20} className={css(styles.pE)} />
+              </TableButton>
+            </div>
+          </CustomRow>
+        </div>
+        <div className={css(styles.infoCon)}>
+          <ThirdLabel>Question Type: {question.questionType}</ThirdLabel>
+          <ThirdLabel>Description</ThirdLabel>
+          {question.questionDescriptive}
+
+          {question.questionType === "Single Choice" && (
+            <SortableItemList
+              questionAns={question.questionAns}
+              questionChoice={question.questionChoice}
+              sectionIndex={sectionIndex}
+              onSortEnd={onSortEnd.bind(this, sectionIndex)}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+}
+
+const SortableSection = SortableElement(
+  ({ question, index, sectionIndex, onSortEnd }) => (
+    <SectionContainer
+      question={question}
+      index={index}
+      sectionIndex={sectionIndex}
+      onSortEnd={onSortEnd}
+    />
+  )
+);
+
+const SortableRow = SortableContainer(({ questions, onSectionSortEnd }) => {
+  return (
+    <div>
+      {questions.map((question, index) => (
+        <SortableSection
+          collection="section"
+          key={`item-${question}`}
+          question={question}
+          index={index}
+          sectionIndex={index}
+          onSortEnd={onSectionSortEnd}
+        />
+      ))}
+    </div>
   );
 });
-
-// const SortableChoices = SortableElement(({ value, ans }) => (
-//   <div
-//     className={css(styles.choiceRow)}
-//     style={{
-//       backgroundColor:
-//         value === "A"
-//           ? configStyles.colors.correctGreen
-//           : configStyles.colors.white,
-//     }}
-//   >
-//     {value}
-//   </div>
-// ));
-
-// const SortableChoicesRow = SortableContainer(({ items }) => {
-//   return (
-//     <ul>
-//       {items.map((value, index) => (
-//         <SortableChoices key={`item-${value}`} index={index} value={value} />
-//       ))}
-//     </ul>
-//   );
-// });
 
 const styles = StyleSheet.create({
   itemRow: {

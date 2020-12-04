@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     position: "fixed",
     top: "0",
     zIndex: 1,
+    width: "100%",
   },
   icon: {
     height: "40px",

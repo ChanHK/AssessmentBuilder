@@ -214,7 +214,7 @@ class SettingContainer extends Component {
           {addGradingSelected && (
             <>
               <CustomColumn>
-                <div style={{ padding: "20px 0px 0px 60px" }}>
+                <div style={{ padding: "20px 0px 0px 0px" }}>
                   <ThirdLabel fontSize={"15px"}>Enter grade ranges</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <Wrapper

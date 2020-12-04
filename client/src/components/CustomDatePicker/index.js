@@ -37,7 +37,8 @@ const CustomDatePicker = (props) => (
     timeFormat="HH:mm"
     filterTime={(time) => filterPassedTime(time)} //developer bug //https://github.com/Hacker0x01/react-datepicker/issues/2533
     // monthsShown={2}
-    withPortal
+    // withPortal
+    popperPlacement="bottom"
   />
 );
 

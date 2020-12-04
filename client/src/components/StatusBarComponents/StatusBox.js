@@ -1,13 +1,11 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Form } from "react-bootstrap";
 import * as configStyles from "../../config/styles";
 
 const StatusBox = (props) => (
   <div className={css(styles.container)}>
-    <Form.Label className={css(styles.num)}>{props.number}</Form.Label>
-    <Form.Label className={css(styles.string)}>{props.text}</Form.Label>
+    <h6 className={css(styles.num)}>{props.number}</h6>
+    <h6 className={css(styles.string)}>{props.text}</h6>
   </div>
 );
 
@@ -16,15 +14,14 @@ const styles = StyleSheet.create({
     backgroundColor: configStyles.colors.white,
     width: "180px",
     height: "90px",
-    borderRadius: "10px",
+    borderRadius: "5px",
     margin: "10px",
+    padding: 10,
   },
   num: {
-    paddingTop: "10px",
     justifyContent: "flex-end",
     fontFamily: "Ubuntu-Bold",
     display: "flex",
-    width: "90%",
     fontSize: "25px",
   },
   string: {
@@ -32,8 +29,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     fontFamily: "Ubuntu-Bold",
     display: "flex",
-    width: "90%",
     fontSize: "13px",
+    textAlign: "end",
   },
 });
 

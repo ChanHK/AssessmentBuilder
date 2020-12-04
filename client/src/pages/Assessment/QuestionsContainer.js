@@ -38,19 +38,32 @@ class QuestionsContainer extends Component {
       ],
     };
   }
+  onSortEnd({ oldIndex, newIndex }) {
+    this.setState({
+      questions: arrayMove(this.state.questions, oldIndex, newIndex),
+    });
+  }
+  
+  onSectionSortEnd(sectionIndex, { oldIndex, newIndex }) {
+    const question = this.state.questions[sectionIndex];
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState(({ questions }) => ({
-      questions: arrayMove(questions, oldIndex, newIndex),
-    }));
-  };
+    question.questionChoice = arrayMove(
+      question.questionChoice,
+      oldIndex,
+      newIndex
+    );
+
+    this.setState({
+      questions: this.state.questions,
+    });
+  }
 
   render() {
     const { questions } = this.state;
     questions.forEach((questions, index) => {
       questions.serial = index + 1;
     });
-    console.log(questions);
+
     return (
       <form>
         <Button
@@ -62,7 +75,11 @@ class QuestionsContainer extends Component {
         </Button>
         <SecondLabel>Questions</SecondLabel>
         <hr className={css(styles.hr)} />
-        <SortableRow items={questions} onSortEnd={this.onSortEnd} />
+        <SortableRow
+          questions={questions}
+          onSortEnd={this.onSortEnd.bind(this)}
+          onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+        />
         <div style={{ height: "500px" }}></div>
       </form>
     );

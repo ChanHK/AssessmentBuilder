@@ -7,7 +7,7 @@ import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrap
 
 const AssessmentButtonGroup = (props) => (
   <StatusBarWrapper first="center">
-    <div style={{ marginRight: "20px" }}>
+    <div>
       <button
         type="button"
         className={css(styles.button, styles.noSelect)}
@@ -23,7 +23,7 @@ const AssessmentButtonGroup = (props) => (
         Settings
       </button>
     </div>
-    <div style={{ marginRight: "20px" }}>
+    <div>
       <button
         type="button"
         className={css(styles.button, styles.noSelect)}
@@ -39,7 +39,7 @@ const AssessmentButtonGroup = (props) => (
         Questions
       </button>
     </div>
-    <div style={{ marginRight: "20px" }}>
+    <div>
       <button
         type="button"
         className={css(styles.button, styles.noSelect)}
@@ -55,7 +55,7 @@ const AssessmentButtonGroup = (props) => (
         Sets
       </button>
     </div>
-    <div style={{ marginRight: "20px" }}>
+    <div>
       <button
         type="button"
         className={css(styles.button, styles.noSelect)}
@@ -71,7 +71,7 @@ const AssessmentButtonGroup = (props) => (
         Access
       </button>
     </div>
-    <div style={{ marginRight: "20px" }}>
+    <div>
       <button
         type="button"
         className={css(styles.button, styles.noSelect)}
