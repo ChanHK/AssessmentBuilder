@@ -23,16 +23,17 @@ const SortableItem = SortableElement(
             className={css(styles.choiceRow)}
             style={{
               backgroundColor:
-                choice === questionAns[0] || choice === questionAns[1]
-                  ? // choice === questionAns[2] ||
-                    // choice === questionAns[3] ||
-                    // choice === questionAns[4] ||
-                    // choice === questionAns[5] ||
-                    // choice === questionAns[6] ||
-                    // choice === questionAns[7] ||
-                    // choice === questionAns[8] ||
-                    // choice === questionAns[9]
-                    configStyles.colors.correctGreen
+                choice === questionAns[0] ||
+                choice === questionAns[1] ||
+                choice === questionAns[2] ||
+                choice === questionAns[3] ||
+                choice === questionAns[4] ||
+                choice === questionAns[5] ||
+                choice === questionAns[6] ||
+                choice === questionAns[7] ||
+                choice === questionAns[8] ||
+                choice === questionAns[9]
+                  ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
             }}
           >
@@ -118,6 +119,7 @@ class SectionContainer extends React.Component {
         </div>
         <div className={css(styles.infoCon)}>
           <ThirdLabel>Question Type: {question.questionType}</ThirdLabel>
+          <ThirdLabel>Score: {question.score}</ThirdLabel>
           <ThirdLabel>Description</ThirdLabel>
           {question.questionDescriptive}
 
