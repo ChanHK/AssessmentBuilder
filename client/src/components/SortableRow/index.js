@@ -95,8 +95,7 @@ const SortableItemList = SortableContainer(
 
 class SectionContainer extends React.Component {
   render() {
-    const { question, sectionIndex, onSortEnd } = this.props;
-    // console.log(question);
+    const { question, sectionIndex, current, onSortEnd } = this.props;
     return (
       <div className={css(styles.itemRow)}>
         <div className={css(styles.bar)}>
@@ -129,7 +128,7 @@ class SectionContainer extends React.Component {
               questionChoice={question.questionChoice}
               questionType={question.questionType}
               sectionIndex={sectionIndex}
-              onSortEnd={onSortEnd.bind(this, sectionIndex)}
+              onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
             />
           )}
           {question.questionType === "Multiple Choice" && (
@@ -138,7 +137,7 @@ class SectionContainer extends React.Component {
               questionChoice={question.questionChoice}
               questionType={question.questionType}
               sectionIndex={sectionIndex}
-              onSortEnd={onSortEnd.bind(this, sectionIndex)}
+              onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
             />
           )}
           {question.questionType === "True or False" && (
@@ -147,7 +146,7 @@ class SectionContainer extends React.Component {
               questionChoice={question.questionChoice}
               questionType={question.questionType}
               sectionIndex={sectionIndex}
-              onSortEnd={onSortEnd.bind(this, sectionIndex)}
+              onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
             />
           )}
         </div>
@@ -157,32 +156,35 @@ class SectionContainer extends React.Component {
 }
 
 const SortableSection = SortableElement(
-  ({ question, index, sectionIndex, onSortEnd }) => (
+  ({ question, index, sectionIndex, current, onSortEnd }) => (
     <SectionContainer
       question={question}
       index={index}
       sectionIndex={sectionIndex}
       onSortEnd={onSortEnd}
+      current={current}
     />
   )
 );
 
-const SortableRow = SortableContainer(({ questions, onSectionSortEnd }) => {
-  return (
-    <div>
-      {questions.map((question, index) => (
-        <SortableSection
-          collection="section"
-          key={`item-${question}`}
-          question={question}
-          index={index}
-          sectionIndex={index}
-          onSortEnd={onSectionSortEnd}
-        />
-      ))}
-    </div>
-  );
-});
+const SortableRow = SortableContainer(
+  ({ questions, onSectionSortEnd, current }) => {
+    return (
+      <div>
+        {questions.map((question, index) => (
+          <SortableSection
+            key={`item-${question}`}
+            question={question}
+            index={index}
+            sectionIndex={index}
+            onSortEnd={onSectionSortEnd}
+            current={current}
+          />
+        ))}
+      </div>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   itemRow: {

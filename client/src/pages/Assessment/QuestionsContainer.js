@@ -56,10 +56,9 @@ class QuestionsContainer extends Component {
             score: 2,
           },
           {
-            questionType: "Single Choice",
-            questionDescriptive:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            questionAns: "A",
+            questionType: "Multiple Choice",
+            questionDescriptive: "adadsadsadsadsaaaaaaaaaaaaa",
+            questionAns: ["A", "B"],
             questionChoice: ["B", "C", "A", "D"],
             score: 2,
           },
@@ -83,9 +82,9 @@ class QuestionsContainer extends Component {
       ],
     };
   }
-  onSortEnd({ oldIndex, newIndex }) {
-    this.state.questions[0] = arrayMove(
-      this.state.questions[0],
+  onSortEnd(arrayNum, { oldIndex, newIndex }) {
+    this.state.questions[arrayNum] = arrayMove(
+      this.state.questions[arrayNum],
       oldIndex,
       newIndex
     );
@@ -95,8 +94,9 @@ class QuestionsContainer extends Component {
     });
   }
 
-  onSectionSortEnd(sectionIndex, { oldIndex, newIndex }) {
-    const question = this.state.questions[0][sectionIndex];
+  onSectionSortEnd(sectionIndex, current, { oldIndex, newIndex }) {
+    let currentValue = current === undefined ? 0 : current;
+    const question = this.state.questions[currentValue][sectionIndex];
 
     question.questionChoice = arrayMove(
       question.questionChoice,
@@ -109,13 +109,20 @@ class QuestionsContainer extends Component {
     });
   }
 
+  addSection = () => {
+    if (this.state.questions.length < 10) {
+      this.setState({ questions: this.state.questions.concat(null) });
+    }
+  };
+
   render() {
     const { questions } = this.state;
-    questions[0].forEach((questions, index) => {
-      questions.serial = index + 1;
-    });
 
-    // console.log(this.state.questions[0]);
+    for (let i = 0; i < questions.length; i++) {
+      questions[i].forEach((questions, index) => {
+        questions.serial = index + 1;
+      });
+    }
 
     return (
       <form>
@@ -123,6 +130,7 @@ class QuestionsContainer extends Component {
           backgroundColor={configStyles.colors.darkBlue}
           color={configStyles.colors.white}
           padding={"8px"}
+          onClick={this.addSection}
         >
           Add Section
         </Button>
@@ -130,7 +138,7 @@ class QuestionsContainer extends Component {
         <hr className={css(styles.hr)} />
         <SortableRow
           questions={questions[0]}
-          onSortEnd={this.onSortEnd.bind(this)}
+          onSortEnd={this.onSortEnd.bind(this, 0)}
           onSectionSortEnd={this.onSectionSortEnd.bind(this)}
         />
         <CustomRow>
@@ -153,6 +161,19 @@ class QuestionsContainer extends Component {
             </Button>
           </div>
         </CustomRow>
+        <div style={{ marginBottom: "25px" }}></div>
+
+        {questions.slice(1).map((item, index) => {
+          return (
+            <SortableRow
+              questions={questions[index + 1]}
+              onSortEnd={this.onSortEnd.bind(this, index + 1)}
+              onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+              current={index + 1}
+            />
+          );
+        })}
+
         <div style={{ height: "500px" }}></div>
       </form>
     );
