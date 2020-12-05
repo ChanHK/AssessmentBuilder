@@ -27,13 +27,13 @@ class QuestionsContainer extends Component {
             questionChoice: ["B", "C", "A", "D"],
             score: 2,
           },
-          // {
-          //   questionType: "Multiple Choice",
-          //   questionDescriptive: "adadsadsadsadsaaaaaaaaaaaaa",
-          //   questionAns: ["A", "B"],
-          //   questionChoice: ["B", "C", "A", "D"],
-          //   score: 2,
-          // },
+          {
+            questionType: "Multiple Choice",
+            questionDescriptive: "adadsadsadsadsaaaaaaaaaaaaa",
+            questionAns: ["A", "B"],
+            questionChoice: ["B", "C", "A", "D"],
+            score: 2,
+          },
           // {
           //   questionType: "Descriptive",
           //   questionDescriptive:
@@ -85,14 +85,12 @@ class QuestionsContainer extends Component {
     };
   }
   onSortEnd(arrayNum, { oldIndex, newIndex }) {
-    this.state.questions[arrayNum] = arrayMove(
-      this.state.questions[arrayNum],
-      oldIndex,
-      newIndex
-    );
-
     this.setState({
-      questions: this.state.questions,
+      questions: [
+        ...this.state.questions.slice(0, arrayNum),
+        arrayMove(this.state.questions[arrayNum], oldIndex, newIndex),
+        ...this.state.questions.slice(arrayNum + 1),
+      ],
     });
   }
 
