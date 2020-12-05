@@ -23,17 +23,16 @@ const SortableItem = SortableElement(
             className={css(styles.choiceRow)}
             style={{
               backgroundColor:
-                choice === questionAns[0] ||
-                choice === questionAns[1] ||
-                choice === questionAns[2] ||
-                choice === questionAns[3] ||
-                choice === questionAns[4] ||
-                choice === questionAns[5] ||
-                choice === questionAns[6] ||
-                choice === questionAns[7] ||
-                choice === questionAns[8] ||
-                choice === questionAns[9]
-                  ? configStyles.colors.correctGreen
+                choice === questionAns[0] || choice === questionAns[1]
+                  ? // choice === questionAns[2] ||
+                    // choice === questionAns[3] ||
+                    // choice === questionAns[4] ||
+                    // choice === questionAns[5] ||
+                    // choice === questionAns[6] ||
+                    // choice === questionAns[7] ||
+                    // choice === questionAns[8] ||
+                    // choice === questionAns[9]
+                    configStyles.colors.correctGreen
                   : configStyles.colors.white,
             }}
           >
@@ -90,6 +89,9 @@ const SortableItemList = SortableContainer(
   )
 );
 
+//for question.questionType === "Single Choice" and more
+// dont use !== 'Description' as it will produce bug
+
 class SectionContainer extends React.Component {
   render() {
     const { question, sectionIndex, onSortEnd } = this.props;
@@ -119,7 +121,25 @@ class SectionContainer extends React.Component {
           <ThirdLabel>Description</ThirdLabel>
           {question.questionDescriptive}
 
-          {question.questionType !== "Descriptive" && (
+          {question.questionType === "Single Choice" && (
+            <SortableItemList
+              questionAns={question.questionAns}
+              questionChoice={question.questionChoice}
+              questionType={question.questionType}
+              sectionIndex={sectionIndex}
+              onSortEnd={onSortEnd.bind(this, sectionIndex)}
+            />
+          )}
+          {question.questionType === "Multiple Choice" && (
+            <SortableItemList
+              questionAns={question.questionAns}
+              questionChoice={question.questionChoice}
+              questionType={question.questionType}
+              sectionIndex={sectionIndex}
+              onSortEnd={onSortEnd.bind(this, sectionIndex)}
+            />
+          )}
+          {question.questionType === "True or False" && (
             <SortableItemList
               questionAns={question.questionAns}
               questionChoice={question.questionChoice}

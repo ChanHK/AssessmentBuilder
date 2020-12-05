@@ -34,3 +34,5 @@ const styles = StyleSheet.create({
 });
 
 export default CustomEditor;
+
+//https://jpuri.github.io/react-draft-wysiwyg/#/demo

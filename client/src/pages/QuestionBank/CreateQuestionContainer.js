@@ -17,14 +17,20 @@ import * as configStyles from "../../config/styles";
 import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
 import CustomEditor from "../../components/CustomEditor";
+import ScrollArrow from "../../components/ScrollArrow";
+
+import { EditorState, convertToRaw } from "draft-js";
+// import draftToHtml from "draftjs-to-html";
+// import htmlToDraft from "html-to-draftjs";
+import draftToMarkdown from "draftjs-to-markdown";
 
 class CreateQuestionContainer extends Component {
   constructor() {
     super();
     this.state = {
       questionType: null,
-      questionDescriptive: "",
-      explanation: "",
+      questionDescriptive: EditorState.createEmpty(),
+      explanation: EditorState.createEmpty(),
       questionAns: [],
       questionChoice: [],
       checkboxNum: null,
@@ -152,16 +158,28 @@ class CreateQuestionContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    // console.log(this.state.questionType);
+    console.log(this.state.questionType);
     // console.log(
-    //   this.state.questionDescriptive.getCurrentContent().getPlainText()
+    //   draftToHtml(
+    //     convertToRaw(this.state.questionDescriptive.getCurrentContent())
+    //   )
     // );
+    console.log(
+      this.state.questionDescriptive &&
+        draftToMarkdown(
+          convertToRaw(this.state.questionDescriptive.getCurrentContent())
+        )
+    );
     // console.log(this.state.explanation);
-    // console.log("ans", this.state.questionAns);
-    // // console.log(this.state.checkboxNum);
+    console.log(this.state.questionAns);
     // console.log(
-    //   this.state.questionChoice[0].getCurrentContent().getPlainText()
+    //   this.state.questionDescriptive &&
+    //     draftToMarkdown(
+    //       convertToRaw(this.state.questionAns.getCurrentContent())
+    //     )
     // );
+    // // console.log(this.state.checkboxNum);
+    // console.log(this.state.questionChoice);
   };
 
   render() {
@@ -176,6 +194,7 @@ class CreateQuestionContainer extends Component {
     return (
       <>
         <Header />
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
