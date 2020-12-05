@@ -14,34 +14,78 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import * as MdIcons from "react-icons/md";
 import * as RiIcons from "react-icons/ri";
 
-const SortableItem = SortableElement(({ questionAns, choice, index }) => {
-  return (
-    <div
-      className={css(styles.choiceRow)}
-      style={{
-        backgroundColor:
-          choice === questionAns
-            ? configStyles.colors.correctGreen
-            : configStyles.colors.white,
-      }}
-    >
-      {choice}
-    </div>
-  );
-});
+const SortableItem = SortableElement(
+  ({ questionAns, choice, questionType, index }) => {
+    return (
+      <>
+        {questionType === "Multiple Choice" && (
+          <div
+            className={css(styles.choiceRow)}
+            style={{
+              backgroundColor:
+                choice === questionAns[0] ||
+                choice === questionAns[1] ||
+                choice === questionAns[2] ||
+                choice === questionAns[3] ||
+                choice === questionAns[4] ||
+                choice === questionAns[5] ||
+                choice === questionAns[6] ||
+                choice === questionAns[7] ||
+                choice === questionAns[8] ||
+                choice === questionAns[9]
+                  ? configStyles.colors.correctGreen
+                  : configStyles.colors.white,
+            }}
+          >
+            {choice}
+          </div>
+        )}
+        {questionType === "True or False" && (
+          <div
+            className={css(styles.choiceRow)}
+            style={{
+              backgroundColor:
+                choice === questionAns
+                  ? configStyles.colors.correctGreen
+                  : configStyles.colors.white,
+            }}
+          >
+            {choice.toString()}
+          </div>
+        )}
+        {questionType === "Single Choice" && (
+          <div
+            className={css(styles.choiceRow)}
+            style={{
+              backgroundColor:
+                choice === questionAns
+                  ? configStyles.colors.correctGreen
+                  : configStyles.colors.white,
+            }}
+          >
+            {choice}
+          </div>
+        )}
+      </>
+    );
+  }
+);
 
 const SortableItemList = SortableContainer(
-  ({ questionAns, questionChoice, disabled }) => (
+  ({ questionAns, questionChoice, questionType, disabled }) => (
     <ul>
-      {questionChoice.map((choice, index) => (
-        <SortableItem
-          key={`item-${choice}`}
-          questionAns={questionAns}
-          choice={choice}
-          index={index}
-          disabled={disabled}
-        />
-      ))}
+      {questionChoice.map((choice, index) => {
+        return (
+          <SortableItem
+            key={`item-${choice}`}
+            questionAns={questionAns}
+            choice={choice}
+            questionType={questionType}
+            index={index}
+            disabled={disabled}
+          />
+        );
+      })}
     </ul>
   )
 );
@@ -75,10 +119,11 @@ class SectionContainer extends React.Component {
           <ThirdLabel>Description</ThirdLabel>
           {question.questionDescriptive}
 
-          {question.questionType === "Single Choice" && (
+          {question.questionType !== "Descriptive" && (
             <SortableItemList
               questionAns={question.questionAns}
               questionChoice={question.questionChoice}
+              questionType={question.questionType}
               sectionIndex={sectionIndex}
               onSortEnd={onSortEnd.bind(this, sectionIndex)}
             />
@@ -152,6 +197,7 @@ const styles = StyleSheet.create({
     padding: 5,
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
+    marginBottom: "5px",
   },
 });
 

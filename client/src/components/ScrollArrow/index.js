@@ -28,27 +28,29 @@ const ScrollArrow = () => {
     <FaArrowCircleUp
       className={css(styles.scrollTop)}
       onClick={scrollTop}
-      style={{ height: 40, display: showScroll ? "flex" : "none" }}
+      style={{
+        height: 40,
+        display: showScroll ? "flex" : "none",
+      }}
     />
   );
 };
 
 const styles = StyleSheet.create({
   scrollTop: {
+    position: "fixed",
     width: "100%",
     bottom: "20px",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: "1000",
+    zIndex: 10000,
     cursor: "pointer",
     animation: "fadeIn 0.3s",
     transition: "opacity 0.4s",
-    opacity: 0.5,
-    display: "flex",
+    opacity: 0.2,
     ":hover": {
       opacity: 1,
     },
     marginBottom: "20px",
+    left: 0,
   },
 });
 

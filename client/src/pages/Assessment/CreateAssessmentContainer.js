@@ -12,6 +12,7 @@ import SettingsContainer from "./SettingsContainer";
 import TimerContainer from "./TimerContainer";
 import AccessContainer from "./AccessContainer";
 import QuestionsContainer from "./QuestionsContainer";
+import ScrollArrow from "../../components/ScrollArrow";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
@@ -27,6 +28,7 @@ export default class CreateAssessmentContainer extends Component {
     return (
       <>
         <Header />
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>

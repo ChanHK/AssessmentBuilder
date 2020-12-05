@@ -155,6 +155,7 @@ export default class HomeContainer extends Component {
     return (
       <>
         <Header />
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
@@ -199,7 +200,6 @@ export default class HomeContainer extends Component {
                   // path={`questionbank/viewQuestion`}
                 />
               </div>
-              <ScrollArrow />
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>

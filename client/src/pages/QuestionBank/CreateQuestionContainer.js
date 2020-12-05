@@ -47,6 +47,7 @@ class CreateQuestionContainer extends Component {
   onGetTF = (e) => {
     this.setState({
       questionAns: e.target.value,
+      questionChoice: [true, false],
     });
   };
 
@@ -150,14 +151,17 @@ class CreateQuestionContainer extends Component {
   };
 
   onSubmit = (e) => {
+    e.preventDefault();
     // console.log(this.state.questionType);
-    // console.log(this.state.questionDescriptive.getCurrentContent().getPlainText());
+    // console.log(
+    //   this.state.questionDescriptive.getCurrentContent().getPlainText()
+    // );
     // console.log(this.state.explanation);
     // console.log("ans", this.state.questionAns);
-    // console.log(this.state.checkboxNum);
-    // console.log(this.state.questionChoice[0].getCurrentContent().getPlainText());
-
-    e.preventDefault();
+    // // console.log(this.state.checkboxNum);
+    // console.log(
+    //   this.state.questionChoice[0].getCurrentContent().getPlainText()
+    // );
   };
 
   render() {
