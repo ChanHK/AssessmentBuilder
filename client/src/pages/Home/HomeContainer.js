@@ -201,7 +201,7 @@ export default class HomeContainer extends Component {
                   </Button>
                 </div>
               </Wrapper>
-              <div style={{ padding: "50px 0px" }}>
+              <div style={{ padding: "50px 0px", marginBottom: "100px" }}>
                 <Table
                   data={data}
                   columns={tableHeader}
