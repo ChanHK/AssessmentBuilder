@@ -1,18 +1,25 @@
 import React, { Component } from "react";
+
 import { StyleSheet } from "aphrodite";
+
 import Header from "../../components/Header";
+import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
+import ScrollArrow from "../../components/ScrollArrow";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+
 import "../../css/general.css";
+
 import * as configStyles from "../../config/styles";
-import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
+
 import SettingsContainer from "./SettingsContainer";
 import TimerContainer from "./TimerContainer";
 import AccessContainer from "./AccessContainer";
 import QuestionsContainer from "./QuestionsContainer";
-import ScrollArrow from "../../components/ScrollArrow";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {

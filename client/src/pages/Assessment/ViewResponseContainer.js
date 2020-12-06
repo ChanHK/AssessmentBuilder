@@ -1,14 +1,19 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Header from "../../components/Header";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import "../../css/general.css";
 import CustomRow from "../../components/GridComponents/CustomRow";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
+import "../../css/general.css";
 
 // import * as configStyles from "../../config/styles";
 

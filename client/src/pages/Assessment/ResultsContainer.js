@@ -1,17 +1,24 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Header from "../../components/Header";
+import TableButton from "../../components/TableButton";
+import Table from "../../components/Table";
+import Button from "../../components/Button";
+import CustomInput from "../../components/CustomInput";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import "../../css/general.css";
-import * as MdIcons from "react-icons/md";
-import TableButton from "../../components/TableButton";
-import Table from "../../components/Table";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import Button from "../../components/Button";
-import CustomInput from "../../components/CustomInput";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+
+import "../../css/general.css";
+
+import * as MdIcons from "react-icons/md";
+
 import * as configStyles from "../../config/styles";
 
 const data = [

@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import "../../css/general.css";
+
 import CustomTitle from "../../components/FormComponents/CustomTitle";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
+
 import * as configStyles from "../../config/styles";
 
 import PropTypes from "prop-types";

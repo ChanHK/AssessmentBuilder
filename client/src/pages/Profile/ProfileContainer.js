@@ -1,18 +1,26 @@
 import React, { Component } from "react";
+
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+
 import { StyleSheet, css } from "aphrodite";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
+
 import profile from "../../image/profile/dummyUser.png";
+
 import * as configStyles from "../../config/styles";
+
 import "../../css/general.css";
 
 export default class ProfileContainer extends Component {

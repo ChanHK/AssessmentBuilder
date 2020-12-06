@@ -1,23 +1,31 @@
 import React, { Component } from "react";
+
 import { StyleSheet } from "aphrodite";
+
 import Header from "../../components/Header";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
+
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import "../../css/general.css";
+
 import QuestionType from "./Data/QuestionType";
+
 import Dropdown from "../../components/Dropdown";
 import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
-import * as configStyles from "../../config/styles";
 import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
 import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
+
+import * as configStyles from "../../config/styles";
 
 import { EditorState, convertToRaw } from "draft-js";
 // import draftToHtml from "draftjs-to-html";

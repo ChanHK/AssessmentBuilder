@@ -1,22 +1,30 @@
 import React, { Component } from "react";
+
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import CustomInput from "../../components/CustomInput";
+import Dropdown from "../../components/Dropdown";
+import Avatar from "../../components/Avatar";
+import DragDrop from "../../components/DragDrop";
+import UploadButton from "../../components/UploadButton";
+
 import { StyleSheet, css } from "aphrodite";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
-import CustomInput from "../../components/CustomInput";
+
 import "../../css/general.css";
-import Dropdown from "../../components/Dropdown";
+
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
+
 import * as configStyles from "../../config/styles";
-import Avatar from "../../components/Avatar";
-import DragDrop from "../../components/DragDrop";
+
 import DragImage from "../../image/profile/drag.png";
-import UploadButton from "../../components/UploadButton";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -31,6 +39,7 @@ class EditProfileContainer extends Component {
       fileRejected: false,
     };
   }
+  
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };

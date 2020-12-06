@@ -1,15 +1,20 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Header from "../../components/Header";
+import TextArea from "../../components/TextArea";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import "../../css/general.css";
-import SecondLabel from "../../components/LabelComponent/SecondLabel";
-import TextArea from "../../components/TextArea";
-import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomRow from "../../components/GridComponents/CustomRow";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+
+import "../../css/general.css";
 
 class EditQuestionContainer extends Component {
   constructor() {

@@ -1,15 +1,20 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import Wrapper from "../../components/Wrapper";
 
 import "../../css/general.css";
+
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import * as configStyles from "../../config/styles";
+
 import QRCode from "qrcode.react";
+import { ExcelRenderer } from "react-excel-renderer";
+
 import generator from "generate-password";
 
 import Number from "./Data/Number";
@@ -24,8 +29,7 @@ import Table from "../../components/Table";
 import CustomInput from "../../components/CustomInput";
 import TableButton from "../../components/TableButton";
 import ClickCopy from "../../components/ClickCopy";
-
-import { ExcelRenderer } from "react-excel-renderer";
+import Wrapper from "../../components/Wrapper";
 
 class AccessContainer extends Component {
   constructor() {

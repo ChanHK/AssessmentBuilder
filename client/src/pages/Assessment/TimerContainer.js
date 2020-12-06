@@ -1,19 +1,24 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Radio from "../../components/Radio";
+
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import * as configStyles from "../../config/styles";
+
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import Dropdown from "../../components/Dropdown";
 import Wrapper from "../../components/Wrapper";
+import CustomDatePicker from "../../components/CustomDatePicker";
+import Button from "../../components/Button";
 
 import Hour from "./Data/Hour";
 import MinuteSeconds from "./Data/MinuteSeconds";
-
-import CustomDatePicker from "../../components/CustomDatePicker";
-import Button from "../../components/Button";
 
 class TimerContainer extends Component {
   constructor() {

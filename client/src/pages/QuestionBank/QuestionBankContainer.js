@@ -1,20 +1,28 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Header from "../../components/Header";
+import Wrapper from "../../components/Wrapper";
+import Dropdown from "../../components/Dropdown";
+import SearchBar from "../../components/SearchBar";
+import Button from "../../components/Button";
+import Table from "../../components/Table";
+import TableButton from "../../components/TableButton";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import Wrapper from "../../components/Wrapper";
-import Dropdown from "../../components/Dropdown";
-import QuestionType from "./Data/QuestionType";
-import SearchBar from "../../components/SearchBar";
-import "../../css/general.css";
-import Button from "../../components/Button";
-import Table from "../../components/Table";
-import * as configStyles from "../../config/styles";
-import TableButton from "../../components/TableButton";
 import CustomRow from "../../components/GridComponents/CustomRow";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+
+import QuestionType from "./Data/QuestionType";
+
+import "../../css/general.css";
+
+import * as configStyles from "../../config/styles";
+
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
 

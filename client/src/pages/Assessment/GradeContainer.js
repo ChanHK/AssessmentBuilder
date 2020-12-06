@@ -1,16 +1,23 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Header from "../../components/Header";
-import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
-import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
-import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import "../../css/general.css";
-import SecondLabel from "../../components/LabelComponent/SecondLabel";
-import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import TextArea from "../../components/TextArea";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
+
+import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
+import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
+import CustomColumn from "../../components/GridComponents/CustomColumn";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+
+import "../../css/general.css";
+
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import * as configStyles from "../../config/styles";
 
 export default class GradeContainer extends Component {

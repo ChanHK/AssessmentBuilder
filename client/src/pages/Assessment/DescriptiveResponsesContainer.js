@@ -1,16 +1,21 @@
 import React, { Component } from "react";
+
 import { StyleSheet } from "aphrodite";
+
 import Header from "../../components/Header";
+import Table from "../../components/Table";
+import SearchBar from "../../components/SearchBar";
+import TableButton from "../../components/TableButton";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import "../../css/general.css";
-// import SecondLabel from "../../components/LabelComponent/SecondLabel";
-import Table from "../../components/Table";
-import SearchBar from "../../components/SearchBar";
 import CustomRow from "../../components/GridComponents/CustomRow";
-import TableButton from "../../components/TableButton";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+// import SecondLabel from "../../components/LabelComponent/SecondLabel";
+
+import "../../css/general.css";
 
 const data = [
   { qd: "aaaaaaaaaaaaaaaaaaaa" },

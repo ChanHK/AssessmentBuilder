@@ -1,19 +1,25 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+import CustomRow from "../../components/GridComponents/CustomRow";
+
 import "../../css/general.css";
+
 import CustomInput from "../../components/CustomInput";
-import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import TextArea from "../../components/TextArea";
 import Button from "../../components/Button";
 import CustomSwitch from "../../components/CustomSwitch";
-import * as configStyles from "../../config/styles";
-import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
-import CustomRow from "../../components/GridComponents/CustomRow";
 import CustomEditor from "../../components/CustomEditor";
 import Wrapper from "../../components/Wrapper";
 import Dropdown from "../../components/Dropdown";
 import Range from "../../components/Range";
+
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
+import * as configStyles from "../../config/styles";
 
 const unitOptions = [{ value: "percentage %" }, { value: "points p." }];
 
