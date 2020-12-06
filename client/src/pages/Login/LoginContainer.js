@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     boxShadow: "0 3px 20px 0px rgba(0, 0, 0, 0.1)",
     width: "500px",
-    minHeight: "50%",
     borderRadius: "5px",
     display: "flex",
     padding: "20px",

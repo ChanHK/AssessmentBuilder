@@ -11,7 +11,7 @@ const CustomTitle = (props) => (
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "30%",
+    height: "80px",
     justifyContent: "center",
     alignItems: "center",
     display: "flex",

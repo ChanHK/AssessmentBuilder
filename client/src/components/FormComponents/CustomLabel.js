@@ -1,10 +1,8 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Form } from "react-bootstrap";
 
 const CustomLabel = (props) => (
-  <Form.Label className={css(styles.style)}>{props.children}</Form.Label>
+  <h6 className={css(styles.style)}>{props.children}</h6>
 );
 
 const styles = StyleSheet.create({

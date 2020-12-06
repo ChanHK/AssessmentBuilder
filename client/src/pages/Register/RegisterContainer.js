@@ -17,6 +17,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/auth.actions";
 
+import { isMobile } from "react-device-detect";
+
 class RegisterContainer extends Component {
   constructor() {
     super();
@@ -73,12 +75,23 @@ class RegisterContainer extends Component {
 
   render() {
     const { username, email, password, password2 } = this.state;
+    console.log(window.innerHeight);
     return (
       <div className={css(styles.background)}>
-        <div className={css(styles.whiteBox)}>
-          <CustomTitle>Sign Up</CustomTitle>
-
-          <form className={css(styles.form)} onSubmit={this.onSubmit}>
+        <div
+          className={css(styles.whiteBox)}
+          style={{
+            width: isMobile
+              ? window.innerHeight >= 1024
+                ? "500px"
+                : "100%"
+              : "500px",
+          }}
+        >
+          <form className={css(styles.formStyle)} onSubmit={this.onSubmit}>
+            <div style={{ marginTop: "50px" }}>
+              <CustomTitle>Sign Up</CustomTitle>
+            </div>
             <CustomSubLabel>Username</CustomSubLabel>
             <div style={{ paddingBottom: "25px" }}>
               <CustomInput
@@ -147,7 +160,7 @@ class RegisterContainer extends Component {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: "#e0e0e0",
+    backgroundColor: configStyles.colors.lightGrey,
     width: "100%",
     height: "100vh",
     justifyContent: "center",
@@ -155,23 +168,20 @@ const styles = StyleSheet.create({
     display: "flex",
   },
   whiteBox: {
-    backgroundColor: "white",
-    boxShadow: "0 3px 20px 0px rgba(0, 0, 0, 0.1)",
-    width: "500px",
-    minHeight: "70%",
+    backgroundColor: configStyles.colors.white,
     borderRadius: "5px",
+    boxShadow: "0 3px 20px 0px rgba(0, 0, 0, 0.1)",
     display: "flex",
-    padding: "20px",
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
   },
-  form: {
+  formStyle: {
     width: "80%",
     height: "70%",
     display: "flex",
-    padding: "30px 0px",
     flexDirection: "column",
+    margin: "50px 20px",
   },
   text: {
     color: configStyles.colors.black,
