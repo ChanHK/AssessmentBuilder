@@ -75,7 +75,7 @@ class RegisterContainer extends Component {
 
   render() {
     const { username, email, password, password2 } = this.state;
-    console.log(window.innerHeight);
+
     return (
       <div className={css(styles.background)}>
         <div

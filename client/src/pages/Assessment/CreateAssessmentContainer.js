@@ -20,12 +20,13 @@ import SettingsContainer from "./SettingsContainer";
 import TimerContainer from "./TimerContainer";
 import AccessContainer from "./AccessContainer";
 import QuestionsContainer from "./QuestionsContainer";
+import SetContainer from "./SetContainer";
 
 export default class CreateAssessmentContainer extends Component {
   constructor() {
     super();
     this.state = {
-      selected: "questions",
+      selected: "set",
     };
   }
 
@@ -51,7 +52,7 @@ export default class CreateAssessmentContainer extends Component {
 
               {selected === "settings" && <SettingsContainer />}
               {selected === "questions" && <QuestionsContainer />}
-              {selected === "set"}
+              {selected === "set" && <SetContainer />}
               {selected === "access" && <AccessContainer />}
               {selected === "timer" && <TimerContainer />}
             </CustomColumn>
