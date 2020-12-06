@@ -60,3 +60,11 @@ const styles = StyleSheet.create({
 });
 
 export default ImageUpload;
+{
+  /* <ImageUpload
+                      icon={false}
+                      singleImage={true}
+                      label={"Max file size: 1mb, accepted: jpg | png"}
+                      maxFileSize={1048576}
+                    /> */
+}

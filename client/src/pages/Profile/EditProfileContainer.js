@@ -12,58 +12,68 @@ import "../../css/general.css";
 import Dropdown from "../../components/Dropdown";
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
-import ImageUpload from "../../components/ImageUpload";
 import * as configStyles from "../../config/styles";
+import Avatar from "../../components/Avatar";
+import DragDrop from "../../components/DragDrop";
+import DragImage from "../../image/profile/drag.png";
+import UploadButton from "../../components/UploadButton";
 
 class EditProfileContainer extends Component {
   constructor() {
     super();
     this.state = {
-      username: null,
-      password: null,
+      image: DragImage,
+      username: "",
+      password: "",
       gender: null,
       birthYear: null,
-      occupation: null,
+      occupation: "",
+      fileRejected: false,
     };
   }
-
-  onChangeUsername = (e) => {
-    this.setState({ username: e.target.value });
-    // console.log(this.state.gender);
-    // need to double check again when submit
-  };
-
-  onChangePassword = (e) => {
-    this.setState({ password: e.target.value });
-    // console.log(this.state.gender);
-    // need to double check again when submit
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   onChangeGender = (e) => {
     this.setState({ gender: e.target.value });
-    // console.log(this.state.gender);
-    // need to double check again when submit
   };
 
   onChangeBirthYear = (e) => {
     this.setState({ birthYear: e.target.value });
-    // console.log(this.state.birthYear);
-    // need to double check again when submit
-  };
-
-  onChangeOccupation = (e) => {
-    this.setState({ occupation: e.target.value });
-    // console.log(this.state.birthYear);
-    // need to double check again when submit
   };
 
   handleClick = () => {
     this.props.history.push(`/profile`);
   };
 
+  handleDrop = (dropped) => {
+    this.setState({ image: dropped[0] });
+  };
+
+  onDropRejected = () => {
+    this.setState({ fileRejected: true });
+  };
+
+  onDropAccepted = () => {
+    this.setState({ fileRejected: false });
+  };
+
+  fileUploadHandler = (e) => {
+    this.setState({ image: e.target.files[0] });
+  };
+
   render() {
-    const { username, password, gender, birthYear, occupation } = this.state;
-    // console.log("rerenders");
+    const {
+      image,
+      username,
+      password,
+      gender,
+      birthYear,
+      occupation,
+      fileRejected,
+    } = this.state;
+
     return (
       <>
         <Header />
@@ -77,12 +87,28 @@ class EditProfileContainer extends Component {
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Profile Picture</SecondLabel>
-                    <ImageUpload
-                      icon={false}
-                      singleImage={true}
-                      label={"Max file size: 1mb, accepted: jpg | png"}
-                      maxFileSize={1048576}
-                    />
+                    <DragDrop
+                      onDrop={this.handleDrop}
+                      accept="image/jpeg,image/png"
+                      multiple={false}
+                      maxFiles={1}
+                      onDropRejected={this.onDropRejected}
+                      onDropAccepted={this.onDropAccepted}
+                      noClick={true}
+                    >
+                      <Avatar image={image} />
+                    </DragDrop>
+                    {fileRejected && (
+                      <p className={css(styles.p)}>
+                        Please select image in jpeg or png format
+                      </p>
+                    )}
+                    <div style={{ paddingTop: "10px" }}>
+                      <UploadButton
+                        onChange={this.fileUploadHandler}
+                        accept={"image/jpeg,image/png"}
+                      />
+                    </div>
                   </div>
                   <SecondLabel>Username</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
@@ -90,7 +116,7 @@ class EditProfileContainer extends Component {
                       name={"username"}
                       type={"text"}
                       placeholder={" Enter your username"}
-                      onChangeValue={this.onChangeUsername}
+                      onChangeValue={this.onChange}
                       value={username}
                     />
                   </div>
@@ -100,7 +126,7 @@ class EditProfileContainer extends Component {
                       name={"password"}
                       type={"text"}
                       placeholder={" Enter your password"}
-                      onChangeValue={this.onChangePassword}
+                      onChangeValue={this.onChange}
                       value={password}
                     />
                   </div>
@@ -130,7 +156,7 @@ class EditProfileContainer extends Component {
                       name={"occupation"}
                       type={"text"}
                       placeholder={" Enter your occupation"}
-                      onChangeValue={this.onChangeOccupation}
+                      onChangeValue={this.onChange}
                       value={occupation}
                     />
                   </div>
@@ -170,6 +196,10 @@ const styles = StyleSheet.create({
     padding: "40px",
     // boxShadow: "0px 3px 20px 0px",
     // boxShadowColor: configStyles.colors.lightGrey,
+  },
+  p: {
+    fontFamily: "Ubuntu-Regular",
+    color: "red",
   },
 });
 

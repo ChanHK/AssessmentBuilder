@@ -26,6 +26,7 @@ const UploadButton = (props) => {
         ref={hiddenFileInput}
         onChange={props.onChange}
         style={{ display: "none" }}
+        accept={props.accept}
       />
     </>
   );

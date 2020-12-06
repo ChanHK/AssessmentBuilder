@@ -310,7 +310,12 @@ class AccessContainer extends Component {
                   </Button>
                 </div>
                 <div className={css(styles.block)}>
-                  <UploadButton onChange={this.fileUploadHandler} />
+                  <UploadButton
+                    onChange={this.fileUploadHandler}
+                    accept={
+                      ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                    }
+                  />
                 </div>
               </Wrapper>
 
