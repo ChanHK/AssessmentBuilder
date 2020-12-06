@@ -1,26 +1,34 @@
 import React, { Component } from "react";
+
 import { StyleSheet, css } from "aphrodite";
+
 import Header from "../../components/Header";
-import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
-import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
-import CustomColumn from "../../components/GridComponents/CustomColumn";
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import StatusBox from "../../components/StatusBarComponents/StatusBox";
-import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
-import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
-import profile from "../../image/profile/dummyUser.png";
-import "../../css/general.css";
+import Table from "../../components/Table";
+import TableButton from "../../components/TableButton";
+import ScrollArrow from "../../components/ScrollArrow";
 import Wrapper from "../../components/Wrapper";
 import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Button";
-import * as configStyles from "../../config/styles";
-import Table from "../../components/Table";
+
+import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
+import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
+import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
+
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
+
+import StatusBox from "../../components/StatusBarComponents/StatusBox";
+import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
+import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
+
+import profile from "../../image/profile/dummyUser.png";
+
+import "../../css/general.css";
+
+import * as configStyles from "../../config/styles";
+
 // import * as MdIcons from "react-icons/md";
 // import * as BsIcons from "react-icons/bs";
-
-import TableButton from "../../components/TableButton";
-import ScrollArrow from "../../components/ScrollArrow";
 
 //tempory since this will be obtain from the store
 const data = [
