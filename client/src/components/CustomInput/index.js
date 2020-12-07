@@ -24,6 +24,7 @@ const CustomInput = (props) => (
     step={props.step}
     maxLength={props.maxLength}
     min={props.min}
+    max={props.max}
   />
 );
 

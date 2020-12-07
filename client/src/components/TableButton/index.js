@@ -15,6 +15,7 @@ const TabelButton = (props) => (
         width: props.width,
       }}
       onClick={props.onClick}
+      type={props.type ? props.type : "button"}
     >
       {props.children}
     </button>

@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    // backgroundColor: "plum",
   },
 });
 
