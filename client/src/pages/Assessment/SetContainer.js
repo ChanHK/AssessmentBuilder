@@ -8,6 +8,8 @@ import Wrapper from "../../components/Wrapper";
 import CustomInput from "../../components/CustomInput";
 import Dropdown from "../../components/Dropdown";
 import CustomSwitch from "../../components/CustomSwitch";
+import Table from "../../components/Table";
+import TableButton from "../../components/TableButton";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
@@ -26,8 +28,10 @@ class SetContainer extends Component {
       questionNum: "", // question number in a set
       setNum: null, // number of set that will be generated
       totalQuestionNumber: "", // total questions in Question section
-      definedTakeFromSectionSelected: false,
-      manualRandomSelected: false,
+      definedTakeFromSectionSelected: false, //take questions from diff sections
+      manualRandomSelected: false, // does the set questions choices need to randomize?
+
+      // stores all the questions n sections //demo
       questions: [
         [
           {
@@ -115,6 +119,56 @@ class SetContainer extends Component {
           },
         ],
       ],
+
+      //stores all the sets or questions
+      sets: [],
+      column: [
+        {
+          name: "Set",
+          selector: "setNo",
+          cell: (row) => (
+            <div>
+              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+                {row.setNo}
+              </div>
+            </div>
+          ),
+          width: "50px",
+        },
+        {
+          name: "Total questions",
+          selector: "totalQuestions",
+          cell: (row) => (
+            <div>
+              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+                {row.totalQuestions}
+              </div>
+            </div>
+          ),
+        },
+        {
+          name: "Max Score",
+          selector: "maxScore",
+          cell: (row) => (
+            <div>
+              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+                {row.maxScore}
+              </div>
+            </div>
+          ),
+        },
+        {
+          name: "Action",
+          selector: "action",
+          cell: (row) => (
+            <CustomRow>
+              <TableButton>Edit</TableButton>
+              <TableButton>View</TableButton>
+              <TableButton>Delete</TableButton>
+            </CustomRow>
+          ),
+        },
+      ],
     };
   }
 
@@ -190,6 +244,8 @@ class SetContainer extends Component {
       setNum,
       definedTakeFromSectionSelected,
       manualRandomSelected,
+      sets,
+      column,
       questions,
     } = this.state;
     // console.log(questions.length);
@@ -328,6 +384,13 @@ class SetContainer extends Component {
                 </CustomRow>
               </CustomColumn>
             </div>
+
+            <div style={{ marginTop: 20 }}>
+              <SecondLabel> Sets</SecondLabel>
+              <Table data={sets} columns={column} />
+            </div>
+
+            <div style={{ marginBottom: "500px" }}></div>
           </>
         )}
       </form>
