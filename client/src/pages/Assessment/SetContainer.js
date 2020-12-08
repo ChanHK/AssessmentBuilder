@@ -10,6 +10,7 @@ import Dropdown from "../../components/Dropdown";
 import CustomSwitch from "../../components/CustomSwitch";
 import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
+import Button from "../../components/Button";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
@@ -169,6 +170,9 @@ class SetContainer extends Component {
           ),
         },
       ],
+
+      //stores the number of questions that will be filter out from each sections
+      sectionFilterNum: [],
     };
   }
 
@@ -217,6 +221,7 @@ class SetContainer extends Component {
     this.setState({
       definedTakeFromSectionSelected: e.target.checked,
       randomTakeFromTotalSelected: false,
+      manualRandomSelected: e.target.checked,
     });
   };
 
@@ -231,6 +236,16 @@ class SetContainer extends Component {
 
   randomChoiceSelected = (e) => {
     this.setState({ manualRandomSelected: e });
+  };
+
+  onChangeSectionFilterNum = (e, index) => {
+    this.setState({
+      sectionFilterNum: [
+        ...this.state.sectionFilterNum.slice(0, index),
+        e.target.value,
+        ...this.state.sectionFilterNum.slice(index + 1),
+      ],
+    });
   };
 
   render() {
@@ -252,6 +267,8 @@ class SetContainer extends Component {
 
     let setNumOptions = [];
 
+    //limit set num to 10
+    //pass to dropdown
     for (let i = 0; i < 10; i++) {
       setNumOptions.push({
         value: i + 1,
@@ -358,17 +375,6 @@ class SetContainer extends Component {
                         </CustomColumn>
                       </div>
                     </Wrapper>
-                    <CustomRow>
-                      <CustomSwitch
-                        onChange={this.randomChoiceSelected}
-                        checked={manualRandomSelected}
-                      />
-                      <div style={{ marginLeft: "15px" }}>
-                        <ThirdLabel>
-                          Randomize the choices for each questions
-                        </ThirdLabel>
-                      </div>
-                    </CustomRow>
                   </div>
                 )}
                 <CustomRow>
@@ -382,7 +388,58 @@ class SetContainer extends Component {
                     <ThirdLabel>Filter questions from the sections</ThirdLabel>
                   </div>
                 </CustomRow>
+                {definedTakeFromSectionSelected && (
+                  <div className={css(styles.sectionCon)}>
+                    <CustomColumn>
+                      {questions.map((value, index) => (
+                        <div style={{ marginBottom: "15px" }}>
+                          <ThirdLabel textDecoration={"underline"}>
+                            Section {index + 1}
+                          </ThirdLabel>
+                          <CustomRow>
+                            <div className={css(styles.text)}>
+                              <ThirdLabel>Select</ThirdLabel>
+                            </div>
+                            <div style={{ width: "100px" }}>
+                              <CustomInput
+                                type={"text"}
+                                onChangeValue={(e) =>
+                                  this.onChangeSectionFilterNum(e, index)
+                                }
+                                value={sets[index]}
+                              />
+                            </div>
+                            <div className={css(styles.text)}>
+                              <ThirdLabel>
+                                out of {value.length} questions
+                              </ThirdLabel>
+                            </div>
+                          </CustomRow>
+                        </div>
+                      ))}
+                    </CustomColumn>
+                  </div>
+                )}
               </CustomColumn>
+              <CustomRow>
+                <CustomSwitch
+                  onChange={this.randomChoiceSelected}
+                  checked={manualRandomSelected}
+                />
+                <div style={{ marginLeft: "15px" }}>
+                  <ThirdLabel>
+                    Randomize the choices for each questions
+                  </ThirdLabel>
+                </div>
+              </CustomRow>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                type={"button"}
+              >
+                Generate
+              </Button>
             </div>
 
             <div style={{ marginTop: 20 }}>
@@ -421,6 +478,17 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  text: {
+    justifyContent: "center",
+    alignContent: "center",
+    display: "flex",
+    padding: 9,
+  },
+  sectionCon: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
   },
 });
 

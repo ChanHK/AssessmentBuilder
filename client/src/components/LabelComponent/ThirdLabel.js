@@ -8,6 +8,7 @@ const ThirdLabel = (props) => (
     style={{
       fontSize: props.fontSize ? props.fontSize : "18px",
       textDecorationLine: props.textDecorationLine,
+      textDecoration: props.textDecoration ? props.textDecoration : "none",
     }}
   >
     {props.children}
