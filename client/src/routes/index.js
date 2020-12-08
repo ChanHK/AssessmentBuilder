@@ -26,6 +26,8 @@ import {
   DescriptiveResponsesContainer,
 } from "../pages/Assessment";
 
+import { StartingPageContainer } from "../pages/StartAssessment";
+
 export default function Routes() {
   return (
     <Router>
@@ -81,6 +83,12 @@ export default function Routes() {
           path="/assessment/createAssessment"
           exact
           component={CreateAssessmentContainer}
+        />
+
+        <Route
+          path="/startAssessment/startingPage"
+          exact
+          component={StartingPageContainer}
         />
 
         {/* redirect user to SignIn page if route does not exist and user is not authenticated */}

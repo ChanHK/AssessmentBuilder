@@ -1,3 +1,3 @@
-import startingPageContainer from "./startingPageContainer";
+import StartingPageContainer from "./StartingPageContainer";
 
-export { startingPageContainer };
+export { StartingPageContainer };
