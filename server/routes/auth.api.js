@@ -4,9 +4,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
+const User = require("../models/user");
+
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
-const User = require("../models/user");
 
 // @route POST api/user/register
 // @desc Register user
