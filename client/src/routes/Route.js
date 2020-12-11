@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
+import store from "../config/store";
 
-export default function RouteWrapper({
-  component: Component,
-  isPrivate,
-  ...rest
-}) {
-  const signed = false; //can be change with redux
+const RouteWrapper = ({ component: Component, isPrivate, ...rest }) => {
+  const signed =
+    store.getState().auth.isAuthenticated === null
+      ? false
+      : store.getState().auth.isAuthenticated;
 
   /**
    * Redirect user to SignIn page if he tries to access a private route
@@ -29,7 +29,7 @@ export default function RouteWrapper({
    * If not included on both previous cases, redirect user to the desired route.
    */
   return <Route {...rest} component={Component} />;
-}
+};
 
 RouteWrapper.propTypes = {
   isPrivate: PropTypes.bool,
@@ -37,6 +37,4 @@ RouteWrapper.propTypes = {
     .isRequired,
 };
 
-RouteWrapper.defaultProps = {
-  isPrivate: false,
-};
+export default RouteWrapper;

@@ -1,23 +1,22 @@
 import React, { Component } from "react";
-
 import { StyleSheet, css } from "aphrodite";
+import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 import CustomTitle from "../../components/FormComponents/CustomTitle";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
-import "../../css/general.css";
-
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
-
-import * as configStyles from "../../config/styles";
 
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../../actions/auth.actions";
+import { register } from "../../actions/auth.actions";
 
 import { isMobile } from "react-device-detect";
+
+import { clearErrors } from "../../actions/error.actions";
 
 class RegisterContainer extends Component {
   constructor() {
@@ -27,6 +26,7 @@ class RegisterContainer extends Component {
       email: "",
       password: "",
       password2: "",
+      message: null,
     };
   }
 
@@ -35,6 +35,18 @@ class RegisterContainer extends Component {
       this.props.history.push("/home");
     }
   }
+
+  // componentDidUpdate(prevProps) {
+  //   const { errors } = this.props;
+  //   if (errors !== prevProps.error) {
+  //     //check for register error
+  //     if (errors.id === "REGISTER_FAIL") {
+  //       this.setState({ message: errors.message.message });
+  //     } else {
+  //       this.setState({ message: null });
+  //     }
+  //   }
+  // }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
@@ -62,16 +74,8 @@ class RegisterContainer extends Component {
     console.log(newUser);
     e.preventDefault();
 
-    if (this.validateForm()) {
-      this.props.registerUser(newUser, this.props.history);
-    }
+    this.props.register(newUser);
   };
-
-  validateForm() {
-    //// write validation here
-
-    return true;
-  }
 
   render() {
     const { username, email, password, password2 } = this.state;
@@ -213,16 +217,19 @@ const styles = StyleSheet.create({
 });
 
 RegisterContainer.propTypes = {
-  registerUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
   auth: PropTypes.object.isRequired,
+  register: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
   auth: state.auth,
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { registerUser })(
+export default connect(mapStateToProps, { register, clearErrors })(
   withRouter(RegisterContainer)
 );

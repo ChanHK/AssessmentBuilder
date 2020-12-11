@@ -1,18 +1,27 @@
-import React from "react";
+import React, { Component } from "react";
 import { Router } from "react-router-dom";
-import { connect } from "react-redux";
+import { Provider } from "react-redux";
 
 import history from "./services/history";
 import Routes from "./routes";
+import store from "./config/store";
+import { loadUser } from "./actions/auth.actions";
 
-function App() {
-  return (
-    <Router history={history}>
-      <Routes />
-    </Router>
-  );
+class App extends Component {
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <Routes />
+        </Router>
+      </Provider>
+    );
+  }
 }
 
-export default connect()(App);
+export default App;
 
 //https://medium.com/javascript-in-plain-english/routing-and-navigation-in-react-cffc26e8a389

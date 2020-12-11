@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-
 import { StyleSheet, css } from "aphrodite";
-
 import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 import CustomTitle from "../../components/FormComponents/CustomTitle";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
@@ -10,11 +9,9 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 
-import * as configStyles from "../../config/styles";
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { loginUser } from "../../actions/auth.actions";
+import { login } from "../../actions/auth.actions";
 
 class LoginContainer extends Component {
   constructor() {
@@ -54,20 +51,13 @@ class LoginContainer extends Component {
     console.log(this.state.email, this.state.password);
     e.preventDefault();
 
-    if (this.validateForm()) {
-      const userData = {
-        email: this.state.email,
-        password: this.state.password,
-      };
-      this.props.loginUser(userData);
-    }
+    const userData = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+    
+    this.props.login(userData);
   };
-
-  validateForm() {
-    //// write validation here
-
-    return true;
-  }
 
   render() {
     const { email, password } = this.state;
@@ -177,7 +167,7 @@ const styles = StyleSheet.create({
 });
 
 LoginContainer.propTypes = {
-  loginUser: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
 };
@@ -187,4 +177,4 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { loginUser })(LoginContainer);
+export default connect(mapStateToProps, { login })(LoginContainer);

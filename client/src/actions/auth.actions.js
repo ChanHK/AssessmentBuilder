@@ -1,62 +1,131 @@
 import axios from "axios";
-import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
-import { SAMPLE } from "../utils/actionTypes";
 
-// Register User
-export const registerUser = (userData, history) => (dispatch) => {
-  axios
-    .post("/api/user/register", userData)
-    .then((res) => history.push("/home"))
-    .catch((err) =>
+import { returnErrors } from "./error.actions";
+
+import {
+  USER_LOADED,
+  USER_LOADING,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT_SUCCESS,
+  REQISTER_SUCCESS,
+  REQISTER_FAIL,
+} from "../utils/actionTypes";
+
+// Check token & load user
+export const loadUser = () => (dispatch, getState) => {
+  // user loading
+  dispatch({ type: USER_LOADING });
+
+  // get token from localstorage
+  const token = getState().auth.token;
+
+  // headers
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  // if token, add to headers
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+
+  axios.get("/api/user/user", tokenConfig(getState)).then((res) =>
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    }).catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
-        type: SAMPLE.GET_ERRORS,
-        payload: err.response.data,
-      })
-    );
-};
-// Login - get user token
-export const loginUser = (userData) => (dispatch) => {
-  axios
-    .post("/api/user/login", userData)
-    .then((res) => {
-      // Save to localStorage
-      // Set token to localStorage
-      const { token } = res.data;
-      localStorage.setItem("jwtToken", token);
-      // Set token to Auth header
-      setAuthToken(token);
-      // Decode token to get user data
-      const decoded = jwt_decode(token);
-      // Set current user
-      dispatch(setCurrentUser(decoded));
+        type: AUTH_ERROR,
+      });
     })
-    .catch((err) =>
+  );
+};
+
+// register user
+export const register = (data) => (dispatch) => {
+  // headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  // request body
+  // const body = JSON.stringify({ data });
+
+  axios
+    .post("api/user/register", data, config)
+    .then((res) =>
       dispatch({
-        type: SAMPLE.GET_ERRORS,
-        payload: err.response.data,
+        type: REQISTER_SUCCESS,
+        payload: res.data,
       })
-    );
+    )
+    .catch((err) => {
+      dispatch(
+        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
+      );
+      dispatch({
+        type: REQISTER_FAIL,
+      });
+    });
 };
-// Set logged in user
-export const setCurrentUser = (decoded) => {
+
+// setup config/headers $ token
+export const tokenConfig = (getState) => {
+  // get token from localstorage
+  const token = getState().auth.token;
+
+  // headers
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+    },
+  };
+
+  // if token, add to headers
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+
+  return config;
+};
+
+// logout
+export const logout = () => {
   return {
-    type: SAMPLE.SET_CURRENT_USER,
-    payload: decoded,
+    type: LOGOUT_SUCCESS,
   };
 };
-// User loading
-export const setUserLoading = () => {
-  return {
-    type: SAMPLE.USER_LOADING,
+
+// login user
+export const login = (data) => (dispatch) => {
+  // headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
   };
-};
-// Log user out
-export const logoutUser = () => (dispatch) => {
-  // Remove token from local storage
-  localStorage.removeItem("jwtToken");
-  // Remove auth header for future requests
-  setAuthToken(false);
-  // Set current user to empty object {} which will set isAuthenticated to false
-  dispatch(setCurrentUser({}));
+
+  axios
+    .post("api/user/login", data, config)
+    .then((res) =>
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      dispatch(
+        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
+      );
+      dispatch({
+        type: LOGIN_FAIL,
+      });
+    });
 };
