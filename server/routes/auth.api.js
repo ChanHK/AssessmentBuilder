@@ -3,15 +3,16 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
+const auth = require("../middleware/auth");
 
 const User = require("../models/user");
 
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
 
-// @route POST api/user/register
-// @desc Register user
-// @access Public
+// @route     POST api/user/register
+// @desc      Register user and return JWT token
+// @access    Public
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
@@ -36,9 +37,21 @@ router.post("/register", (req, res) => {
           newUser.password = hash;
           newUser
             .save()
-            .then(
-              res.status(200).json({ message: "Account created successfully" })
-            )
+            .then((user) => {
+              jwt.sign(
+                { id: user.id },
+                keys.secretOrKey,
+                {
+                  expiresIn: 7200, //2 hours in second
+                },
+                (err, token) => {
+                  if (err) throw err;
+                  res.json({
+                    token: "Bearer " + token,
+                  });
+                }
+              );
+            })
             .catch((err) => console.log(err));
         });
       });
@@ -46,9 +59,18 @@ router.post("/register", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// @route POST api/user/login
-// @desc Login user and return JWT token
-// @access Public
+// @route     Get api/user/register
+// @desc      Get user data
+// @access    Private
+router.get("/user", auth, (req, res) => {
+  User.findById(req.user.id)
+    .select("-password")
+    .then((user) => res.json(user));
+});
+
+// @route     POST api/user/login
+// @desc      Login user and return JWT token
+// @access    Public
 router.post("/login", (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
@@ -60,7 +82,7 @@ router.post("/login", (req, res) => {
 
   User.findOne({ email }).then((user) => {
     if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "User does not exist" });
     }
 
     bcrypt
@@ -69,24 +91,23 @@ router.post("/login", (req, res) => {
         if (isMatch) {
           const payload = {
             id: user.id,
-            username: user.username,
           };
 
           jwt.sign(
             payload,
             keys.secretOrKey,
             {
-              expiresIn: 31556926, // 1 year in seconds
+              expiresIn: 7200, //2 hours in second
             },
             (err, token) => {
+              if (err) throw err;
               res.json({
-                success: true,
                 token: "Bearer " + token,
               });
             }
           );
         } else {
-          return res.status(400).json({ message: "Invalid password" });
+          return res.status(400).json({ message: "Invalid credentials" });
         }
       })
       .catch((err) => console.log(err));
