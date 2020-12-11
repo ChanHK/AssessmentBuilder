@@ -1,41 +1,28 @@
 const express = require("express");
-const app = express();
-const port = process.env.PORT || 5000;
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
-require("dotenv").config();
+const authUser = require("./routes/api/auth.api");
 
-const passport = require("passport");
-const authUser = require("./routes/auth.api");
+const app = express();
 
-//connect to the database
-mongoose
-  .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log(`Database connected successfully`))
-  .catch((err) => console.log(err));
-
-app.use(
-  bodyParser.urlencoded({
-    extended: false,
-  })
-);
-
+// Bodyparser Middleware
 app.use(bodyParser.json());
 
-// Passport middleware
-app.use(passport.initialize());
+// DB config
+const db = require("./config/keys").mongoURI;
+// require("dotenv").config();
 
-// Passport config
-require("./config/passport")(passport);
+// connect to mongo
+mongoose
+  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log(`MongoDB connected successfully`))
+  .catch((err) => console.log(err));
 
-// Routes
+// use Routes
 app.use("/api/user", authUser);
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  next();
-});
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

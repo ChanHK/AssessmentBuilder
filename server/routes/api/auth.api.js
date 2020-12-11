@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
-const auth = require("../middleware/auth");
+const keys = require("../../config/keys");
+const auth = require("../../middleware/auth");
 
-const User = require("../models/user");
+const User = require("../../models/user");
 
-const validateRegisterInput = require("../validation/register");
-const validateLoginInput = require("../validation/login");
+const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // @route     POST api/user/register
 // @desc      Register user and return JWT token
