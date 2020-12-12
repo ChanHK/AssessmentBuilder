@@ -7,6 +7,8 @@ import * as configStyles from "../../config/styles";
 import { connect } from "react-redux";
 import { logout } from "../../actions/auth.actions";
 
+import * as HiIcons from "react-icons/hi";
+
 class NavSideBar extends Component {
   constructor(props) {
     super(props);
@@ -60,6 +62,23 @@ class NavSideBar extends Component {
                 </li>
               );
             })}
+            <li
+              key={Data.length + 1}
+              className={css(styles.listIcon)}
+              onClick={() => this.props.logout()}
+            >
+              <Link
+                type={"hoverLogOut"}
+                className={css(
+                  styles.listIconText,
+                  styles.noSelect,
+                  styles.hover
+                )}
+              >
+                <HiIcons.HiOutlineLogout />
+                <span style={{ marginLeft: "16px" }}>Log Out</span>
+              </Link>
+            </li>
           </div>
         </nav>
       </>

@@ -31,7 +31,6 @@ export const loadUser = () => (dispatch, getState) => {
 
 // register user
 export const register = (data) => (dispatch) => {
-  // headers
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -61,7 +60,6 @@ export const tokenConfig = (getState) => {
   // get token from localstorage
   const token = getState().auth.token;
 
-  // headers
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -77,16 +75,15 @@ export const tokenConfig = (getState) => {
 };
 
 // logout
-export const logout = () => {
+export const logout = () => (dispatch) => {
   console.log("logout");
-  return {
+  dispatch({
     type: LOGOUT.LOGOUT_SUCCESS,
-  };
+  });
 };
 
 // login user
 export const login = (data) => (dispatch) => {
-  // headers
   const config = {
     headers: {
       "Content-Type": "application/json",

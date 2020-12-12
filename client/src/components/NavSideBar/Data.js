@@ -2,7 +2,6 @@ import React from "react";
 import * as MdIcons from "react-icons/md";
 import * as CgIcons from "react-icons/cg";
 import * as RiIcons from "react-icons/ri";
-import * as HiIcons from "react-icons/hi";
 
 export const Data = [
   {
@@ -22,11 +21,5 @@ export const Data = [
     path: "/questionBank",
     icon: <RiIcons.RiBankFill />,
     hoverName: "hoverQuestionBank",
-  },
-  {
-    title: "Log Out",
-    path: `this.props.logout`,
-    icon: <HiIcons.HiOutlineLogout />,
-    hoverName: "hoverLogOut",
   },
 ];
