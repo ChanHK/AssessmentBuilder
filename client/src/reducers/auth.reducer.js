@@ -1,23 +1,52 @@
-import { SAMPLE } from "../utils/actionTypes";
+import {
+  USER_LOADED,
+  USER_LOADING,
+  AUTH_ERROR,
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+} from "../utils/actionTypes";
 
-const isEmpty = require("is-empty");
 const initialState = {
-  isAuthenticated: false,
-  user: {},
-  loading: false,
+  token: localStorage.getItem("token"),
+  isAuthenticated: null,
+  isLoading: false,
+  user: null,
 };
+
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SAMPLE.SET_CURRENT_USER:
+    case USER_LOADING:
       return {
         ...state,
-        isAuthenticated: !isEmpty(action.payload),
+        isLoading: true,
+      };
+    case USER_LOADED:
+      return {
+        ...state,
+        isAuthenticated: true,
+        isLoading: false,
         user: action.payload,
       };
-    case SAMPLE.USER_LOADING:
+    case LOGIN.LOGIN_SUCCESS:
+    case REGISTER.REQISTER_SUCCESS:
+      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        loading: true,
+        ...action.payload,
+        isAuthenticated: true,
+        isLoading: false,
+      };
+    case AUTH_ERROR:
+    case LOGIN.LOGIN_FAIL:
+    case LOGOUT.LOGOUT_SUCCESS:
+    case REGISTER.REQISTER_FAIL:
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        token: null,
+        isAuthenticated: false,
+        isLoading: false,
       };
     default:
       return state;

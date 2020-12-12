@@ -2,34 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 
-export default function RouteWrapper({
-  component: Component,
-  isPrivate,
-  ...rest
-}) {
-  const signed = false; //can be change with redux
+const RouteWrapper = ({ component: Component, isPrivate, ...rest }) => {
+  const logged = localStorage.getItem("token") ? true : false;
+  console.log(localStorage.getItem("token"));
+  console.log(logged);
 
-  /**
-   * Redirect user to SignIn page if he tries to access a private route
-   * without authentication.
-   */
-  if (isPrivate && !signed) {
+  // if user have not logged in, direct to register page
+  if (isPrivate && !logged) {
     return <Redirect to="/" />;
   }
 
-  /**
-   * Redirect user to Main page if he tries to access a non private route
-   * (SignIn or SignUp) after being authenticated.
-   */
-  if (!isPrivate && signed) {
+  // direct user to home if the user wants to go back to register/ log in page after authentication
+  if (!isPrivate && logged) {
     return <Redirect to="/home" />;
   }
 
-  /**
-   * If not included on both previous cases, redirect user to the desired route.
-   */
+  // else the user can go anywhere they want
   return <Route {...rest} component={Component} />;
-}
+};
 
 RouteWrapper.propTypes = {
   isPrivate: PropTypes.bool,
@@ -37,6 +27,4 @@ RouteWrapper.propTypes = {
     .isRequired,
 };
 
-RouteWrapper.defaultProps = {
-  isPrivate: false,
-};
+export default RouteWrapper;

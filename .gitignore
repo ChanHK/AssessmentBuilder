@@ -28,3 +28,4 @@ yarn-error.log*
 
 # visual studios configurations
 .vs
+client/debug.log
