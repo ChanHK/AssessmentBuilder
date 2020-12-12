@@ -1,4 +1,4 @@
-import { GET_ERRORS, CLEAR_ERRORS } from "../utils/actionTypes";
+import { ERROR } from "../utils/actionTypes";
 
 const initialState = {
   message: {}, //come from server
@@ -8,13 +8,13 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case GET_ERRORS:
+    case ERROR.GET_ERRORS:
       return {
         message: action.payload.message,
         status: action.payload.status,
         id: action.payload.id,
       };
-    case CLEAR_ERRORS:
+    case ERROR.CLEAR_ERRORS:
       return {
         message: {},
         status: null,
