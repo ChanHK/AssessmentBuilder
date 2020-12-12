@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { register } from "../../actions/auth.actions";
 
 import { isMobile } from "react-device-detect";
+import * as IoIcons from "react-icons/io";
 
 import { clearErrors } from "../../actions/error.actions";
 
@@ -26,6 +27,8 @@ class RegisterContainer extends Component {
       email: "",
       password: "",
       password2: "",
+      showPassword: false,
+      showPassword2: false,
       message: null,
     };
   }
@@ -60,6 +63,14 @@ class RegisterContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  toggleEye = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+
+  toggleEye2 = () => {
+    this.setState({ showPassword2: !this.state.showPassword2 });
+  };
+
   goToLogin = () => {
     this.props.history.push("/login");
   };
@@ -78,7 +89,14 @@ class RegisterContainer extends Component {
   };
 
   render() {
-    const { username, email, password, password2 } = this.state;
+    const {
+      username,
+      email,
+      password,
+      password2,
+      showPassword,
+      showPassword2,
+    } = this.state;
 
     return (
       <div className={css(styles.background)}>
@@ -117,24 +135,44 @@ class RegisterContainer extends Component {
               />
             </div>
             <CustomSubLabel>Password</CustomSubLabel>
-            <div style={{ paddingBottom: "25px" }}>
+            <div
+              style={{ paddingBottom: "25px" }}
+              className={css(styles.passWrapper)}
+            >
               <CustomInput
                 name={"password"}
-                type={"password"}
+                type={showPassword ? "text" : "password"}
                 onChangeValue={this.onChange}
                 placeholder={"Enter your password"}
                 value={password}
               />
+              <i className={css(styles.i)} onClick={this.toggleEye}>
+                {showPassword ? (
+                  <IoIcons.IoMdEye size={20} />
+                ) : (
+                  <IoIcons.IoMdEyeOff size={20} />
+                )}
+              </i>
             </div>
             <CustomSubLabel>Reenter password</CustomSubLabel>
-            <div style={{ paddingBottom: "25px" }}>
+            <div
+              style={{ paddingBottom: "25px" }}
+              className={css(styles.passWrapper)}
+            >
               <CustomInput
                 name={"password2"}
-                type={"password"}
+                type={showPassword2 ? "text" : "password"}
                 onChangeValue={this.onChange}
                 placeholder={"Reenter your password"}
                 value={password2}
               />
+              <i className={css(styles.i)} onClick={this.toggleEye2}>
+                {showPassword2 ? (
+                  <IoIcons.IoMdEye size={20} />
+                ) : (
+                  <IoIcons.IoMdEyeOff size={20} />
+                )}
+              </i>
             </div>
             <div style={{ paddingBottom: "25px" }}>
               <Button
@@ -213,6 +251,20 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  passWrapper: {
+    position: "relative",
+    display: "flex",
+    marginBottom: "14px",
+  },
+  i: {
+    position: "absolute",
+    top: "14%",
+    right: "5%",
+    ":hover": {
+      color: configStyles.colors.lightBlue,
+    },
+    cursor: "pointer",
   },
 });
 
