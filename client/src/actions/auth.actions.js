@@ -16,17 +16,20 @@ export const loadUser = () => (dispatch, getState) => {
   // user loading
   dispatch({ type: USER_LOADING });
 
-  axios.get("/api/user/user", tokenConfig(getState)).then((res) =>
-    dispatch({
-      type: USER_LOADED,
-      payload: res.data,
-    }).catch((err) => {
+  axios
+    .get("/api/auth/user", tokenConfig(getState))
+    .then((res) =>
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: AUTH_ERROR,
       });
-    })
-  );
+    });
 };
 
 // register user
@@ -38,7 +41,7 @@ export const register = (data) => (dispatch) => {
   };
 
   axios
-    .post("api/user/register", data, config)
+    .post("api/auth/register", data, config)
     .then((res) =>
       dispatch({
         type: REGISTER.REQISTER_SUCCESS,
@@ -91,7 +94,7 @@ export const login = (data) => (dispatch) => {
   };
 
   axios
-    .post("api/user/login", data, config)
+    .post("api/auth/login", data, config)
     .then((res) =>
       dispatch({
         type: LOGIN.LOGIN_SUCCESS,

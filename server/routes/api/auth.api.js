@@ -10,7 +10,7 @@ const User = require("../../models/user");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 
-// @route     POST api/user/register
+// @route     POST api/auth/register
 // @desc      Register user and return JWT token
 // @access    Public
 router.post("/register", (req, res) => {
@@ -59,7 +59,7 @@ router.post("/register", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// @route     Get api/user/register
+// @route     Get api/auth/register
 // @desc      Get user data
 // @access    Private
 router.get("/user", auth, (req, res) => {
@@ -68,7 +68,7 @@ router.get("/user", auth, (req, res) => {
     .then((user) => res.json(user));
 });
 
-// @route     POST api/user/login
+// @route     POST api/auth/login
 // @desc      Login user and return JWT token
 // @access    Public
 router.post("/login", (req, res) => {
@@ -97,7 +97,7 @@ router.post("/login", (req, res) => {
             payload,
             keys.secretOrKey,
             {
-              expiresIn: 7200, //2 hours in second
+              expiresIn: "1m", //2 hours in second
             },
             (err, token) => {
               if (err) throw err;
