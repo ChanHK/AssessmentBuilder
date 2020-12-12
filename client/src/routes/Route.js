@@ -4,8 +4,8 @@ import { Route, Redirect } from "react-router-dom";
 
 const RouteWrapper = ({ component: Component, isPrivate, ...rest }) => {
   const logged = localStorage.getItem("token") ? true : false;
-  console.log(localStorage.getItem("token"));
-  console.log(logged);
+  // console.log(localStorage.getItem("token"));
+  // console.log(logged);
 
   // if user have not logged in, direct to register page
   if (isPrivate && !logged) {
