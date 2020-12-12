@@ -239,7 +239,6 @@ const styles = StyleSheet.create({
     },
     ":active": {
       color: configStyles.colors.lightBlue,
-      fontSize: "12px",
     },
   },
   textCon: {

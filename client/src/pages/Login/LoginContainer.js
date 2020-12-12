@@ -132,14 +132,6 @@ class LoginContainer extends Component {
                 Forgot password
               </h6>
             </div>
-            {/* <div className={css(styles.textCon)}>
-              <h6
-                className={css(styles.text, styles.noSelect)}
-                onClick={this.forgotPassword}
-              >
-                Forgot Password ?
-              </h6>
-            </div> */}
           </form>
         </div>
       </div>
@@ -184,7 +176,6 @@ const styles = StyleSheet.create({
     },
     ":active": {
       color: configStyles.colors.lightBlue,
-      fontSize: "12px",
     },
   },
   slash: {
