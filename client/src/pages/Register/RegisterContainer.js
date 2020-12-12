@@ -29,36 +29,24 @@ class RegisterContainer extends Component {
       password2: "",
       showPassword: false,
       showPassword2: false,
-      message: null,
+      msg: null,
     };
   }
 
   componentDidMount() {
-    console.log("authenticate", this.props.auth.isAuthenticated);
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const { errors } = this.props;
-  //   if (errors !== prevProps.error) {
-  //     //check for register error
-  //     if (errors.id === "REGISTER_FAIL") {
-  //       this.setState({ message: errors.message.message });
-  //     } else {
-  //       this.setState({ message: null });
-  //     }
-  //   }
-  // }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
+
     if (nextProps.errors) {
       this.setState({
-        errors: nextProps.errors,
+        msg: nextProps.errors.message,
       });
     }
   }
@@ -86,7 +74,7 @@ class RegisterContainer extends Component {
       password: this.state.password,
       password2: this.state.password2,
     };
-    console.log(newUser);
+    // console.log(newUser);
     e.preventDefault();
 
     this.props.register(newUser);
@@ -100,22 +88,32 @@ class RegisterContainer extends Component {
       password2,
       showPassword,
       showPassword2,
+      msg,
     } = this.state;
 
     return (
-      <div className={css(styles.background)}>
+      <div
+        className={css(styles.background)}
+        style={{
+          minHeight: isMobile
+            ? window.innerWidth >= 1024
+              ? "100vh"
+              : "auto"
+            : "100vh",
+        }}
+      >
         <div
           className={css(styles.whiteBox)}
           style={{
             width: isMobile
-              ? window.innerHeight >= 1024
+              ? window.innerWidth >= 1024
                 ? "500px"
                 : "100%"
               : "500px",
           }}
         >
           <form className={css(styles.formStyle)} onSubmit={this.onSubmit}>
-            <div style={{ marginTop: "50px" }}>
+            <div style={{ marginTop: "30px" }}>
               <CustomTitle>Sign Up</CustomTitle>
             </div>
             <CustomSubLabel>Username</CustomSubLabel>
@@ -127,6 +125,14 @@ class RegisterContainer extends Component {
                 placeholder={"Enter your username"}
                 value={username}
               />
+
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("username")
+                  ? "*" + msg.username
+                  : null}
+              </span>
             </div>
             <CustomSubLabel>Email</CustomSubLabel>
             <div style={{ paddingBottom: "25px" }}>
@@ -137,48 +143,74 @@ class RegisterContainer extends Component {
                 placeholder={"Enter your email"}
                 value={email}
               />
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("email")
+                  ? "*" + msg.email
+                  : null}
+              </span>
             </div>
             <CustomSubLabel>Password</CustomSubLabel>
-            <div
-              style={{ paddingBottom: "25px" }}
-              className={css(styles.passWrapper)}
-            >
-              <CustomInput
-                name={"password"}
-                type={showPassword ? "text" : "password"}
-                onChangeValue={this.onChange}
-                placeholder={"Enter your password"}
-                value={password}
-              />
-              <i className={css(styles.i)} onClick={this.toggleEye}>
-                {showPassword ? (
-                  <IoIcons.IoMdEye size={20} />
-                ) : (
-                  <IoIcons.IoMdEyeOff size={20} />
-                )}
-              </i>
+            <div style={{ paddingBottom: "25px" }}>
+              <div className={css(styles.passWrapper)}>
+                <CustomInput
+                  name={"password"}
+                  type={showPassword ? "text" : "password"}
+                  onChangeValue={this.onChange}
+                  placeholder={"Enter your password"}
+                  value={password}
+                />
+                <i className={css(styles.i)} onClick={this.toggleEye}>
+                  {showPassword ? (
+                    <IoIcons.IoMdEye size={20} />
+                  ) : (
+                    <IoIcons.IoMdEyeOff size={20} />
+                  )}
+                </i>
+              </div>
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("password")
+                  ? "*" + msg.password
+                  : null}
+              </span>
             </div>
-            <CustomSubLabel>Reenter password</CustomSubLabel>
-            <div
-              style={{ paddingBottom: "25px" }}
-              className={css(styles.passWrapper)}
-            >
-              <CustomInput
-                name={"password2"}
-                type={showPassword2 ? "text" : "password"}
-                onChangeValue={this.onChange}
-                placeholder={"Reenter your password"}
-                value={password2}
-              />
-              <i className={css(styles.i)} onClick={this.toggleEye2}>
-                {showPassword2 ? (
-                  <IoIcons.IoMdEye size={20} />
-                ) : (
-                  <IoIcons.IoMdEyeOff size={20} />
-                )}
-              </i>
+            <CustomSubLabel>Confirm password</CustomSubLabel>
+            <div style={{ paddingBottom: "25px" }}>
+              <div className={css(styles.passWrapper)}>
+                <CustomInput
+                  name={"password2"}
+                  type={showPassword2 ? "text" : "password"}
+                  onChangeValue={this.onChange}
+                  placeholder={"Reenter your password"}
+                  value={password2}
+                />
+                <i className={css(styles.i)} onClick={this.toggleEye2}>
+                  {showPassword2 ? (
+                    <IoIcons.IoMdEye size={20} />
+                  ) : (
+                    <IoIcons.IoMdEyeOff size={20} />
+                  )}
+                </i>
+              </div>
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("password2")
+                  ? "*" + msg.password2
+                  : null}
+              </span>
             </div>
             <div style={{ paddingBottom: "25px" }}>
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("message")
+                  ? "*" + msg.message
+                  : null}
+              </span>
               <Button
                 backgroundColor={configStyles.colors.darkBlue}
                 color={configStyles.colors.white}
@@ -208,10 +240,10 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: configStyles.colors.lightGrey,
     width: "100%",
-    height: "100vh",
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
+    // minHeight: "-webkit-fill-available",
   },
   whiteBox: {
     backgroundColor: configStyles.colors.white,
@@ -221,6 +253,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "column",
+    height: "auto",
   },
   formStyle: {
     width: "80%",
@@ -258,7 +291,6 @@ const styles = StyleSheet.create({
   passWrapper: {
     position: "relative",
     display: "flex",
-    marginBottom: "14px",
   },
   i: {
     position: "absolute",
@@ -268,6 +300,11 @@ const styles = StyleSheet.create({
       color: configStyles.colors.lightBlue,
     },
     cursor: "pointer",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
