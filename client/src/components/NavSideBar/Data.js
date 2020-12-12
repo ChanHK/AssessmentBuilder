@@ -25,7 +25,7 @@ export const Data = [
   },
   {
     title: "Log Out",
-    path: "this.props.logout",
+    path: `this.props.logout`,
     icon: <HiIcons.HiOutlineLogout />,
     hoverName: "hoverLogOut",
   },

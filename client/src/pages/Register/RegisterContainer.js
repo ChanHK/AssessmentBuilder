@@ -34,6 +34,7 @@ class RegisterContainer extends Component {
   }
 
   componentDidMount() {
+    console.log("authenticate", this.props.auth.isAuthenticated);
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
@@ -52,6 +53,9 @@ class RegisterContainer extends Component {
   // }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/home");
+    }
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
