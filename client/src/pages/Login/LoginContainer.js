@@ -22,6 +22,7 @@ class LoginContainer extends Component {
       email: "",
       password: "",
       showPassword: false,
+      msg: null,
     };
   }
 
@@ -37,7 +38,7 @@ class LoginContainer extends Component {
     }
     if (nextProps.errors) {
       this.setState({
-        errors: nextProps.errors,
+        msg: nextProps.errors.message,
       });
     }
   }
@@ -71,7 +72,7 @@ class LoginContainer extends Component {
   };
 
   render() {
-    const { email, password, showPassword } = this.state;
+    const { email, password, showPassword, msg } = this.state;
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
@@ -86,6 +87,13 @@ class LoginContainer extends Component {
                 placeholder={"Enter your email"}
                 value={email}
               />
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("email")
+                  ? "*" + msg.email
+                  : null}
+              </span>
             </div>
             <CustomSubLabel>Password</CustomSubLabel>
             <div className={css(styles.passWrapper)}>
@@ -104,7 +112,21 @@ class LoginContainer extends Component {
                 )}
               </i>
             </div>
+            <span className={css(styles.redText)}>
+              {msg === null
+                ? null
+                : msg.hasOwnProperty("password")
+                ? "*" + msg.password
+                : null}
+            </span>
             <div style={{ padding: "25px 0px" }}>
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("message")
+                  ? "*" + msg.message
+                  : null}
+              </span>
               <Button
                 backgroundColor={configStyles.colors.darkBlue}
                 color={configStyles.colors.white}
@@ -201,7 +223,6 @@ const styles = StyleSheet.create({
   passWrapper: {
     position: "relative",
     display: "flex",
-    marginBottom: "14px",
   },
   i: {
     position: "absolute",
@@ -211,6 +232,11 @@ const styles = StyleSheet.create({
       color: configStyles.colors.lightBlue,
     },
     cursor: "pointer",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
