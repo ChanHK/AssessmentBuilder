@@ -47,7 +47,7 @@ router.post("/register", (req, res) => {
                 (err, token) => {
                   if (err) throw err;
                   res.json({
-                    token: "Bearer " + token,
+                    token: token,
                   });
                 }
               );
@@ -102,7 +102,7 @@ router.post("/login", (req, res) => {
             (err, token) => {
               if (err) throw err;
               res.json({
-                token: "Bearer " + token,
+                token: token,
               });
             }
           );
