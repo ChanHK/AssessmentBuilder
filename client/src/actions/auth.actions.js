@@ -78,6 +78,7 @@ export const tokenConfig = (getState) => {
 
 // logout
 export const logout = () => {
+  console.log("logout");
   return {
     type: LOGOUT.LOGOUT_SUCCESS,
   };
