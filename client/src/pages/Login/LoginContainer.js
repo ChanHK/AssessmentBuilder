@@ -9,6 +9,8 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 
+import * as IoIcons from "react-icons/io";
+
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login } from "../../actions/auth.actions";
@@ -19,6 +21,7 @@ class LoginContainer extends Component {
     this.state = {
       email: "",
       password: "",
+      showPassword: false,
     };
   }
 
@@ -43,6 +46,10 @@ class LoginContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  toggleEye = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+
   forgotPassword = () => {
     //
   };
@@ -55,12 +62,12 @@ class LoginContainer extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    
+
     this.props.login(userData);
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, showPassword } = this.state;
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
@@ -77,13 +84,22 @@ class LoginContainer extends Component {
               />
             </div>
             <CustomSubLabel>Password</CustomSubLabel>
-            <CustomInput
-              name={"password"}
-              type={"password"}
-              onChangeValue={this.onChange}
-              placeholder={"Enter your password"}
-              value={password}
-            />
+            <div className={css(styles.passWrapper)}>
+              <CustomInput
+                name={"password"}
+                type={showPassword ? "text" : "password"}
+                onChangeValue={this.onChange}
+                placeholder={"Enter your password"}
+                value={password}
+              />
+              <i className={css(styles.i)} onClick={this.toggleEye}>
+                {showPassword ? (
+                  <IoIcons.IoMdEye size={20} />
+                ) : (
+                  <IoIcons.IoMdEyeOff size={20} />
+                )}
+              </i>
+            </div>
             <div style={{ padding: "25px 0px" }}>
               <Button
                 backgroundColor={configStyles.colors.darkBlue}
@@ -163,6 +179,20 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  passWrapper: {
+    position: "relative",
+    display: "flex",
+    marginBottom: "14px",
+  },
+  i: {
+    position: "absolute",
+    top: "23%",
+    right: "5%",
+    ":hover": {
+      color: configStyles.colors.lightBlue,
+    },
+    cursor: "pointer",
   },
 });
 
