@@ -29,9 +29,9 @@ class StatusBarWrapper extends Component {
   };
   render() {
     return (
-      <div className={css(styles.outerLayer)}>
+      <div className={css(styles.outerLayer, styles.noSelect)}>
         <div
-          className={css(styles.innerLayer)}
+          className={css(styles.innerLayer, styles.noSelect)}
           style={{
             justifyContent: this.state.showSpace
               ? this.props.first
@@ -66,6 +66,15 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     padding: "10px 45px 10px 45px",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
 
