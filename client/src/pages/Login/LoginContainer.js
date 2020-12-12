@@ -50,6 +50,10 @@ class LoginContainer extends Component {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
+  directToRegister = () => {
+    this.props.history.push("/");
+  };
+
   forgotPassword = () => {
     //
   };
@@ -114,11 +118,28 @@ class LoginContainer extends Component {
             <div className={css(styles.textCon)}>
               <h6
                 className={css(styles.text, styles.noSelect)}
+                onClick={this.directToRegister}
+              >
+                Register
+              </h6>
+              <h6 className={css(styles.slash, styles.noSelect)}>
+                &nbsp;/&nbsp;
+              </h6>
+              <h6
+                className={css(styles.text, styles.noSelect)}
+                onClick={this.forgotPassword}
+              >
+                Forgot password
+              </h6>
+            </div>
+            {/* <div className={css(styles.textCon)}>
+              <h6
+                className={css(styles.text, styles.noSelect)}
                 onClick={this.forgotPassword}
               >
                 Forgot Password ?
               </h6>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>
@@ -165,6 +186,12 @@ const styles = StyleSheet.create({
       color: configStyles.colors.lightBlue,
       fontSize: "12px",
     },
+  },
+  slash: {
+    color: configStyles.colors.black,
+    fontFamily: "Ubuntu-Bold",
+    cursor: "pointer",
+    fontSize: "16px",
   },
   textCon: {
     justifyContent: "center",
