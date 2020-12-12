@@ -9,6 +9,7 @@ export const colors = {
   lightGreen: "#7de881",
   noticeYellow: "#fada82",
   correctGreen: "#83eb75",
+  inputErrorRed: "#fc0026",
 };
 
 // import * as configStyles from "../../config/styles"
