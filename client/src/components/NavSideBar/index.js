@@ -4,8 +4,10 @@ import { StyleSheet, css } from "aphrodite";
 import { Data } from "./Data";
 import "../../css/general.css";
 import * as configStyles from "../../config/styles";
+import { connect } from "react-redux";
+import { logout } from "../../actions/auth.actions";
 
-export default class NavSideBar extends Component {
+class NavSideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -123,3 +125,5 @@ const styles = StyleSheet.create({
     },
   },
 });
+
+export default connect(null, { logout })(NavSideBar);
