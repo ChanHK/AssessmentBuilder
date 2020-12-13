@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
 const auth = require("../../middleware/auth");
 
 const User = require("../../models/user");
@@ -40,7 +39,7 @@ router.post("/register", (req, res) => {
             .then((user) => {
               jwt.sign(
                 { id: user.id },
-                keys.secretOrKey,
+                process.env.JWT_TOKEN_KEY,
                 {
                   expiresIn: 7200, //2 hours in second
                 },
@@ -95,7 +94,7 @@ router.post("/login", (req, res) => {
 
           jwt.sign(
             payload,
-            keys.secretOrKey,
+            process.env.JWT_TOKEN_KEY,
             {
               expiresIn: 7200, //2 hours in second
             },

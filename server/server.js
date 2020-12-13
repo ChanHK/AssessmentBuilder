@@ -9,13 +9,14 @@ const app = express();
 // Bodyparser Middleware
 app.use(bodyParser.json());
 
-// DB config
-const db = require("./config/keys").mongoURI;
-// require("dotenv").config();
+// env config # for heroku deployment
+require("dotenv").config({
+  path: ".env",
+});
 
 // connect to mongo
 mongoose
-  .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log(`MongoDB connected successfully`))
   .catch((err) => console.log(err));
 
