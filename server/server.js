@@ -2,17 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
+// env config # for heroku deployment
+require("dotenv").config({
+  path: ".env",
+});
+
 const authUser = require("./routes/api/auth.api");
 
 const app = express();
 
 // Bodyparser Middleware
 app.use(bodyParser.json());
-
-// env config # for heroku deployment
-require("dotenv").config({
-  path: ".env",
-});
 
 // connect to mongo
 mongoose
