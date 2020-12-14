@@ -9,8 +9,9 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 
-// import PropTypes from "prop-types";
-// import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { forgotPassword } from "../../actions/auth.actions";
 
 class ForgotPasswordContainer extends Component {
   constructor() {
@@ -18,13 +19,26 @@ class ForgotPasswordContainer extends Component {
     this.state = {
       email: "",
       msg: null,
+      successMsg: null,
     };
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) this.props.history.push("/home");
+  }
+
   componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) this.props.history.push("/home");
+
     if (nextProps.errors) {
       this.setState({
         msg: nextProps.errors.message,
+      });
+    }
+
+    if (nextProps.sucMsg) {
+      this.setState({
+        successMsg: nextProps.sucMsg.message.message,
       });
     }
   }
@@ -33,73 +47,105 @@ class ForgotPasswordContainer extends Component {
     this.props.history.push("/login");
   };
 
+  directToRegister = () => {
+    this.props.history.push("/");
+  };
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   onSubmit = (e) => {
-    console.log(this.state.email);
     e.preventDefault();
 
-    // const userData = {
-    //   email: this.state.email,
-    // };
+    const data = {
+      email: this.state.email,
+    };
 
-    // this.props.login(userData);
+    this.props.forgotPassword(data);
   };
 
   render() {
-    const { email, msg } = this.state;
+    const { email, msg, successMsg } = this.state;
+
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
-          <CustomTitle>Forgot Password</CustomTitle>
-          <form className={css(styles.form)} onSubmit={this.onSubmit}>
-            <CustomSubLabel>Enter your email here</CustomSubLabel>
-            <div style={{ paddingBottom: "25px" }}>
-              <CustomInput
-                name={"email"}
-                type={"text"}
-                onChangeValue={this.onChange}
-                placeholder={"Enter your email"}
-                value={email}
-              />
-              <span className={css(styles.redText)}>
-                {msg === null
-                  ? null
-                  : msg.hasOwnProperty("email")
-                  ? "*" + msg.email
-                  : null}
-              </span>
-            </div>
+          {successMsg === null || successMsg === undefined ? (
+            <>
+              <CustomTitle>Forgot Password</CustomTitle>
+              <form className={css(styles.form)} onSubmit={this.onSubmit}>
+                <CustomSubLabel>Enter your email here</CustomSubLabel>
+                <div style={{ paddingBottom: "25px" }}>
+                  <CustomInput
+                    name={"email"}
+                    type={"text"}
+                    onChangeValue={this.onChange}
+                    placeholder={"Enter your email"}
+                    value={email}
+                  />
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("email")
+                      ? "*" + msg.email
+                      : null}
+                  </span>
+                </div>
 
-            <div style={{ padding: "25px 0px" }}>
-              <span className={css(styles.redText)}>
-                {msg === null
-                  ? null
-                  : msg.hasOwnProperty("message")
-                  ? "*" + msg.message
-                  : null}
-              </span>
-              <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
-                padding={"8px"}
-                width={"100%"}
-                type="submit"
+                <div style={{ padding: "25px 0px" }}>
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("message")
+                      ? "*" + msg.message
+                      : null}
+                  </span>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    width={"100%"}
+                    type="submit"
+                  >
+                    Submit
+                  </Button>
+                </div>
+                <div className={css(styles.textCon)}>
+                  <h6
+                    className={css(styles.text, styles.noSelect)}
+                    onClick={this.backToLogin}
+                  >
+                    Back to login
+                  </h6>
+                </div>
+              </form>{" "}
+            </>
+          ) : (
+            <>
+              <span className={css(styles.redText)}>{successMsg}</span>
+              <div
+                className={css(styles.textCon)}
+                style={{ marginTop: "25px" }}
               >
-                Submit
-              </Button>
-            </div>
-            <div className={css(styles.textCon)}>
-              <h6
-                className={css(styles.text, styles.noSelect)}
-                onClick={this.backToLogin}
-              >
-                Back to login
-              </h6>
-            </div>
-          </form>
+                <h6
+                  className={css(styles.text, styles.noSelect)}
+                  onClick={this.directToRegister}
+                >
+                  Register
+                </h6>
+                <h6 className={css(styles.slash, styles.noSelect)}>
+                  &nbsp;/&nbsp;
+                </h6>
+                <h6
+                  className={css(styles.text, styles.noSelect)}
+                  onClick={this.backToLogin}
+                >
+                  Login
+                </h6>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
@@ -169,15 +215,31 @@ const styles = StyleSheet.create({
     cursor: "pointer",
   },
   redText: {
-    color: configStyles.colors.inputErrorRed,
+    color: configStyles.colors.black,
     fontFamily: "Ubuntu-Regular",
-    fontSize: "15px",
+    fontSize: "25px",
+  },
+  slash: {
+    color: configStyles.colors.black,
+    fontFamily: "Ubuntu-Bold",
+    cursor: "pointer",
+    fontSize: "16px",
   },
 });
 
-// const mapStateToProps = (state) => ({
-//   auth: state.auth,
-//   errors: state.errors,
-// });
+ForgotPasswordContainer.propTypes = {
+  forgotPassword: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  sucMsg: PropTypes.object.isRequired,
+};
 
-export default ForgotPasswordContainer;
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+  auth: state.auth,
+  sucMsg: state.sucMsg,
+});
+
+export default connect(mapStateToProps, { forgotPassword })(
+  ForgotPasswordContainer
+);

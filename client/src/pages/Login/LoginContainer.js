@@ -56,7 +56,7 @@ class LoginContainer extends Component {
   };
 
   forgotPassword = () => {
-    this.props.history.push("/resetPassword");
+    this.props.history.push("/forgotPassword");
   };
 
   onSubmit = (e) => {

@@ -77,16 +77,13 @@ router.get("/user", auth, (req, res) => {
 router.post("/login", (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
 
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+  if (!isValid) return res.status(400).json(errors);
+
   const email = req.body.email;
   const password = req.body.password;
 
   User.findOne({ email }).then((user) => {
-    if (!user) {
-      return res.status(400).json({ message: "User does not exist" });
-    }
+    if (!user) return res.status(400).json({ message: "User does not exist" });
 
     bcrypt
       .compare(password, user.password)
@@ -109,9 +106,7 @@ router.post("/login", (req, res) => {
               });
             }
           );
-        } else {
-          return res.status(400).json({ message: "Invalid credentials" });
-        }
+        } else return res.status(400).json({ message: "Invalid credentials" });
       })
       .catch((err) => console.log(err));
   });
@@ -119,75 +114,61 @@ router.post("/login", (req, res) => {
 
 router.put("/forgotPassword", (req, res) => {
   const { errors, isValid } = validateForgotPasswordInput(req.body);
-  const email = req.body.email;
 
   if (!isValid) return res.status(400).json(errors);
 
-  User.findOne(
-    {
-      email,
-    },
-    (err, user) => {
-      if (err || !user) {
-        return res.status(400).json({
-          error: "This email does not exist, please enter a valid email",
-        });
+  const email = req.body.email;
+
+  User.findOne({ email }).then((user) => {
+    if (!user)
+      return res.status(400).json({
+        message: "This email does not exist, please enter a valid email",
+      });
+
+    const token = jwt.sign(
+      {
+        _id: user._id,
+      },
+      process.env.JWT_RESET_PASSWORD,
+      {
+        expiresIn: "10m",
       }
+    );
 
-      const token = jwt.sign(
-        {
-          _id: user._id,
-        },
-        process.env.JWT_RESET_PASSWORD,
-        {
-          expiresIn: "10m",
-        }
-      );
-
-      const emailData = {
-        from: process.env.EMAIL_FROM,
-        to: email,
-        subject: `Password Reset link`,
-        html: `
-                    <h1>Please use the following link to reset your password</h1>
+    const emailData = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: `Password Reset link`,
+      html: `
+                    <h3>Please use the following link to reset your password</h3>
                     <p>${process.env.CLIENT_URL}/resetPassword/${token}</p>
-                    <hr />
-                    <p>This email may contain sensetive information</p>
-                    <p>${process.env.CLIENT_URL}</p>
                 `,
-      };
+    };
 
-      return user.updateOne(
-        {
-          resetPasswordLink: token,
-        },
-        (err, success) => {
-          if (err) {
-            console.log("RESET PASSWORD LINK ERROR", err);
-            return res.status(400).json({
-              error:
-                "Database connection error on user password forgot request",
-            });
-          } else {
-            sgMail
-              .send(emailData)
-              .then((sent) => {
-                // console.log('SIGNUP EMAIL SENT', sent)
-                return res.json({
-                  message: `Email has been sent to ${email}. Follow the instruction to activate your account`,
-                });
-              })
-              .catch((err) => {
-                // console.log('SIGNUP EMAIL SENT ERROR', err)
-                return res.json({
-                  message: err.message,
-                });
+    return user.updateOne(
+      {
+        resetPasswordLink: token,
+      },
+      (err, success) => {
+        if (err) {
+          console.log("RESET PASSWORD LINK ERROR", err);
+          return res.status(400).json({
+            message:
+              "There is a database connection error, please try again later",
+          });
+        } else {
+          sgMail
+            .send(emailData)
+            .then((sent) => {
+              return res.json({
+                message: `A link has been sent to to your email, ${email}. Please check your email to reset your password`,
               });
-          }
+            })
+            .catch((err) => console.log(err));
         }
-      );
-    }
-  );
+      }
+    );
+  });
 });
 
 module.exports = router;

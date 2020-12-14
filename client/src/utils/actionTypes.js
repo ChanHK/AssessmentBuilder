@@ -2,7 +2,6 @@ export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR";
 
-
 export const ERROR = {
   GET_ERRORS: "GET_ERRORS",
   CLEAR_ERRORS: "CLEAR_ERRORS",
@@ -20,4 +19,8 @@ export const REGISTER = {
 
 export const LOGOUT = {
   LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
+};
+
+export const GET_SUCCESS_MESSAGE = {
+  GET_MESSAGE: "GET_MESSAGE",
 };

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { returnErrors } from "./error.actions";
+import { returnSucMsg } from "./sucMsg.actions";
 
 import {
   USER_LOADED,
@@ -49,9 +50,7 @@ export const register = (data) => (dispatch) => {
       })
     )
     .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
-      );
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: REGISTER.REQISTER_FAIL,
       });
@@ -70,9 +69,7 @@ export const tokenConfig = (getState) => {
   };
 
   // if token, add to headers
-  if (token) {
-    config.headers["x-auth-token"] = token;
-  }
+  if (token) config.headers["x-auth-token"] = token;
 
   return config;
 };
@@ -102,11 +99,27 @@ export const login = (data) => (dispatch) => {
       })
     )
     .catch((err) => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
-      );
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: LOGIN.LOGIN_FAIL,
       });
+    });
+};
+
+//forgot password
+export const forgotPassword = (data) => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios
+    .put("api/auth/forgotPassword", data, config)
+    .then((res) => {
+      dispatch(returnSucMsg(res.data, res.status));
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
     });
 };
