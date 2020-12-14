@@ -9,33 +9,19 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 
-import * as IoIcons from "react-icons/io";
+// import PropTypes from "prop-types";
+// import { connect } from "react-redux";
 
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { login } from "../../actions/auth.actions";
-
-class LoginContainer extends Component {
+class ForgotPasswordContainer extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
-      password: "",
-      showPassword: false,
       msg: null,
     };
   }
 
-  componentDidMount() {
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/home");
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/home");
-    }
     if (nextProps.errors) {
       this.setState({
         msg: nextProps.errors.message,
@@ -43,42 +29,33 @@ class LoginContainer extends Component {
     }
   }
 
+  backToLogin = () => {
+    this.props.history.push("/login");
+  };
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  toggleEye = () => {
-    this.setState({ showPassword: !this.state.showPassword });
-  };
-
-  directToRegister = () => {
-    this.props.history.push("/");
-  };
-
-  forgotPassword = () => {
-    this.props.history.push("/resetPassword");
-  };
-
   onSubmit = (e) => {
-    console.log(this.state.email, this.state.password);
+    console.log(this.state.email);
     e.preventDefault();
 
-    const userData = {
-      email: this.state.email,
-      password: this.state.password,
-    };
+    // const userData = {
+    //   email: this.state.email,
+    // };
 
-    this.props.login(userData);
+    // this.props.login(userData);
   };
 
   render() {
-    const { email, password, showPassword, msg } = this.state;
+    const { email, msg } = this.state;
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
-          <CustomTitle>Login</CustomTitle>
+          <CustomTitle>Forgot Password</CustomTitle>
           <form className={css(styles.form)} onSubmit={this.onSubmit}>
-            <CustomSubLabel>Email</CustomSubLabel>
+            <CustomSubLabel>Enter your email here</CustomSubLabel>
             <div style={{ paddingBottom: "25px" }}>
               <CustomInput
                 name={"email"}
@@ -95,30 +72,7 @@ class LoginContainer extends Component {
                   : null}
               </span>
             </div>
-            <CustomSubLabel>Password</CustomSubLabel>
-            <div className={css(styles.passWrapper)}>
-              <CustomInput
-                name={"password"}
-                type={showPassword ? "text" : "password"}
-                onChangeValue={this.onChange}
-                placeholder={"Enter your password"}
-                value={password}
-              />
-              <i className={css(styles.i)} onClick={this.toggleEye}>
-                {showPassword ? (
-                  <IoIcons.IoMdEye size={20} />
-                ) : (
-                  <IoIcons.IoMdEyeOff size={20} />
-                )}
-              </i>
-            </div>
-            <span className={css(styles.redText)}>
-              {msg === null
-                ? null
-                : msg.hasOwnProperty("password")
-                ? "*" + msg.password
-                : null}
-            </span>
+
             <div style={{ padding: "25px 0px" }}>
               <span className={css(styles.redText)}>
                 {msg === null
@@ -134,24 +88,15 @@ class LoginContainer extends Component {
                 width={"100%"}
                 type="submit"
               >
-                Login
+                Submit
               </Button>
             </div>
             <div className={css(styles.textCon)}>
               <h6
                 className={css(styles.text, styles.noSelect)}
-                onClick={this.directToRegister}
+                onClick={this.backToLogin}
               >
-                Register
-              </h6>
-              <h6 className={css(styles.slash, styles.noSelect)}>
-                &nbsp;/&nbsp;
-              </h6>
-              <h6
-                className={css(styles.text, styles.noSelect)}
-                onClick={this.forgotPassword}
-              >
-                Forgot password
+                Back to login
               </h6>
             </div>
           </form>
@@ -200,12 +145,6 @@ const styles = StyleSheet.create({
       color: configStyles.colors.lightBlue,
     },
   },
-  slash: {
-    color: configStyles.colors.black,
-    fontFamily: "Ubuntu-Bold",
-    cursor: "pointer",
-    fontSize: "16px",
-  },
   textCon: {
     justifyContent: "center",
     alignItems: "center",
@@ -219,10 +158,6 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
-  },
-  passWrapper: {
-    position: "relative",
-    display: "flex",
   },
   i: {
     position: "absolute",
@@ -240,15 +175,9 @@ const styles = StyleSheet.create({
   },
 });
 
-LoginContainer.propTypes = {
-  login: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
+// const mapStateToProps = (state) => ({
+//   auth: state.auth,
+//   errors: state.errors,
+// });
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, { login })(LoginContainer);
+export default ForgotPasswordContainer;

@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Route from "./Route";
 
-import LoginContainer from "../pages/Login";
+import { LoginContainer, ForgotPasswordContainer } from "../pages/Login";
 import RegisterContainer from "../pages/Register";
 
 import HomeContainer from "../pages/Home";
@@ -32,6 +32,7 @@ export default function Routes() {
       <Switch>
         <Route path="/" exact component={RegisterContainer} />
         <Route path="/login" component={LoginContainer} />
+        <Route path="/forgotPassword" component={ForgotPasswordContainer} />
 
         <Route path="/home" component={HomeContainer} isPrivate />
         <Route path="/profile" exact component={ProfileContainer} isPrivate />

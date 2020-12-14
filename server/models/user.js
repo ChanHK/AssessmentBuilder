@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  resetPasswordLink: {
+    data: String,
+    default: ''
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);
