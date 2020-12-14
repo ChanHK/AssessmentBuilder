@@ -119,11 +119,11 @@ class ForgotPasswordContainer extends Component {
                     Back to login
                   </h6>
                 </div>
-              </form>{" "}
+              </form>
             </>
           ) : (
             <>
-              <span className={css(styles.redText)}>{successMsg}</span>
+              <span className={css(styles.blackText)}>{successMsg}</span>
               <div
                 className={css(styles.textCon)}
                 style={{ marginTop: "25px" }}
@@ -215,15 +215,20 @@ const styles = StyleSheet.create({
     cursor: "pointer",
   },
   redText: {
-    color: configStyles.colors.black,
+    color: configStyles.colors.inputErrorRed,
     fontFamily: "Ubuntu-Regular",
-    fontSize: "25px",
+    fontSize: "15px",
   },
   slash: {
     color: configStyles.colors.black,
     fontFamily: "Ubuntu-Bold",
     cursor: "pointer",
     fontSize: "16px",
+  },
+  blackText: {
+    color: configStyles.colors.black,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "25px",
   },
 });
 
