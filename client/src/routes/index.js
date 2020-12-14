@@ -2,7 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Route from "./Route";
 
-import { LoginContainer, ForgotPasswordContainer } from "../pages/Login";
+import {
+  LoginContainer,
+  ForgotPasswordContainer,
+  ResetPasswordContainer,
+} from "../pages/Login";
+
 import RegisterContainer from "../pages/Register";
 
 import HomeContainer from "../pages/Home";
@@ -31,10 +36,19 @@ export default function Routes() {
     <Router>
       <Switch>
         <Route path="/" exact component={RegisterContainer} />
-        <Route path="/login" component={LoginContainer} />
-        <Route path="/forgotPassword" component={ForgotPasswordContainer} />
+        <Route path="/login" exact component={LoginContainer} />
+        <Route
+          path="/forgotPassword"
+          exact
+          component={ForgotPasswordContainer}
+        />
+        <Route
+          path="/resetPassword/:token"
+          exact
+          component={ResetPasswordContainer}
+        />
 
-        <Route path="/home" component={HomeContainer} isPrivate />
+        <Route path="/home" exact component={HomeContainer} isPrivate />
         <Route path="/profile" exact component={ProfileContainer} isPrivate />
         <Route
           path="/profile/edit"

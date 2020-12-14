@@ -76,7 +76,6 @@ export const tokenConfig = (getState) => {
 
 // logout
 export const logout = () => (dispatch) => {
-  console.log("logout");
   dispatch({
     type: LOGOUT.LOGOUT_SUCCESS,
   });
@@ -116,6 +115,24 @@ export const forgotPassword = (data) => (dispatch) => {
 
   axios
     .put("api/auth/forgotPassword", data, config)
+    .then((res) => {
+      dispatch(returnSucMsg(res.data, res.status));
+    })
+    .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+//reset password
+export const resetPassword = (data) => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios
+    .put("/api/auth/resetPassword", data, config)
     .then((res) => {
       dispatch(returnSucMsg(res.data, res.status));
     })

@@ -9,16 +9,21 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 
+import * as IoIcons from "react-icons/io";
+
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { forgotPassword } from "../../actions/auth.actions";
+import { resetPassword } from "../../actions/auth.actions";
 import { clearErrors } from "../../actions/error.actions";
 
-class ForgotPasswordContainer extends Component {
+class ResetPasswordContainer extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
+      password: "",
+      password2: "",
+      showPassword: false,
+      showPassword2: false,
       msg: null,
       successMsg: null,
     };
@@ -44,56 +49,109 @@ class ForgotPasswordContainer extends Component {
     }
   }
 
-  backToLogin = () => {
-    this.props.history.push("/login");
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  toggleEye = () => {
+    this.setState({ showPassword: !this.state.showPassword });
+  };
+
+  toggleEye2 = () => {
+    this.setState({ showPassword2: !this.state.showPassword2 });
   };
 
   directToRegister = () => {
     this.props.history.push("/");
   };
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  directToLogin = () => {
+    this.props.history.push("/login");
   };
 
   onSubmit = (e) => {
     e.preventDefault();
+    const {
+      match: { params },
+    } = this.props;
 
-    const data = {
-      email: this.state.email,
+    const userData = {
+      password: this.state.password,
+      password2: this.state.password2,
+      resetPasswordLink: params.token,
     };
 
-    this.props.forgotPassword(data);
+    this.props.resetPassword(userData);
   };
 
   render() {
-    const { email, msg, successMsg } = this.state;
+    const {
+      password,
+      password2,
+      showPassword,
+      showPassword2,
+      msg,
+      successMsg,
+    } = this.state;
 
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
           {successMsg === null || successMsg === undefined ? (
             <>
-              <CustomTitle>Forgot Password</CustomTitle>
+              <CustomTitle>Reset Password</CustomTitle>
               <form className={css(styles.form)} onSubmit={this.onSubmit}>
-                <CustomSubLabel>Enter your email here</CustomSubLabel>
-                <div style={{ paddingBottom: "25px" }}>
+                <CustomSubLabel>Password</CustomSubLabel>
+                <div className={css(styles.passWrapper)}>
                   <CustomInput
-                    name={"email"}
-                    type={"text"}
+                    name={"password"}
+                    type={showPassword ? "text" : "password"}
                     onChangeValue={this.onChange}
-                    placeholder={"Enter your email"}
-                    value={email}
+                    placeholder={"Enter your password"}
+                    value={password}
                   />
-                  <span className={css(styles.redText)}>
-                    {msg === null
-                      ? null
-                      : msg.hasOwnProperty("email")
-                      ? "*" + msg.email
-                      : null}
-                  </span>
+                  <i className={css(styles.i)} onClick={this.toggleEye}>
+                    {showPassword ? (
+                      <IoIcons.IoMdEye size={20} />
+                    ) : (
+                      <IoIcons.IoMdEyeOff size={20} />
+                    )}
+                  </i>
                 </div>
+                <span className={css(styles.redText)}>
+                  {msg === null
+                    ? null
+                    : msg.hasOwnProperty("password")
+                    ? "*" + msg.password
+                    : null}
+                </span>
 
+                <div
+                  className={css(styles.passWrapper)}
+                  style={{ marginTop: "25px" }}
+                >
+                  <CustomInput
+                    name={"password2"}
+                    type={showPassword2 ? "text" : "password"}
+                    onChangeValue={this.onChange}
+                    placeholder={"Enter your password"}
+                    value={password2}
+                  />
+                  <i className={css(styles.i)} onClick={this.toggleEye2}>
+                    {showPassword2 ? (
+                      <IoIcons.IoMdEye size={20} />
+                    ) : (
+                      <IoIcons.IoMdEyeOff size={20} />
+                    )}
+                  </i>
+                </div>
+                <span className={css(styles.redText)}>
+                  {msg === null
+                    ? null
+                    : msg.hasOwnProperty("password2")
+                    ? "*" + msg.password2
+                    : null}
+                </span>
                 <div style={{ padding: "25px 0px" }}>
                   <span className={css(styles.redText)}>
                     {msg === null
@@ -109,26 +167,15 @@ class ForgotPasswordContainer extends Component {
                     width={"100%"}
                     type="submit"
                   >
-                    Submit
+                    Reset
                   </Button>
-                </div>
-                <div className={css(styles.textCon)}>
-                  <h6
-                    className={css(styles.text, styles.noSelect)}
-                    onClick={this.backToLogin}
-                  >
-                    Back to login
-                  </h6>
                 </div>
               </form>
             </>
           ) : (
             <>
               <span className={css(styles.blackText)}>{successMsg}</span>
-              <div
-                className={css(styles.textCon)}
-                style={{ marginTop: "25px" }}
-              >
+              <div className={css(styles.textCon)}>
                 <h6
                   className={css(styles.text, styles.noSelect)}
                   onClick={this.directToRegister}
@@ -140,7 +187,7 @@ class ForgotPasswordContainer extends Component {
                 </h6>
                 <h6
                   className={css(styles.text, styles.noSelect)}
-                  onClick={this.backToLogin}
+                  onClick={this.directToLogin}
                 >
                   Login
                 </h6>
@@ -192,6 +239,12 @@ const styles = StyleSheet.create({
       color: configStyles.colors.lightBlue,
     },
   },
+  slash: {
+    color: configStyles.colors.black,
+    fontFamily: "Ubuntu-Bold",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
   textCon: {
     justifyContent: "center",
     alignItems: "center",
@@ -205,6 +258,10 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  passWrapper: {
+    position: "relative",
+    display: "flex",
   },
   i: {
     position: "absolute",
@@ -220,12 +277,6 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
   },
-  slash: {
-    color: configStyles.colors.black,
-    fontFamily: "Ubuntu-Bold",
-    cursor: "pointer",
-    fontSize: "16px",
-  },
   blackText: {
     color: configStyles.colors.black,
     fontFamily: "Ubuntu-Regular",
@@ -233,10 +284,10 @@ const styles = StyleSheet.create({
   },
 });
 
-ForgotPasswordContainer.propTypes = {
-  forgotPassword: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
+ResetPasswordContainer.propTypes = {
+  resetPassword: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
   sucMsg: PropTypes.object.isRequired,
   clearErrors: PropTypes.func.isRequired,
 };
@@ -247,6 +298,6 @@ const mapStateToProps = (state) => ({
   sucMsg: state.sucMsg,
 });
 
-export default connect(mapStateToProps, { forgotPassword, clearErrors })(
-  ForgotPasswordContainer
+export default connect(mapStateToProps, { resetPassword, clearErrors })(
+  ResetPasswordContainer
 );

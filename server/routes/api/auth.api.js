@@ -12,6 +12,7 @@ const User = require("../../models/user");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateForgotPasswordInput = require("../../validation/forgotPassword");
+const validateResetPasswordInput = require("../../validation/resetPassword");
 
 // @route     POST api/auth/register
 // @desc      Register user and return JWT token
@@ -19,14 +20,12 @@ const validateForgotPasswordInput = require("../../validation/forgotPassword");
 router.post("/register", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+  if (!isValid) return res.status(400).json(errors);
+
   User.findOne({ email: req.body.email })
     .then((user) => {
-      if (user) {
+      if (user)
         return res.status(400).json({ message: "Email already exists" });
-      }
 
       const newUser = new User({
         username: req.body.username,
@@ -112,6 +111,9 @@ router.post("/login", (req, res) => {
   });
 });
 
+// @route     PUT api/auth/forgotPassword
+// @desc      validate email and sent user an email containing a link to reset password
+// @access    Public
 router.put("/forgotPassword", (req, res) => {
   const { errors, isValid } = validateForgotPasswordInput(req.body);
 
@@ -127,11 +129,11 @@ router.put("/forgotPassword", (req, res) => {
 
     const token = jwt.sign(
       {
-        _id: user._id,
+        id: user.id,
       },
       process.env.JWT_RESET_PASSWORD,
       {
-        expiresIn: "10m",
+        expiresIn: 7200,
       }
     );
 
@@ -151,7 +153,6 @@ router.put("/forgotPassword", (req, res) => {
       },
       (err, success) => {
         if (err) {
-          console.log("RESET PASSWORD LINK ERROR", err);
           return res.status(400).json({
             message:
               "There is a database connection error, please try again later",
@@ -169,6 +170,62 @@ router.put("/forgotPassword", (req, res) => {
       }
     );
   });
+});
+
+// @route     PUT api/auth/resetPassword
+// @desc      validate password and token, reset password
+// @access    Private
+router.put("/resetPassword", (req, res) => {
+  const { errors, isValid } = validateResetPasswordInput(req.body);
+
+  if (!isValid) return res.status(400).json(errors);
+  const { resetPasswordLink, password } = req.body;
+
+  if (resetPasswordLink) {
+    jwt.verify(
+      resetPasswordLink,
+      process.env.JWT_RESET_PASSWORD,
+      (err, decoded) => {
+        if (err) {
+          return res.status(400).json({
+            message:
+              "The link is expired, please regenerate an email from the forgot password section",
+          });
+        }
+
+        User.findOne({ resetPasswordLink }).then((user) => {
+          if (!user) {
+            return res.status(400).json({
+              message:
+                "This url does not exist, please regenerate an email from the forgot password section",
+            });
+          }
+
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+              if (err) throw err;
+              user.resetPasswordLink = "";
+              user.password = hash;
+              user
+                .save()
+                .then(() => {
+                  return res
+                    .status(200)
+                    .json({ message: "Password reset successful" });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  return res.status(400).json({
+                    message:
+                      "Error, failed to reset password, please retry agian",
+                  });
+                });
+            });
+          });
+        });
+      }
+    );
+  }
 });
 
 module.exports = router;
