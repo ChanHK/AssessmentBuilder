@@ -24,7 +24,9 @@ import { GenerateYear } from "./Data/GenerateYear";
 
 import * as configStyles from "../../config/styles";
 
-import DragImage from "../../image/profile/drag.png";
+// import DragImage from "../../image/profile/drag.png";
+import DragImage from "../../image/profile/dummyUser.png";
+
 
 class EditProfileContainer extends Component {
   constructor() {

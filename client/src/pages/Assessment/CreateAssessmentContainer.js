@@ -26,7 +26,7 @@ export default class CreateAssessmentContainer extends Component {
   constructor() {
     super();
     this.state = {
-      selected: "set",
+      selected: "settings",
     };
   }
 

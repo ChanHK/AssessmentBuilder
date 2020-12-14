@@ -10,8 +10,8 @@ const Avatar = (props) => {
       image={props.image}
       width={250}
       height={250}
-      color={[20, 20, 20, 0.5]}
-      scale={1.2}
+      color={[20, 20, 20, 0.3]}
+      scale={1.1}
       rotate={0}
       borderRadius={250 / 2}
       style={{
