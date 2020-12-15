@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { StyleSheet, css } from "aphrodite";
+import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
-
-import { StyleSheet, css } from "aphrodite";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -17,18 +18,26 @@ import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
 
-import profile from "../../image/profile/dummyUser.png";
+import profilePic from "../../image/profile/dummyUser.png";
 
-import * as configStyles from "../../config/styles";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchUserProfileData } from "../../actions/profile.actions";
 
-import "../../css/general.css";
+class ProfileContainer extends Component {
+  componentDidMount() {
+    this.props.fetchUserProfileData();
+  }
 
-export default class ProfileContainer extends Component {
   handleClick = () => {
     this.props.history.push(`profile/edit`);
   };
 
   render() {
+    console.log(this.props.profile.isLoading);
+    if (this.props.profile.profile === null) return false;
+    const { profile } = this.props.profile;
+
     return (
       <>
         <Header />
@@ -39,7 +48,7 @@ export default class ProfileContainer extends Component {
                 <FirstLabel>Profile</FirstLabel>
               </div>
               <StatusBarWrapper>
-                <StatusBarImage image={profile} style={[styles.imgPos]} />
+                <StatusBarImage image={profilePic} style={[styles.imgPos]} />
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
               </StatusBarWrapper>
@@ -47,28 +56,31 @@ export default class ProfileContainer extends Component {
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Username</SecondLabel>
-                    <ThirdLabel>Captain Jack Sparrow</ThirdLabel>
+                    <ThirdLabel>{profile.username}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Email</SecondLabel>
-                    <ThirdLabel>CaptainJack@gmail.com</ThirdLabel>
+                    <ThirdLabel>{profile.email}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Gender</SecondLabel>
-                    <ThirdLabel>Male</ThirdLabel>
+                    <ThirdLabel>
+                      {profile.gender === "" ? "Empty" : profile.gender}
+                    </ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Year of Birth</SecondLabel>
-                    <ThirdLabel>Empty</ThirdLabel>
+                    <ThirdLabel>
+                      {profile.yearOfBirth === null
+                        ? "Empty"
+                        : profile.yearOfBirth}
+                    </ThirdLabel>
                   </div>
-
-                  {/* <SecondLabel>Country</SecondLabel>
-                  <ThirdLabel>Empty</ThirdLabel> 
-                  might remove in the future *reason-> takes too much spaces
-                  */}
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Occupation</SecondLabel>
-                    <ThirdLabel>Pirate</ThirdLabel>
+                    <ThirdLabel>
+                      {profile.occupation === "" ? "Empty" : profile.occupation}
+                    </ThirdLabel>
                   </div>
 
                   <Button
@@ -101,14 +113,24 @@ const styles = StyleSheet.create({
     width: "auto",
     backgroundColor: configStyles.colors.lightGrey,
     height: "auto",
-    // margin: "50px 40px 40px 40px",
     borderRadius: "5px",
     display: "flex",
     border: "2px solid",
     borderColor: configStyles.colors.black,
     padding: "40px",
-    // boxShadow: "0px 3px 20px 0px",
-    // boxShadowColor: configStyles.colors.lightGrey,
     margin: "75px 0px",
   },
 });
+
+ProfileContainer.propTypes = {
+  fetchUserProfileData: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+
+export default connect(mapStateToProps, { fetchUserProfileData })(
+  ProfileContainer
+);

@@ -8,6 +8,7 @@ require("dotenv").config({
 });
 
 const authUser = require("./routes/api/auth.api");
+const userProfile = require("./routes/api/profile.api");
 
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose
 
 // use Routes
 app.use("/api/auth", authUser);
+app.use("/api/user", userProfile);
 
 const port = process.env.PORT || 5000;
 
