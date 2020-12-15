@@ -26,6 +26,7 @@ import { fetchUserProfileData } from "../../actions/profile.actions";
 
 class ProfileContainer extends Component {
   componentDidMount() {
+    console.log("componentDidMount");
     this.props.fetchUserProfileData();
   }
 
@@ -34,10 +35,10 @@ class ProfileContainer extends Component {
   };
 
   render() {
-    console.log(this.props.profile.isLoading);
+    // console.log(this.props.profile.isLoading);
     if (this.props.profile.profile === null) return false;
     const { profile } = this.props.profile;
-
+    console.log(this.props.profile.isLoading);
     return (
       <>
         <Header />

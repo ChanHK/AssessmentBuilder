@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import "../../css/general.css";
+import * as configStyles from "../../config/styles";
+import { StyleSheet, css } from "aphrodite";
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
@@ -8,8 +11,6 @@ import Avatar from "../../components/Avatar";
 import DragDrop from "../../components/DragDrop";
 import UploadButton from "../../components/UploadButton";
 
-import { StyleSheet, css } from "aphrodite";
-
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
@@ -17,16 +18,18 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
-import "../../css/general.css";
-
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
-
-import * as configStyles from "../../config/styles";
 
 // import DragImage from "../../image/profile/drag.png";
 import DragImage from "../../image/profile/dummyUser.png";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import {
+  fetchUserProfileData,
+  updateUserProfileData,
+} from "../../actions/profile.actions";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -34,14 +37,34 @@ class EditProfileContainer extends Component {
     this.state = {
       image: DragImage,
       username: "",
-      password: "",
       gender: null,
       birthYear: null,
       occupation: "",
       fileRejected: false,
+      isLoading: false,
     };
   }
-  
+
+  componentDidMount() {
+    this.props.fetchUserProfileData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { profile } = this.props.profile;
+
+    if (prevProps.profile !== this.props.profile) {
+      if (this.props.profile.profile !== null) {
+        this.setState(() => ({
+          username: profile.username,
+          gender: profile.gender,
+          birthYear: profile.yearOfBirth,
+          occupation: profile.occupation,
+          isLoading: this.props.profile.isLoading,
+        }));
+      }
+    }
+  }
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -52,10 +75,6 @@ class EditProfileContainer extends Component {
 
   onChangeBirthYear = (e) => {
     this.setState({ birthYear: e.target.value });
-  };
-
-  handleClick = () => {
-    this.props.history.push(`/profile`);
   };
 
   handleDrop = (dropped) => {
@@ -74,16 +93,31 @@ class EditProfileContainer extends Component {
     this.setState({ image: e.target.files[0] });
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      username: this.state.username,
+      gender: this.state.gender,
+      yearOfBirth: this.state.birthYear,
+      occupation: this.state.occupation,
+    };
+
+    this.props.updateUserProfileData(data);
+    this.props.history.push("/profile");
+  };
+
   render() {
     const {
       image,
       username,
-      password,
       gender,
       birthYear,
       occupation,
       fileRejected,
+      isLoading,
     } = this.state;
+    // console.log(isLoading);
+    if (this.props.profile.profile === null) return false;
 
     return (
       <>
@@ -94,7 +128,7 @@ class EditProfileContainer extends Component {
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Update Profile</FirstLabel>
               </div>
-              <div className={css(styles.infoCon)}>
+              <form className={css(styles.infoCon)} onSubmit={this.onSubmit}>
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Profile Picture</SecondLabel>
@@ -129,16 +163,6 @@ class EditProfileContainer extends Component {
                       placeholder={" Enter your username"}
                       onChangeValue={this.onChange}
                       value={username}
-                    />
-                  </div>
-                  <SecondLabel>Password</SecondLabel>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <CustomInput
-                      name={"password"}
-                      type={"text"}
-                      placeholder={" Enter your password"}
-                      onChangeValue={this.onChange}
-                      value={password}
                     />
                   </div>
                   <SecondLabel>Gender</SecondLabel>
@@ -176,12 +200,12 @@ class EditProfileContainer extends Component {
                     color={configStyles.colors.white}
                     padding={"8px"}
                     width={"100px"}
-                    onClick={this.handleClick}
+                    type={"submit"}
                   >
                     Save
                   </Button>
                 </CustomColumn>
-              </div>
+              </form>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -214,4 +238,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditProfileContainer;
+EditProfileContainer.propTypes = {
+  fetchUserProfileData: PropTypes.func.isRequired,
+  updateUserProfileData: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+
+export default connect(mapStateToProps, {
+  fetchUserProfileData,
+  updateUserProfileData,
+})(EditProfileContainer);

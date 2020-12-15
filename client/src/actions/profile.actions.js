@@ -1,18 +1,35 @@
 import axios from "axios";
 
-import { FETCH_PROFILE_DATA } from "../utils/actionTypes";
+import { PROFILE_DATA } from "../utils/actionTypes";
 
 export const fetchUserProfileData = () => (dispatch, getState) => {
-  dispatch({ type: FETCH_PROFILE_DATA.FETCH_BEGIN });
+  dispatch({ type: PROFILE_DATA.FETCH_BEGIN });
 
   axios
     .get("/api/user/profile", tokenConfig(getState))
     .then((res) =>
-      dispatch({ type: FETCH_PROFILE_DATA.FETCH_SUCCESS, payload: res.data })
+      dispatch({ type: PROFILE_DATA.FETCH_SUCCESS, payload: res.data })
     )
     .catch((err) => {
-      console.log("Fetch use profile data failed", err);
-      dispatch({ type: FETCH_PROFILE_DATA.FETCH_FAIL });
+      console.log("Fetch user profile data failed", err);
+      dispatch({ type: PROFILE_DATA.FETCH_FAIL });
+    });
+};
+
+export const updateUserProfileData = (data) => (dispatch, getState) => {
+  dispatch({ type: PROFILE_DATA.UPDATE_PROFILE_DATA_BEGIN });
+
+  axios
+    .post("/api/user/profile", data, tokenConfig(getState))
+    .then((res) =>
+      dispatch({
+        type: PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      console.log("Update user profile data failed", err);
+      dispatch({ type: PROFILE_DATA.UPDATE_PROFILE_DATA_FAIL });
     });
 };
 
