@@ -21,6 +21,7 @@ const Avatar = (props) => {
         minWidth: isMobile ? "auto" : "220px",
       }}
       className={isMobile ? css(styles.flexbox, styles.con) : css(styles.con)}
+      ref={props.ref}
     />
   );
 };

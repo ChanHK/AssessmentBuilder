@@ -61,6 +61,7 @@ class EditProfileContainer extends Component {
             profile.yearOfBirth === "Empty" ? null : profile.yearOfBirth,
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
+          image: profile.picture === "" ? DragImage : profile.picture,
         }));
       }
     }
@@ -71,7 +72,12 @@ class EditProfileContainer extends Component {
   };
 
   handleDrop = (dropped) => {
-    this.setState({ image: dropped[0] });
+    this.setState({
+      // image: (window.URL ? window.URL : window.webkitURL).createObjectURL(
+      //   dropped[0]
+      // ),
+      image: dropped[0],
+    });
   };
 
   onDropRejected = () => {
@@ -83,23 +89,32 @@ class EditProfileContainer extends Component {
   };
 
   fileUploadHandler = (e) => {
-    this.setState({ image: e.target.files[0] });
+    this.setState({
+      // image: (window.URL ? window.URL : window.webkitURL).createObjectURL(
+      //   e.target.files[0]
+      // ),
+      image: e.target.files[0],
+    });
   };
+
+  setEditorRef = (editor) => (this.editor = editor);
 
   onSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      username: this.state.username,
-      gender: this.state.gender === null ? "Empty" : this.state.gender,
-      yearOfBirth:
-        this.state.birthYear === null
-          ? "Empty"
-          : this.state.birthYear.toString(),
-      occupation:
-        this.state.occupation === "" ? "Empty" : this.state.occupation,
-    };
+    const { username, gender, birthYear, occupation, image } = this.state;
 
-    this.props.updateUserProfileData(data);
+    const gender2 = gender === null ? "Empty" : gender;
+    const yearOfBirth = birthYear === null ? "Empty" : birthYear.toString();
+    const occupation2 = occupation === "" ? "Empty" : occupation;
+
+    const formData = new FormData();
+    formData.append("picture", image);
+    formData.append("username", username);
+    formData.append("gender", gender2);
+    formData.append("yearOfBirth", yearOfBirth);
+    formData.append("occupation", occupation2);
+
+    this.props.updateUserProfileData(formData);
     this.props.history.push("/profile");
   };
 
@@ -114,7 +129,7 @@ class EditProfileContainer extends Component {
     } = this.state;
 
     if (this.props.profile.profile === null) return false;
-
+    console.log(image);
     return (
       <>
         <Header />
@@ -124,7 +139,11 @@ class EditProfileContainer extends Component {
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Update Profile</FirstLabel>
               </div>
-              <form className={css(styles.infoCon)} onSubmit={this.onSubmit}>
+              <form
+                className={css(styles.infoCon)}
+                onSubmit={this.onSubmit}
+                encType="multipart/form-data"
+              >
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Profile Picture</SecondLabel>
@@ -137,7 +156,7 @@ class EditProfileContainer extends Component {
                       onDropAccepted={this.onDropAccepted}
                       noClick={true}
                     >
-                      <Avatar image={image} />
+                      <Avatar image={image} ref={this.setEditorRef} />
                     </DragDrop>
                     {fileRejected && (
                       <p className={css(styles.p)}>
@@ -147,7 +166,7 @@ class EditProfileContainer extends Component {
                     <div style={{ paddingTop: "10px" }}>
                       <UploadButton
                         onChange={this.fileUploadHandler}
-                        accept={"image/jpeg,image/png"}
+                        accept={"image/jpeg,image/png,image/jpg"}
                       />
                     </div>
                   </div>
