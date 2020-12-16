@@ -17,7 +17,7 @@ if (localStorage.getItem("token")) {
   if (decoded.exp < currentTime) {
     store.dispatch(logout());
 
-    this.props.history.push("/login");
+    window.location.href = "/login";
   }
 }
 
