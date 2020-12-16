@@ -56,9 +56,10 @@ class EditProfileContainer extends Component {
       if (this.props.profile.profile !== null) {
         this.setState(() => ({
           username: profile.username,
-          gender: profile.gender,
-          birthYear: profile.yearOfBirth,
-          occupation: profile.occupation,
+          gender: profile.gender === "Empty" ? null : profile.gender,
+          birthYear:
+            profile.yearOfBirth === "Empty" ? null : profile.yearOfBirth,
+          occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
         }));
       }
@@ -89,9 +90,13 @@ class EditProfileContainer extends Component {
     e.preventDefault();
     const data = {
       username: this.state.username,
-      gender: this.state.gender,
-      yearOfBirth: this.state.birthYear,
-      occupation: this.state.occupation,
+      gender: this.state.gender === null ? "Empty" : this.state.gender,
+      yearOfBirth:
+        this.state.birthYear === null
+          ? "Empty"
+          : this.state.birthYear.toString(),
+      occupation:
+        this.state.occupation === "" ? "Empty" : this.state.occupation,
     };
 
     this.props.updateUserProfileData(data);
