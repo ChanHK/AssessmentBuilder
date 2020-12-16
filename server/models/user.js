@@ -20,20 +20,20 @@ const UserSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    default: "",
+    default: "Empty",
   },
   yearOfBirth: {
-    type: Number,
-    default: "",
+    type: String,
+    default: "Empty",
   },
   occupation: {
     type: String,
-    default: "",
+    default: "Empty",
   },
   resetPasswordLink: {
     data: String,
-    default: ''
-  }
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

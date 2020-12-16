@@ -65,23 +65,15 @@ class ProfileContainer extends Component {
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Gender</SecondLabel>
-                    <ThirdLabel>
-                      {profile.gender === "" ? "Empty" : profile.gender}
-                    </ThirdLabel>
+                    <ThirdLabel>{profile.gender}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Year of Birth</SecondLabel>
-                    <ThirdLabel>
-                      {profile.yearOfBirth === null
-                        ? "Empty"
-                        : profile.yearOfBirth}
-                    </ThirdLabel>
+                    <ThirdLabel>{profile.yearOfBirth}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Occupation</SecondLabel>
-                    <ThirdLabel>
-                      {profile.occupation === "" ? "Empty" : profile.occupation}
-                    </ThirdLabel>
+                    <ThirdLabel>{profile.occupation}</ThirdLabel>
                   </div>
 
                   <Button
