@@ -13,6 +13,7 @@ const Dropdown = (props) => (
       style={{ padding: props.padding ? props.padding : "10px" }}
       onChange={props.onChangeValue}
       value={props.value}
+      name={props.name}
     >
       <option
         value={"default"}

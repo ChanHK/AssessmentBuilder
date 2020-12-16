@@ -69,14 +69,6 @@ class EditProfileContainer extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onChangeGender = (e) => {
-    this.setState({ gender: e.target.value });
-  };
-
-  onChangeBirthYear = (e) => {
-    this.setState({ birthYear: e.target.value });
-  };
-
   handleDrop = (dropped) => {
     this.setState({ image: dropped[0] });
   };
@@ -114,9 +106,8 @@ class EditProfileContainer extends Component {
       birthYear,
       occupation,
       fileRejected,
-      isLoading,
     } = this.state;
-    // console.log(isLoading);
+
     if (this.props.profile.profile === null) return false;
 
     return (
@@ -168,20 +159,22 @@ class EditProfileContainer extends Component {
                   <SecondLabel>Gender</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <Dropdown
+                      name={"gender"}
                       options={GenderData}
                       placeholder={"Select your gender"}
                       value={gender}
-                      onChangeValue={this.onChangeGender}
+                      onChangeValue={this.onChange}
                     />
                   </div>
 
                   <SecondLabel>Year of Birth</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <Dropdown
+                      name={"birthYear"}
                       options={GenerateYear()}
                       placeholder={"Select your birth year"}
                       value={birthYear}
-                      onChangeValue={this.onChangeBirthYear}
+                      onChangeValue={this.onChange}
                     />
                   </div>
 
@@ -223,14 +216,11 @@ const styles = StyleSheet.create({
     width: "auto",
     backgroundColor: configStyles.colors.lightGrey,
     height: "auto",
-    // margin: "50px 40px 40px 40px",
     borderRadius: "5px",
     display: "flex",
     border: "2px solid",
     borderColor: configStyles.colors.black,
     padding: "40px",
-    // boxShadow: "0px 3px 20px 0px",
-    // boxShadowColor: configStyles.colors.lightGrey,
   },
   p: {
     fontFamily: "Ubuntu-Regular",
