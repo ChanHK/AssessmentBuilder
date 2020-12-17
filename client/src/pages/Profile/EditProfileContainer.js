@@ -114,19 +114,23 @@ class EditProfileContainer extends Component {
       imageScale,
     } = this.state;
 
+    const gender2 = gender === null ? "Empty" : gender;
+    const yearOfBirth = birthYear === null ? "Empty" : birthYear.toString();
+    const occupation2 = occupation === "" ? "Empty" : occupation;
+    const imagePos2 = JSON.stringify(imagePos);
+    const imageScale2 = imageScale.toString();
+
     const formData = new FormData();
     formData.append("picture", image);
     formData.append("username", username);
-    formData.append("gender", gender === null ? "Empty" : gender);
-    formData.append(
-      "yearOfBirth",
-      birthYear === null ? "Empty" : birthYear.toString()
-    );
-    formData.append("occupation", occupation === "" ? "Empty" : occupation);
-    formData.append("imagePos", JSON.stringify(imagePos));
-    formData.append("imageScale", imageScale.toString());
+    formData.append("gender", gender2);
+    formData.append("yearOfBirth", yearOfBirth);
+    formData.append("occupation", occupation2);
+    formData.append("imagePos", imagePos2);
+    formData.append("imageScale", imageScale2);
 
     this.props.updateUserProfileData(formData);
+    console.log("quite con");
     this.props.history.push("/profile");
   };
 
