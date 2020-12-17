@@ -21,9 +21,6 @@ import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
 
-// import DragImage from "../../image/profile/drag.png";
-import DragImage from "../../image/profile/dummyUser.png";
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -35,7 +32,7 @@ class EditProfileContainer extends Component {
   constructor() {
     super();
     this.state = {
-      image: DragImage,
+      image: "",
       username: "",
       gender: null,
       birthYear: null,
@@ -61,7 +58,7 @@ class EditProfileContainer extends Component {
             profile.yearOfBirth === "Empty" ? null : profile.yearOfBirth,
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
-          image: profile.picture === "" ? DragImage : profile.picture,
+          image: profile.picture,
         }));
       }
     }
@@ -73,9 +70,6 @@ class EditProfileContainer extends Component {
 
   handleDrop = (dropped) => {
     this.setState({
-      // image: (window.URL ? window.URL : window.webkitURL).createObjectURL(
-      //   dropped[0]
-      // ),
       image: dropped[0],
     });
   };
@@ -90,9 +84,6 @@ class EditProfileContainer extends Component {
 
   fileUploadHandler = (e) => {
     this.setState({
-      // image: (window.URL ? window.URL : window.webkitURL).createObjectURL(
-      //   e.target.files[0]
-      // ),
       image: e.target.files[0],
     });
   };
@@ -129,7 +120,7 @@ class EditProfileContainer extends Component {
     } = this.state;
 
     if (this.props.profile.profile === null) return false;
-    console.log(image);
+
     return (
       <>
         <Header />

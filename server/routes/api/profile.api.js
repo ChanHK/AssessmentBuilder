@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
+const multer = require("multer");
+var cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const User = require("../../models/user");
 
@@ -19,10 +22,31 @@ router.get("/profile", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "profile",
+    format: async (req, file) => {
+      "png", "jpg", "jpeg";
+    },
+    public_id: (req, file) => {
+      return Date.now() + file.fieldname;
+    },
+  },
+});
+
+let parser = multer({ storage: storage });
+
 // @route     POST api/user/profile
 // @desc      Post user profile data (updated data)
 // @access    Private
-router.post("/profile", auth, (req, res) => {
+router.post("/profile", auth, parser.single("picture"), async (req, res) => {
   const { errors, isValid } = validateProfileInput(req.body);
 
   if (!isValid) return res.status(400).json(errors);
@@ -32,6 +56,8 @@ router.post("/profile", auth, (req, res) => {
     user.gender = req.body.gender;
     user.yearOfBirth = req.body.yearOfBirth;
     user.occupation = req.body.occupation;
+    user.picture = req.file.path;
+    
     user
       .save()
       .then(() => {

@@ -18,8 +18,6 @@ import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
 
-import profilePic from "../../image/profile/dummyUser.png";
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchUserProfileData } from "../../actions/profile.actions";
@@ -49,7 +47,10 @@ class ProfileContainer extends Component {
                 <FirstLabel>Profile</FirstLabel>
               </div>
               <StatusBarWrapper>
-                <StatusBarImage image={profilePic} style={[styles.imgPos]} />
+                <StatusBarImage
+                  image={profile.picture}
+                  style={[styles.imgPos]}
+                />
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
               </StatusBarWrapper>
