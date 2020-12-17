@@ -56,8 +56,10 @@ router.post("/profile", auth, parser.single("picture"), async (req, res) => {
     user.gender = req.body.gender;
     user.yearOfBirth = req.body.yearOfBirth;
     user.occupation = req.body.occupation;
-    user.picture = req.file.path;
-    
+    if (req.file !== undefined) user.picture = req.file.path;
+    user.imagePos = req.body.imagePos;
+    user.imageScale = req.body.imageScale;
+
     user
       .save()
       .then(() => {

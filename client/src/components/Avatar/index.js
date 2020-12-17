@@ -11,7 +11,6 @@ const Avatar = (props) => {
       width={250}
       height={250}
       color={[20, 20, 20, 0.3]}
-      scale={1.1}
       rotate={0}
       borderRadius={250 / 2}
       style={{
@@ -21,7 +20,10 @@ const Avatar = (props) => {
         minWidth: isMobile ? "auto" : "220px",
       }}
       className={isMobile ? css(styles.flexbox, styles.con) : css(styles.con)}
-      ref={props.ref}
+      disableBoundaryChecks={false} //Set to true to allow the image to be moved outside the cropping boundary.
+      position={props.position}
+      onPositionChange={props.onPositionChange}
+      scale={props.scale}
     />
   );
 };

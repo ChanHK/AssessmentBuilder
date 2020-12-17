@@ -27,12 +27,16 @@ import {
   fetchUserProfileData,
   updateUserProfileData,
 } from "../../actions/profile.actions";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 class EditProfileContainer extends Component {
   constructor() {
     super();
     this.state = {
       image: "",
+      imagePos: "",
+      imageScale: 1,
+      allowZoomOut: false,
       username: "",
       gender: null,
       birthYear: null,
@@ -59,6 +63,8 @@ class EditProfileContainer extends Component {
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
           image: profile.picture,
+          imagePos: JSON.parse(profile.imagePos),
+          imageScale: parseFloat(profile.imageScale),
         }));
       }
     }
@@ -88,22 +94,37 @@ class EditProfileContainer extends Component {
     });
   };
 
-  setEditorRef = (editor) => (this.editor = editor);
+  handlePositionChange = (position) => {
+    this.setState({ imagePos: position });
+  };
+
+  handleScale = (e) => {
+    this.setState({ imageScale: parseFloat(e.target.value) });
+  };
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { username, gender, birthYear, occupation, image } = this.state;
-
-    const gender2 = gender === null ? "Empty" : gender;
-    const yearOfBirth = birthYear === null ? "Empty" : birthYear.toString();
-    const occupation2 = occupation === "" ? "Empty" : occupation;
+    const {
+      username,
+      gender,
+      birthYear,
+      occupation,
+      image,
+      imagePos,
+      imageScale,
+    } = this.state;
 
     const formData = new FormData();
     formData.append("picture", image);
     formData.append("username", username);
-    formData.append("gender", gender2);
-    formData.append("yearOfBirth", yearOfBirth);
-    formData.append("occupation", occupation2);
+    formData.append("gender", gender === null ? "Empty" : gender);
+    formData.append(
+      "yearOfBirth",
+      birthYear === null ? "Empty" : birthYear.toString()
+    );
+    formData.append("occupation", occupation === "" ? "Empty" : occupation);
+    formData.append("imagePos", JSON.stringify(imagePos));
+    formData.append("imageScale", imageScale.toString());
 
     this.props.updateUserProfileData(formData);
     this.props.history.push("/profile");
@@ -112,6 +133,9 @@ class EditProfileContainer extends Component {
   render() {
     const {
       image,
+      imagePos,
+      imageScale,
+      allowZoomOut,
       username,
       gender,
       birthYear,
@@ -147,13 +171,28 @@ class EditProfileContainer extends Component {
                       onDropAccepted={this.onDropAccepted}
                       noClick={true}
                     >
-                      <Avatar image={image} ref={this.setEditorRef} />
+                      <Avatar
+                        image={image}
+                        position={imagePos}
+                        onPositionChange={this.handlePositionChange}
+                        scale={parseFloat(imageScale)}
+                      />
                     </DragDrop>
                     {fileRejected && (
                       <p className={css(styles.p)}>
                         Please select image in jpeg or png format
                       </p>
                     )}
+                    <ThirdLabel>Zoom</ThirdLabel>
+                    <input
+                      name="scale"
+                      type="range"
+                      onChange={this.handleScale}
+                      min={allowZoomOut ? "0.1" : "1"}
+                      max="2"
+                      step="0.01"
+                      defaultValue="1"
+                    />
                     <div style={{ paddingTop: "10px" }}>
                       <UploadButton
                         onChange={this.fileUploadHandler}
