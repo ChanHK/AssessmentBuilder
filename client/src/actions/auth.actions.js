@@ -3,11 +3,7 @@ import axios from "axios";
 import { returnErrors } from "./error.actions";
 import { returnSucMsg } from "./sucMsg.actions";
 
-import {
-  LOGIN,
-  LOGOUT,
-  REGISTER,
-} from "../utils/actionTypes";
+import { LOGIN, LOGOUT, REGISTER } from "../utils/actionTypes";
 
 // register user
 export const register = (data) => (dispatch) => {
@@ -18,7 +14,7 @@ export const register = (data) => (dispatch) => {
   };
 
   axios
-    .post("api/auth/register", data, config)
+    .post("/api/auth/register", data, config)
     .then((res) =>
       dispatch({
         type: REGISTER.REQISTER_SUCCESS,
@@ -49,7 +45,7 @@ export const login = (data) => (dispatch) => {
   };
 
   axios
-    .post("api/auth/login", data, config)
+    .post("/api/auth/login", data, config)
     .then((res) =>
       dispatch({
         type: LOGIN.LOGIN_SUCCESS,
@@ -73,7 +69,7 @@ export const forgotPassword = (data) => (dispatch) => {
   };
 
   axios
-    .put("api/auth/forgotPassword", data, config)
+    .put("/api/auth/forgotPassword", data, config)
     .then((res) => {
       dispatch(returnSucMsg(res.data, res.status));
     })

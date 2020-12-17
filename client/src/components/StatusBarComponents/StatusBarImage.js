@@ -1,12 +1,17 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Image } from "react-bootstrap";
 import * as configStyles from "../../config/styles";
+import AvatarEditor from "react-avatar-editor";
 
 const StatusBarImage = (props) => (
   <div className={css(styles.container, props.style, styles.noSelect)}>
-    <Image src={props.image} className={css(styles.img)} roundedCircle />
+    <AvatarEditor
+      image={props.image}
+      className={css(styles.img)}
+      scale={props.scale}
+      position={props.position}
+      border={0}
+    />
   </div>
 );
 
@@ -22,6 +27,7 @@ const styles = StyleSheet.create({
     display: "flex",
     border: "2px solid",
     borderColor: configStyles.colors.black,
+    borderRadius: "calc(100px / 2)",
   },
   noSelect: {
     userSelect:

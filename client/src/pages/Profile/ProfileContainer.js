@@ -50,6 +50,8 @@ class ProfileContainer extends Component {
                 <StatusBarImage
                   image={profile.picture}
                   style={[styles.imgPos]}
+                  position={JSON.parse(profile.imagePos)}
+                  scale={profile.imageScale}
                 />
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
