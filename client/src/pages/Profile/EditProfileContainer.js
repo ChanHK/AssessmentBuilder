@@ -192,6 +192,7 @@ class EditProfileContainer extends Component {
                       max="2"
                       step="0.01"
                       defaultValue="1"
+                      value={imageScale}
                     />
                     <div style={{ paddingTop: "10px" }}>
                       <UploadButton
