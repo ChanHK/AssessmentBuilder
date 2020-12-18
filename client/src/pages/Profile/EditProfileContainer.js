@@ -30,6 +30,9 @@ import {
   updateUserProfileData,
 } from "../../actions/profile.actions";
 
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+
 class EditProfileContainer extends Component {
   constructor() {
     super();
@@ -49,7 +52,17 @@ class EditProfileContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchUserProfileData();
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    } else this.props.fetchUserProfileData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -302,6 +315,7 @@ EditProfileContainer.propTypes = {
   fetchUserProfileData: PropTypes.func.isRequired,
   updateUserProfileData: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -311,4 +325,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchUserProfileData,
   updateUserProfileData,
+  logout,
 })(EditProfileContainer);
