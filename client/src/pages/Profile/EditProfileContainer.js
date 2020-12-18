@@ -18,6 +18,7 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import GenderData from "./Data/GenderData";
 import { GenerateYear } from "./Data/GenerateYear";
@@ -28,7 +29,6 @@ import {
   fetchUserProfileData,
   updateUserProfileData,
 } from "../../actions/profile.actions";
-import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 class EditProfileContainer extends Component {
   constructor() {

@@ -46,23 +46,24 @@ class ProfileContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props.profile;
-    console.log(prevProps.profile);
 
-    if (prevProps.profile !== this.props.profile) {
-      if (this.props.profile.profile !== null) {
-        this.setState(() => ({
-          picture: profile.picture,
-          imagePosX: parseFloat(profile.imagePosX),
-          imagePosY: parseFloat(profile.imagePosY),
-          imageScale: profile.imageScale,
-          username: profile.username,
-          email: profile.email,
-          gender: profile.gender,
-          yearOfBirth: profile.yearOfBirth,
-          occupation: profile.occupation,
-          isLoading: this.props.profile.isLoading,
-        }));
-      }
+    if (
+      prevProps.profile !== this.props.profile &&
+      this.props.profile.profile !== null &&
+      profile.message === undefined
+    ) {
+      this.setState(() => ({
+        picture: profile.picture,
+        imagePosX: parseFloat(profile.imagePosX),
+        imagePosY: parseFloat(profile.imagePosY),
+        imageScale: profile.imageScale,
+        username: profile.username,
+        email: profile.email,
+        gender: profile.gender,
+        yearOfBirth: profile.yearOfBirth,
+        occupation: profile.occupation,
+        isLoading: this.props.profile.isLoading,
+      }));
     }
   }
 
