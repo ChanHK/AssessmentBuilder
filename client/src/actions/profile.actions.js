@@ -43,7 +43,7 @@ export const updateUserProfileData = (data) => (dispatch, getState) => {
 
     return config;
   };
-
+  
   axios
     .post("/api/user/profile", data, tokenConfig(getState))
     .then((res) =>

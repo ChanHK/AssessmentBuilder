@@ -24,7 +24,6 @@ import { fetchUserProfileData } from "../../actions/profile.actions";
 
 class ProfileContainer extends Component {
   componentDidMount() {
-    console.log("componentDidMount");
     this.props.fetchUserProfileData();
   }
 
@@ -33,10 +32,9 @@ class ProfileContainer extends Component {
   };
 
   render() {
-    // console.log(this.props.profile.isLoading);
     if (this.props.profile.profile === null) return false;
     const { profile } = this.props.profile;
-    console.log(this.props.profile.isLoading);
+
     return (
       <>
         <Header />
@@ -51,7 +49,7 @@ class ProfileContainer extends Component {
                   image={profile.picture}
                   style={[styles.imgPos]}
                   position={JSON.parse(profile.imagePos)}
-                  scale={profile.imageScale}
+                  scale={parseFloat(profile.imageScale)}
                 />
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
