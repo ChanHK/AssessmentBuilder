@@ -10,6 +10,7 @@ import Dropdown from "../../components/Dropdown";
 import Avatar from "../../components/Avatar";
 import DragDrop from "../../components/DragDrop";
 import UploadButton from "../../components/UploadButton";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -43,7 +44,7 @@ class EditProfileContainer extends Component {
       birthYear: null,
       occupation: "",
       fileRejected: false,
-      isLoading: false,
+      isLoading: true,
     };
   }
 
@@ -146,7 +147,9 @@ class EditProfileContainer extends Component {
       birthYear,
       occupation,
       fileRejected,
+      isLoading,
     } = this.state;
+
     let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
     position.x = imagePosX;
@@ -155,6 +158,11 @@ class EditProfileContainer extends Component {
     return (
       <>
         <Header />
+        {isLoading ? (
+          <LoaderSpinner />
+        ) : (
+          (document.body.style.overflow = "unset")
+        )}
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
