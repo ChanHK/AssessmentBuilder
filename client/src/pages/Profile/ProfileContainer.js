@@ -54,7 +54,8 @@ class ProfileContainer extends Component {
         this.props.logout();
         this.props.history.push("/login");
       }
-    } else this.props.fetchUserProfileData();
+    }
+    this.props.fetchUserProfileData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -192,12 +193,13 @@ const styles = StyleSheet.create({
 ProfileContainer.propTypes = {
   fetchUserProfileData: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
 });
 
-export default connect(mapStateToProps, { fetchUserProfileData })(
+export default connect(mapStateToProps, { fetchUserProfileData, logout })(
   ProfileContainer
 );

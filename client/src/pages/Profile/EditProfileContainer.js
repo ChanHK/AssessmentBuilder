@@ -62,7 +62,8 @@ class EditProfileContainer extends Component {
         this.props.logout();
         this.props.history.push("/login");
       }
-    } else this.props.fetchUserProfileData();
+    }
+    this.props.fetchUserProfileData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -315,7 +316,7 @@ EditProfileContainer.propTypes = {
   fetchUserProfileData: PropTypes.func.isRequired,
   updateUserProfileData: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
