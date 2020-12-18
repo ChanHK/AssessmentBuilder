@@ -23,6 +23,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchUserProfileData } from "../../actions/profile.actions";
 
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+
 class ProfileContainer extends Component {
   constructor() {
     super();
@@ -41,7 +44,17 @@ class ProfileContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchUserProfileData();
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    } else this.props.fetchUserProfileData();
   }
 
   componentDidUpdate(prevProps, prevState) {
