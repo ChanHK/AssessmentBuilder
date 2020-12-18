@@ -5,6 +5,7 @@ import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -23,8 +24,46 @@ import { connect } from "react-redux";
 import { fetchUserProfileData } from "../../actions/profile.actions";
 
 class ProfileContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      picture: "",
+      imagePosX: 0.5,
+      imagePosY: 0.5,
+      imageScale: 1,
+      username: "",
+      email: "",
+      gender: null,
+      yearOfBirth: null,
+      occupation: "",
+      isLoading: true,
+    };
+  }
+
   componentDidMount() {
     this.props.fetchUserProfileData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { profile } = this.props.profile;
+    console.log(prevProps.profile);
+
+    if (prevProps.profile !== this.props.profile) {
+      if (this.props.profile.profile !== null) {
+        this.setState(() => ({
+          picture: profile.picture,
+          imagePosX: parseFloat(profile.imagePosX),
+          imagePosY: parseFloat(profile.imagePosY),
+          imageScale: profile.imageScale,
+          username: profile.username,
+          email: profile.email,
+          gender: profile.gender,
+          yearOfBirth: profile.yearOfBirth,
+          occupation: profile.occupation,
+          isLoading: this.props.profile.isLoading,
+        }));
+      }
+    }
   }
 
   handleClick = () => {
@@ -32,16 +71,32 @@ class ProfileContainer extends Component {
   };
 
   render() {
-    let position = { x: 0.5, y: 0.5 };
-    if (this.props.profile.profile === null) return false;
+    const {
+      picture,
+      imagePosX,
+      imagePosY,
+      imageScale,
+      username,
+      email,
+      gender,
+      yearOfBirth,
+      occupation,
+      isLoading,
+    } = this.state;
 
-    const { profile } = this.props.profile;
-    position.x = parseFloat(profile.imagePosX);
-    position.y = parseFloat(profile.imagePosY);
+    if (this.props.profile.profile === null) return false;
+    let position = { x: 0.5, y: 0.5 };
+    position.x = imagePosX;
+    position.y = imagePosY;
 
     return (
       <>
         <Header />
+        {isLoading ? (
+          <LoaderSpinner />
+        ) : (
+          (document.body.style.overflow = "unset")
+        )}
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
@@ -50,10 +105,10 @@ class ProfileContainer extends Component {
               </div>
               <StatusBarWrapper>
                 <StatusBarImage
-                  image={profile.picture}
+                  image={picture}
                   style={[styles.imgPos]}
                   position={position}
-                  scale={parseFloat(profile.imageScale)}
+                  scale={parseFloat(imageScale)}
                 />
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />
@@ -62,23 +117,23 @@ class ProfileContainer extends Component {
                 <CustomColumn>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Username</SecondLabel>
-                    <ThirdLabel>{profile.username}</ThirdLabel>
+                    <ThirdLabel>{username}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Email</SecondLabel>
-                    <ThirdLabel>{profile.email}</ThirdLabel>
+                    <ThirdLabel>{email}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Gender</SecondLabel>
-                    <ThirdLabel>{profile.gender}</ThirdLabel>
+                    <ThirdLabel>{gender}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Year of Birth</SecondLabel>
-                    <ThirdLabel>{profile.yearOfBirth}</ThirdLabel>
+                    <ThirdLabel>{yearOfBirth}</ThirdLabel>
                   </div>
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Occupation</SecondLabel>
-                    <ThirdLabel>{profile.occupation}</ThirdLabel>
+                    <ThirdLabel>{occupation}</ThirdLabel>
                   </div>
 
                   <Button

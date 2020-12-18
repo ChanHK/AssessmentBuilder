@@ -1,5 +1,5 @@
 import React from "react";
-import * as configStyles from "../../config/styles";
+// import * as configStyles from "../../config/styles";
 import { StyleSheet, css } from "aphrodite";
 import Loader from "react-loader-spinner";
 
