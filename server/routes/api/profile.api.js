@@ -58,7 +58,8 @@ router.post("/profile", auth, parser.single("picture"), (req, res) => {
     user.occupation = req.body.occupation;
     if (req.file === undefined) user.picture = req.body.picture;
     else user.picture = req.file.path;
-    user.imagePos = req.body.imagePos;
+    user.imagePosX = req.body.imagePosX;
+    user.imagePosY = req.body.imagePosY;
     user.imageScale = req.body.imageScale;
 
     user

@@ -32,8 +32,12 @@ class ProfileContainer extends Component {
   };
 
   render() {
+    let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
+
     const { profile } = this.props.profile;
+    position.x = parseFloat(profile.imagePosX);
+    position.y = parseFloat(profile.imagePosY);
 
     return (
       <>
@@ -48,7 +52,7 @@ class ProfileContainer extends Component {
                 <StatusBarImage
                   image={profile.picture}
                   style={[styles.imgPos]}
-                  position={JSON.parse(profile.imagePos)}
+                  position={position}
                   scale={parseFloat(profile.imageScale)}
                 />
                 <StatusBox number={"67"} text={"Assessments Created"} />

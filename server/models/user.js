@@ -6,9 +6,13 @@ const UserSchema = new mongoose.Schema({
     default:
       "https://res.cloudinary.com/dityuyf5q/image/upload/v1608194169/profile/dummyUser_ccehfi.png",
   },
-  imagePos: {
+  imagePosX: {
     type: String,
-    default: '{"x":0.5,"y":0.5}',
+    default: "0.5",
+  },
+  imagePosY: {
+    type: String,
+    default: "0.5",
   },
   imageScale: {
     type: String,

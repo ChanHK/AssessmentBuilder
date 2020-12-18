@@ -34,7 +34,8 @@ class EditProfileContainer extends Component {
     super();
     this.state = {
       image: "",
-      imagePos: "",
+      imagePosX: 0.5,
+      imagePosY: 0.5,
       imageScale: 1,
       allowZoomOut: false,
       username: "",
@@ -63,8 +64,9 @@ class EditProfileContainer extends Component {
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
           image: profile.picture,
-          imagePos: JSON.parse(profile.imagePos),
-          imageScale: parseFloat(profile.imageScale),
+          imagePosX: parseFloat(profile.imagePosX),
+          imagePosY: parseFloat(profile.imagePosY),
+          imageScale: profile.imageScale,
         }));
       }
     }
@@ -95,7 +97,7 @@ class EditProfileContainer extends Component {
   };
 
   handlePositionChange = (position) => {
-    this.setState({ imagePos: position });
+    this.setState({ imagePosX: position.x, imagePosY: position.y });
   };
 
   handleScale = (e) => {
@@ -110,34 +112,33 @@ class EditProfileContainer extends Component {
       birthYear,
       occupation,
       image,
-      imagePos,
+      imagePosX,
+      imagePosY,
       imageScale,
     } = this.state;
-
-    const gender2 = gender === null ? "Empty" : gender;
-    const yearOfBirth = birthYear === null ? "Empty" : birthYear.toString();
-    const occupation2 = occupation === "" ? "Empty" : occupation;
-    const imagePos2 = JSON.stringify(imagePos);
-    const imageScale2 = imageScale.toString();
 
     const formData = new FormData();
     formData.append("picture", image);
     formData.append("username", username);
-    formData.append("gender", gender2);
-    formData.append("yearOfBirth", yearOfBirth);
-    formData.append("occupation", occupation2);
-    formData.append("imagePos", imagePos2);
-    formData.append("imageScale", imageScale2);
+    formData.append("gender", gender === null ? "Empty" : gender);
+    formData.append(
+      "yearOfBirth",
+      birthYear === null ? "Empty" : birthYear.toString()
+    );
+    formData.append("occupation", occupation === "" ? "Empty" : occupation);
+    formData.append("imagePosX", imagePosX.toString());
+    formData.append("imagePosY", imagePosY.toString());
+    formData.append("imageScale", imageScale);
 
     this.props.updateUserProfileData(formData);
-    console.log("quite con");
     this.props.history.push("/profile");
   };
 
   render() {
     const {
       image,
-      imagePos,
+      imagePosX,
+      imagePosY,
       imageScale,
       allowZoomOut,
       username,
@@ -146,8 +147,10 @@ class EditProfileContainer extends Component {
       occupation,
       fileRejected,
     } = this.state;
-
+    let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
+    position.x = imagePosX;
+    position.y = imagePosY;
 
     return (
       <>
@@ -177,7 +180,7 @@ class EditProfileContainer extends Component {
                     >
                       <Avatar
                         image={image}
-                        position={imagePos}
+                        position={position}
                         onPositionChange={this.handlePositionChange}
                         scale={parseFloat(imageScale)}
                       />
