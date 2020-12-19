@@ -19,6 +19,7 @@ export const LOGOUT = {
 
 export const GET_SUCCESS_MESSAGE = {
   GET_MESSAGE: "GET_MESSAGE",
+  CLEAR_MESSAGE: "CLEAR_MESSAGE",
 };
 
 export const PROFILE_DATA = {

@@ -2,6 +2,9 @@ import axios from "axios";
 
 import { PROFILE_DATA } from "../utils/actionTypes";
 
+import { returnErrors } from "./error.actions";
+import { returnSucMsg } from "./sucMsg.actions";
+
 export const fetchUserProfileData = () => (dispatch, getState) => {
   dispatch({ type: PROFILE_DATA.FETCH_BEGIN });
 
@@ -43,15 +46,16 @@ export const updateUserProfileData = (data) => (dispatch, getState) => {
 
     return config;
   };
-  
+
   axios
     .post("/api/user/profile", data, tokenConfig(getState))
-    .then((res) =>
+    .then((res) => {
+      dispatch(returnSucMsg(res.data, res.status));
       dispatch({
         type: PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS,
         payload: res.data,
-      })
-    )
+      });
+    })
     .catch((err) => {
       console.log("Update user profile data failed", err);
       dispatch({ type: PROFILE_DATA.UPDATE_PROFILE_DATA_FAIL });

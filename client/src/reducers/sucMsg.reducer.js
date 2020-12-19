@@ -14,6 +14,12 @@ export default function (state = initialState, action) {
         status: action.payload.status,
         id: action.payload.id,
       };
+    case GET_SUCCESS_MESSAGE.CLEAR_MESSAGE:
+      return {
+        message: {},
+        status: null,
+        id: null,
+      };
     default:
       return state;
   }

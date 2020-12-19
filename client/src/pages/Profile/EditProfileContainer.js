@@ -32,6 +32,7 @@ import {
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
+import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -48,6 +49,7 @@ class EditProfileContainer extends Component {
       occupation: "",
       fileRejected: false,
       isLoading: true,
+      successMsg: null,
     };
   }
 
@@ -84,6 +86,16 @@ class EditProfileContainer extends Component {
           imageScale: profile.imageScale,
         }));
       }
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.sucMsg) {
+      // console.log("in");
+      console.log(nextProps.sucMsg.message);
+      this.setState({
+        successMsg: nextProps.sucMsg.message.message,
+      });
     }
   }
 
@@ -130,6 +142,7 @@ class EditProfileContainer extends Component {
       imagePosX,
       imagePosY,
       imageScale,
+      // successMsg,
     } = this.state;
 
     const formData = new FormData();
@@ -146,7 +159,6 @@ class EditProfileContainer extends Component {
     formData.append("imageScale", imageScale);
 
     this.props.updateUserProfileData(formData);
-    this.props.history.push("/profile");
   };
 
   render() {
@@ -162,7 +174,12 @@ class EditProfileContainer extends Component {
       occupation,
       fileRejected,
       isLoading,
+      successMsg,
     } = this.state;
+
+    if (successMsg !== null && successMsg !== undefined) {
+      this.props.history.push("/profile");
+    }
 
     let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
@@ -317,14 +334,18 @@ EditProfileContainer.propTypes = {
   updateUserProfileData: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  sucMsg: PropTypes.object.isRequired,
+  clearSucMsg: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
+  sucMsg: state.sucMsg,
 });
 
 export default connect(mapStateToProps, {
   fetchUserProfileData,
   updateUserProfileData,
   logout,
+  clearSucMsg,
 })(EditProfileContainer);

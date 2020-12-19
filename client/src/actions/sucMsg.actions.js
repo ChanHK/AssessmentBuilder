@@ -11,3 +11,10 @@ export const returnSucMsg = (message, status, id = null) => {
     },
   };
 };
+
+// clear success message
+export const clearSucMsg = () => {
+  return {
+    type: GET_SUCCESS_MESSAGE.CLEAR_MESSAGE,
+  };
+};
