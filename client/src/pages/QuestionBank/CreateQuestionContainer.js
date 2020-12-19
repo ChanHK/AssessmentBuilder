@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-
 import { StyleSheet } from "aphrodite";
-
-import Header from "../../components/Header";
+import * as configStyles from "../../config/styles";
+import "../../css/general.css";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -13,10 +12,9 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import "../../css/general.css";
-
 import QuestionType from "./Data/QuestionType";
 
+import Header from "../../components/Header";
 import Dropdown from "../../components/Dropdown";
 import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
@@ -24,8 +22,6 @@ import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
 import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
-
-import * as configStyles from "../../config/styles";
 
 import { EditorState, convertToRaw } from "draft-js";
 // import draftToHtml from "draftjs-to-html";
@@ -38,7 +34,6 @@ class CreateQuestionContainer extends Component {
     this.state = {
       questionType: null,
       questionDescriptive: EditorState.createEmpty(),
-      explanation: EditorState.createEmpty(),
       questionAns: [],
       questionChoice: [],
       checkboxNum: null,
@@ -110,21 +105,12 @@ class CreateQuestionContainer extends Component {
     var value = target.value;
 
     if (target.checked) {
-      // let questionAns = [...this.state.questionAns];
-      // questionAns[value] = {
-      //   ...questionAns[value],
-      //   value: this.state.questionChoice[value],
-      // };
-      // this.setState({ questionAns });
-
       this.setState((prevState) => ({
         questionAns: [
           ...prevState.questionAns,
           this.state.questionChoice[value],
         ],
       }));
-
-      // this.state.questionAns[value] = this.state.questionChoice[value];
     } else {
       this.state.questionAns.splice(value, 1);
     }
@@ -178,7 +164,6 @@ class CreateQuestionContainer extends Component {
           convertToRaw(this.state.questionDescriptive.getCurrentContent())
         )
     );
-    // console.log(this.state.explanation);
     console.log(this.state.questionAns);
     // console.log(
     //   this.state.questionDescriptive &&
@@ -194,7 +179,6 @@ class CreateQuestionContainer extends Component {
     const {
       questionType,
       questionDescriptive,
-      explanation,
       questionAns,
       questionChoice,
       checkboxNum,
@@ -376,16 +360,6 @@ class CreateQuestionContainer extends Component {
                       </div>
                     </>
                   )}
-
-                  <SecondLabel>Explanation (Optional)</SecondLabel>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <CustomEditor
-                      onEditorStateChange={(e) =>
-                        this.setState({ explanation: e })
-                      }
-                      editorState={explanation}
-                    />
-                  </div>
 
                   <CustomRow>
                     <div
