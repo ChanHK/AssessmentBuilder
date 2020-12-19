@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { forgotPassword } from "../../actions/auth.actions";
 import { clearErrors } from "../../actions/error.actions";
+import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 class ForgotPasswordContainer extends Component {
   constructor() {
@@ -45,10 +46,14 @@ class ForgotPasswordContainer extends Component {
   }
 
   backToLogin = () => {
+    this.props.clearErrors();
+    this.props.clearSucMsg();
     this.props.history.push("/login");
   };
 
   directToRegister = () => {
+    this.props.clearErrors();
+    this.props.clearSucMsg();
     this.props.history.push("/");
   };
 
@@ -239,6 +244,7 @@ ForgotPasswordContainer.propTypes = {
   auth: PropTypes.object.isRequired,
   sucMsg: PropTypes.object.isRequired,
   clearErrors: PropTypes.func.isRequired,
+  clearSucMsg: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -247,6 +253,8 @@ const mapStateToProps = (state) => ({
   sucMsg: state.sucMsg,
 });
 
-export default connect(mapStateToProps, { forgotPassword, clearErrors })(
-  ForgotPasswordContainer
-);
+export default connect(mapStateToProps, {
+  forgotPassword,
+  clearErrors,
+  clearSucMsg,
+})(ForgotPasswordContainer);

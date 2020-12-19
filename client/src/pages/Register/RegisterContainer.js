@@ -41,6 +41,7 @@ class RegisterContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
+      this.props.clearErrors();
       this.props.history.push("/home");
     }
 
