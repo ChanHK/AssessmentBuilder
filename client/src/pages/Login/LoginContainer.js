@@ -14,6 +14,7 @@ import * as IoIcons from "react-icons/io";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login } from "../../actions/auth.actions";
+import { clearErrors } from "../../actions/error.actions";
 
 class LoginContainer extends Component {
   constructor() {
@@ -34,6 +35,7 @@ class LoginContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
+      this.props.clearErrors();
       this.props.history.push("/home");
     }
     if (nextProps.errors) {
@@ -249,6 +251,7 @@ LoginContainer.propTypes = {
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
+  clearErrors: PropTypes.func.isRequired,
 });
 
-export default connect(mapStateToProps, { login })(LoginContainer);
+export default connect(mapStateToProps, { login, clearErrors })(LoginContainer);

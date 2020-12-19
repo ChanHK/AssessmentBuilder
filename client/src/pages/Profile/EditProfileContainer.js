@@ -91,8 +91,6 @@ class EditProfileContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.sucMsg) {
-      // console.log("in");
-      console.log(nextProps.sucMsg.message);
       this.setState({
         successMsg: nextProps.sucMsg.message.message,
       });
@@ -178,6 +176,7 @@ class EditProfileContainer extends Component {
     } = this.state;
 
     if (successMsg !== null && successMsg !== undefined) {
+      this.props.clearSucMsg();
       this.props.history.push("/profile");
     }
 
