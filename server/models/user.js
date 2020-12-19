@@ -47,6 +47,35 @@ const UserSchema = new mongoose.Schema({
     data: String,
     default: "",
   },
+
+  questionBank: [
+    {
+      questionType: {
+        type: String,
+        default: "",
+      },
+      questionDescription: {
+        type: String,
+        default: "",
+      },
+      questionChoices: [
+        {
+          choice: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
+      questionAnswers: [
+        {
+          answer: {
+            type: String,
+            default: "",
+          },
+        },
+      ],
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", UserSchema);
