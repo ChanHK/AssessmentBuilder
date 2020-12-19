@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { PROFILE_DATA } from "../utils/actionTypes";
 
-import { returnErrors } from "./error.actions";
+// import { returnErrors } from "./error.actions";
 import { returnSucMsg } from "./sucMsg.actions";
 
 export const fetchUserProfileData = () => (dispatch, getState) => {
