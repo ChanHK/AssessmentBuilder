@@ -47,7 +47,7 @@ let parser = multer({ storage: storage });
 // @route     POST api/user/profile
 // @desc      Post user profile data (updated data)
 // @access    Private
-router.post("/profile", auth, parser.single("picture"), (req, res) => {
+router.post("/profile", auth, parser.single("url"), (req, res) => {
   const { errors, isValid } = validateProfileInput(req.body);
 
   if (!isValid) return res.status(400).json(errors);
@@ -57,11 +57,21 @@ router.post("/profile", auth, parser.single("picture"), (req, res) => {
     user.gender = req.body.gender;
     user.yearOfBirth = req.body.yearOfBirth;
     user.occupation = req.body.occupation;
-    if (req.file === undefined) user.picture = req.body.picture;
-    else user.picture = req.file.path;
-    user.imagePosX = req.body.imagePosX;
-    user.imagePosY = req.body.imagePosY;
-    user.imageScale = req.body.imageScale;
+    if (req.file === undefined) {
+      user.image = {
+        url: req.body.url,
+        posX: req.body.posX,
+        posY: req.body.posY,
+        scale: req.body.scale,
+      };
+    } else {
+      user.image = {
+        url: req.file.path,
+        posX: req.body.posX,
+        posY: req.body.posY,
+        scale: req.body.scale,
+      };
+    }
 
     user
       .save()

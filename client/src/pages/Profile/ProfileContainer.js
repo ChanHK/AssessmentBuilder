@@ -60,17 +60,16 @@ class ProfileContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props.profile;
-
     if (
       prevProps.profile !== this.props.profile &&
       this.props.profile.profile !== null &&
       profile.message === undefined
     ) {
       this.setState(() => ({
-        picture: profile.picture,
-        imagePosX: parseFloat(profile.imagePosX),
-        imagePosY: parseFloat(profile.imagePosY),
-        imageScale: profile.imageScale,
+        picture: profile.image.url,
+        imagePosX: parseFloat(profile.image.posX),
+        imagePosY: parseFloat(profile.image.posY),
+        imageScale: parseFloat(profile.image.scale),
         username: profile.username,
         email: profile.email,
         gender: profile.gender,
@@ -123,7 +122,7 @@ class ProfileContainer extends Component {
                   image={picture}
                   style={[styles.imgPos]}
                   position={position}
-                  scale={parseFloat(imageScale)}
+                  scale={imageScale}
                 />
                 <StatusBox number={"67"} text={"Assessments Created"} />
                 <StatusBox number={"200"} text={"Questions Created"} />

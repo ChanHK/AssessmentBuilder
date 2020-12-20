@@ -80,10 +80,10 @@ class EditProfileContainer extends Component {
             profile.yearOfBirth === "Empty" ? null : profile.yearOfBirth,
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
-          image: profile.picture,
-          imagePosX: parseFloat(profile.imagePosX),
-          imagePosY: parseFloat(profile.imagePosY),
-          imageScale: profile.imageScale,
+          image: profile.image.url,
+          imagePosX: parseFloat(profile.image.posX),
+          imagePosY: parseFloat(profile.image.posY),
+          imageScale: profile.image.scale,
         }));
       }
     }
@@ -144,7 +144,7 @@ class EditProfileContainer extends Component {
     } = this.state;
 
     const formData = new FormData();
-    formData.append("picture", image);
+    formData.append("url", image);
     formData.append("username", username);
     formData.append("gender", gender === null ? "Empty" : gender);
     formData.append(
@@ -152,9 +152,9 @@ class EditProfileContainer extends Component {
       birthYear === null ? "Empty" : birthYear.toString()
     );
     formData.append("occupation", occupation === "" ? "Empty" : occupation);
-    formData.append("imagePosX", imagePosX.toString());
-    formData.append("imagePosY", imagePosY.toString());
-    formData.append("imageScale", imageScale);
+    formData.append("posX", imagePosX.toString());
+    formData.append("posY", imagePosY.toString());
+    formData.append("scale", imageScale);
 
     this.props.updateUserProfileData(formData);
   };

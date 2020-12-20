@@ -1,22 +1,24 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  picture: {
-    type: String,
-    default:
-      "https://res.cloudinary.com/dityuyf5q/image/upload/v1608194169/profile/dummyUser_ccehfi.png",
-  },
-  imagePosX: {
-    type: String,
-    default: "0.5",
-  },
-  imagePosY: {
-    type: String,
-    default: "0.5",
-  },
-  imageScale: {
-    type: String,
-    default: "1",
+  image: {
+    url: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dityuyf5q/image/upload/v1608194169/profile/dummyUser_ccehfi.png",
+    },
+    posX: {
+      type: String,
+      default: "0.5",
+    },
+    posY: {
+      type: String,
+      default: "0.5",
+    },
+    scale: {
+      type: String,
+      default: "1",
+    },
   },
   username: {
     type: String,
@@ -48,34 +50,34 @@ const UserSchema = new mongoose.Schema({
     default: "",
   },
 
-  questionBank: [
-    {
-      questionType: {
-        type: String,
-        default: "",
-      },
-      questionDescription: {
-        type: String,
-        default: "",
-      },
-      questionChoices: [
-        {
-          choice: {
-            type: String,
-            default: "",
-          },
-        },
-      ],
-      questionAnswers: [
-        {
-          answer: {
-            type: String,
-            default: "",
-          },
-        },
-      ],
-    },
-  ],
+  // questionBank: [
+  //   {
+  //     questionType: {
+  //       type: String,
+  //       default: "",
+  //     },
+  //     questionDescription: {
+  //       type: String,
+  //       default: "",
+  //     },
+  //     questionChoices: [
+  //       {
+  //         choice: {
+  //           type: String,
+  //           default: "",
+  //         },
+  //       },
+  //     ],
+  //     questionAnswers: [
+  //       {
+  //         answer: {
+  //           type: String,
+  //           default: "",
+  //         },
+  //       },
+  //     ],
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("User", UserSchema);
