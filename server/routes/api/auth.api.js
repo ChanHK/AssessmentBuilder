@@ -61,15 +61,6 @@ router.post("/register", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// @route     Get api/auth/register
-// @desc      Get user data
-// @access    Private
-router.get("/user", auth, (req, res) => {
-  User.findById(req.user.id)
-    .select("-password")
-    .then((user) => res.json(user));
-});
-
 // @route     POST api/auth/login
 // @desc      Login user and return JWT token
 // @access    Public

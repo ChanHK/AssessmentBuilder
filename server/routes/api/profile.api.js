@@ -16,6 +16,7 @@ const validateProfileInput = require("../../validation/updateProfile");
 router.get("/profile", auth, (req, res) => {
   User.findById(req.user.id)
     .select("-resetPasswordLink")
+    .select("-questionBank")
     .then((user) => {
       return res.json(user);
     })
