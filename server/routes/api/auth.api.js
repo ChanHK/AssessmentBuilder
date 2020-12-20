@@ -2,12 +2,11 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const auth = require("../../middleware/auth");
 
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const User = require("../../models/user");
+const db = require("../../models");
 
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -22,23 +21,22 @@ router.post("/register", (req, res) => {
 
   if (!isValid) return res.status(400).json(errors);
 
-  User.findOne({ email: req.body.email })
+  db.User.findOne({ email: req.body.email })
     .then((user) => {
       if (user)
         return res.status(400).json({ message: "Email already exists" });
 
-      const newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-      });
-
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
           if (err) throw err;
-          newUser.password = hash;
-          newUser
-            .save()
+
+          const newUser = {
+            username: req.body.username,
+            email: req.body.email,
+            password: hash,
+          };
+
+          db.User.create(newUser)
             .then((user) => {
               jwt.sign(
                 { id: user.id },
@@ -72,7 +70,7 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  User.findOne({ email }).then((user) => {
+  db.User.findOne({ email }).then((user) => {
     if (!user) return res.status(400).json({ message: "User does not exist" });
 
     bcrypt
@@ -112,7 +110,7 @@ router.put("/forgotPassword", (req, res) => {
 
   const email = req.body.email;
 
-  User.findOne({ email }).then((user) => {
+  db.User.findOne({ email }).then((user) => {
     if (!user)
       return res.status(400).json({
         message: "This email does not exist, please enter a valid email",
@@ -184,7 +182,7 @@ router.put("/resetPassword", (req, res) => {
           });
         }
 
-        User.findOne({ resetPasswordLink }).then((user) => {
+        db.User.findOne({ resetPasswordLink }).then((user) => {
           if (!user) {
             return res.status(400).json({
               message:

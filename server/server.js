@@ -19,7 +19,11 @@ app.use(bodyParser.json());
 
 // connect to mongo
 mongoose
-  .connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
   .then(() => console.log(`MongoDB connected successfully`))
   .catch((err) => console.log(err));
 

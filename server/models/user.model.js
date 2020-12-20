@@ -50,34 +50,10 @@ const UserSchema = new mongoose.Schema({
     default: "",
   },
 
-  // questionBank: [
-  //   {
-  //     questionType: {
-  //       type: String,
-  //       default: "",
-  //     },
-  //     questionDescription: {
-  //       type: String,
-  //       default: "",
-  //     },
-  //     questionChoices: [
-  //       {
-  //         choice: {
-  //           type: String,
-  //           default: "",
-  //         },
-  //       },
-  //     ],
-  //     questionAnswers: [
-  //       {
-  //         answer: {
-  //           type: String,
-  //           default: "",
-  //         },
-  //       },
-  //     ],
-  //   },
-  // ],
+  questionBank: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "QuestionBank",
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

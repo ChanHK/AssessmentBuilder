@@ -6,7 +6,7 @@ const multer = require("multer");
 var cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-const User = require("../../models/user");
+const db = require("../../models");
 
 const validateProfileInput = require("../../validation/updateProfile");
 
@@ -14,7 +14,7 @@ const validateProfileInput = require("../../validation/updateProfile");
 // @desc      Get user profile data
 // @access    Private
 router.get("/profile", auth, (req, res) => {
-  User.findById(req.user.id)
+  db.User.findById(req.user.id)
     .select("-resetPasswordLink")
     .select("-questionBank")
     .then((user) => {
@@ -52,7 +52,7 @@ router.post("/profile", auth, parser.single("url"), (req, res) => {
 
   if (!isValid) return res.status(400).json(errors);
 
-  User.findById(req.user.id).then((user) => {
+  db.User.findById(req.user.id).then((user) => {
     user.username = req.body.username;
     user.gender = req.body.gender;
     user.yearOfBirth = req.body.yearOfBirth;
