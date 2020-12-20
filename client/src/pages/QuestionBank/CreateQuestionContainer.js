@@ -24,9 +24,8 @@ import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
 
 import { EditorState, convertToRaw } from "draft-js";
-// import draftToHtml from "draftjs-to-html";
+import draftToHtml from "draftjs-to-html";
 // import htmlToDraft from "html-to-draftjs";
-import draftToMarkdown from "draftjs-to-markdown";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -152,27 +151,16 @@ class CreateQuestionContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.questionType);
-    // console.log(
-    //   draftToHtml(
-    //     convertToRaw(this.state.questionDescriptive.getCurrentContent())
-    //   )
-    // );
+    const {
+      questionType,
+      questionDescriptive,
+      questionAns,
+      questionChoice,
+    } = this.state;
+
     console.log(
-      this.state.questionDescriptive &&
-        draftToMarkdown(
-          convertToRaw(this.state.questionDescriptive.getCurrentContent())
-        )
+      draftToHtml(convertToRaw(questionDescriptive.getCurrentContent()))
     );
-    console.log(this.state.questionAns);
-    // console.log(
-    //   this.state.questionDescriptive &&
-    //     draftToMarkdown(
-    //       convertToRaw(this.state.questionAns.getCurrentContent())
-    //     )
-    // );
-    // // console.log(this.state.checkboxNum);
-    // console.log(this.state.questionChoice);
   };
 
   render() {
