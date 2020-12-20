@@ -12,6 +12,8 @@ const CustomEditor = (props) => (
       wrapperClassName={css(styles.wrapper)}
       editorClassName={css(styles.editor)}
       onEditorStateChange={props.onEditorStateChange}
+      toolbarHidden={props.toolbarHidden}
+      readOnly={props.readOnly}
     />
   </>
 );
