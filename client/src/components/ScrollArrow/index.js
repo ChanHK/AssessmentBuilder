@@ -40,15 +40,13 @@ const ScrollArrow = () => {
 
 const styles = StyleSheet.create({
   con: {
-    width: "100%",
-    justifyContent: "flex-end",
     alignItems: "center",
     display: "flex",
     height: "auto",
     position: "fixed",
     paddingRight: "20px",
     bottom: "20px",
-    zIndex: -1000000000,
+    right: 20,
   },
   scrollTop: {
     width: "auto",
@@ -61,7 +59,6 @@ const styles = StyleSheet.create({
       opacity: 1,
     },
     marginBottom: "20px",
-    left: 0,
   },
 });
 
