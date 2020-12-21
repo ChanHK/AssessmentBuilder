@@ -8,18 +8,15 @@ export const Data = [
     title: "Profile",
     path: "/profile",
     icon: <CgIcons.CgProfile />,
-    hoverName: "hoverProfile",
   },
   {
     title: "Assessments",
     path: "/home",
     icon: <MdIcons.MdAssessment />,
-    hoverName: "hoverAssessment",
   },
   {
     title: "Question Bank",
     path: "/questionBank",
     icon: <RiIcons.RiBankFill />,
-    hoverName: "hoverQuestionBank",
   },
 ];

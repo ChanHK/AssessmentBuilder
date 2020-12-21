@@ -50,7 +50,7 @@ export default class HomeContainer extends Component {
   constructor() {
     super();
     this.state = {
-      searchText: null,
+      searchText: "",
     };
   }
 

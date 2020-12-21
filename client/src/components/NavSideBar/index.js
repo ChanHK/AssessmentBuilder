@@ -68,7 +68,7 @@ class NavSideBar extends Component {
               onClick={() => this.props.logout()}
             >
               <Link
-                type={"hoverLogOut"}
+                to={"/login"}
                 className={css(
                   styles.listIconText,
                   styles.noSelect,
