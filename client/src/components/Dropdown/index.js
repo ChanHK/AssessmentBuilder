@@ -2,35 +2,42 @@ import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
-const Dropdown = (props) => (
-  <div className={css(styles.container)}>
-    <select
-      className={
-        props.value === null
-          ? css(styles.select, styles.default)
-          : css(styles.select, styles.nondefault)
-      }
-      style={{ padding: props.padding ? props.padding : "10px" }}
-      onChange={props.onChangeValue}
-      value={props.value}
-      name={props.name}
-    >
-      <option
-        value={"default"}
-        disabled
-        hidden
-        selected={props.value === null ? true : false}
+const Dropdown = (props) => {
+  return (
+    <div className={css(styles.container)}>
+      <select
+        className={
+          props.value === ""
+            ? css(styles.select, styles.default)
+            : css(styles.select, styles.nondefault)
+        }
+        style={{ padding: props.padding ? props.padding : "10px" }}
+        onChange={props.onChangeValue}
+        value={props.value === "" ? undefined : props.value}
+        name={props.name}
       >
-        {props.placeholder}
-      </option>
-      {props.options.map((x) => (
-        <option value={x.value} className={css(styles.optionStyle)}>
-          {x.value}
+        <option
+          value={"default"}
+          disabled
+          hidden
+          defaultValue={props.value === "" ? true : false}
+          key={0}
+        >
+          {props.placeholder}
         </option>
-      ))}
-    </select>
-  </div>
-);
+        {props.options.map((x) => (
+          <option
+            value={x.value}
+            className={css(styles.optionStyle)}
+            key={x.key}
+          >
+            {x.value}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

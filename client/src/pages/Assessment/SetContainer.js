@@ -27,7 +27,7 @@ class SetContainer extends Component {
       manualSelected: true,
       randomTakeFromTotalSelected: false,
       questionNum: "", // question number in a set
-      setNum: null, // number of set that will be generated
+      setNum: "", // number of set that will be generated
       totalQuestionNumber: "", // total questions in Question section
       definedTakeFromSectionSelected: false, //take questions from diff sections
       manualRandomSelected: false, // does the set questions choices need to randomize?

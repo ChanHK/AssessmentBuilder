@@ -5,7 +5,7 @@ export function GenerateYear() {
   );
 
   const res = years.map((data) => {
-    return { value: data };
+    return { value: data, key:data };
   });
 
   return res;

@@ -32,9 +32,9 @@ class SettingContainer extends Component {
       testInstruction: "",
       passOrFailSelected: true, //switch button
       score: "", // score for pass and fail
-      unit: null, // unit for pass and fail
+      unit: "", // unit for pass and fail
       addGradingSelected: false, //switch button
-      gradeUnit: null, // percentage or points
+      gradeUnit: "", // percentage or points
       gradeRange: [], // stores the range like 10,20,30
       gradeValue: [], //stores the value like A+, A, A-
     };

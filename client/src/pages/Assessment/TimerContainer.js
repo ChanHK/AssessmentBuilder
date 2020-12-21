@@ -26,9 +26,9 @@ class TimerContainer extends Component {
     this.state = {
       assessmentTimeSelected: false,
       questionTimeSelected: false,
-      hour: null,
-      minute: null,
-      second: null,
+      hour: "",
+      minute: "",
+      second: "",
       noLimitSelected: false,
       startDate: "",
       endDate: "",
