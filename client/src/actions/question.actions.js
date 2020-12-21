@@ -12,7 +12,7 @@ export const updateQuestion = (data) => (dispatch, getState) => {
     const token = getState().auth.token;
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     };
 
