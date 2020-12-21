@@ -22,159 +22,257 @@ import ShortAns from "../../components/ShortAns";
 import TrueFalse from "../../components/TrueFalse";
 import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 // import htmlToDraft from "html-to-draftjs";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { updateQuestion } from "../../actions/question.actions";
+import { clearSucMsg } from "../../actions/sucMsg.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
 
 class CreateQuestionContainer extends Component {
   constructor() {
     super();
     this.state = {
       questionType: null,
-      questionDescriptive: EditorState.createEmpty(),
+      questionDescription: EditorState.createEmpty(),
       questionAns: [],
-      questionChoice: [],
+      questionChoices: [],
       checkboxNum: null,
+      temporaryArray: [],
+      successMsg: null,
+      isLoading: true,
     };
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    console.log(this.props.question);
+    // this.props.fetchUserProfileData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.setState({ isLoading: this.props.question.isLoading });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("called");
+    if (nextProps.sucMsg) {
+      this.setState({
+        successMsg: nextProps.sucMsg.message.message,
+      });
+    }
+  }
 
   onChangeType = (e) => {
     this.setState({
       questionType: e.target.value,
       questionAns: [],
-      questionChoice: [],
+      questionChoices: [],
       checkboxNum: null,
-    });
-  };
-
-  onGetTF = (e) => {
-    this.setState({
-      questionAns: e.target.value,
-      questionChoice: [true, false],
+      temporaryArray: [],
     });
   };
 
   onChangeAnswer = (value, index) => {
-    this.setState((state) => {
-      const questionAns = state.questionAns.map((item, j) => {
-        if (j === index) {
-          return value;
-        } else {
-          return item;
-        }
-      });
-
-      return {
-        questionAns,
-      };
+    this.setState({
+      questionAns: [
+        ...this.state.questionAns.slice(0, index),
+        value,
+        ...this.state.questionAns.slice(index + 1),
+      ],
     });
   };
 
   onChangeChoice = (value, index) => {
-    this.setState((state) => {
-      const questionChoice = state.questionChoice.map((item, j) => {
-        if (j === index) {
-          return value;
-        } else {
-          return item;
-        }
-      });
-
-      return {
-        questionChoice,
-      };
+    this.setState({
+      questionChoices: [
+        ...this.state.questionChoices.slice(0, index),
+        value,
+        ...this.state.questionChoices.slice(index + 1),
+      ],
     });
   };
 
-  setChoiceAns = (index) => {
+  setTFChoiceAns = (e) => {
     this.setState({
-      questionAns: this.state.questionChoice[index],
+      questionAns: [e.target.value],
+      questionChoices: [true, false],
+    });
+  };
+
+  setChoiceSingleAns = (index) => {
+    this.setState({
+      questionAns: [this.state.questionChoices[index]],
       checkboxNum: index,
     });
-    console.log(this.state.checkboxNum);
   };
 
-  setChoiceMultiAns = (event) => {
-    const target = event.target;
-    var value = target.value;
-
-    if (target.checked) {
-      this.setState((prevState) => ({
-        questionAns: [
-          ...prevState.questionAns,
-          this.state.questionChoice[value],
-        ],
-      }));
+  setChoiceMultiAns = (e, index, item) => {
+    if (e.target.checked) {
+      this.setState({
+        temporaryArray: this.state.temporaryArray.concat(
+          draftToHtml(convertToRaw(item.getCurrentContent()))
+        ),
+        questionAns: this.state.questionAns.concat(item),
+      });
     } else {
-      this.state.questionAns.splice(value, 1);
+      const temp = draftToHtml(convertToRaw(item.getCurrentContent()));
+      if (this.state.temporaryArray.includes(temp)) {
+        const i = this.state.temporaryArray.indexOf(temp);
+        this.state.questionAns.splice(i, 1);
+        this.state.temporaryArray.splice(i, 1);
+
+        this.setState({
+          questionAns: this.state.questionAns,
+          temporaryArray: this.state.temporaryArray,
+        });
+      }
     }
   };
 
-  deleteAnsRow = (index) => {
-    this.setState((state) => {
-      const questionAns = state.questionAns.filter((item, j) => index !== j);
-
-      return {
-        questionAns,
-      };
-    });
+  deleteRow = (index, type, item = null) => {
+    if (type === "Choice") {
+      this.state.questionChoices.splice(index, 1);
+      this.setState({
+        questionChoices: this.state.questionChoices,
+      });
+    }
+    if (type === "Ans") {
+      this.state.questionAns.splice(index, 1);
+      this.setState({
+        questionAns: this.state.questionAns,
+      });
+    }
+    // when delete a row, the answer that might be checked need to be remove
+    if (item !== null) {
+      const temp = draftToHtml(convertToRaw(item.getCurrentContent()));
+      let tempArray = [];
+      for (let x = 0; x < this.state.questionAns.length; x++) {
+        tempArray = tempArray.concat(
+          draftToHtml(
+            convertToRaw(this.state.questionAns[x].getCurrentContent())
+          )
+        );
+      }
+      if (tempArray.includes(temp)) {
+        const i = tempArray.indexOf(temp);
+        this.state.questionAns.splice(i, 1);
+        this.setState({ questionAns: this.state.questionAns });
+      }
+    }
   };
 
-  deleteChoiceRow = (index) => {
-    this.setState((state) => {
-      const questionChoice = state.questionChoice.filter(
-        (item, j) => index !== j
-      );
-
-      return {
-        questionChoice,
-      };
-    });
-  };
-
-  onAddAnsRow = () => {
-    this.setState({
-      questionAns: this.state.questionAns.concat(""),
-    });
-  };
-
-  onAddChoiceRow = () => {
-    this.setState({
-      questionChoice: this.state.questionChoice.concat(""),
-    });
+  addRow = (type) => {
+    if (type === "Choice") {
+      this.setState({
+        questionChoices: this.state.questionChoices.concat(""),
+      });
+    }
+    if (type === "Ans") {
+      this.setState({
+        questionAns: this.state.questionAns.concat(""),
+      });
+    }
   };
 
   onSubmit = (e) => {
     e.preventDefault();
     const {
-      // questionType,
-      questionDescriptive,
-      // questionAns,
-      // questionChoice,
+      questionType,
+      questionDescription,
+      questionAns,
+      questionChoices,
     } = this.state;
 
-    console.log(
-      draftToHtml(convertToRaw(questionDescriptive.getCurrentContent()))
-    );
+    if (
+      questionType === "Single Choice" ||
+      questionType === "Multiple Choice"
+    ) {
+      for (let i = 0; i < questionChoices.length; i++) {
+        questionChoices[i] = draftToHtml(
+          convertToRaw(questionChoices[i].getCurrentContent())
+        );
+      }
+
+      for (let j = 0; j < questionAns.length; j++) {
+        questionAns[j] = draftToHtml(
+          convertToRaw(questionAns[j].getCurrentContent())
+        );
+      }
+    }
+
+    if (questionType === "Order" || questionType === "Short Answer") {
+      for (let j = 0; j < questionAns.length; j++) {
+        questionAns[j] = draftToHtml(
+          convertToRaw(questionAns[j].getCurrentContent())
+        );
+      }
+    }
+
+    const data = {
+      questionType: questionType,
+      questionDescription: draftToHtml(
+        convertToRaw(questionDescription.getCurrentContent())
+      ),
+      questionChoices: questionChoices,
+      questionAnswers: questionAns,
+    };
+
+    if (questionType === "Order" || questionType === "Short Answer")
+      data.questionChoices = questionAns;
+
+    this.props.updateQuestion(data);
+
+    this.setState({
+      questionType: null,
+      questionDescription: EditorState.createEmpty(),
+      questionAns: [],
+      questionChoices: [],
+      checkboxNum: null,
+      temporaryArray: [],
+    });
   };
 
   render() {
     const {
       questionType,
-      questionDescriptive,
+      questionDescription,
       questionAns,
-      questionChoice,
+      questionChoices,
       checkboxNum,
+      successMsg,
+      isLoading,
     } = this.state;
+
+    if (successMsg !== null && successMsg !== undefined) {
+      this.props.clearSucMsg();
+      this.props.history.push("/questionBank");
+    }
+
     return (
       <>
         <Header />
         <ScrollArrow />
+        {isLoading ? (
+          <LoaderSpinner />
+        ) : (
+          (document.body.style.overflow = "unset")
+        )}
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
@@ -189,7 +287,7 @@ class CreateQuestionContainer extends Component {
                       options={QuestionType}
                       placeholder={"Select question type"}
                       value={questionType}
-                      onChangeValue={this.onChangeType}
+                      onChangeValue={(e) => this.onChangeType(e)}
                     />
                   </div>
 
@@ -197,9 +295,9 @@ class CreateQuestionContainer extends Component {
                   <div style={{ paddingBottom: "25px" }}>
                     <CustomEditor
                       onEditorStateChange={(e) =>
-                        this.setState({ questionDescriptive: e })
+                        this.setState({ questionDescription: e })
                       }
-                      editorState={questionDescriptive}
+                      editorState={questionDescription}
                     />
                   </div>
 
@@ -210,22 +308,22 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={this.onAddChoiceRow}
+                          onClick={() => this.addRow("Choice")}
                           type={"button"}
                         >
                           Add Choice
                         </Button>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionChoice.map((item, index) => (
+                        {questionChoices.map((item, index) => (
                           <ChoiceRow
                             count={index + 1}
-                            onClick={() => this.deleteChoiceRow(index)}
+                            onClick={() => this.deleteRow(index, "Choice")}
                             editorState={item}
                             onChange={(e) => this.onChangeChoice(e, index)}
                             choiceName={"choice"}
                             checkedValue={index}
-                            onChangeValue={() => this.setChoiceAns(index)}
+                            onChangeValue={() => this.setChoiceSingleAns(index)}
                             checked={checkboxNum}
                           />
                         ))}
@@ -240,23 +338,26 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={this.onAddChoiceRow}
+                          onClick={() => this.addRow("Choice")}
                           type={"button"}
                         >
                           Add Choice
                         </Button>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionChoice.map((item, index) => (
+                        {questionChoices.map((item, index) => (
                           <ChoiceRow
                             count={index + 1}
-                            onClick={() => this.deleteChoiceRow(index)}
+                            onClick={() =>
+                              this.deleteRow(index, "Choice", item)
+                            }
                             editorState={item}
                             onChange={(e) => this.onChangeChoice(e, index)}
                             choiceName={"choice"}
                             checkedValue={index}
-                            // onChangeValue={() => this.setChoiceMultiAns(index)}
-                            onChangeValue={this.setChoiceMultiAns}
+                            onChangeValue={(e) =>
+                              this.setChoiceMultiAns(e, index, item)
+                            }
                             checked={checkboxNum}
                           />
                         ))}
@@ -281,8 +382,8 @@ class CreateQuestionContainer extends Component {
                       <ThirdLabel>Select the correct answer</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
                         <TrueFalse
-                          onClick={this.onGetTF}
-                          isTrue={questionAns}
+                          onClick={this.setTFChoiceAns}
+                          isTrue={questionAns[0]}
                         />
                       </div>
                     </>
@@ -298,7 +399,7 @@ class CreateQuestionContainer extends Component {
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
                           <ShortAns
-                            onClick={() => this.deleteAnsRow(index)}
+                            onClick={() => this.deleteRow(index, "Ans")}
                             onChange={(e) => this.onChangeAnswer(e, index)}
                             height={"50px"}
                             value={item}
@@ -311,7 +412,7 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={this.onAddAnsRow}
+                          onClick={() => this.addRow("Ans")}
                           type={"button"}
                         >
                           Add Answers
@@ -327,7 +428,7 @@ class CreateQuestionContainer extends Component {
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
                           <ShortAns
-                            onClick={() => this.deleteAnsRow(index)}
+                            onClick={() => this.deleteRow(index, "Ans")}
                             onChange={(e) => this.onChangeAnswer(e, index)}
                             height={"50px"}
                             value={item}
@@ -340,7 +441,7 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={this.onAddAnsRow}
+                          onClick={() => this.addRow("Ans")}
                           type={"button"}
                         >
                           Add Answers
@@ -395,4 +496,21 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateQuestionContainer;
+CreateQuestionContainer.propTypes = {
+  updateQuestion: PropTypes.func.isRequired,
+  question: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  sucMsg: PropTypes.object.isRequired,
+  clearSucMsg: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  question: state.question,
+  sucMsg: state.sucMsg,
+});
+
+export default connect(mapStateToProps, {
+  updateQuestion,
+  logout,
+  clearSucMsg,
+})(CreateQuestionContainer);

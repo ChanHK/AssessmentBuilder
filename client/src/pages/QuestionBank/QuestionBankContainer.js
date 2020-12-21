@@ -57,7 +57,7 @@ class QuestionBankContainer extends Component {
   };
 
   handleClick = () => {
-    this.props.history.push(`questionbank/createQuestion`);
+    this.props.history.push(`questionbank/question/create`);
   };
 
   render() {
