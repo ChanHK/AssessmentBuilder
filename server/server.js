@@ -10,6 +10,7 @@ require("dotenv").config({
 
 const authUser = require("./routes/api/auth.api");
 const userProfile = require("./routes/api/profile.api");
+const question = require("./routes/api/question.api");
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   })
   .then(() => console.log(`MongoDB connected successfully`))
   .catch((err) => console.log(err));
@@ -30,6 +32,7 @@ mongoose
 // use Routes
 app.use("/api/auth", authUser);
 app.use("/api/user", userProfile);
+app.use("/api/user", question);
 
 const port = process.env.PORT || 5000;
 
