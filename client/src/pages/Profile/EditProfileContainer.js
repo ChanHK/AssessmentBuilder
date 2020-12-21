@@ -75,9 +75,8 @@ class EditProfileContainer extends Component {
       if (this.props.profile.profile !== null) {
         this.setState(() => ({
           username: profile.username,
-          gender: profile.gender === "Empty" ? null : profile.gender,
-          birthYear:
-            profile.yearOfBirth === "Empty" ? null : profile.yearOfBirth,
+          gender: profile.gender === "Empty" ? "" : profile.gender,
+          birthYear: profile.yearOfBirth === "Empty" ? "" : profile.yearOfBirth,
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           isLoading: this.props.profile.isLoading,
           image: profile.image.url,
@@ -236,7 +235,6 @@ class EditProfileContainer extends Component {
                       min={allowZoomOut ? "0.1" : "1"}
                       max="2"
                       step="0.01"
-                      defaultValue="1"
                       value={imageScale}
                     />
                     <div style={{ paddingTop: "10px" }}>
