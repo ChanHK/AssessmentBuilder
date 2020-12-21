@@ -152,10 +152,10 @@ class CreateQuestionContainer extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const {
-      questionType,
+      // questionType,
       questionDescriptive,
-      questionAns,
-      questionChoice,
+      // questionAns,
+      // questionChoice,
     } = this.state;
 
     console.log(

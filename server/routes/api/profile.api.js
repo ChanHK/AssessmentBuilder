@@ -81,7 +81,7 @@ router.post("/profile", auth, parser.single("url"), (req, res) => {
           .json({ message: "Profile updated successfully" });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         return res.status(400).json({
           message: "Error, failed to update profile, please retry agian",
         });
