@@ -6,7 +6,7 @@ import { returnSucMsg } from "./sucMsg.actions";
 // import { returnErrors } from "./error.actions";
 
 export const updateQuestion = (data) => (dispatch, getState) => {
-  dispatch({ type: PROFILE_DATA.UPDATE_PROFILE_DATA_BEGIN });
+  dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_BEGIN });
 
   const tokenConfig = (getState) => {
     const token = getState().auth.token;
