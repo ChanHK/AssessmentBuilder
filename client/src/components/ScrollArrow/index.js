@@ -25,22 +25,33 @@ const ScrollArrow = () => {
   };
 
   return (
-    <FaArrowCircleUp
-      className={css(styles.scrollTop)}
-      onClick={scrollTop}
-      style={{
-        height: 40,
-        display: showScroll ? "flex" : "none",
-      }}
-    />
+    <div className={css(styles.con)}>
+      <FaArrowCircleUp
+        className={css(styles.scrollTop)}
+        onClick={scrollTop}
+        style={{
+          height: 40,
+          display: showScroll ? "flex" : "none",
+        }}
+      />
+    </div>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollTop: {
-    position: "fixed",
+  con: {
     width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    display: "flex",
+    height: "auto",
+    zIndex: 10000,
+    position: "fixed",
+    paddingRight: "20px",
     bottom: "20px",
+  },
+  scrollTop: {
+    width: "auto",
     zIndex: 10000,
     cursor: "pointer",
     animation: "fadeIn 0.3s",
