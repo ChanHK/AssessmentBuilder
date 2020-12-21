@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     height: "auto",
-    zIndex: 10000,
     position: "fixed",
     paddingRight: "20px",
     bottom: "20px",
+    zIndex: -1000000000,
   },
   scrollTop: {
     width: "auto",
