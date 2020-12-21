@@ -15,14 +15,9 @@ const Dropdown = (props) => {
         onChange={props.onChangeValue}
         value={props.value === "" ? undefined : props.value}
         name={props.name}
+        defaultValue={"default"}
       >
-        <option
-          value={"default"}
-          disabled
-          hidden
-          defaultValue={props.value === "" ? true : false}
-          key={0}
-        >
+        <option value={"default"} disabled hidden key={0}>
           {props.placeholder}
         </option>
         {props.options.map((x) => (
