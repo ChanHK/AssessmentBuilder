@@ -10,7 +10,7 @@ const TextArea = (props) => (
     placeholder={props.placeholder}
     onChange={props.onChange}
     value={props.value}
-    autocomplete="off"
+    autoComplete="off"
     style={{ height: props.height ? props.height : "200px" }}
     readOnly={props.readOnly ? props.readOnly : false}
   />

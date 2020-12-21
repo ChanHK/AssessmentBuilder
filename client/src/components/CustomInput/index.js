@@ -19,7 +19,7 @@ const CustomInput = (props) => (
     placeholder={props.placeholder}
     onChange={props.onChangeValue}
     value={props.value}
-    // autocomplete="off"
+    // autoComplete="off"
     readOnly={props.readOnly}
     step={props.step}
     maxLength={props.maxLength}

@@ -12,7 +12,7 @@ const SearchBar = (props) => (
       placeholder={props.placeholder}
       onChange={props.onChangeValue}
       value={props.value}
-      autocomplete="off"
+      autoComplete="off"
     />
     <button className={css(styles.button)}>
       <CgIcons.CgSearch className={css(styles.icon)} />
