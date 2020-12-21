@@ -36,17 +36,17 @@ import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
 class CreateQuestionContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      questionType: null,
+      questionType: "",
       questionDescription: EditorState.createEmpty(),
       questionAns: [],
       questionChoices: [],
       checkboxNum: null,
       temporaryArray: [],
       successMsg: null,
-      isLoading: true,
+      isLoading: this.props.match.params.type === "create" ? false : true,
     };
   }
 
@@ -65,9 +65,9 @@ class CreateQuestionContainer extends Component {
     // this.props.fetchUserProfileData();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    this.setState({ isLoading: this.props.question.isLoading });
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   this.setState({ isLoading: this.props.question.isLoading });
+  // }
 
   componentWillReceiveProps(nextProps) {
     console.log("called");
@@ -264,6 +264,8 @@ class CreateQuestionContainer extends Component {
       this.props.history.push("/questionBank");
     }
 
+    console.log("rendered");
+
     return (
       <>
         <Header />
@@ -287,7 +289,7 @@ class CreateQuestionContainer extends Component {
                       options={QuestionType}
                       placeholder={"Select question type"}
                       value={questionType}
-                      onChangeValue={(e) => this.onChangeType(e)}
+                      onChangeValue={this.onChangeType}
                     />
                   </div>
 
