@@ -51,6 +51,12 @@ router.post("/register", (req, res) => {
                   });
                 }
               );
+
+              const newQuestionBank = {
+                user_id: user.id,
+              };
+
+              db.QuestionBank.create(newQuestionBank);
             })
             .catch((err) => console.log(err));
         });

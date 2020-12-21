@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  questionBank: [
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  questions: [
     {
       questionType: {
         type: String,
@@ -11,22 +15,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "",
       },
-      questionChoices: [
-        {
-          choice: {
-            type: String,
-            default: "",
-          },
-        },
-      ],
-      questionAnswers: [
-        {
-          answer: {
-            type: String,
-            default: "",
-          },
-        },
-      ],
+      questionChoices: [String],
+      questionAnswers: [String],
     },
   ],
 });

@@ -49,11 +49,6 @@ const UserSchema = new mongoose.Schema({
     data: String,
     default: "",
   },
-
-  questionBank: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "QuestionBank",
-  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
