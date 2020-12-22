@@ -36,8 +36,8 @@ import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
 class CreateQuestionContainer extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       questionType: "",
       questionDescription: EditorState.createEmpty(),
@@ -46,8 +46,6 @@ class CreateQuestionContainer extends Component {
       checkboxNum: null,
       temporaryArray: [],
       successMsg: null,
-      isLoading: this.props.match.params.type === "create" ? false : true,
-      // isLoading: true,
     };
   }
 
@@ -71,18 +69,6 @@ class CreateQuestionContainer extends Component {
     if (prevProps.sucMsg !== this.props.sucMsg) {
       this.setState({
         successMsg: this.props.sucMsg.message.message,
-      });
-    }
-
-    const { question } = this.props.question;
-    console.log(this.props.question);
-    if (
-      prevProps.question !== this.props.question &&
-      question !== null &&
-      question.message === undefined
-    ) {
-      this.setState({
-        isLoading: this.props.question.isLoading,
       });
     }
   }
@@ -264,20 +250,15 @@ class CreateQuestionContainer extends Component {
       questionAns,
       questionChoices,
       checkboxNum,
-      isLoading,
     } = this.state;
 
-    console.log(isLoading);
+    if (this.props.question.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     return (
       <>
         <Header />
         <ScrollArrow />
-        {isLoading ? (
-          <LoaderSpinner />
-        ) : (
-          (document.body.style.overflow = "unset")
-        )}
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>

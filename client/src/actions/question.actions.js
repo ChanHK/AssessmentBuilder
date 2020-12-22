@@ -25,10 +25,12 @@ export const updateQuestion = (data) => (dispatch, getState) => {
     .post("/api/user/question", data, tokenConfig(getState))
     .then((res) => {
       dispatch(returnSucMsg(res.data, res.status));
-      dispatch({
-        type: QUESTION.UPDATE_QUESTION_DATA_SUCCESS,
-        payload: res.data,
-      });
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.UPDATE_QUESTION_DATA_SUCCESS,
+          payload: res.data,
+        });
+      }, 5000);
     })
     .catch((err) => {
       console.log("Update question data failed", err);
