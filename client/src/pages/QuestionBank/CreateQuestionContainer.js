@@ -238,7 +238,7 @@ class CreateQuestionContainer extends Component {
     this.props.updateQuestion(data);
 
     this.setState({
-      questionType: null,
+      questionType: "",
       questionDescription: EditorState.createEmpty(),
       questionAns: [],
       questionChoices: [],
