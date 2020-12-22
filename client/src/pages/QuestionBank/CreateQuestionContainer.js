@@ -67,7 +67,6 @@ class CreateQuestionContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
-      this.props.clearSucMsg();
       this.props.history.push("/questionBank");
     }
     if (prevProps.sucMsg !== this.props.sucMsg) {
@@ -75,6 +74,10 @@ class CreateQuestionContainer extends Component {
         successMsg: this.props.sucMsg.message.message,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clearSucMsg();
   }
 
   onChangeType = (e) => {
@@ -178,14 +181,18 @@ class CreateQuestionContainer extends Component {
 
   addRow = (type) => {
     if (type === "Choice") {
-      this.setState({
-        questionChoices: this.state.questionChoices.concat(""),
-      });
+      if (this.state.questionChoices.length < 8) {
+        this.setState({
+          questionChoices: this.state.questionChoices.concat(""),
+        });
+      }
     }
     if (type === "Ans") {
-      this.setState({
-        questionAns: this.state.questionAns.concat(""),
-      });
+      if (this.state.questionAns.length < 8) {
+        this.setState({
+          questionAns: this.state.questionAns.concat(""),
+        });
+      }
     }
   };
 
