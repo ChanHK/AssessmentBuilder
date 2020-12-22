@@ -48,7 +48,6 @@ class EditProfileContainer extends Component {
       birthYear: "",
       occupation: "",
       fileRejected: false,
-      isLoading: true,
       successMsg: null,
     };
   }
@@ -71,7 +70,6 @@ class EditProfileContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props.profile;
     if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
-      this.props.clearSucMsg();
       this.props.history.push("/profile");
     }
     if (prevProps.sucMsg !== this.props.sucMsg) {
@@ -87,7 +85,6 @@ class EditProfileContainer extends Component {
           gender: profile.gender === "Empty" ? "" : profile.gender,
           birthYear: profile.yearOfBirth === "Empty" ? "" : profile.yearOfBirth,
           occupation: profile.occupation === "Empty" ? "" : profile.occupation,
-          isLoading: this.props.profile.isLoading,
           image: profile.image.url,
           imagePosX: parseFloat(profile.image.posX),
           imagePosY: parseFloat(profile.image.posY),
@@ -98,6 +95,7 @@ class EditProfileContainer extends Component {
   }
 
   componentWillUnmount() {
+    this.props.clearSucMsg();
     this.props.profile.profile = null;
   }
 
@@ -174,8 +172,10 @@ class EditProfileContainer extends Component {
       birthYear,
       occupation,
       fileRejected,
-      isLoading,
     } = this.state;
+
+    if (this.props.profile.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
@@ -185,11 +185,6 @@ class EditProfileContainer extends Component {
     return (
       <>
         <Header />
-        {isLoading ? (
-          <LoaderSpinner />
-        ) : (
-          (document.body.style.overflow = "unset")
-        )}
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>

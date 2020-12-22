@@ -25,7 +25,7 @@ export const fetchUserProfileData = () => (dispatch, getState) => {
     .then((res) => {
       setTimeout(() => {
         dispatch({ type: PROFILE_DATA.FETCH_SUCCESS, payload: res.data });
-      }, 1000);
+      }, 3000);
     })
     .catch((err) => {
       console.log("Fetch user profile data failed", err);
@@ -53,10 +53,12 @@ export const updateUserProfileData = (data) => (dispatch, getState) => {
     .post("/api/user/profile", data, tokenConfig(getState))
     .then((res) => {
       dispatch(returnSucMsg(res.data, res.status));
-      dispatch({
-        type: PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS,
-        payload: res.data,
-      });
+      setTimeout(() => {
+        dispatch({
+          type: PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS,
+          payload: res.data,
+        });
+      }, 3000);
     })
     .catch((err) => {
       console.log("Update user profile data failed", err);

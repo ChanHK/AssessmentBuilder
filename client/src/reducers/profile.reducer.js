@@ -9,7 +9,6 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case PROFILE_DATA.FETCH_BEGIN:
     case PROFILE_DATA.UPDATE_PROFILE_DATA_BEGIN:
-      console.log("begin");
       return {
         ...state,
         isLoading: true,
