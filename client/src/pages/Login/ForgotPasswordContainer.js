@@ -29,31 +29,30 @@ class ForgotPasswordContainer extends Component {
     if (this.props.auth.isAuthenticated) this.props.history.push("/home");
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) this.props.history.push("/home");
-
-    if (nextProps.errors) {
-      this.setState({
-        msg: nextProps.errors.message,
-      });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/home");
     }
 
-    if (nextProps.sucMsg) {
-      this.setState({
-        successMsg: nextProps.sucMsg.message.message,
-      });
+    if (prevProps.errors !== this.props.errors) {
+      this.setState({ msg: this.props.errors.message });
+    }
+
+    if (prevProps.sucMsg !== this.props.sucMsg) {
+      this.setState({ successMsg: this.props.sucMsg.message.message });
     }
   }
 
-  backToLogin = () => {
+  componentWillUnmount() {
     this.props.clearErrors();
     this.props.clearSucMsg();
+  }
+
+  backToLogin = () => {
     this.props.history.push("/login");
   };
 
   directToRegister = () => {
-    this.props.clearErrors();
-    this.props.clearSucMsg();
     this.props.history.push("/");
   };
 

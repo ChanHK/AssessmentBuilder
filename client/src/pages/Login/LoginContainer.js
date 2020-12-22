@@ -33,16 +33,18 @@ class LoginContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.clearErrors();
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.auth.isAuthenticated) {
       this.props.history.push("/home");
     }
-    if (nextProps.errors) {
-      this.setState({
-        msg: nextProps.errors.message,
-      });
+
+    if (prevProps.errors !== this.props.errors) {
+      this.setState({ msg: this.props.errors.message });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clearErrors();
   }
 
   onChange = (e) => {
@@ -62,7 +64,7 @@ class LoginContainer extends Component {
   };
 
   onSubmit = (e) => {
-    console.log(this.state.email, this.state.password);
+    // console.log(this.state.email, this.state.password);
     e.preventDefault();
 
     const userData = {
