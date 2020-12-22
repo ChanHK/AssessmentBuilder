@@ -7,6 +7,7 @@ import { LOGIN, LOGOUT, REGISTER } from "../utils/actionTypes";
 
 // register user
 export const register = (data) => (dispatch) => {
+  dispatch({ type: REGISTER.REGISTER_BEGIN });
   const config = {
     headers: {
       "Content-Type": "application/json",

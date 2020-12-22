@@ -18,6 +18,7 @@ import { isMobile } from "react-device-detect";
 import * as IoIcons from "react-icons/io";
 
 import { clearErrors } from "../../actions/error.actions";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 class RegisterContainer extends Component {
   constructor() {
@@ -93,6 +94,7 @@ class RegisterContainer extends Component {
       msg,
     } = this.state;
 
+    if (this.props.auth.isLoading) return <LoaderSpinner />;
     return (
       <div
         className={css(styles.background)}
