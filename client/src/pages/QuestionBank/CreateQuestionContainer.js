@@ -47,6 +47,7 @@ class CreateQuestionContainer extends Component {
       temporaryArray: [],
       successMsg: null,
       isLoading: this.props.match.params.type === "create" ? false : true,
+      // isLoading: true,
     };
   }
 
@@ -60,8 +61,6 @@ class CreateQuestionContainer extends Component {
         this.props.history.push("/login");
       }
     }
-
-    console.log(this.props.question);
     // this.props.fetchUserProfileData();
   }
 
@@ -72,6 +71,18 @@ class CreateQuestionContainer extends Component {
     if (prevProps.sucMsg !== this.props.sucMsg) {
       this.setState({
         successMsg: this.props.sucMsg.message.message,
+      });
+    }
+
+    const { question } = this.props.question;
+    console.log(this.props.question);
+    if (
+      prevProps.question !== this.props.question &&
+      question !== null &&
+      question.message === undefined
+    ) {
+      this.setState({
+        isLoading: this.props.question.isLoading,
       });
     }
   }
@@ -205,29 +216,26 @@ class CreateQuestionContainer extends Component {
       questionChoices,
     } = this.state;
 
+    let ans = [];
+    let choice = [];
+
     if (
       questionType === "Single Choice" ||
       questionType === "Multiple Choice"
     ) {
       for (let i = 0; i < questionChoices.length; i++) {
-        questionChoices[i] = draftToHtml(
-          convertToRaw(questionChoices[i].getCurrentContent())
+        choice.push(
+          draftToHtml(convertToRaw(questionChoices[i].getCurrentContent()))
         );
       }
 
-      for (let j = 0; j < questionAns.length; j++) {
-        questionAns[j] = draftToHtml(
-          convertToRaw(questionAns[j].getCurrentContent())
-        );
-      }
+      for (let j = 0; j < questionAns.length; j++)
+        ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
     }
 
     if (questionType === "Order" || questionType === "Short Answer") {
-      for (let j = 0; j < questionAns.length; j++) {
-        questionAns[j] = draftToHtml(
-          convertToRaw(questionAns[j].getCurrentContent())
-        );
-      }
+      for (let j = 0; j < questionAns.length; j++)
+        ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
     }
 
     const data = {
@@ -235,23 +243,18 @@ class CreateQuestionContainer extends Component {
       questionDescription: draftToHtml(
         convertToRaw(questionDescription.getCurrentContent())
       ),
-      questionChoices: questionChoices,
-      questionAnswers: questionAns,
+      questionChoices: choice,
+      questionAnswers: ans,
     };
 
-    if (questionType === "Order" || questionType === "Short Answer")
-      data.questionChoices = questionAns;
+    if (questionType === "Order") data.questionChoices = ans;
+    else if (questionType === "Short Answer") data.questionChoices = null;
+    else if (questionType === "Descriptive") {
+      data.questionChoices = null;
+      data.questionAnswers = null;
+    }
 
     this.props.updateQuestion(data);
-
-    this.setState({
-      questionType: "",
-      questionDescription: EditorState.createEmpty(),
-      questionAns: [],
-      questionChoices: [],
-      checkboxNum: null,
-      temporaryArray: [],
-    });
   };
 
   render() {
@@ -264,7 +267,7 @@ class CreateQuestionContainer extends Component {
       isLoading,
     } = this.state;
 
-    console.log("rendered");
+    console.log(isLoading);
 
     return (
       <>
