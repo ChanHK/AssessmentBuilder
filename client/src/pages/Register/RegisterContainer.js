@@ -95,6 +95,8 @@ class RegisterContainer extends Component {
     } = this.state;
 
     if (this.props.auth.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
     return (
       <div
         className={css(styles.background)}

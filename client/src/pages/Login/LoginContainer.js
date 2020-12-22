@@ -79,6 +79,7 @@ class LoginContainer extends Component {
   render() {
     const { email, password, showPassword, msg } = this.state;
     if (this.props.auth.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>
