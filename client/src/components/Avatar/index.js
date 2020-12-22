@@ -4,28 +4,26 @@ import { isMobile } from "react-device-detect";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
-const Avatar = (props) => {
-  return (
-    <AvatarEditor
-      image={props.image}
-      width={250}
-      height={250}
-      color={[20, 20, 20, 0.3]}
-      rotate={0}
-      borderRadius={250 / 2}
-      style={{
-        width: isMobile ? "100%" : "60%",
-        height: "auto",
-        maxWidth: isMobile ? "auto" : "400px",
-        minWidth: isMobile ? "auto" : "220px",
-      }}
-      className={isMobile ? css(styles.flexbox, styles.con) : css(styles.con)}
-      position={props.position}
-      onPositionChange={props.onPositionChange}
-      scale={props.scale}
-    />
-  );
-};
+const Avatar = (props) => (
+  <AvatarEditor
+    image={props.image}
+    width={250}
+    height={250}
+    color={[20, 20, 20, 0.3]}
+    rotate={0}
+    borderRadius={250 / 2}
+    style={{
+      width: isMobile ? "100%" : "60%",
+      height: "auto",
+      maxWidth: isMobile ? "auto" : "400px",
+      minWidth: isMobile ? "auto" : "220px",
+    }}
+    className={isMobile ? css(styles.flexbox, styles.con) : css(styles.con)}
+    position={props.position}
+    onPositionChange={props.onPositionChange}
+    scale={props.scale}
+  />
+);
 
 const styles = StyleSheet.create({
   con: {

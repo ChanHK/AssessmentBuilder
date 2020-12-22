@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, css } from "aphrodite";
 import Loader from "react-loader-spinner";
 
 const LoaderSpinner = () => {
-  window.scrollTo(0, 0);
-  document.body.style.overflow = "hidden";
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.body.style.overflow = "hidden";
+  });
   return (
     <div className={css(styles.container)}>
       <Loader type="Circles" color="#00BFFF" height={100} width={100} />
