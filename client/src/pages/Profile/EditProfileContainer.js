@@ -70,6 +70,15 @@ class EditProfileContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props.profile;
+    if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
+      this.props.clearSucMsg();
+      this.props.history.push("/profile");
+    }
+    if (prevProps.sucMsg !== this.props.sucMsg) {
+      this.setState({
+        successMsg: this.props.sucMsg.message.message,
+      });
+    }
 
     if (prevProps.profile !== this.props.profile) {
       if (this.props.profile.profile !== null) {
@@ -88,12 +97,8 @@ class EditProfileContainer extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.sucMsg) {
-      this.setState({
-        successMsg: nextProps.sucMsg.message.message,
-      });
-    }
+  componentWillUnmount() {
+    this.props.profile.profile = null;
   }
 
   onChange = (e) => {
@@ -139,7 +144,6 @@ class EditProfileContainer extends Component {
       imagePosX,
       imagePosY,
       imageScale,
-      // successMsg,
     } = this.state;
 
     const formData = new FormData();
@@ -171,13 +175,7 @@ class EditProfileContainer extends Component {
       occupation,
       fileRejected,
       isLoading,
-      successMsg,
     } = this.state;
-
-    if (successMsg !== null && successMsg !== undefined) {
-      this.props.clearSucMsg();
-      this.props.history.push("/profile");
-    }
 
     let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
