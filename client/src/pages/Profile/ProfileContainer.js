@@ -39,7 +39,6 @@ class ProfileContainer extends Component {
       gender: null,
       yearOfBirth: null,
       occupation: "",
-      isLoading: true,
     };
   }
 
@@ -75,7 +74,6 @@ class ProfileContainer extends Component {
         gender: profile.gender,
         yearOfBirth: profile.yearOfBirth,
         occupation: profile.occupation,
-        isLoading: this.props.profile.isLoading,
       }));
     }
   }
@@ -99,8 +97,10 @@ class ProfileContainer extends Component {
       gender,
       yearOfBirth,
       occupation,
-      isLoading,
     } = this.state;
+
+    if (this.props.profile.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     if (this.props.profile.profile === null) return false;
     let position = { x: 0.5, y: 0.5 };
@@ -110,11 +110,6 @@ class ProfileContainer extends Component {
     return (
       <>
         <Header />
-        {isLoading ? (
-          <LoaderSpinner />
-        ) : (
-          (document.body.style.overflow = "unset")
-        )}
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>

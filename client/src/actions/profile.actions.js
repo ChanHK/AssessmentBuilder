@@ -22,9 +22,11 @@ export const fetchUserProfileData = () => (dispatch, getState) => {
 
   axios
     .get("/api/user/profile", tokenConfig(getState))
-    .then((res) =>
-      dispatch({ type: PROFILE_DATA.FETCH_SUCCESS, payload: res.data })
-    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({ type: PROFILE_DATA.FETCH_SUCCESS, payload: res.data });
+      }, 1000);
+    })
     .catch((err) => {
       console.log("Fetch user profile data failed", err);
       dispatch({ type: PROFILE_DATA.FETCH_FAIL });
