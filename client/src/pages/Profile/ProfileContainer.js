@@ -84,6 +84,10 @@ class ProfileContainer extends Component {
     this.props.history.push(`profile/edit`);
   };
 
+  componentWillUnmount() {
+    this.props.profile.profile = null;
+  }
+
   render() {
     const {
       picture,
@@ -155,7 +159,7 @@ class ProfileContainer extends Component {
                     color={configStyles.colors.white}
                     padding={"8px"}
                     width={"100px"}
-                    onClick={this.handleClick}
+                    onClick={() => this.handleClick()}
                   >
                     Edit
                   </Button>

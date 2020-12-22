@@ -17,17 +17,17 @@ class NavSideBar extends Component {
     };
   }
 
-  handleScroll() {
-    this.setState({ windowPosition: window.pageYOffset });
-  }
-
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll.bind(this));
+    window.addEventListener("scroll", this.handleScroll());
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll.bind(this));
+    window.removeEventListener("scroll", this.handleScroll());
   }
+
+  handleScroll = () => {
+    this.setState({ windowPosition: window.pageYOffset });
+  };
 
   render() {
     return (
