@@ -65,15 +65,14 @@ class CreateQuestionContainer extends Component {
     // this.props.fetchUserProfileData();
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   this.setState({ isLoading: this.props.question.isLoading });
-  // }
-
-  componentWillReceiveProps(nextProps) {
-    console.log("called");
-    if (nextProps.sucMsg) {
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
+      this.props.clearSucMsg();
+      this.props.history.push("/questionBank");
+    }
+    if (prevProps.sucMsg !== this.props.sucMsg) {
       this.setState({
-        successMsg: nextProps.sucMsg.message.message,
+        successMsg: this.props.sucMsg.message.message,
       });
     }
   }
@@ -255,14 +254,8 @@ class CreateQuestionContainer extends Component {
       questionAns,
       questionChoices,
       checkboxNum,
-      successMsg,
       isLoading,
     } = this.state;
-
-    if (successMsg !== null && successMsg !== undefined) {
-      this.props.clearSucMsg();
-      this.props.history.push("/questionBank");
-    }
 
     console.log("rendered");
 
