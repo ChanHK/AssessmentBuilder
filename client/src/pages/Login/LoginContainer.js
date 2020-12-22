@@ -8,6 +8,7 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import * as IoIcons from "react-icons/io";
 
@@ -77,6 +78,7 @@ class LoginContainer extends Component {
 
   render() {
     const { email, password, showPassword, msg } = this.state;
+    if (this.props.auth.isLoading) return <LoaderSpinner />;
     return (
       <div className={css(styles.background)}>
         <div className={css(styles.whiteBox)}>

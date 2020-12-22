@@ -1,8 +1,4 @@
-import {
-  LOGIN,
-  LOGOUT,
-  REGISTER,
-} from "../utils/actionTypes";
+import { LOGIN, LOGOUT, REGISTER } from "../utils/actionTypes";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -12,6 +8,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case LOGIN.LOGIN_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case LOGIN.LOGIN_SUCCESS:
     case REGISTER.REQISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);

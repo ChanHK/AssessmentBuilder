@@ -4,6 +4,7 @@ export const ERROR = {
 };
 
 export const LOGIN = {
+  LOGIN_BEGIN: "LOGIN_BEGIN",
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
   LOGIN_FAIL: "LOGIN_FAIL",
 };

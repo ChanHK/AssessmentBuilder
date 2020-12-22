@@ -38,6 +38,7 @@ export const logout = () => (dispatch) => {
 
 // login user
 export const login = (data) => (dispatch) => {
+  dispatch({ type: LOGIN.LOGIN_BEGIN });
   const config = {
     headers: {
       "Content-Type": "application/json",
