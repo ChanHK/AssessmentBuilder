@@ -62,7 +62,7 @@ export const fetchAllQuestionData = () => (dispatch, getState) => {
           type: QUESTION.FETCH_ALL_QUESTION_DATA_SUCCESS,
           payload: res.data,
         });
-      }, 3000);
+      }, 1500);
     })
     .catch((err) => {
       console.log("Fetch question data failed", err);

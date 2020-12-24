@@ -10,6 +10,7 @@ import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -159,6 +160,11 @@ class QuestionBankContainer extends Component {
         width: "180px",
       },
     ];
+
+    if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
+    if (this.props.questionReducer.questionLoad === null) return false;
 
     questions.forEach((x, index) => {
       x.serial = index + 1;
