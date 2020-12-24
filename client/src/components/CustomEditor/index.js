@@ -10,10 +10,15 @@ const CustomEditor = (props) => (
       editorState={props.editorState}
       toolbarClassName={css(styles.toolbar)}
       wrapperClassName={css(styles.wrapper)}
-      editorClassName={css(styles.editor)}
+      editorClassName={
+        props.minHeight
+          ? css(styles.editor, styles.minheight)
+          : css(styles.editor, styles.height)
+      }
       onEditorStateChange={props.onEditorStateChange}
       toolbarHidden={props.toolbarHidden}
       readOnly={props.readOnly}
+      key={props.key}
     />
   </>
 );
@@ -30,8 +35,13 @@ const styles = StyleSheet.create({
   },
   editor: {
     width: "100%",
-    height: "200px",
     padding: "5px 20px",
+  },
+  minheight: {
+    minHeight: "200px",
+  },
+  height: {
+    height: "200px",
   },
 });
 

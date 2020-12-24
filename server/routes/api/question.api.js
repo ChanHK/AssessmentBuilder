@@ -88,12 +88,11 @@ router.post("/question/delete", auth, (req, res) => {
 // @route     GET api/user/question/view
 // @desc      GET a question from question bank
 // @access    Private
-router.get("/question/view", auth, (req, res) => {
-  console.log(req.body.questionID);
+router.get("/question/view/:questionID", auth, (req, res) => {
   db.QuestionBank.find(
     { user_id: req.user.id },
     {
-      questions: { $elemMatch: { _id: req.body.questionID } },
+      questions: { $elemMatch: { _id: req.params.questionID } },
     }
   )
     .then((question) => {

@@ -8,7 +8,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case QUESTION.UPDATE_QUESTION_DATA_BEGIN:
-    case QUESTION.FETCH_ALL_QUESTION_DATA_BEGIN:
+    case QUESTION.FETCH_QUESTION_DATA_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
         ...action.payload,
       };
     case QUESTION.UPDATE_QUESTION_DATA_SUCCESS:
-    case QUESTION.FETCH_ALL_QUESTION_DATA_SUCCESS:
+    case QUESTION.FETCH_QUESTION_DATA_SUCCESS:
     case QUESTION.DELETE_QUESTION_DATA_SUCCESS:
       return {
         ...state,
@@ -28,7 +28,7 @@ export default function (state = initialState, action) {
         questionLoad: action.payload,
       };
     case QUESTION.UPDATE_QUESTION_DATA_FAIL:
-    case QUESTION.FETCH_ALL_QUESTION_DATA_FAIL:
+    case QUESTION.FETCH_QUESTION_DATA_FAIL:
     case QUESTION.DELETE_QUESTION_DATA_FAIL:
       return {
         ...state,
