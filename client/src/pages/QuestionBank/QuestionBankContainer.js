@@ -90,8 +90,46 @@ class QuestionBankContainer extends Component {
     this.props.history.push(`questionbank/question/create`);
   };
 
+  clearSearch = () => {
+    this.setState({ searchText: "", questionType: "" });
+  };
+
   render() {
     const { searchText, questionType, questions } = this.state;
+
+    const lowerCasedSearchText = searchText.toLowerCase();
+    const lowerCaseQuestionType = questionType.toLowerCase();
+    let filteredData = JSON.parse(JSON.stringify(questions));
+
+    if (searchText !== "" || questionType !== "") {
+      if (searchText !== "" && questionType === "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.questionDescription
+              .toLowerCase()
+              .indexOf(lowerCasedSearchText) >= 0
+          );
+        });
+      }
+      if (searchText === "" && questionType !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.questionType.toLowerCase().indexOf(lowerCaseQuestionType) >= 0
+          );
+        });
+      }
+      if (searchText !== "" && questionType !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.questionType.toLowerCase().includes(lowerCaseQuestionType) &&
+            item.questionDescription
+              .toLowerCase()
+              .includes(lowerCasedSearchText)
+          );
+        });
+      }
+    }
+
     const column = [
       {
         name: "#",
@@ -103,7 +141,7 @@ class QuestionBankContainer extends Component {
             </div>
           </div>
         ),
-        width: "20px",
+        width: "50px",
       },
       {
         name: "Question Description",
@@ -135,7 +173,6 @@ class QuestionBankContainer extends Component {
             </div>
           );
         },
-        sortable: true,
         width: "500px",
       },
       {
@@ -148,7 +185,6 @@ class QuestionBankContainer extends Component {
             </div>
           </div>
         ),
-        sortable: true,
         width: "200px",
       },
       {
@@ -185,7 +221,7 @@ class QuestionBankContainer extends Component {
 
     if (this.props.questionReducer.questionLoad === null) return false;
 
-    questions.forEach((x, index) => {
+    filteredData.forEach((x, index) => {
       x.serial = index + 1;
     });
 
@@ -223,7 +259,22 @@ class QuestionBankContainer extends Component {
                   </div>
                 </Wrapper>
               </div>
-              <Table data={questions} columns={column} />
+              <div style={{ marginBottom: "25px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  onClick={this.clearSearch}
+                >
+                  Clear
+                </Button>
+              </div>
+              <Table
+                data={filteredData}
+                columns={column}
+                key={filteredData._id}
+              />
               <div style={{ marginBottom: "100px" }}>
                 <Button
                   backgroundColor={configStyles.colors.darkBlue}
