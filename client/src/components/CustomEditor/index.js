@@ -5,22 +5,27 @@ import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 const CustomEditor = (props) => (
-  <>
-    <Editor
-      editorState={props.editorState}
-      toolbarClassName={css(styles.toolbar)}
-      wrapperClassName={css(styles.wrapper)}
-      editorClassName={
-        props.minHeight
-          ? css(styles.editor, styles.minheight)
-          : css(styles.editor, styles.height)
-      }
-      onEditorStateChange={props.onEditorStateChange}
-      toolbarHidden={props.toolbarHidden}
-      readOnly={props.readOnly}
-      key={props.key}
-    />
-  </>
+  <Editor
+    editorState={props.editorState}
+    toolbarClassName={css(styles.toolbar)}
+    wrapperClassName={css(styles.wrapper)}
+    editorClassName={
+      props.heightAuto
+        ? css(styles.auto, styles.editor)
+        : props.minHeight
+        ? css(styles.editor, styles.minheight)
+        : css(styles.editor, styles.height)
+    }
+    onEditorStateChange={props.onEditorStateChange}
+    toolbarHidden={props.toolbarHidden}
+    readOnly={props.readOnly}
+    key={props.key}
+    editorStyle={{
+      backgroundColor: props.isAnswer
+        ? configStyles.colors.correctGreen
+        : configStyles.colors.white,
+    }}
+  />
 );
 
 const styles = StyleSheet.create({
@@ -36,12 +41,16 @@ const styles = StyleSheet.create({
   editor: {
     width: "100%",
     padding: "5px 20px",
+    borderRadius: "5px",
   },
   minheight: {
     minHeight: "200px",
   },
   height: {
     height: "200px",
+  },
+  auto: {
+    height: "auto",
   },
 });
 
