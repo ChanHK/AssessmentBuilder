@@ -5,11 +5,13 @@ import { StyleSheet, css } from "aphrodite";
 import Header from "../../components/Header";
 import CustomEditor from "../../components/CustomEditor";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import * as configStyles from "../../config/styles";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
+import Button from "../../components/Button";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
@@ -197,6 +199,19 @@ class ViewQuestionContainer extends Component {
                       })}
                     </>
                   )}
+                  <div style={{ marginBottom: "25px" }}>
+                    <Button
+                      backgroundColor={configStyles.colors.darkBlue}
+                      color={configStyles.colors.white}
+                      padding={"8px"}
+                      width={"100px"}
+                      onClick={() => {
+                        this.props.history.push(`/questionbank`);
+                      }}
+                    >
+                      Back
+                    </Button>
+                  </div>
                 </CustomColumn>
               </form>
             </CustomColumn>
