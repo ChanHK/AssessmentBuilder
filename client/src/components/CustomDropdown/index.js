@@ -14,13 +14,7 @@ const CustomDropdown = (props) => {
       className={css(styles.className)}
       controlClassName={css(styles.controlClassName)}
       placeholderClassName={css(styles.placeholderClassName)}
-      arrowOpen={css(styles.arrowOpen)}
-      style={{
-        color:
-          props.value === ""
-            ? configStyles.colors.placeholderGrey
-            : configStyles.colors.black,
-      }}
+      menuClassName={css(styles.menuClassName)}
     />
   );
 };
@@ -44,6 +38,12 @@ const styles = StyleSheet.create({
     },
   },
   controlClassName: {
+    width: "100%",
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
+    color: configStyles.colors.black,
+  },
+  menuClassName: {
     width: "100%",
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
