@@ -85,4 +85,21 @@ router.post("/question/delete", auth, (req, res) => {
   });
 });
 
+// @route     GET api/user/question/view
+// @desc      GET a question from question bank
+// @access    Private
+router.get("/question/view", auth, (req, res) => {
+  console.log(req.body.questionID);
+  db.QuestionBank.find(
+    { user_id: req.user.id },
+    {
+      questions: { $elemMatch: { _id: req.body.questionID } },
+    }
+  )
+    .then((question) => {
+      return res.json(question);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

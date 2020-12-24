@@ -223,7 +223,7 @@ class QuestionBankContainer extends Component {
             </TableButton>
             <TableButton
               onClick={() => {
-                this.props.history.push(`questionbank/viewQuestion`);
+                this.props.history.push(`questionbank/question/view/${row._id}`);
               }}
             >
               <BsIcons.BsFillEyeFill />
