@@ -12,7 +12,7 @@ const Reducers = combineReducers({
   errors: errorReducer,
   sucMsg: sucMsgReducer,
   profile: profileReducer,
-  question: questionReducer,
+  questionReducer: questionReducer,
 });
 
 export default Reducers;

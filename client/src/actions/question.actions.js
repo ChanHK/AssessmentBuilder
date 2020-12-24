@@ -38,3 +38,34 @@ export const updateQuestion = (data) => (dispatch, getState) => {
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };
+
+export const fetchAllQuestionData = () => (dispatch, getState) => {
+  dispatch({ type: QUESTION.FETCH_ALL_QUESTION_DATA_BEGIN });
+
+  const tokenConfig = (getState) => {
+    const token = getState().auth.token;
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    if (token) config.headers["x-auth-token"] = token;
+
+    return config;
+  };
+
+  axios
+    .get("/api/user/question", tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.FETCH_ALL_QUESTION_DATA_SUCCESS,
+          payload: res.data,
+        });
+      }, 3000);
+    })
+    .catch((err) => {
+      console.log("Fetch question data failed", err);
+      dispatch({ type: QUESTION.FETCH_ALL_QUESTION_DATA_FAIL });
+    });
+};

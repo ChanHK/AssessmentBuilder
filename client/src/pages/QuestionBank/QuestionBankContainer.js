@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
+import "../../css/general.css";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import Wrapper from "../../components/Wrapper";
@@ -16,28 +17,16 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
-
 import QuestionType from "./Data/QuestionType";
-
-import "../../css/general.css";
-
-import * as configStyles from "../../config/styles";
-
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
 
-const data = [
-  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
-  {
-    qd:
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    qt: "Single Choice",
-  },
-  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Multiple Choice" },
-  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Order" },
-  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
-  { qd: "aaaaaaaaaaaaaaaaaaaa", qt: "Single Choice" },
-];
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchAllQuestionData } from "../../actions/question.actions";
+
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
 
 class QuestionBankContainer extends Component {
   constructor() {
@@ -45,7 +34,43 @@ class QuestionBankContainer extends Component {
     this.state = {
       searchText: "",
       questionType: "",
+      questions: [],
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+    this.props.fetchAllQuestionData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { questionReducer } = this.props;
+
+    if (
+      prevProps.questionReducer !== questionReducer &&
+      questionReducer.questionLoad !== null &&
+      questionReducer.message === undefined
+    ) {
+      this.setState(() => ({
+        questions: JSON.parse(
+          JSON.stringify(questionReducer.questionLoad.questions)
+        ),
+      }));
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.questionReducer.questionLoad = null;
   }
 
   onChangeSearchText = (e) => {
@@ -61,7 +86,7 @@ class QuestionBankContainer extends Component {
   };
 
   render() {
-    const { searchText, questionType } = this.state;
+    const { searchText, questionType, questions } = this.state;
     const column = [
       {
         name: "#",
@@ -77,7 +102,7 @@ class QuestionBankContainer extends Component {
       },
       {
         name: "Question Description",
-        selector: "qd",
+        selector: "questionDescription",
         cell: (row) => (
           <div>
             <div
@@ -86,7 +111,7 @@ class QuestionBankContainer extends Component {
                 fontFamily: "Ubuntu-Regular",
               }}
             >
-              {row.qd}
+              {row.questionDescription}
             </div>
           </div>
         ),
@@ -95,11 +120,11 @@ class QuestionBankContainer extends Component {
       },
       {
         name: "Question Type",
-        selector: "qt",
+        selector: "questionType",
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.qt}
+              {row.questionType}
             </div>
           </div>
         ),
@@ -135,8 +160,8 @@ class QuestionBankContainer extends Component {
       },
     ];
 
-    data.forEach((data, index) => {
-      data.serial = index + 1;
+    questions.forEach((x, index) => {
+      x.serial = index + 1;
     });
 
     return (
@@ -174,7 +199,7 @@ class QuestionBankContainer extends Component {
                 </Wrapper>
               </div>
               <Table
-                data={data}
+                data={questions}
                 columns={column}
                 path={`questionbank/viewQuestion`}
               />
@@ -205,4 +230,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionBankContainer;
+QuestionBankContainer.propTypes = {
+  fetchAllQuestionData: PropTypes.func.isRequired,
+  questionReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  questionReducer: state.questionReducer,
+});
+
+export default connect(mapStateToProps, { fetchAllQuestionData, logout })(
+  QuestionBankContainer
+);
