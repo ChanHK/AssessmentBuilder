@@ -30,7 +30,6 @@ class Table extends Component {
         responsive
         pagination
         customStyles={customStyles}
-        onRowClicked={() => this.props.history.push(this.props.path)}
       />
     );
   }

@@ -29,6 +29,10 @@ import { fetchAllQuestionData } from "../../actions/question.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+
 class QuestionBankContainer extends Component {
   constructor() {
     super();
@@ -104,18 +108,33 @@ class QuestionBankContainer extends Component {
       {
         name: "Question Description",
         selector: "questionDescription",
-        cell: (row) => (
-          <div>
-            <div
-              style={{
-                fontSize: "15px",
-                fontFamily: "Ubuntu-Regular",
-              }}
-            >
-              {row.questionDescription}
+        cell: (row) => {
+          const contentBlock = htmlToDraft(row.questionDescription);
+          let editorState = "";
+          if (contentBlock) {
+            const contentState = ContentState.createFromBlockArray(
+              contentBlock.contentBlocks
+            );
+            editorState = EditorState.createWithContent(contentState);
+          }
+          return (
+            <div>
+              <div
+                style={{
+                  fontSize: "15px",
+                  fontFamily: "Ubuntu-Regular",
+                }}
+              >
+                <Editor
+                  editorState={editorState}
+                  toolbarHidden={true}
+                  readOnly
+                  style={{ height: "20px" }}
+                />
+              </div>
             </div>
-          </div>
-        ),
+          );
+        },
         sortable: true,
         width: "500px",
       },
@@ -204,19 +223,17 @@ class QuestionBankContainer extends Component {
                   </div>
                 </Wrapper>
               </div>
-              <Table
-                data={questions}
-                columns={column}
-                path={`questionbank/viewQuestion`}
-              />
-              <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
-                padding={"8px"}
-                onClick={this.handleClick}
-              >
-                Create Question
-              </Button>
+              <Table data={questions} columns={column} />
+              <div style={{ marginBottom: "100px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  onClick={this.handleClick}
+                >
+                  Create Question
+                </Button>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
