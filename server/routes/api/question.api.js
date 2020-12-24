@@ -60,4 +60,29 @@ router.get("/question", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/question
+// @desc      POST ($pull) delete question from question bank based on id
+// @access    Private
+router.post("/question/delete", auth, (req, res) => {
+  db.QuestionBank.findOne({ user_id: req.user.id }).then((questionBank) => {
+    db.QuestionBank.findByIdAndUpdate(
+      questionBank._id,
+      {
+        $pull: { questions: { _id: req.body.questionID } },
+      },
+      { safe: true }
+    )
+      .then(() => {
+        return res
+          .status(200)
+          .json({ message: "Question deleted successfully" });
+      })
+      .catch(() => {
+        return res.status(400).json({
+          message: "Error, failed to delete question, please retry agian",
+        });
+      });
+  });
+});
+
 module.exports = router;
