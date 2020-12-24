@@ -110,7 +110,7 @@ class CreateQuestionContainer extends Component {
   setTFChoiceAns = (e) => {
     this.setState({
       questionAns: [e.target.value],
-      questionChoices: [true, false],
+      questionChoices: ["true", "false"],
     });
   };
 
@@ -217,11 +217,12 @@ class CreateQuestionContainer extends Component {
 
       for (let j = 0; j < questionAns.length; j++)
         ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
-    }
-
-    if (questionType === "Order" || questionType === "Short Answer") {
+    } else if (questionType === "Order" || questionType === "Short Answer") {
       for (let j = 0; j < questionAns.length; j++)
         ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
+    } else {
+      ans = questionAns;
+      choice = questionChoices;
     }
 
     const data = {
