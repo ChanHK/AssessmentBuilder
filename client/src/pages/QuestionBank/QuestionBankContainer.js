@@ -6,11 +6,11 @@ import * as configStyles from "../../config/styles";
 import Header from "../../components/Header";
 import Wrapper from "../../components/Wrapper";
 import Dropdown from "../../components/Dropdown";
-import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import CustomInput from "../../components/CustomInput";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -241,7 +241,7 @@ class QuestionBankContainer extends Component {
                   widthChange={1250}
                 >
                   <div className={css(styles.block)}>
-                    <SearchBar
+                    <CustomInput
                       name={"search"}
                       type={"text"}
                       placeholder={"Enter question description here to search"}
@@ -255,6 +255,7 @@ class QuestionBankContainer extends Component {
                       placeholder={"Select question type"}
                       value={questionType}
                       onChangeValue={this.onChangeQuestionType}
+                      padding={10}
                     />
                   </div>
                 </Wrapper>
