@@ -13,8 +13,15 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: true,
       };
+    case QUESTION.DELETE_QUESTION_DATA_BEGIN:
+      return {
+        ...state,
+        isLoading: true,
+        ...action.payload,
+      };
     case QUESTION.UPDATE_QUESTION_DATA_SUCCESS:
     case QUESTION.FETCH_ALL_QUESTION_DATA_SUCCESS:
+    case QUESTION.DELETE_QUESTION_DATA_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -22,6 +29,7 @@ export default function (state = initialState, action) {
       };
     case QUESTION.UPDATE_QUESTION_DATA_FAIL:
     case QUESTION.FETCH_ALL_QUESTION_DATA_FAIL:
+    case QUESTION.DELETE_QUESTION_DATA_FAIL:
       return {
         ...state,
         isLoading: false,

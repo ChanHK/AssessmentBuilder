@@ -24,10 +24,14 @@ import * as BsIcons from "react-icons/bs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchAllQuestionData } from "../../actions/question.actions";
+import {
+  fetchAllQuestionData,
+  deleteQuestionData,
+} from "../../actions/question.actions";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
+import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
@@ -40,6 +44,7 @@ class QuestionBankContainer extends Component {
       searchText: "",
       questionType: "",
       questions: [],
+      successMsg: null,
     };
   }
 
@@ -59,6 +64,12 @@ class QuestionBankContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.sucMsg !== this.props.sucMsg) {
+      this.setState({
+        successMsg: this.props.sucMsg.message.message,
+      });
+    }
+
     const { questionReducer } = this.props;
 
     if (
@@ -66,15 +77,12 @@ class QuestionBankContainer extends Component {
       questionReducer.questionLoad !== null &&
       questionReducer.message === undefined
     ) {
-      this.setState(() => ({
-        questions: JSON.parse(
-          JSON.stringify(questionReducer.questionLoad.questions)
-        ),
-      }));
+      this.setState({ questions: questionReducer.questionLoad.questions });
     }
   }
 
   componentWillUnmount() {
+    this.props.clearSucMsg();
     this.props.questionReducer.questionLoad = null;
   }
 
@@ -96,10 +104,11 @@ class QuestionBankContainer extends Component {
 
   render() {
     const { searchText, questionType, questions } = this.state;
-    console.log(questionType);
+
+    if (questions === undefined) return <LoaderSpinner />;
     const lowerCasedSearchText = searchText.toLowerCase();
     const lowerCaseQuestionType = questionType.toLowerCase();
-    let filteredData = JSON.parse(JSON.stringify(questions));
+    let filteredData = questions;
 
     if (searchText !== "" || questionType !== "") {
       if (searchText !== "" && questionType === "") {
@@ -189,8 +198,7 @@ class QuestionBankContainer extends Component {
       },
       {
         name: "Options",
-        selector: "opt",
-        // right: "true",
+        selector: "_id",
         cell: (row) => (
           <CustomRow>
             <TableButton
@@ -200,7 +208,17 @@ class QuestionBankContainer extends Component {
             >
               <MdIcons.MdModeEdit />
             </TableButton>
-            <TableButton>
+            <TableButton
+              onClick={() => {
+                const data = {
+                  questionID: row._id,
+                };
+                this.props.deleteQuestionData(data);
+                setTimeout(() => {
+                  this.props.fetchAllQuestionData();
+                }, 1000);
+              }}
+            >
               <MdIcons.MdDelete />
             </TableButton>
             <TableButton
@@ -308,12 +326,19 @@ QuestionBankContainer.propTypes = {
   fetchAllQuestionData: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  deleteQuestionData: PropTypes.func.isRequired,
+  clearSucMsg: PropTypes.func.isRequired,
+  sucMsg: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionReducer: state.questionReducer,
+  sucMsg: state.sucMsg,
 });
 
-export default connect(mapStateToProps, { fetchAllQuestionData, logout })(
-  QuestionBankContainer
-);
+export default connect(mapStateToProps, {
+  fetchAllQuestionData,
+  logout,
+  deleteQuestionData,
+  clearSucMsg,
+})(QuestionBankContainer);
