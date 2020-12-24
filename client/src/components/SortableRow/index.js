@@ -30,9 +30,7 @@ const SortableItem = SortableElement(
                 choice === questionAns[4] ||
                 choice === questionAns[5] ||
                 choice === questionAns[6] ||
-                choice === questionAns[7] ||
-                choice === questionAns[8] ||
-                choice === questionAns[9]
+                choice === questionAns[7]
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
             }}
