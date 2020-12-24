@@ -44,4 +44,18 @@ router.post("/question", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/question
+// @desc      GET all question from question bank
+// @access    Private
+router.get("/question", auth, (req, res) => {
+  db.QuestionBank.findOne({ user_id: req.user.id })
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .then((allQuestions) => {
+      return res.json(allQuestions);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
