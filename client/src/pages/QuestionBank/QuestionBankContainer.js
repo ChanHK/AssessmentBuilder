@@ -5,7 +5,7 @@ import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import Wrapper from "../../components/Wrapper";
-import Dropdown from "../../components/Dropdown";
+import CustomDropdown from "../../components/CustomDropdown";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
@@ -83,7 +83,7 @@ class QuestionBankContainer extends Component {
   };
 
   onChangeQuestionType = (e) => {
-    this.setState({ questionType: e.target.value });
+    this.setState({ questionType: e.value });
   };
 
   handleClick = () => {
@@ -96,7 +96,7 @@ class QuestionBankContainer extends Component {
 
   render() {
     const { searchText, questionType, questions } = this.state;
-
+    console.log(questionType);
     const lowerCasedSearchText = searchText.toLowerCase();
     const lowerCaseQuestionType = questionType.toLowerCase();
     let filteredData = JSON.parse(JSON.stringify(questions));
@@ -250,12 +250,11 @@ class QuestionBankContainer extends Component {
                     />
                   </div>
                   <div className={css(styles.block)}>
-                    <Dropdown
+                    <CustomDropdown
                       options={QuestionType}
-                      placeholder={"Select question type"}
+                      onChange={this.onChangeQuestionType}
                       value={questionType}
-                      onChangeValue={this.onChangeQuestionType}
-                      padding={10}
+                      placeholder="Select question type"
                     />
                   </div>
                 </Wrapper>
