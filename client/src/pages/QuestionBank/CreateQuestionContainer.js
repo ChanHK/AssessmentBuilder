@@ -47,8 +47,7 @@ class CreateQuestionContainer extends Component {
       questionDescription: EditorState.createEmpty(),
       questionAns: [],
       questionChoices: [],
-      checkboxNum: "",
-      temporaryArray: [],
+      choiceArrObj: [], //stores temporary choices and answer(isChecked)
       successMsg: null,
     };
   }
@@ -101,13 +100,33 @@ class CreateQuestionContainer extends Component {
 
       let choices = null;
       let ans = null;
+      let arrObj = [];
 
-      if (questionType !== "Descriptive" && questionType !== "True or False") {
+      if (questionType === "Order" || questionType === "Short Answer") {
         choices = this.convertQuestion(questionChoices);
         ans = this.convertQuestion(questionAnswers);
       } else if (questionType === "True or False") {
         choices = questionChoices;
         ans = questionAnswers;
+      } else if (
+        questionType === "Single Choice" ||
+        questionType === "Multiple Choice"
+      ) {
+        choices = this.convertQuestion(questionChoices);
+        ans = this.convertQuestion(questionAnswers);
+
+        choices.forEach((item, index) => {
+          let temp = draftToHtml(convertToRaw(item.getCurrentContent()));
+          let inserted = false;
+          ans.forEach((item2, index2) => {
+            let temp2 = draftToHtml(convertToRaw(item2.getCurrentContent()));
+            if (temp === temp2) {
+              arrObj.push({ editorValue: item, isChecked: true });
+              inserted = true;
+            }
+          });
+          if (!inserted) arrObj.push({ editorValue: item, isChecked: false });
+        });
       }
 
       this.setState({
@@ -115,6 +134,7 @@ class CreateQuestionContainer extends Component {
         questionDescription: description,
         questionChoices: choices,
         questionAns: ans,
+        choiceArrObj: arrObj,
       });
     }
   }
@@ -153,8 +173,7 @@ class CreateQuestionContainer extends Component {
       questionType: e.value,
       questionAns: [],
       questionChoices: [],
-      checkboxNum: "",
-      temporaryArray: [],
+      choiceArrObj: [],
     });
   };
 
@@ -170,10 +189,10 @@ class CreateQuestionContainer extends Component {
 
   onChangeChoice = (value, index) => {
     this.setState({
-      questionChoices: [
-        ...this.state.questionChoices.slice(0, index),
-        value,
-        ...this.state.questionChoices.slice(index + 1),
+      choiceArrObj: [
+        ...this.state.choiceArrObj.slice(0, index),
+        { ...this.state.choiceArrObj[index], editorValue: value },
+        ...this.state.choiceArrObj.slice(index + 1),
       ],
     });
   };
@@ -186,40 +205,31 @@ class CreateQuestionContainer extends Component {
   };
 
   setChoiceSingleAns = (index) => {
-    this.setState({
-      questionAns: [this.state.questionChoices[index]],
-      checkboxNum: index,
+    let temp = this.state.choiceArrObj;
+
+    temp.forEach((item, i) => {
+      if (i === index) item.isChecked = true;
+      else item.isChecked = false;
     });
+
+    this.setState({ choiceArrObj: temp });
   };
 
   setChoiceMultiAns = (e, index, item) => {
-    if (e.target.checked) {
-      this.setState({
-        temporaryArray: this.state.temporaryArray.concat(
-          draftToHtml(convertToRaw(item.getCurrentContent()))
-        ),
-        questionAns: this.state.questionAns.concat(item),
-      });
-    } else {
-      const temp = draftToHtml(convertToRaw(item.getCurrentContent()));
-      if (this.state.temporaryArray.includes(temp)) {
-        const i = this.state.temporaryArray.indexOf(temp);
-        this.state.questionAns.splice(i, 1);
-        this.state.temporaryArray.splice(i, 1);
+    let temp = this.state.choiceArrObj;
 
-        this.setState({
-          questionAns: this.state.questionAns,
-          temporaryArray: this.state.temporaryArray,
-        });
-      }
-    }
+    temp.forEach((item, i) => {
+      if (i === index) item.isChecked = e.target.checked;
+    });
+
+    this.setState({ choiceArrObj: temp });
   };
 
   deleteRow = (index, type, item = null) => {
     if (type === "Choice") {
-      this.state.questionChoices.splice(index, 1);
+      this.state.choiceArrObj.splice(index, 1);
       this.setState({
-        questionChoices: this.state.questionChoices,
+        choiceArrObj: this.state.choiceArrObj,
       });
     }
     if (type === "Ans") {
@@ -228,33 +238,22 @@ class CreateQuestionContainer extends Component {
         questionAns: this.state.questionAns,
       });
     }
-    // when delete a row, the answer that might be checked need to be remove
-    if (item !== null) {
-      const temp = draftToHtml(convertToRaw(item.getCurrentContent()));
-      let tempArray = [];
-      for (let x = 0; x < this.state.questionAns.length; x++) {
-        tempArray = tempArray.concat(
-          draftToHtml(
-            convertToRaw(this.state.questionAns[x].getCurrentContent())
-          )
-        );
-      }
-      if (tempArray.includes(temp)) {
-        const i = tempArray.indexOf(temp);
-        this.state.questionAns.splice(i, 1);
-        this.setState({ questionAns: this.state.questionAns });
-      }
-    }
   };
 
   addRow = (type) => {
+    //for single and multi choice
     if (type === "Choice") {
-      if (this.state.questionChoices.length < 8) {
+      if (this.state.choiceArrObj.length < 8) {
         this.setState({
-          questionChoices: this.state.questionChoices.concat(""),
+          choiceArrObj: this.state.choiceArrObj.concat({
+            editorValue: "",
+            isChecked: false,
+          }),
         });
       }
     }
+
+    //for short ans and order
     if (type === "Ans") {
       if (this.state.questionAns.length < 8) {
         this.setState({
@@ -271,6 +270,7 @@ class CreateQuestionContainer extends Component {
       questionDescription,
       questionAns,
       questionChoices,
+      choiceArrObj,
     } = this.state;
 
     let ans = [];
@@ -280,14 +280,17 @@ class CreateQuestionContainer extends Component {
       questionType === "Single Choice" ||
       questionType === "Multiple Choice"
     ) {
-      for (let i = 0; i < questionChoices.length; i++) {
+      choiceArrObj.forEach((item, index) => {
         choice.push(
-          draftToHtml(convertToRaw(questionChoices[i].getCurrentContent()))
+          draftToHtml(convertToRaw(item.editorValue.getCurrentContent()))
         );
-      }
 
-      for (let j = 0; j < questionAns.length; j++)
-        ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
+        if (item.isChecked) {
+          ans.push(
+            draftToHtml(convertToRaw(item.editorValue.getCurrentContent()))
+          );
+        }
+      });
     } else if (questionType === "Order" || questionType === "Short Answer") {
       for (let j = 0; j < questionAns.length; j++)
         ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
@@ -324,8 +327,7 @@ class CreateQuestionContainer extends Component {
       questionType,
       questionDescription,
       questionAns,
-      questionChoices,
-      checkboxNum,
+      choiceArrObj,
     } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
@@ -398,19 +400,17 @@ class CreateQuestionContainer extends Component {
                         </Button>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionChoices.map((item, index) => (
+                        {choiceArrObj.map((item, index) => (
                           <div key={index}>
                             <ChoiceRow
                               count={index + 1}
                               onClick={() => this.deleteRow(index, "Choice")}
-                              editorState={item}
+                              editorState={item.editorValue}
                               onChange={(e) => this.onChangeChoice(e, index)}
-                              choiceName={"choice"}
-                              checkedValue={index}
                               onChangeValue={() =>
                                 this.setChoiceSingleAns(index)
                               }
-                              checked={checkboxNum}
+                              checked={item.isChecked}
                             />
                           </div>
                         ))}
@@ -432,21 +432,19 @@ class CreateQuestionContainer extends Component {
                         </Button>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionChoices.map((item, index) => (
+                        {choiceArrObj.map((item, index) => (
                           <div key={index}>
                             <ChoiceRow
                               count={index + 1}
                               onClick={() =>
                                 this.deleteRow(index, "Choice", item)
                               }
-                              editorState={item}
+                              editorState={item.editorValue}
                               onChange={(e) => this.onChangeChoice(e, index)}
-                              choiceName={"choice"}
-                              checkedValue={index}
                               onChangeValue={(e) =>
                                 this.setChoiceMultiAns(e, index, item)
                               }
-                              checked={checkboxNum}
+                              checked={item.isChecked}
                             />
                           </div>
                         ))}

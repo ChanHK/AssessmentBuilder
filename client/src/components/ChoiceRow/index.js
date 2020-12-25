@@ -23,13 +23,7 @@ const ChoiceRow = (props) => {
                   className={css(styles.checkBox)}
                   value={props.checkedValue}
                   onChange={props.onChangeValue}
-                  checked={
-                    props.checked === null
-                      ? null
-                      : props.checked === props.checkedValue
-                      ? true
-                      : false
-                  }
+                  checked={props.checked}
                 />
                 <div>Answer</div>
               </div>
