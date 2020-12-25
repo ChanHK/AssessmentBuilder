@@ -35,6 +35,7 @@ class ViewQuestionContainer extends Component {
       questionDescription: "",
       questionChoices: [],
       questionAnswers: [],
+      unConvertedChoices: [],
     };
   }
 
@@ -87,8 +88,14 @@ class ViewQuestionContainer extends Component {
         questionChoices: choices,
         questionAnswers:
           questionReducer.questionLoad[0].questions[0].questionAnswers,
+        unConvertedChoices:
+          questionReducer.questionLoad[0].questions[0].questionChoices,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.questionReducer.questionLoad = null;
   }
 
   convertQuestionDes = (data) => {
@@ -121,9 +128,8 @@ class ViewQuestionContainer extends Component {
       questionDescription,
       questionChoices,
       questionAnswers,
+      unConvertedChoices,
     } = this.state;
-
-    const { questionReducer } = this.props;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -165,28 +171,19 @@ class ViewQuestionContainer extends Component {
                       <SecondLabel>Question Choices</SecondLabel>
                       {questionChoices.map((choice, index) => {
                         let color =
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[0] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[1] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[2] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[3] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[4] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[5] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[6] ||
-                          questionReducer.questionLoad[0].questions[0]
-                            .questionChoices[index] === questionAnswers[7]
+                          unConvertedChoices[index] === questionAnswers[0] ||
+                          unConvertedChoices[index] === questionAnswers[1] ||
+                          unConvertedChoices[index] === questionAnswers[2] ||
+                          unConvertedChoices[index] === questionAnswers[3] ||
+                          unConvertedChoices[index] === questionAnswers[4] ||
+                          unConvertedChoices[index] === questionAnswers[5] ||
+                          unConvertedChoices[index] === questionAnswers[6] ||
+                          unConvertedChoices[index] === questionAnswers[7]
                             ? true
                             : false;
                         return (
-                          <div className={css(styles.row)}>
+                          <div className={css(styles.row)} key={index}>
                             <CustomEditor
-                              key={index}
                               editorState={choice}
                               readOnly={true}
                               toolbarHidden={true}
