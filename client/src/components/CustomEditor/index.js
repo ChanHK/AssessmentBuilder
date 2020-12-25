@@ -19,7 +19,6 @@ const CustomEditor = (props) => (
     onEditorStateChange={props.onEditorStateChange}
     toolbarHidden={props.toolbarHidden}
     readOnly={props.readOnly}
-    key={props.key}
     editorStyle={{
       backgroundColor: props.isAnswer
         ? configStyles.colors.correctGreen
