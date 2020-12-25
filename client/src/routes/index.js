@@ -16,7 +16,6 @@ import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
 import {
   QuestionBankContainer,
   CreateQuestionContainer,
-  EditQuestionContainer,
   ViewQuestionContainer,
 } from "../pages/QuestionBank";
 
@@ -67,12 +66,6 @@ export default function Routes() {
           path="/questionbank/question/:type/:questionID"
           exact
           component={CreateQuestionContainer}
-          isPrivate
-        />
-        <Route
-          path="/questionbank/editQuestion"
-          exact
-          component={EditQuestionContainer}
           isPrivate
         />
         <Route
