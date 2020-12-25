@@ -16,6 +16,23 @@ const CustomEditor = (props) => (
         ? css(styles.editor, styles.minheight)
         : css(styles.editor, styles.height)
     }
+    toolbar={{
+      options: [
+        "inline",
+        "blockType",
+        // "fontSize",
+        "fontFamily",
+        "list",
+        "textAlign",
+        "colorPicker",
+        // "link",
+        // "embedded",
+        "emoji",
+        // "image",
+        "remove",
+        "history",
+      ],
+    }}
     onEditorStateChange={props.onEditorStateChange}
     toolbarHidden={props.toolbarHidden}
     readOnly={props.readOnly}

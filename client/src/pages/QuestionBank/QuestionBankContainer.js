@@ -180,7 +180,13 @@ class QuestionBankContainer extends Component {
                   editorState={editorState}
                   toolbarHidden={true}
                   readOnly
-                  style={{ height: "20px" }}
+                  editorStyle={{
+                    width: "450px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    height: "50px",
+                    alignItems: "center",
+                  }}
                 />
               </div>
             </div>
