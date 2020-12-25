@@ -43,7 +43,7 @@ class CreateQuestionContainer extends Component {
       questionDescription: EditorState.createEmpty(),
       questionAns: [],
       questionChoices: [],
-      checkboxNum: null,
+      checkboxNum: "",
       temporaryArray: [],
       successMsg: null,
     };
@@ -149,7 +149,7 @@ class CreateQuestionContainer extends Component {
       questionType: e.value,
       questionAns: [],
       questionChoices: [],
-      checkboxNum: null,
+      checkboxNum: "",
       temporaryArray: [],
     });
   };
