@@ -86,30 +86,31 @@ class CreateQuestionContainer extends Component {
       questionReducer.questionLoad !== null &&
       questionReducer.message === undefined
     ) {
-      const description = this.convertQuestionDes(
-        questionReducer.questionLoad[0].questions[0].questionDescription
-      );
+      const { questionType } = questionReducer.questionLoad[0].questions[0];
+      const { questionAnswers } = questionReducer.questionLoad[0].questions[0];
+      const { questionChoices } = questionReducer.questionLoad[0].questions[0];
+      const {
+        questionDescription,
+      } = questionReducer.questionLoad[0].questions[0];
+
+      const description = this.convertQuestionDes(questionDescription);
 
       let choices = null;
       let ans = null;
 
-      if (
-        questionReducer.questionLoad[0].questions[0].questionType !==
-        "Descriptive"
-      ) {
-        choices = this.convertQuestion(
-          questionReducer.questionLoad[0].questions[0].questionChoices
-        );
-        ans = this.convertQuestion(
-          questionReducer.questionLoad[0].questions[0].questionAnswers
-        );
+      if (questionType !== "Descriptive" && questionType !== "True or False") {
+        choices = this.convertQuestion(questionChoices);
+        ans = this.convertQuestion(questionAnswers);
+      } else if (questionType === "True or False") {
+        choices = questionChoices;
+        ans = questionAnswers;
       }
 
       this.setState({
-        questionType: questionReducer.questionLoad[0].questions[0].questionType,
+        questionType: questionType,
         questionDescription: description,
         questionChoices: choices,
-        questionAnswers: ans,
+        questionAns: ans,
       });
     }
   }
