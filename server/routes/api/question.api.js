@@ -101,4 +101,34 @@ router.get("/question/view/:questionID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/question
+// @desc      POST question to questionBank
+// @access    Private
+router.post("/question/edit/:questionID", auth, (req, res) => {
+  // const { errors, isValid } = validateQuestion(req.body);
+
+  // if (!isValid) return res.status(400).json(errors);
+
+  db.QuestionBank.update(
+    {
+      questions: { $elemMatch: { _id: req.params.questionID } },
+    },
+    {
+      $set: {
+        "questions.$.questionDescription": req.body.questionDescription,
+        "questions.$.questionChoices": req.body.questionChoices,
+        "questions.$.questionAnswers": req.body.questionAnswers,
+      },
+    }
+  )
+    .then(() => {
+      return res.status(200).json({ message: "Question updated successfully" });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Error, failed to update question, please retry agian",
+      });
+    });
+});
+
 module.exports = router;
