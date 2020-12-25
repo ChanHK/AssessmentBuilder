@@ -230,7 +230,7 @@ class QuestionBankContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `questionbank/question/view/${row._id}`
+                  `questionbank/question_view/${row._id}`
                 );
               }}
             >

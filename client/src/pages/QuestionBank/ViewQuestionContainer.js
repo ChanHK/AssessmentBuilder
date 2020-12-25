@@ -73,6 +73,7 @@ class ViewQuestionContainer extends Component {
       );
 
       let choices = null;
+      let ans = null;
 
       if (
         questionReducer.questionLoad[0].questions[0].questionType !==
@@ -81,11 +82,10 @@ class ViewQuestionContainer extends Component {
         choices = this.convertQuestion(
           questionReducer.questionLoad[0].questions[0].questionChoices
         );
+        ans = this.convertQuestion(
+          questionReducer.questionLoad[0].questions[0].questionAnswers
+        );
       }
-
-      const ans = this.convertQuestion(
-        questionReducer.questionLoad[0].questions[0].questionAnswers
-      );
 
       this.setState({
         questionType: questionReducer.questionLoad[0].questions[0].questionType,
