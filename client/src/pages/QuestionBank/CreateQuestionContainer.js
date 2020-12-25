@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "aphrodite";
+import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 import "../../css/general.css";
 
@@ -24,13 +24,13 @@ import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
-// import htmlToDraft from "html-to-draftjs";
+import htmlToDraft from "html-to-draftjs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { updateQuestion } from "../../actions/question.actions";
+import { updateQuestion, fetchAQuestion } from "../../actions/question.actions";
 import { clearSucMsg } from "../../actions/sucMsg.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -59,7 +59,14 @@ class CreateQuestionContainer extends Component {
         this.props.history.push("/login");
       }
     }
-    // this.props.fetchUserProfileData();
+
+    if (this.props.match.params.type === "edit") {
+      const data = {
+        questionID: this.props.match.params.questionID,
+      };
+
+      this.props.fetchAQuestion(data);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -71,12 +78,70 @@ class CreateQuestionContainer extends Component {
         successMsg: this.props.sucMsg.message.message,
       });
     }
+
+    const { questionReducer } = this.props;
+
+    if (
+      prevProps.questionReducer !== questionReducer &&
+      questionReducer.questionLoad !== null &&
+      questionReducer.message === undefined
+    ) {
+      const description = this.convertQuestionDes(
+        questionReducer.questionLoad[0].questions[0].questionDescription
+      );
+
+      let choices = null;
+      let ans = null;
+
+      if (
+        questionReducer.questionLoad[0].questions[0].questionType !==
+        "Descriptive"
+      ) {
+        choices = this.convertQuestion(
+          questionReducer.questionLoad[0].questions[0].questionChoices
+        );
+        ans = this.convertQuestion(
+          questionReducer.questionLoad[0].questions[0].questionAnswers
+        );
+      }
+
+      this.setState({
+        questionType: questionReducer.questionLoad[0].questions[0].questionType,
+        questionDescription: description,
+        questionChoices: choices,
+        questionAnswers: ans,
+      });
+    }
   }
 
   componentWillUnmount() {
     this.props.clearSucMsg();
     this.props.questionReducer.questionLoad = null;
   }
+
+  convertQuestionDes = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
+
+  convertQuestion = (data) => {
+    let result = [];
+    for (let i = 0; i < data.length; i++) {
+      const a = htmlToDraft(data[i]);
+      let c = "";
+      if (a) {
+        const b = ContentState.createFromBlockArray(a.contentBlocks);
+        c = EditorState.createWithContent(b);
+      }
+      result[i] = c;
+    }
+    return result;
+  };
 
   onChangeType = (e) => {
     this.setState({
@@ -242,7 +307,8 @@ class CreateQuestionContainer extends Component {
       data.questionAnswers = null;
     }
 
-    this.props.updateQuestion(data);
+    if (this.props.match.params.type === "edit") {
+    } else this.props.updateQuestion(data);
   };
 
   render() {
@@ -257,6 +323,10 @@ class CreateQuestionContainer extends Component {
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
+    if (this.props.match.params.type === "edit") {
+      if (this.props.questionReducer.questionLoad === null) return false;
+    }
+
     return (
       <>
         <Header />
@@ -265,19 +335,36 @@ class CreateQuestionContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
-                <FirstLabel>Create Question</FirstLabel>
+                {this.props.match.params.type === "edit" ? (
+                  <FirstLabel>Edit Question</FirstLabel>
+                ) : (
+                  <FirstLabel>Create Question</FirstLabel>
+                )}
               </div>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
-                  <SecondLabel>Question Type</SecondLabel>
-                  <div style={{ paddingBottom: "50px" }}>
-                    <CustomDropdown
-                      options={QuestionType}
-                      placeholder={"Select question type"}
-                      value={questionType}
-                      onChange={this.onChangeType}
-                    />
-                  </div>
+                  {this.props.match.params.type === "edit" ? (
+                    <CustomRow>
+                      <div className={css(styles.typeCon)}>
+                        <SecondLabel marginRight={"10px"}>
+                          Question Type :{" "}
+                        </SecondLabel>
+                        <ThirdLabel>{questionType}</ThirdLabel>
+                      </div>
+                    </CustomRow>
+                  ) : (
+                    <>
+                      <SecondLabel>Question Type</SecondLabel>
+                      <div style={{ paddingBottom: "50px" }}>
+                        <CustomDropdown
+                          options={QuestionType}
+                          placeholder={"Select question type"}
+                          value={questionType}
+                          onChange={this.onChangeType}
+                        />
+                      </div>
+                    </>
+                  )}
 
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
@@ -494,10 +581,18 @@ const styles = StyleSheet.create({
     paddingLeft: "10px",
     paddingBottom: "75px",
   },
+  typeCon: {
+    width: "100%",
+    height: "auto",
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "25px",
+  },
 });
 
 CreateQuestionContainer.propTypes = {
   updateQuestion: PropTypes.func.isRequired,
+  fetchAQuestion: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   sucMsg: PropTypes.object.isRequired,
@@ -511,6 +606,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   updateQuestion,
+  fetchAQuestion,
   logout,
   clearSucMsg,
 })(CreateQuestionContainer);
