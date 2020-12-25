@@ -15,7 +15,7 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import QuestionType from "./Data/QuestionType";
 
 import Header from "../../components/Header";
-import Dropdown from "../../components/Dropdown";
+import CustomDropdown from "../../components/CustomDropdown";
 import Button from "../../components/Button";
 import ChoiceRow from "../../components/ChoiceRow";
 import ShortAns from "../../components/ShortAns";
@@ -75,11 +75,12 @@ class CreateQuestionContainer extends Component {
 
   componentWillUnmount() {
     this.props.clearSucMsg();
+    this.props.questionReducer.questionLoad = null;
   }
 
   onChangeType = (e) => {
     this.setState({
-      questionType: e.target.value,
+      questionType: e.value,
       questionAns: [],
       questionChoices: [],
       checkboxNum: null,
@@ -235,7 +236,7 @@ class CreateQuestionContainer extends Component {
     };
 
     if (questionType === "Order") data.questionChoices = ans;
-    else if (questionType === "Short Answer") data.questionChoices = null;
+    else if (questionType === "Short Answer") data.questionChoices = ans;
     else if (questionType === "Descriptive") {
       data.questionChoices = null;
       data.questionAnswers = null;
@@ -253,7 +254,7 @@ class CreateQuestionContainer extends Component {
       checkboxNum,
     } = this.state;
 
-    if (this.props.question.isLoading) return <LoaderSpinner />;
+    if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     return (
@@ -270,11 +271,11 @@ class CreateQuestionContainer extends Component {
                 <CustomColumn>
                   <SecondLabel>Question Type</SecondLabel>
                   <div style={{ paddingBottom: "50px" }}>
-                    <Dropdown
+                    <CustomDropdown
                       options={QuestionType}
                       placeholder={"Select question type"}
                       value={questionType}
-                      onChangeValue={this.onChangeType}
+                      onChange={this.onChangeType}
                     />
                   </div>
 
@@ -485,14 +486,14 @@ const styles = StyleSheet.create({
 
 CreateQuestionContainer.propTypes = {
   updateQuestion: PropTypes.func.isRequired,
-  question: PropTypes.object.isRequired,
+  questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   sucMsg: PropTypes.object.isRequired,
   clearSucMsg: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  question: state.question,
+  questionReducer: state.questionReducer,
   sucMsg: state.sucMsg,
 });
 

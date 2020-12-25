@@ -30,7 +30,7 @@ export const updateQuestion = (data) => (dispatch, getState) => {
           type: QUESTION.UPDATE_QUESTION_DATA_SUCCESS,
           payload: res.data,
         });
-      }, 5000);
+      }, 1500);
     })
     .catch((err) => {
       console.log("Update question data failed", err);
@@ -62,7 +62,7 @@ export const fetchAllQuestionData = () => (dispatch, getState) => {
           type: QUESTION.FETCH_QUESTION_DATA_SUCCESS,
           payload: res.data,
         });
-      }, 1500);
+      }, 2000);
     })
     .catch((err) => {
       console.log("Fetch question data failed", err);

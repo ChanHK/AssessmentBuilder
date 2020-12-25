@@ -105,6 +105,10 @@ class QuestionBankContainer extends Component {
   render() {
     const { searchText, questionType, questions } = this.state;
 
+    if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
+    if (this.props.questionReducer.questionLoad === null) return false;
     if (questions === undefined) return <LoaderSpinner />;
     const lowerCasedSearchText = searchText.toLowerCase();
     const lowerCaseQuestionType = questionType.toLowerCase();
@@ -233,11 +237,6 @@ class QuestionBankContainer extends Component {
         width: "180px",
       },
     ];
-
-    if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
-    else document.body.style.overflow = "unset";
-
-    if (this.props.questionReducer.questionLoad === null) return false;
 
     filteredData.forEach((x, index) => {
       x.serial = index + 1;
