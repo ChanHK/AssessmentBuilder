@@ -30,7 +30,11 @@ import htmlToDraft from "html-to-draftjs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { updateQuestion, fetchAQuestion } from "../../actions/question.actions";
+import {
+  updateQuestion,
+  fetchAQuestion,
+  updateAQuestion,
+} from "../../actions/question.actions";
 import { clearSucMsg } from "../../actions/sucMsg.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -299,6 +303,7 @@ class CreateQuestionContainer extends Component {
       ),
       questionChoices: choice,
       questionAnswers: ans,
+      questionID: "",
     };
 
     if (questionType === "Order") data.questionChoices = ans;
@@ -309,6 +314,8 @@ class CreateQuestionContainer extends Component {
     }
 
     if (this.props.match.params.type === "edit") {
+      data.questionID = this.props.match.params.questionID;
+      this.props.updateAQuestion(data);
     } else this.props.updateQuestion(data);
   };
 
@@ -594,6 +601,7 @@ const styles = StyleSheet.create({
 CreateQuestionContainer.propTypes = {
   updateQuestion: PropTypes.func.isRequired,
   fetchAQuestion: PropTypes.func.isRequired,
+  updateAQuestion: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   sucMsg: PropTypes.object.isRequired,
@@ -608,6 +616,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   updateQuestion,
   fetchAQuestion,
+  updateAQuestion,
   logout,
   clearSucMsg,
 })(CreateQuestionContainer);
