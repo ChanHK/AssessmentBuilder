@@ -95,7 +95,7 @@ class QuestionBankContainer extends Component {
   };
 
   handleClick = () => {
-    this.props.history.push(`questionbank/question/create`);
+    this.props.history.push(`questionbank/question/create/null`);
   };
 
   clearSearch = () => {
@@ -207,7 +207,9 @@ class QuestionBankContainer extends Component {
           <CustomRow>
             <TableButton
               onClick={() => {
-                this.props.history.push(`questionbank/editQuestion`);
+                this.props.history.push(
+                  `questionbank/question/edit/${row._id}`
+                );
               }}
             >
               <MdIcons.MdModeEdit />
@@ -227,7 +229,9 @@ class QuestionBankContainer extends Component {
             </TableButton>
             <TableButton
               onClick={() => {
-                this.props.history.push(`questionbank/question/view/${row._id}`);
+                this.props.history.push(
+                  `questionbank/question/view/${row._id}`
+                );
               }}
             >
               <BsIcons.BsFillEyeFill />

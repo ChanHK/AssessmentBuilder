@@ -471,7 +471,9 @@ class CreateQuestionContainer extends Component {
                         color={configStyles.colors.darkBlue}
                         padding={"8px"}
                         width={"100px"}
-                        type={"button"}
+                        onClick={() => {
+                          this.props.history.push(`/questionbank`);
+                        }}
                       >
                         Cancel
                       </Button>
