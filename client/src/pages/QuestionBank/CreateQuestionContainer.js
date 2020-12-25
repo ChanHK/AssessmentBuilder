@@ -304,16 +304,20 @@ class CreateQuestionContainer extends Component {
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         {questionChoices.map((item, index) => (
-                          <ChoiceRow
-                            count={index + 1}
-                            onClick={() => this.deleteRow(index, "Choice")}
-                            editorState={item}
-                            onChange={(e) => this.onChangeChoice(e, index)}
-                            choiceName={"choice"}
-                            checkedValue={index}
-                            onChangeValue={() => this.setChoiceSingleAns(index)}
-                            checked={checkboxNum}
-                          />
+                          <div key={index}>
+                            <ChoiceRow
+                              count={index + 1}
+                              onClick={() => this.deleteRow(index, "Choice")}
+                              editorState={item}
+                              onChange={(e) => this.onChangeChoice(e, index)}
+                              choiceName={"choice"}
+                              checkedValue={index}
+                              onChangeValue={() =>
+                                this.setChoiceSingleAns(index)
+                              }
+                              checked={checkboxNum}
+                            />
+                          </div>
                         ))}
                       </div>
                     </>
@@ -334,20 +338,22 @@ class CreateQuestionContainer extends Component {
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         {questionChoices.map((item, index) => (
-                          <ChoiceRow
-                            count={index + 1}
-                            onClick={() =>
-                              this.deleteRow(index, "Choice", item)
-                            }
-                            editorState={item}
-                            onChange={(e) => this.onChangeChoice(e, index)}
-                            choiceName={"choice"}
-                            checkedValue={index}
-                            onChangeValue={(e) =>
-                              this.setChoiceMultiAns(e, index, item)
-                            }
-                            checked={checkboxNum}
-                          />
+                          <div key={index}>
+                            <ChoiceRow
+                              count={index + 1}
+                              onClick={() =>
+                                this.deleteRow(index, "Choice", item)
+                              }
+                              editorState={item}
+                              onChange={(e) => this.onChangeChoice(e, index)}
+                              choiceName={"choice"}
+                              checkedValue={index}
+                              onChangeValue={(e) =>
+                                this.setChoiceMultiAns(e, index, item)
+                              }
+                              checked={checkboxNum}
+                            />
+                          </div>
                         ))}
                       </div>
                     </>
@@ -386,13 +392,15 @@ class CreateQuestionContainer extends Component {
                       </ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
-                          <ShortAns
-                            onClick={() => this.deleteRow(index, "Ans")}
-                            onChange={(e) => this.onChangeAnswer(e, index)}
-                            height={"50px"}
-                            value={item}
-                            rowNum={index}
-                          />
+                          <div key={index}>
+                            <ShortAns
+                              onClick={() => this.deleteRow(index, "Ans")}
+                              onChange={(e) => this.onChangeAnswer(e, index)}
+                              height={"50px"}
+                              value={item}
+                              rowNum={index}
+                            />
+                          </div>
                         ))}
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
@@ -415,13 +423,15 @@ class CreateQuestionContainer extends Component {
                       <ThirdLabel>Write down the answer in order</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
-                          <ShortAns
-                            onClick={() => this.deleteRow(index, "Ans")}
-                            onChange={(e) => this.onChangeAnswer(e, index)}
-                            height={"50px"}
-                            value={item}
-                            rowNum={index}
-                          />
+                          <div key={index}>
+                            <ShortAns
+                              onClick={() => this.deleteRow(index, "Ans")}
+                              onChange={(e) => this.onChangeAnswer(e, index)}
+                              height={"50px"}
+                              value={item}
+                              rowNum={index}
+                            />
+                          </div>
                         ))}
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
