@@ -31,7 +31,7 @@ router.post("/question", auth, (req, res) => {
         { new: true }
       )
         .then(() => {
-          db.User.update(
+          db.User.updateOne(
             { _id: req.user.id },
             {
               $inc: { totalQuestionsCreated: 1 },
@@ -86,7 +86,7 @@ router.post("/question/delete", auth, (req, res) => {
       { safe: true }
     )
       .then(() => {
-        db.User.update(
+        db.User.updateOne(
           { _id: req.user.id },
           {
             $inc: { totalQuestionsCreated: -1 },
@@ -135,7 +135,7 @@ router.post("/question/edit/:questionID", auth, (req, res) => {
 
   // if (!isValid) return res.status(400).json(errors);
 
-  db.QuestionBank.update(
+  db.QuestionBank.updateOne(
     {
       questions: { $elemMatch: { _id: req.params.questionID } },
     },

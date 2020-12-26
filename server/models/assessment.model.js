@@ -7,4 +7,4 @@ const AssessmentSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("QuestionBank", AssessmentSchema);
+module.exports = mongoose.model("Assessment", AssessmentSchema);
