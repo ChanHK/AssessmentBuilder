@@ -1,22 +1,17 @@
 import React, { Component } from "react";
-
+import "../../css/general.css";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-
-import "../../css/general.css";
-
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import * as configStyles from "../../config/styles";
-
 import QRCode from "qrcode.react";
 import { ExcelRenderer } from "react-excel-renderer";
-
+import { v4 as uuidv4 } from "uuid";
 import generator from "generate-password";
-
 import Number from "./Data/Number";
 
 import Modal from "../../components/Modal";
@@ -43,7 +38,9 @@ class AccessContainer extends Component {
       attemptNum: 1,
 
       errorMessage: null,
-      rows: [{ accessCode: "1234567890", email: "chan@gmail.com" }], //example * should be empty
+      rows: [
+        { accessCode: "1234567890", email: "chan@gmail.com", id: uuidv4() },
+      ], //example * should be empty
 
       newEmail: "",
     };
@@ -72,6 +69,7 @@ class AccessContainer extends Component {
   ///////////////Excel part/////////////////
 
   fileUploadHandler = (e) => {
+    console.log("up");
     let fileObj = e.target.files[0];
     ExcelRenderer(fileObj, (err, resp) => {
       if (err) {
@@ -92,6 +90,7 @@ class AccessContainer extends Component {
             newRows.push({
               email: item[0],
               accessCode: password,
+              id: uuidv4(),
             });
           }
         });
@@ -132,6 +131,7 @@ class AccessContainer extends Component {
       newRows.push({
         email: this.state.newEmail,
         accessCode: password,
+        id: uuidv4(),
       });
       this.setState({
         rows: this.state.rows.concat(newRows),
@@ -202,14 +202,26 @@ class AccessContainer extends Component {
       },
       {
         name: "Action",
-        selector: "delete",
+        selector: "id",
         cell: (row) => (
           <CustomRow>
-            <TableButton>Delete</TableButton>
+            <TableButton
+              onClick={() => {
+                rows.forEach((item, index) => {
+                  if (row.id === item.id) {
+                    rows.splice(index, 1);
+                    this.setState({ rows: this.state.rows });
+                  }
+                });
+              }}
+            >
+              Delete
+            </TableButton>
           </CustomRow>
         ),
       },
     ];
+    console.log(rows);
 
     rows.forEach((rows, index) => {
       rows.serial = index + 1;
