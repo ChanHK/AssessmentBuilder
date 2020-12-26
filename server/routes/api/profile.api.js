@@ -17,7 +17,6 @@ router.get("/profile", auth, (req, res) => {
   db.User.findById(req.user.id)
     .select("-resetPasswordLink")
     .select("-__v")
-    .select("-questionBank")
     .select("-_id")
     .then((user) => {
       return res.json(user);
