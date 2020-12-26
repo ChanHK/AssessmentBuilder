@@ -45,63 +45,6 @@ class AccessContainer extends Component {
       errorMessage: null,
       rows: [{ accessCode: "1234567890", email: "chan@gmail.com" }], //example * should be empty
 
-      //for delete can straight away delete using api, but first i need to set an ID or get ID // might use uuid
-      column: [
-        {
-          name: "#",
-          selector: "serial",
-          cell: (row) => (
-            <div>
-              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-                {row.serial}
-              </div>
-            </div>
-          ),
-          width: "50px",
-        },
-        {
-          name: "Access Code",
-          selector: "accessCode",
-          cell: (row) => (
-            <div>
-              <div
-                style={{
-                  fontSize: "15px",
-                  fontFamily: "Ubuntu-Regular",
-                }}
-              >
-                {row.accessCode}
-              </div>
-            </div>
-          ),
-        },
-        {
-          name: "Email",
-          selector: "email",
-          cell: (row) => (
-            <div>
-              <div
-                style={{
-                  fontSize: "15px",
-                  fontFamily: "Ubuntu-Regular",
-                }}
-              >
-                {row.email}
-              </div>
-            </div>
-          ),
-        },
-        {
-          name: "Action",
-          selector: "delete",
-          cell: (row) => (
-            <CustomRow>
-              <TableButton>Delete</TableButton>
-            </CustomRow>
-          ),
-        },
-      ],
-
       newEmail: "",
     };
   }
@@ -209,9 +152,64 @@ class AccessContainer extends Component {
       withAuthenticationSelected,
       attemptNum,
       rows,
-      column,
       newEmail,
     } = this.state;
+
+    const column = [
+      {
+        name: "#",
+        selector: "serial",
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.serial}
+            </div>
+          </div>
+        ),
+        width: "50px",
+      },
+      {
+        name: "Access Code",
+        selector: "accessCode",
+        cell: (row) => (
+          <div>
+            <div
+              style={{
+                fontSize: "15px",
+                fontFamily: "Ubuntu-Regular",
+              }}
+            >
+              {row.accessCode}
+            </div>
+          </div>
+        ),
+      },
+      {
+        name: "Email",
+        selector: "email",
+        cell: (row) => (
+          <div>
+            <div
+              style={{
+                fontSize: "15px",
+                fontFamily: "Ubuntu-Regular",
+              }}
+            >
+              {row.email}
+            </div>
+          </div>
+        ),
+      },
+      {
+        name: "Action",
+        selector: "delete",
+        cell: (row) => (
+          <CustomRow>
+            <TableButton>Delete</TableButton>
+          </CustomRow>
+        ),
+      },
+    ];
 
     rows.forEach((rows, index) => {
       rows.serial = index + 1;
