@@ -147,10 +147,10 @@ class EditProfileContainer extends Component {
     const formData = new FormData();
     formData.append("url", image);
     formData.append("username", username);
-    formData.append("gender", gender === null ? "Empty" : gender);
+    formData.append("gender", gender === "" ? "Empty" : gender);
     formData.append(
       "yearOfBirth",
-      birthYear === null ? "Empty" : birthYear.toString()
+      birthYear === "" ? "Empty" : birthYear.toString()
     );
     formData.append("occupation", occupation === "" ? "Empty" : occupation);
     formData.append("posX", imagePosX.toString());
