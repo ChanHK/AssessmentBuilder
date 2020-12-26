@@ -49,6 +49,14 @@ const UserSchema = new mongoose.Schema({
     data: String,
     default: "",
   },
+  totalAssessmentsCreated: {
+    type: Number,
+    default: 0,
+  },
+  totalQuestionsCreated: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

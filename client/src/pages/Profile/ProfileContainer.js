@@ -39,6 +39,8 @@ class ProfileContainer extends Component {
       gender: null,
       yearOfBirth: null,
       occupation: "",
+      totalAssessmentsCreated: 0,
+      totalQuestionsCreated: 0,
     };
   }
 
@@ -58,6 +60,7 @@ class ProfileContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log(this.props.profile);
     const { profile } = this.props.profile;
     if (
       prevProps.profile !== this.props.profile &&
@@ -74,6 +77,8 @@ class ProfileContainer extends Component {
         gender: profile.gender,
         yearOfBirth: profile.yearOfBirth,
         occupation: profile.occupation,
+        totalAssessmentsCreated: profile.totalAssessmentsCreated,
+        totalQuestionsCreated: profile.totalQuestionsCreated,
       }));
     }
   }
@@ -97,6 +102,8 @@ class ProfileContainer extends Component {
       gender,
       yearOfBirth,
       occupation,
+      totalAssessmentsCreated,
+      totalQuestionsCreated,
     } = this.state;
 
     if (this.props.profile.isLoading) return <LoaderSpinner />;
@@ -123,8 +130,14 @@ class ProfileContainer extends Component {
                   position={position}
                   scale={imageScale}
                 />
-                <StatusBox number={"67"} text={"Assessments Created"} />
-                <StatusBox number={"200"} text={"Questions Created"} />
+                <StatusBox
+                  number={totalAssessmentsCreated}
+                  text={"Assessments Created"}
+                />
+                <StatusBox
+                  number={totalQuestionsCreated}
+                  text={"Questions Created"}
+                />
               </StatusBarWrapper>
               <div className={css(styles.infoCon)}>
                 <CustomColumn>

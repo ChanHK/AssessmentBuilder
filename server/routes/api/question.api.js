@@ -31,9 +31,22 @@ router.post("/question", auth, (req, res) => {
         { new: true }
       )
         .then(() => {
-          return res
-            .status(200)
-            .json({ message: "Question updated successfully" });
+          db.User.update(
+            { _id: req.user.id },
+            {
+              $inc: { totalQuestionsCreated: 1 },
+            }
+          )
+            .then(() => {
+              return res
+                .status(200)
+                .json({ message: "Question updated successfully" });
+            })
+            .catch((err) => {
+              return res
+                .status(200)
+                .json({ message: "Update question count fail" });
+            });
         })
         .catch((err) => {
           return res.status(400).json({
@@ -73,9 +86,22 @@ router.post("/question/delete", auth, (req, res) => {
       { safe: true }
     )
       .then(() => {
-        return res
-          .status(200)
-          .json({ message: "Question deleted successfully" });
+        db.User.update(
+          { _id: req.user.id },
+          {
+            $inc: { totalQuestionsCreated: -1 },
+          }
+        )
+          .then(() => {
+            return res
+              .status(200)
+              .json({ message: "Question deleted successfully" });
+          })
+          .catch((err) => {
+            return res
+              .status(200)
+              .json({ message: "Update question count fail" });
+          });
       })
       .catch(() => {
         return res.status(400).json({
