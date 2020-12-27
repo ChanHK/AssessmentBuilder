@@ -10,7 +10,15 @@ import {
 
 import RegisterContainer from "../pages/Register";
 
-import HomeContainer from "../pages/Home";
+import {
+  HomeContainer,
+  DescriptiveResponsesContainer,
+  ResultsContainer,
+  StatisticsContainer,
+  ViewResponseContainer,
+  GradeContainer,
+} from "../pages/Home";
+
 import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
 
 import {
@@ -19,14 +27,7 @@ import {
   ViewQuestionContainer,
 } from "../pages/QuestionBank";
 
-import {
-  GradeContainer,
-  StatisticsContainer,
-  ResultsContainer,
-  ViewResponseContainer,
-  CreateAssessmentContainer,
-  DescriptiveResponsesContainer,
-} from "../pages/Assessment";
+import { CreateAssessmentContainer } from "../pages/Assessment";
 
 import { StartingPageContainer } from "../pages/StartAssessment";
 
