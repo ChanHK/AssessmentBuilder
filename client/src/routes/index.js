@@ -29,7 +29,7 @@ import {
 
 import { CreateAssessmentContainer } from "../pages/Assessment";
 
-import { StartingPageContainer } from "../pages/StartAssessment";
+import { StartingPageContainer } from "../pages/Candidate";
 
 export default function Routes() {
   return (
@@ -114,7 +114,7 @@ export default function Routes() {
         />
 
         <Route
-          path="/startAssessment/startingPage"
+          path="/assessment/startingPage"
           exact
           component={StartingPageContainer}
           isPrivate
