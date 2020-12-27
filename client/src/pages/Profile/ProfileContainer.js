@@ -60,7 +60,6 @@ class ProfileContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.profile);
     const { profile } = this.props.profile;
     if (
       prevProps.profile !== this.props.profile &&
