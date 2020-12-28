@@ -89,10 +89,10 @@ class CreateQuestionContainer extends Component {
       questionReducer.questionLoad !== null &&
       questionReducer.message === undefined
     ) {
-      const { questionType } = questionReducer.questionLoad[0].questions[0];
-      const { questionAnswers } = questionReducer.questionLoad[0].questions[0];
-      const { questionChoices } = questionReducer.questionLoad[0].questions[0];
       const {
+        questionType,
+        questionAnswers,
+        questionChoices,
         questionDescription,
       } = questionReducer.questionLoad[0].questions[0];
 
