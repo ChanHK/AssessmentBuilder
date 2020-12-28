@@ -7,40 +7,42 @@ const AssessmentSchema = new mongoose.Schema({
   },
   assessments: [
     {
-      testName: {
-        type: String,
-        default: "New test",
+      settings: {
+        testName: {
+          type: String,
+          default: "New test",
+        },
+        testDescription: {
+          type: String,
+          default: "",
+        },
+        testInstruction: {
+          type: String,
+          default: "",
+        },
+        passOrFailSelected: {
+          type: Boolean,
+          default: true,
+        },
+        score: {
+          type: Number,
+          default: "",
+        },
+        unit: {
+          type: String,
+          default: "",
+        },
+        addGradingSelected: {
+          type: Boolean,
+          default: false,
+        },
+        gradeUnit: {
+          type: String,
+          default: "",
+        },
+        gradeRange: [String],
+        gradeValue: [String],
       },
-      testDescription: {
-        type: String,
-        default: "",
-      },
-      testInstruction: {
-        type: String,
-        default: "",
-      },
-      passOrFailSelected: {
-        type: Boolean,
-        default: true,
-      },
-      score: {
-        type: Number,
-        default: "",
-      },
-      unit: {
-        type: String,
-        default: "",
-      },
-      addGradingSelected: {
-        type: Boolean,
-        default: false,
-      },
-      gradeUnit: {
-        type: String,
-        default: "",
-      },
-      gradeRange: [String],
-      gradeValue: [String],
     },
   ],
 });
