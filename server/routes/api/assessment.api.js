@@ -92,7 +92,7 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
 });
 
 // @route     GET api/user/assessment/settings
-// @desc      GET settings to assessment collection
+// @desc      GET settings from assessment collection
 // @access    Private
 router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
   db.Assessment.find(
