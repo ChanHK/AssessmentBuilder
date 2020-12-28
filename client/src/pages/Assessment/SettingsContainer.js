@@ -49,44 +49,31 @@ class SettingContainer extends Component {
   };
 
   deleteRangeRow = (index) => {
-    this.setState((state) => {
-      const gradeRange = state.gradeRange.filter((item, j) => index !== j);
-      const gradeValue = state.gradeValue.filter((item, j) => index !== j);
-
-      return {
-        gradeRange,
-        gradeValue,
-      };
+    this.state.gradeRange.splice(index, 1);
+    this.state.gradeValue.splice(index, 1);
+    this.setState({
+      gradeRange: this.state.gradeRange,
+      gradeValue: this.state.gradeValue,
     });
   };
 
   onChangeGradeRange = (value, index) => {
-    this.setState((state) => {
-      const gradeRange = state.gradeRange.map((item, j) => {
-        if (j === index) {
-          return value;
-        } else {
-          return item;
-        }
-      });
-      return {
-        gradeRange,
-      };
+    this.setState({
+      gradeRange: [
+        ...this.state.gradeRange.slice(0, index),
+        value,
+        ...this.state.gradeRange.slice(index + 1),
+      ],
     });
   };
 
   onChangeGradeValue = (value, index) => {
-    this.setState((state) => {
-      const gradeValue = state.gradeValue.map((item, j) => {
-        if (j === index) {
-          return value;
-        } else {
-          return item;
-        }
-      });
-      return {
-        gradeValue,
-      };
+    this.setState({
+      gradeValue: [
+        ...this.state.gradeValue.slice(0, index),
+        value,
+        ...this.state.gradeValue.slice(index + 1),
+      ],
     });
   };
 
