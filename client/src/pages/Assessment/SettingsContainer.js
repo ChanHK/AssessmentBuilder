@@ -75,9 +75,6 @@ class SettingContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
-      this.props.history.push("/profile");
-    }
     if (prevProps.sucMsg !== this.props.sucMsg) {
       this.setState({
         successMsg: this.props.sucMsg.message.message,
