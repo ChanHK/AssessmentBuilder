@@ -4,44 +4,111 @@ const auth = require("../../middleware/auth");
 
 const db = require("../../models");
 
-// @route     POST api/user/assessment/settings
-// @desc      POST settings to assessment collection
+// @route     POST api/user/assessment/create
+// @desc      POST create new assessment obj
 // @access    Private
-router.post("/assessment/settings", auth, (req, res) => {
-  db.Assessment.findOne({ user_id: req.user.id }).then((assessment) => {
-    db.Assessment.findByIdAndUpdate(
-      assessment._id,
-      {
-        $push: {
-          assessments: {
-            settings: {
-              testName: req.body.testName,
-              testDescription: req.body.testDescription,
-              testInstruction: req.body.testInstruction,
-              passOrFailSelected: req.body.passOrFailSelected,
-              score: req.body.score,
-              unit: req.body.unit,
-              addGradingSelected: req.body.addGradingSelected,
-              gradeUnit: req.body.gradeUnit,
-              gradeRange: req.body.gradeRange,
-              gradeValue: req.body.gradeValue,
+router.post("/assessment/create", auth, (req, res) => {
+  db.Assessment.findOne({ user_id: req.user.id })
+    .then((assessment) => {
+      db.Assessment.findByIdAndUpdate(
+        assessment._id,
+        {
+          $push: {
+            assessments: {
+              settings: {
+                testName: "New assessment",
+              },
             },
           },
         },
-      },
-      { new: true }
-    )
-      .then(() => {
-        return res
-          .status(200)
-          .json({ message: "Settings updated successfully" });
-      })
-      .catch((err) => {
-        return res.status(400).json({
-          message: "Error, failed to update settings, please retry agian",
+        { new: true }
+      )
+        .then(() => {
+          return res
+            .status(200)
+            .json({ message: "Assessment created successfully" });
+        })
+        .catch((err) => {
+          return res.status(400).json({
+            message: "Error, failed to create assessment, please retry agian",
+          });
         });
+    })
+    .catch((err) => console.log(err));
+});
+
+// @route     GET api/user/assessment/getCreated
+// @desc      GET new assessment obj id that is newly created
+// @access    Private
+router.get("/assessment/getCreate", auth, (req, res) => {
+  db.Assessment.findOne({ user_id: req.user.id })
+    .then((assessment) => {
+      return res.json({
+        assessmentID:
+          assessment.assessments[assessment.assessments.length - 1]._id,
       });
-  });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Error, failed to retrieve assessment ID, please retry agian",
+      });
+    });
+});
+
+// @route     POST api/user/assessment/settings
+// @desc      POST settings to assessment collection
+// @access    Private
+router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
+  db.Assessment.updateOne(
+    {
+      assessments: { $elemMatch: { _id: req.params.assessmentID } },
+    },
+    {
+      $set: {
+        "assessments.$.settings.testName": req.body.testName,
+        "assessments.$.settings.testDescription": req.body.testDescription,
+        "assessments.$.settings.testInstruction": req.body.testInstruction,
+        "assessments.$.settings.passOrFailSelected":
+          req.body.passOrFailSelected,
+        "assessments.$.settings.score": req.body.score,
+        "assessments.$.settings.unit": req.body.unit,
+        "assessments.$.settings.addGradingSelected":
+          req.body.addGradingSelected,
+        "assessments.$.settings.gradeUnit": req.body.gradeUnit,
+        "assessments.$.settings.gradeRange": req.body.gradeRange,
+        "assessments.$.settings.gradeValue": req.body.gradeValue,
+      },
+    }
+  )
+    .then(() => {
+      console.log(req.params.assessmentID);
+      return res.status(200).json({ message: "Settings updated successfully" });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Error, failed to update settings, please retry agian",
+      });
+    });
+});
+
+// @route     GET api/user/assessment/settings
+// @desc      GET settings to assessment collection
+// @access    Private
+router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
+  db.Assessment.find(
+    { user_id: req.user.id },
+    {
+      assessments: { $elemMatch: { _id: req.params.assessmentID } },
+    }
+  )
+    .select("-_id")
+    .select("-assessments._id")
+    .select("-user_id")
+    .select("-__v")
+    .then((assessment) => {
+      return res.json(assessment);
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;

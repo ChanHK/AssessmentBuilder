@@ -10,7 +10,7 @@ const AssessmentSchema = new mongoose.Schema({
       settings: {
         testName: {
           type: String,
-          default: "New test",
+          default: "",
         },
         testDescription: {
           type: String,
