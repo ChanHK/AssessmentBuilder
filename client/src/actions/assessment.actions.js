@@ -21,7 +21,11 @@ export const updateAssessmentSetting = (data) => (dispatch, getState) => {
   };
 
   axios
-    .post("/api/user/assessment/settings", data, tokenConfig(getState))
+    .post(
+      `/api/user/assessment/settings/update/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
     .then((res) => {
       dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
