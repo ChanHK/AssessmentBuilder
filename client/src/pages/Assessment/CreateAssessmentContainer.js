@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
 import { StyleSheet } from "aphrodite";
+import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import AssessmentButtonGroup from "../../components/AssessmentButtonGroup";
@@ -9,12 +10,7 @@ import ScrollArrow from "../../components/ScrollArrow";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
-
-import "../../css/general.css";
-
-import * as configStyles from "../../config/styles";
 
 import SettingsContainer from "./SettingsContainer";
 import TimerContainer from "./TimerContainer";
@@ -22,16 +18,21 @@ import AccessContainer from "./AccessContainer";
 import QuestionsContainer from "./QuestionsContainer";
 import SetContainer from "./SetContainer";
 
+import { generatePath } from "react-router";
+
 export default class CreateAssessmentContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selected: "settings",
-    };
-  }
+  handlePath = (e) => {
+    const { match } = this.props;
+    const path = generatePath(match.path, {
+      type: match.params.type,
+      selected: e.target.value,
+      assessmentID: match.params.assessmentID,
+    });
+    this.props.history.replace(path);
+  };
 
   render() {
-    const { selected } = this.state;
+    const { selected } = this.props.match.params;
 
     return (
       <>
@@ -45,7 +46,7 @@ export default class CreateAssessmentContainer extends Component {
               </div>
               <div style={{ paddingBottom: "50px" }}>
                 <AssessmentButtonGroup
-                  onClick={(e) => this.setState({ selected: e.target.value })}
+                  onClick={this.handlePath}
                   type={selected}
                 />
               </div>

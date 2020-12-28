@@ -107,7 +107,7 @@ export default function Routes() {
           isPrivate
         />
         <Route
-          path="/assessment/createAssessment"
+          path="/assessment/:type(edit|create)/:selected(settings|questions|set|access|timer)/:assessmentID"
           exact
           component={CreateAssessmentContainer}
           isPrivate
