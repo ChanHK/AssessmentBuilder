@@ -247,12 +247,13 @@ class SettingContainer extends Component {
                           color={configStyles.colors.white}
                           padding={"8px"}
                           width={"100px"}
-                          onClick={() =>
-                            this.setState({
-                              gradeRange: this.state.gradeRange.concat(""),
-                              gradeValue: this.state.gradeValue.concat(""),
-                            })
-                          }
+                          onClick={() => {
+                            if (gradeValue.length < 10)
+                              this.setState({
+                                gradeRange: this.state.gradeRange.concat(""),
+                                gradeValue: this.state.gradeValue.concat(""),
+                              });
+                          }}
                         >
                           Add range
                         </Button>
@@ -282,7 +283,7 @@ class SettingContainer extends Component {
             </>
           )}
         </div>
-        <div style={{ paddingBottom: "50px" }}>
+        <div style={{ marginBottom: "100px" }}>
           <Button
             backgroundColor={configStyles.colors.darkBlue}
             color={configStyles.colors.white}
