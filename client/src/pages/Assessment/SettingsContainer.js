@@ -12,7 +12,7 @@ import Button from "../../components/Button";
 import CustomSwitch from "../../components/CustomSwitch";
 import CustomEditor from "../../components/CustomEditor";
 import Wrapper from "../../components/Wrapper";
-import Dropdown from "../../components/Dropdown";
+import CustomDropdown from "../../components/CustomDropdown";
 import Range from "../../components/Range";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
@@ -24,17 +24,20 @@ import htmlToDraft from "html-to-draftjs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { updateAssessmentSetting } from "../../actions/assessment.actions";
+import {
+  updateAssessmentSetting,
+  fetchAssessmentSetting,
+} from "../../actions/assessment.actions";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 import { clearSucMsg } from "../../actions/sucMsg.actions";
 
-const unitOptions = [{ value: "percentage %" }, { value: "points p." }];
+const unitOptions = ["percentage %", "points p."];
 
 class SettingContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       testName: "",
       testDescription: "",
@@ -46,6 +49,9 @@ class SettingContainer extends Component {
       gradeUnit: "", // percentage or points
       gradeRange: [], // stores the range like 10,20,30
       gradeValue: [], //stores the value like A+, A, A-
+      successMsg: null,
+      assessmentID: props.assessmentID,
+      type: props.type,
     };
   }
 
@@ -61,7 +67,68 @@ class SettingContainer extends Component {
         this.props.history.push("/login");
       }
     }
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAssessmentSetting(data);
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
+      this.props.history.push("/profile");
+    }
+    if (prevProps.sucMsg !== this.props.sucMsg) {
+      this.setState({
+        successMsg: this.props.sucMsg.message.message,
+      });
+    }
+
+    const { assessmentReducer } = this.props;
+    // console.log(assessmentReducer.assessmentLoad);
+
+    if (
+      prevProps.assessmentReducer !== assessmentReducer &&
+      assessmentReducer.assessmentLoad !== null &&
+      assessmentReducer.message === undefined
+    ) {
+      const {
+        testName,
+        testInstruction,
+        testDescription,
+        score,
+        passOrFailSelected,
+        gradeValue,
+        gradeUnit,
+        gradeRange,
+        addGradingSelected,
+      } = assessmentReducer.assessmentLoad[0].assessments[0].settings;
+
+      const ins = this.convertIns(testInstruction);
+
+      this.setState({
+        testName: testName,
+        testInstruction: ins,
+        testDescription: testDescription,
+        score: score,
+        passOrFailSelected: passOrFailSelected,
+        gradeValue: gradeValue,
+        gradeUnit: gradeUnit,
+        gradeRange: gradeRange,
+        addGradingSelected: addGradingSelected,
+      });
+    }
+  }
+
+  convertIns = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
 
   componentWillUnmount() {
     this.props.clearSucMsg();
@@ -118,6 +185,7 @@ class SettingContainer extends Component {
       gradeUnit,
       gradeRange,
       gradeValue,
+      assessmentID,
     } = this.state;
 
     const data = {
@@ -133,6 +201,7 @@ class SettingContainer extends Component {
       gradeUnit: gradeUnit,
       gradeRange: gradeRange,
       gradeValue: gradeValue,
+      assessmentID: assessmentID,
     };
 
     this.props.updateAssessmentSetting(data);
@@ -150,7 +219,10 @@ class SettingContainer extends Component {
       gradeUnit,
       gradeRange,
       gradeValue,
+      successMsg,
     } = this.state;
+
+    console.log(successMsg);
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -234,13 +306,11 @@ class SettingContainer extends Component {
                       />
                     </div>
                     <div className={css(styles.block)}>
-                      <Dropdown
+                      <CustomDropdown
                         options={unitOptions}
                         placeholder={"Select unit type"}
                         value={unit}
-                        onChangeValue={(e) =>
-                          this.setState({ unit: e.target.value })
-                        }
+                        onChangeValue={(e) => this.setState({ unit: e.value })}
                         padding={"12px"}
                       />
                     </div>
@@ -277,13 +347,13 @@ class SettingContainer extends Component {
                       widthChange={1425}
                     >
                       <div className={css(styles.block)}>
-                        <Dropdown
+                        <CustomDropdown
                           options={unitOptions}
                           placeholder={"Select unit type"}
                           value={gradeUnit}
                           onChangeValue={(e) =>
                             this.setState({
-                              gradeUnit: e.target.value,
+                              gradeUnit: e.value,
                             })
                           }
                           padding={"12px"}
@@ -309,7 +379,7 @@ class SettingContainer extends Component {
                     </Wrapper>
                   </div>
                   {gradeRange.map((item, index) => (
-                    <div style={{ width: "225px" }}>
+                    <div style={{ width: "225px" }} key={index}>
                       <Range
                         count={index + 1}
                         value={item}
@@ -372,6 +442,7 @@ const styles = StyleSheet.create({
 });
 
 SettingContainer.propTypes = {
+  fetchAssessmentSetting: PropTypes.func.isRequired,
   updateAssessmentSetting: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
@@ -386,6 +457,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   updateAssessmentSetting,
+  fetchAssessmentSetting,
   logout,
   clearSucMsg,
 })(SettingContainer);
