@@ -59,7 +59,7 @@ export const fetchAssessmentSetting = (data) => (dispatch, getState) => {
   };
 
   axios
-    .post(
+    .get(
       `/api/user/assessment/settings/fetch/${data.assessmentID}`,
       tokenConfig(getState)
     )

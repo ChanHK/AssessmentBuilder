@@ -20,7 +20,7 @@ import SetContainer from "./SetContainer";
 
 import { generatePath } from "react-router";
 
-export default class CreateAssessmentContainer extends Component {
+class CreateAssessmentContainer extends Component {
   handlePath = (e) => {
     const { match } = this.props;
     const path = generatePath(match.path, {
@@ -32,7 +32,7 @@ export default class CreateAssessmentContainer extends Component {
   };
 
   render() {
-    const { selected } = this.props.match.params;
+    const { selected, assessmentID, type } = this.props.match.params;
 
     return (
       <>
@@ -51,11 +51,21 @@ export default class CreateAssessmentContainer extends Component {
                 />
               </div>
 
-              {selected === "settings" && <SettingsContainer />}
-              {selected === "questions" && <QuestionsContainer />}
-              {selected === "set" && <SetContainer />}
-              {selected === "access" && <AccessContainer />}
-              {selected === "timer" && <TimerContainer />}
+              {selected === "settings" && (
+                <SettingsContainer assessmentID={assessmentID} type={type} />
+              )}
+              {selected === "questions" && (
+                <QuestionsContainer assessmentID={assessmentID} type={type} />
+              )}
+              {selected === "set" && (
+                <SetContainer assessmentID={assessmentID} type={type} />
+              )}
+              {selected === "access" && (
+                <AccessContainer assessmentID={assessmentID} type={type} />
+              )}
+              {selected === "timer" && (
+                <TimerContainer assessmentID={assessmentID} type={type} />
+              )}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -78,3 +88,5 @@ const styles = StyleSheet.create({
     borderColor: configStyles.colors.black,
   },
 });
+
+export default CreateAssessmentContainer;
