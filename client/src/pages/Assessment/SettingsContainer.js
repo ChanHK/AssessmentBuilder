@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
+import "../../css/general.css";
 
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-
-import "../../css/general.css";
 
 import CustomInput from "../../components/CustomInput";
 import TextArea from "../../components/TextArea";
@@ -19,7 +18,9 @@ import Range from "../../components/Range";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import * as configStyles from "../../config/styles";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 
 const unitOptions = [{ value: "percentage %" }, { value: "points p." }];
 
@@ -29,7 +30,7 @@ class SettingContainer extends Component {
     this.state = {
       testName: "",
       testDescription: "",
-      testInstruction: "",
+      testInstruction: EditorState.createEmpty(),
       passOrFailSelected: true, //switch button
       score: "", // score for pass and fail
       unit: "", // unit for pass and fail
