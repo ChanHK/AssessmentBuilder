@@ -52,11 +52,12 @@ router.post("/register", (req, res) => {
                 }
               );
 
-              const newQuestionBank = {
+              const data = {
                 user_id: user.id,
               };
 
-              db.QuestionBank.create(newQuestionBank);
+              db.QuestionBank.create(data);
+              db.Assessment.create(data);
             })
             .catch((err) => console.log(err));
         });

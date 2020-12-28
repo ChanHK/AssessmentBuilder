@@ -11,6 +11,7 @@ require("dotenv").config({
 const authUser = require("./routes/api/auth.api");
 const userProfile = require("./routes/api/profile.api");
 const question = require("./routes/api/question.api");
+const assessment = require("./routes/api/assessment.api");
 
 const app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ mongoose
 app.use("/api/auth", authUser);
 app.use("/api/user", userProfile);
 app.use("/api/user", question);
+app.use("/api/user", assessment);
 
 const port = process.env.PORT || 5000;
 
