@@ -22,6 +22,14 @@ import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { updateAssessmentSetting } from "../../actions/assessment.actions";
+
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+import { clearSucMsg } from "../../actions/sucMsg.actions";
+
 const unitOptions = [{ value: "percentage %" }, { value: "points p." }];
 
 class SettingContainer extends Component {
@@ -39,6 +47,25 @@ class SettingContainer extends Component {
       gradeRange: [], // stores the range like 10,20,30
       gradeValue: [], //stores the value like A+, A, A-
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.clearSucMsg();
+    this.props.assessmentReducer.assessmentLoad = null;
   }
 
   onChange = (e) => {
@@ -78,6 +105,39 @@ class SettingContainer extends Component {
     });
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const {
+      testName,
+      testDescription,
+      testInstruction,
+      passOrFailSelected,
+      score,
+      unit,
+      addGradingSelected,
+      gradeUnit,
+      gradeRange,
+      gradeValue,
+    } = this.state;
+
+    const data = {
+      testName: testName,
+      testDescription: testDescription,
+      testInstruction: draftToHtml(
+        convertToRaw(testInstruction.getCurrentContent())
+      ),
+      passOrFailSelected: passOrFailSelected,
+      score: score,
+      unit: unit,
+      addGradingSelected: addGradingSelected,
+      gradeUnit: gradeUnit,
+      gradeRange: gradeRange,
+      gradeValue: gradeValue,
+    };
+
+    this.props.updateAssessmentSetting(data);
+  };
+
   render() {
     const {
       testName,
@@ -93,7 +153,7 @@ class SettingContainer extends Component {
     } = this.state;
 
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <SecondLabel>Title</SecondLabel>
         <div style={{ paddingBottom: "25px" }}>
           <CustomInput
@@ -311,4 +371,21 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingContainer;
+SettingContainer.propTypes = {
+  updateAssessmentSetting: PropTypes.func.isRequired,
+  assessmentReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  clearSucMsg: PropTypes.func.isRequired,
+  sucMsg: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  assessmentReducer: state.assessmentReducer,
+  sucMsg: state.sucMsg,
+});
+
+export default connect(mapStateToProps, {
+  updateAssessmentSetting,
+  logout,
+  clearSucMsg,
+})(SettingContainer);
