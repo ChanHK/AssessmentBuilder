@@ -81,7 +81,7 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
     }
   )
     .then(() => {
-      return res.status(200).json({ message: "Settings updated successfully" });
+      res.status(200).send("Settings updated successfully");
     })
     .catch((err) => {
       return res.status(400).json({

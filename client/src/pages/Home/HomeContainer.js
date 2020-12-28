@@ -59,7 +59,7 @@ export default class HomeContainer extends Component {
   };
 
   toCreateAssessment = () => {
-    this.props.history.push("assessment/create/settings/5fe9c995a3f6890b240877c5");
+    this.props.history.push("assessment/create/settings/5fea0e991e2c6d35d0336986");
   };
 
   render() {
