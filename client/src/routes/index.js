@@ -64,7 +64,7 @@ export default function Routes() {
           isPrivate
         />
         <Route
-          path="/questionbank/question/:type/:questionID"
+          path="/questionbank/question/:type(edit|create)/:questionID"
           exact
           component={CreateQuestionContainer}
           isPrivate
