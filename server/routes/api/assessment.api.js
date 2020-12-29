@@ -106,18 +106,17 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
 // @desc      GET settings from assessment collection
 // @access    Private
 router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
-  db.Assessment.find(
+  db.Assessment.findOne(
     { user_id: req.user.id },
     {
       assessments: { $elemMatch: { _id: req.params.assessmentID } },
     }
   )
     .select("-_id")
-    .select("-assessments._id")
     .select("-user_id")
     .select("-__v")
     .then((assessment) => {
-      return res.json(assessment);
+      return res.json(assessment.assessments[0]);
     })
     .catch((err) => console.log(err));
 });

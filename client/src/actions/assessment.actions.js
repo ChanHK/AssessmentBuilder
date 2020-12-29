@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { ASSESSMENT } from "../utils/actionTypes";
 
-import { returnSucMsg } from "./sucMsg.actions";
+// import { returnErrors } from "./error.actions";
 
 export const updateAssessmentSetting = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SETTINGS_BEGIN });
@@ -27,7 +27,6 @@ export const updateAssessmentSetting = (data) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
         dispatch({
           type: ASSESSMENT.UPDATE_ASSESSMENT_SETTINGS_SUCCESS,
@@ -64,7 +63,6 @@ export const fetchAssessmentSetting = (data) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
         dispatch({
           type: ASSESSMENT.FETCH_ASSESSMENT_SETTINGS_SUCCESS,
@@ -74,7 +72,6 @@ export const fetchAssessmentSetting = (data) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log("fetch assessment settings data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_SETTINGS_FAIL });
     });
 };
