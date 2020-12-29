@@ -20,7 +20,26 @@ import SetContainer from "./SetContainer";
 
 import { generatePath } from "react-router";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+
 class CreateAssessmentContainer extends Component {
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+  }
+
   handlePath = (e) => {
     const { match } = this.props;
     const path = generatePath(match.path, {
@@ -93,4 +112,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateAssessmentContainer;
+CreateAssessmentContainer.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
+
+export default connect(null, { logout })(CreateAssessmentContainer);

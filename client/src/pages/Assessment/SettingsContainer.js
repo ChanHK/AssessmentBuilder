@@ -14,6 +14,7 @@ import CustomEditor from "../../components/CustomEditor";
 import Wrapper from "../../components/Wrapper";
 import CustomDropdown from "../../components/CustomDropdown";
 import Range from "../../components/Range";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
@@ -28,9 +29,6 @@ import {
   updateAssessmentSetting,
   fetchAssessmentSetting,
 } from "../../actions/assessment.actions";
-
-import jwt_decode from "jwt-decode";
-import { logout } from "../../actions/auth.actions";
 
 const unitOptions = ["percentage %", "points p."];
 
@@ -54,17 +52,6 @@ class SettingContainer extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      const decoded = jwt_decode(token);
-
-      // Check for expired token
-      const currentTime = Date.now() / 1000; // to get in milliseconds
-      if (decoded.exp < currentTime) {
-        this.props.logout();
-        this.props.history.push("/login");
-      }
-    }
     const data = {
       assessmentID: this.state.assessmentID,
     };
@@ -207,6 +194,9 @@ class SettingContainer extends Component {
       gradeRange,
       gradeValue,
     } = this.state;
+
+    if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -429,7 +419,6 @@ SettingContainer.propTypes = {
   fetchAssessmentSetting: PropTypes.func.isRequired,
   updateAssessmentSetting: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -439,5 +428,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   updateAssessmentSetting,
   fetchAssessmentSetting,
-  logout,
 })(SettingContainer);
