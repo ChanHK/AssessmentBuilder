@@ -59,10 +59,8 @@ router.get("/assessment/getCreate", auth, (req, res) => {
 // @desc      POST settings to assessment collection
 // @access    Private
 router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
-  db.Assessment.updateOne(
-    {
-      assessments: { $elemMatch: { _id: req.params.assessmentID } },
-    },
+  db.Assessment.findOneAndUpdate(
+    { assessments: { $elemMatch: { _id: req.params.assessmentID } } },
     {
       $set: {
         "assessments.$.settings.testName": req.body.testName,
@@ -78,10 +76,24 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
         "assessments.$.settings.gradeRange": req.body.gradeRange,
         "assessments.$.settings.gradeValue": req.body.gradeValue,
       },
+    },
+    {
+      new: true,
     }
   )
-    .then(() => {
-      res.status(200).send("Settings updated successfully");
+    .select("-__v")
+    .select("-_id")
+    .select("-user_id")
+
+    .then((response) => {
+      let count = null;
+      response.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          count = index;
+        }
+      });
+
+      return res.status(200).json(response.assessments[count]);
     })
     .catch((err) => {
       return res.status(400).json({
