@@ -9,7 +9,7 @@ import * as configStyles from "../../config/styles";
 
 const Range = (props) => {
   const unit =
-    props.unit === null ? null : props.unit === "percentage %" ? "%" : "p.";
+    props.unit === "" ? "" : props.unit === "percentage %" ? "%" : "p.";
 
   return (
     <div className={css(styles.con)}>
