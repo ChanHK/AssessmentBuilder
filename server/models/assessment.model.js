@@ -43,6 +43,36 @@ const AssessmentSchema = new mongoose.Schema({
         gradeRange: [String],
         gradeValue: [String],
       },
+      access: {
+        link: {
+          type: String,
+          default: "",
+        },
+        noAuthenticationSelected: {
+          type: Boolean,
+          default: true,
+        },
+        withAuthenticationSelected: {
+          type: Boolean,
+          default: false,
+        },
+        attemptNum: {
+          type: Number,
+          default: 1,
+        },
+        emailAccess: [
+          {
+            accessCode: {
+              type: String,
+              default: "",
+            },
+            email: {
+              type: String,
+              default: "",
+            },
+          },
+        ],
+      },
     },
   ],
 });
