@@ -25,10 +25,18 @@ import CustomInput from "../../components/CustomInput";
 import TableButton from "../../components/TableButton";
 import ClickCopy from "../../components/ClickCopy";
 import Wrapper from "../../components/Wrapper";
+import LoaderSpinner from "../../components/LoaderSpinner";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import {
+  updateAssessmentAccess,
+  fetchAssessmentAccess,
+} from "../../actions/assessment.actions";
 
 class AccessContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       link: "http://abc/abc/abc.com",
 
@@ -38,12 +46,56 @@ class AccessContainer extends Component {
       attemptNum: 1,
 
       errorMessage: null,
-      rows: [
-        { accessCode: "1234567890", email: "chan@gmail.com", id: uuidv4() },
-      ], //example * should be empty
+      rows: [], //example * should be empty
 
       newEmail: "", //for user to enter new email to the table
+      assessmentID: props.assessmentID,
     };
+  }
+
+  componentDidMount() {
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAssessmentAccess(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { assessmentReducer } = this.props;
+
+    if (
+      prevProps.assessmentReducer !== assessmentReducer &&
+      assessmentReducer.assessmentLoad !== null &&
+      assessmentReducer.message === undefined
+    ) {
+      const {
+        link,
+        noAuthenticationSelected,
+        withAuthenticationSelected,
+        attemptNum,
+        accessCode,
+        accessEmail,
+      } = assessmentReducer.assessmentLoad;
+
+      let rows = [];
+
+      for (let i = 0; i < accessCode.length; i++) {
+        rows.push({
+          accessCode: accessCode[i],
+          email: accessEmail[i],
+          id: uuidv4(),
+        });
+      }
+
+      this.setState({
+        link: link,
+        noAuthenticationSelected: noAuthenticationSelected,
+        withAuthenticationSelected: withAuthenticationSelected,
+        attemptNum: attemptNum,
+        rows: rows,
+      });
+    }
   }
 
   modalHandler = () => {
@@ -139,9 +191,37 @@ class AccessContainer extends Component {
     }
   };
 
-  onSubmit(e) {
+  onSubmit = (e) => {
     e.preventDefault();
-  }
+    const {
+      link,
+      noAuthenticationSelected,
+      withAuthenticationSelected,
+      attemptNum,
+      rows,
+      assessmentID,
+    } = this.state;
+
+    let accessCode = [];
+    let accessEmail = [];
+
+    rows.forEach((item, index) => {
+      accessCode.push(item.accessCode);
+      accessEmail.push(item.email);
+    });
+
+    const data = {
+      link: link,
+      noAuthenticationSelected: noAuthenticationSelected,
+      withAuthenticationSelected: withAuthenticationSelected,
+      attemptNum: attemptNum,
+      accessCode: accessCode,
+      accessEmail: accessEmail,
+      assessmentID: assessmentID,
+    };
+
+    this.props.updateAssessmentAccess(data);
+  };
 
   render() {
     const {
@@ -224,6 +304,9 @@ class AccessContainer extends Component {
     rows.forEach((rows, index) => {
       rows.serial = index + 1;
     });
+
+    if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -412,4 +495,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccessContainer;
+AccessContainer.propTypes = {
+  updateAssessmentAccess: PropTypes.func.isRequired,
+  fetchAssessmentAccess: PropTypes.func.isRequired,
+  assessmentReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  assessmentReducer: state.assessmentReducer,
+});
+
+export default connect(mapStateToProps, {
+  updateAssessmentAccess,
+  fetchAssessmentAccess,
+})(AccessContainer);

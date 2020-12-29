@@ -135,6 +135,8 @@ router.post("/assessment/access/update/:assessmentID", auth, (req, res) => {
         "assessments.$.access.withAuthenticationSelected":
           req.body.withAuthenticationSelected,
         "assessments.$.access.attemptNum": req.body.attemptNum,
+        "assessments.$.access.accessCode": req.body.accessCode,
+        "assessments.$.access.accessEmail": req.body.accessEmail,
       },
     },
     {
