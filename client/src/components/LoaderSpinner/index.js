@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     zIndex: 5,
     display: "flex",
     backgroundColor: "black",
+    left: 0,
   },
   load: {
     justifyContent: "center",
