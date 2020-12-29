@@ -31,7 +31,6 @@ import {
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
-import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 const unitOptions = ["percentage %", "points p."];
 
@@ -49,7 +48,6 @@ class SettingContainer extends Component {
       gradeUnit: "", // percentage or points
       gradeRange: [], // stores the range like 10,20,30
       gradeValue: [], //stores the value like A+, A, A-
-      successMsg: null,
       assessmentID: props.assessmentID,
       type: props.type,
     };
@@ -75,14 +73,7 @@ class SettingContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({
-        successMsg: this.props.sucMsg.message.message,
-      });
-    }
-
     const { assessmentReducer } = this.props;
-    // console.log(assessmentReducer.assessmentLoad);
 
     if (
       prevProps.assessmentReducer !== assessmentReducer &&
@@ -99,7 +90,7 @@ class SettingContainer extends Component {
         gradeUnit,
         gradeRange,
         addGradingSelected,
-      } = assessmentReducer.assessmentLoad[0].assessments[0].settings;
+      } = assessmentReducer.assessmentLoad;
 
       const ins = this.convertIns(testInstruction);
 
@@ -128,7 +119,6 @@ class SettingContainer extends Component {
   };
 
   componentWillUnmount() {
-    this.props.clearSucMsg();
     this.props.assessmentReducer.assessmentLoad = null;
   }
 
@@ -216,10 +206,7 @@ class SettingContainer extends Component {
       gradeUnit,
       gradeRange,
       gradeValue,
-      successMsg,
     } = this.state;
-
-    console.log(successMsg);
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -307,7 +294,7 @@ class SettingContainer extends Component {
                         options={unitOptions}
                         placeholder={"Select unit type"}
                         value={unit}
-                        onChangeValue={(e) => this.setState({ unit: e.value })}
+                        onChange={(e) => this.setState({ unit: e.value })}
                         padding={"12px"}
                       />
                     </div>
@@ -348,7 +335,7 @@ class SettingContainer extends Component {
                           options={unitOptions}
                           placeholder={"Select unit type"}
                           value={gradeUnit}
-                          onChangeValue={(e) =>
+                          onChange={(e) =>
                             this.setState({
                               gradeUnit: e.value,
                             })
@@ -443,18 +430,14 @@ SettingContainer.propTypes = {
   updateAssessmentSetting: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  clearSucMsg: PropTypes.func.isRequired,
-  sucMsg: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
-  sucMsg: state.sucMsg,
 });
 
 export default connect(mapStateToProps, {
   updateAssessmentSetting,
   fetchAssessmentSetting,
   logout,
-  clearSucMsg,
 })(SettingContainer);
