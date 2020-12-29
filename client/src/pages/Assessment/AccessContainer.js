@@ -32,7 +32,7 @@ class AccessContainer extends Component {
     this.state = {
       link: "http://abc/abc/abc.com",
 
-      showModal: false,
+      showModal: false, // display enlarged QR code
       noAuthenticationSelected: true,
       withAuthenticationSelected: false,
       attemptNum: 1,
@@ -42,7 +42,7 @@ class AccessContainer extends Component {
         { accessCode: "1234567890", email: "chan@gmail.com", id: uuidv4() },
       ], //example * should be empty
 
-      newEmail: "",
+      newEmail: "", //for user to enter new email to the table
     };
   }
 
@@ -69,7 +69,6 @@ class AccessContainer extends Component {
   ///////////////Excel part/////////////////
 
   fileUploadHandler = (e) => {
-    console.log("up");
     let fileObj = e.target.files[0];
     ExcelRenderer(fileObj, (err, resp) => {
       if (err) {
@@ -221,7 +220,6 @@ class AccessContainer extends Component {
         ),
       },
     ];
-    console.log(rows);
 
     rows.forEach((rows, index) => {
       rows.serial = index + 1;
