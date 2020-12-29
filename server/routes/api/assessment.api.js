@@ -23,12 +23,7 @@ router.post("/assessment/create", auth, (req, res) => {
         },
         { new: true }
       )
-        .then((response) => {
-          const data = {
-            assessments_id:
-              response.assessments[response.assessments.length - 1]._id,
-          };
-          db.EmailAccess.create(data);
+        .then(() => {
           return res
             .status(200)
             .json({ message: "Assessment created successfully" });
