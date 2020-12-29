@@ -60,7 +60,7 @@ router.get("/assessment/getCreate", auth, (req, res) => {
     });
 });
 
-// @route     POST api/user/assessment/settings
+// @route     POST api/user/assessment/settings/update/:assessmentID
 // @desc      POST settings to assessment collection
 // @access    Private
 router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
@@ -107,7 +107,7 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
     });
 });
 
-// @route     GET api/user/assessment/settings
+// @route     GET api/user/assessment/settings/fetch/:assessmentID
 // @desc      GET settings from assessment collection
 // @access    Private
 router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
@@ -126,7 +126,7 @@ router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// @route     POST api/user/assessment/access
+// @route     POST api/user/assessment/access/update/:assessmentID
 // @desc      POST access to assessment collection
 // @access    Private
 router.post("/assessment/access/update/:assessmentID", auth, (req, res) => {
@@ -165,6 +165,25 @@ router.post("/assessment/access/update/:assessmentID", auth, (req, res) => {
         message: "Error, failed to update access, please retry agian",
       });
     });
+});
+
+// @route     GET api/user/assessment/access/fetch/:assessmentID
+// @desc      GET access from assessment collection
+// @access    Private
+router.get("/assessment/access/fetch/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOne(
+    { user_id: req.user.id },
+    {
+      assessments: { $elemMatch: { _id: req.params.assessmentID } },
+    }
+  )
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .then((assessment) => {
+      return res.json(assessment.assessments[0].access);
+    })
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;
