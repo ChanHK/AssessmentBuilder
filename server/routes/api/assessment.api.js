@@ -93,7 +93,7 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
         }
       });
 
-      return res.status(200).json(response.assessments[count]);
+      return res.status(200).json(response.assessments[count].settings);
     })
     .catch((err) => {
       return res.status(400).json({
@@ -116,7 +116,7 @@ router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
     .select("-user_id")
     .select("-__v")
     .then((assessment) => {
-      return res.json(assessment.assessments[0]);
+      return res.json(assessment.assessments[0].settings);
     })
     .catch((err) => console.log(err));
 });
