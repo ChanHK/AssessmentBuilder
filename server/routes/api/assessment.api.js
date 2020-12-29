@@ -23,7 +23,12 @@ router.post("/assessment/create", auth, (req, res) => {
         },
         { new: true }
       )
-        .then(() => {
+        .then((response) => {
+          const data = {
+            assessments_id:
+              response.assessments[response.assessments.length - 1]._id,
+          };
+          db.EmailAccess.create(data);
           return res
             .status(200)
             .json({ message: "Assessment created successfully" });
@@ -119,6 +124,47 @@ router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
       return res.json(assessment.assessments[0].settings);
     })
     .catch((err) => console.log(err));
+});
+
+// @route     POST api/user/assessment/access
+// @desc      POST access to assessment collection
+// @access    Private
+router.post("/assessment/access/update/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOneAndUpdate(
+    { assessments: { $elemMatch: { _id: req.params.assessmentID } } },
+    {
+      $set: {
+        "assessments.$.access.link": req.body.link,
+        "assessments.$.access.noAuthenticationSelected":
+          req.body.noAuthenticationSelected,
+        "assessments.$.access.withAuthenticationSelected":
+          req.body.withAuthenticationSelected,
+        "assessments.$.access.attemptNum": req.body.attemptNum,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .select("-__v")
+    .select("-_id")
+    .select("-user_id")
+
+    .then((response) => {
+      let count = null;
+      response.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          count = index;
+        }
+      });
+
+      return res.status(200).json(response.assessments[count].access);
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: "Error, failed to update access, please retry agian",
+      });
+    });
 });
 
 module.exports = router;

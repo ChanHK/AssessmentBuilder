@@ -60,18 +60,6 @@ const AssessmentSchema = new mongoose.Schema({
           type: Number,
           default: 1,
         },
-        emailAccess: [
-          {
-            accessCode: {
-              type: String,
-              default: "",
-            },
-            email: {
-              type: String,
-              default: "",
-            },
-          },
-        ],
       },
     },
   ],
