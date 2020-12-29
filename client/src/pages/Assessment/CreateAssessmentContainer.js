@@ -42,7 +42,11 @@ class CreateAssessmentContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
-                <FirstLabel>Create Assessment</FirstLabel>
+                {type === "create" ? (
+                  <FirstLabel>Create Assessment</FirstLabel>
+                ) : (
+                  <FirstLabel>Edit Assessment</FirstLabel>
+                )}
               </div>
               <div style={{ paddingBottom: "50px" }}>
                 <AssessmentButtonGroup
