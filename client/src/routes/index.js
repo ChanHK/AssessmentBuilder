@@ -27,7 +27,10 @@ import {
   ViewQuestionContainer,
 } from "../pages/QuestionBank";
 
-import { CreateAssessmentContainer } from "../pages/Assessment";
+import {
+  CreateAssessmentContainer,
+  RetrieveQuestionBankContainer,
+} from "../pages/Assessment";
 
 import { StartingPageContainer } from "../pages/Candidate";
 
@@ -110,6 +113,12 @@ export default function Routes() {
           path="/assessment/:type(edit|create)/:selected(settings|questions|set|access|timer)/:assessmentID"
           exact
           component={CreateAssessmentContainer}
+          isPrivate
+        />
+        <Route
+          path="/assessment/question_bank"
+          exact
+          component={RetrieveQuestionBankContainer}
           isPrivate
         />
 
