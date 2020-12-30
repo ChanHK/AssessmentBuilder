@@ -98,6 +98,10 @@ class AccessContainer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.assessmentReducer.assessmentLoad = null;
+  }
+
   modalHandler = () => {
     this.setState({
       showModal: !this.state.showModal,
