@@ -30,6 +30,7 @@ class Table extends Component {
         responsive
         pagination
         customStyles={customStyles}
+        paginationRowsPerPageOptions={this.props.paginationRowsPerPageOptions}
       />
     );
   }
