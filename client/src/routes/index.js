@@ -116,7 +116,7 @@ export default function Routes() {
           isPrivate
         />
         <Route
-          path="/assessment/question_bank/:section/:assessmentID"
+          path="/assessment/question_bank/:section/:type(edit|create)/:assessmentID"
           exact
           component={RetrieveQuestionBankContainer}
           isPrivate

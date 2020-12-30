@@ -1,23 +1,25 @@
 import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
+import * as configStyles from "../../config/styles";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
 import arrayMove from "array-move";
+import { withRouter } from "react-router-dom";
 
 import SortableRow from "../../components/SortableRow";
 import Button from "../../components/Button";
-
-import * as configStyles from "../../config/styles";
 
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import * as MdIcons from "react-icons/md";
 
 class QuestionsContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      assessmentID: props.assessmentID,
+      type: props.type,
       questions: [
         [
           {
@@ -145,7 +147,7 @@ class QuestionsContainer extends Component {
   };
 
   render() {
-    const { questions } = this.state;
+    const { questions, assessmentID, type } = this.state;
 
     for (let i = 0; i < questions.length; i++) {
       if (questions[i] !== null) {
@@ -192,6 +194,11 @@ class QuestionsContainer extends Component {
                 backgroundColor={configStyles.colors.darkBlue}
                 color={configStyles.colors.white}
                 padding={"8px"}
+                onClick={() => {
+                  this.props.history.push(
+                    `/assessment/question_bank/1/${type}/${assessmentID}`
+                  );
+                }}
               >
                 Retrieve from Question Bank
               </Button>
@@ -238,6 +245,13 @@ class QuestionsContainer extends Component {
                       backgroundColor={configStyles.colors.darkBlue}
                       color={configStyles.colors.white}
                       padding={"8px"}
+                      onClick={() => {
+                        this.props.history.push(
+                          `/assessment/question_bank/${
+                            index + 2
+                          }/${type}/${assessmentID}`
+                        );
+                      }}
                     >
                       Retrieve from Question Bank
                     </Button>
@@ -281,4 +295,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuestionsContainer;
+export default withRouter(QuestionsContainer);
