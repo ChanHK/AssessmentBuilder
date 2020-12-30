@@ -11,6 +11,7 @@ import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import CustomInput from "../../components/CustomInput";
+import ScrollArrow from "../../components/ScrollArrow";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -255,6 +256,7 @@ class QuestionBankContainer extends Component {
     return (
       <>
         <Header />
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
