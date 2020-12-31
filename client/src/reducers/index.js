@@ -6,6 +6,7 @@ import sucMsgReducer from "./sucMsg.reducer";
 import profileReducer from "./profile.reducer";
 import questionReducer from "./question.reducer";
 import assessmentReducer from "./assessment.reducer";
+import assessmentQuestionReducer from "./assessmentQuestion.reducer";
 
 const Reducers = combineReducers({
   //add reducer here
@@ -15,6 +16,7 @@ const Reducers = combineReducers({
   profile: profileReducer,
   questionReducer: questionReducer,
   assessmentReducer: assessmentReducer,
+  assessmentQuestionReducer: assessmentQuestionReducer,
 });
 
 export default Reducers;

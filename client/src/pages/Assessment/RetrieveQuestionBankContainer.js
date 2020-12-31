@@ -34,6 +34,7 @@ import { logout } from "../../actions/auth.actions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchAllQuestionData } from "../../actions/question.actions";
+import { addAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
 
 class RetrieveQuestionBankContainer extends Component {
   constructor(props) {
@@ -105,7 +106,11 @@ class RetrieveQuestionBankContainer extends Component {
       section,
     } = this.state;
 
-    if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
+    if (
+      this.props.questionReducer.isLoading ||
+      this.props.assessmentQuestionReducer.isLoading
+    )
+      return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     if (this.props.questionReducer.questionLoad === null) return false;
@@ -211,7 +216,30 @@ class RetrieveQuestionBankContainer extends Component {
         selector: "_id",
         cell: (row) => (
           <CustomRow>
-            <TableButton>
+            <TableButton
+              onClick={() => {
+                let data = {
+                  assessmentID: assessmentID,
+                  section: section,
+                };
+
+                this.props.questionReducer.questionLoad.forEach(
+                  (item, index) => {
+                    if (item._id === row._id) {
+                      data.questionType = item.questionType;
+                      data.questionDescription = item.questionDescription;
+                      data.score = "";
+                      data.questionChoices = item.questionChoices;
+                      data.questionAnswers = item.questionAnswers;
+                    }
+                  }
+                );
+
+                console.log(data);
+
+                this.props.addAssessmentQuestion(data);
+              }}
+            >
               <MdIcons.MdAdd strokeWidth={"3"} />
             </TableButton>
           </CustomRow>
@@ -311,17 +339,19 @@ const styles = StyleSheet.create({
 
 RetrieveQuestionBankContainer.propTypes = {
   fetchAllQuestionData: PropTypes.func.isRequired,
+  addAssessmentQuestion: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
+  assessmentQuestionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  sucMsg: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionReducer: state.questionReducer,
-  sucMsg: state.sucMsg,
+  assessmentQuestionReducer: state.assessmentQuestionReducer,
 });
 
 export default connect(mapStateToProps, {
   fetchAllQuestionData,
+  addAssessmentQuestion,
   logout,
 })(RetrieveQuestionBankContainer);

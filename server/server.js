@@ -12,6 +12,7 @@ const authUser = require("./routes/api/auth.api");
 const userProfile = require("./routes/api/profile.api");
 const question = require("./routes/api/question.api");
 const assessment = require("./routes/api/assessment.api");
+const assessmentQuestion = require("./routes/api/assessmentQuestion.api");
 
 const app = express();
 app.use(cors());
@@ -35,6 +36,7 @@ app.use("/api/auth", authUser);
 app.use("/api/user", userProfile);
 app.use("/api/user", question);
 app.use("/api/user", assessment);
+app.use("/api/user", assessmentQuestion);
 
 const port = process.env.PORT || 5000;
 
