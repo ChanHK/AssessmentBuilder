@@ -64,8 +64,6 @@ router.get("/question", auth, (req, res) => {
   db.QuestionBank.findOne({ user_id: req.user.id })
     .select("-_id")
     .select("-user_id")
-    .select("-questions.questionChoices")
-    .select("-questions.questionAnswers")
     .select("-__v")
     .then((allQuestions) => {
       return res.json(allQuestions.questions);
