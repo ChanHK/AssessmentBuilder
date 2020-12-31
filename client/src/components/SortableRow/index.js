@@ -20,7 +20,6 @@ import { Editor } from "react-draft-wysiwyg";
 
 const SortableItem = SortableElement(
   ({ questionAnswers, choice, questionType, index }) => {
-    console.log(choice === questionAnswers[0]);
     return (
       <>
         {questionType === "Multiple Choice" && (
