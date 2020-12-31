@@ -43,4 +43,19 @@ router.post(
   }
 );
 
+// @route     GET api/user/assessment/question_bank/:assessmentID
+// @desc      GET all questions from assessment
+// @access    Private
+router.get("/assessment/question_bank/:assessmentID", auth, (req, res) => {
+  db.AssessmentQuestion.findOne({ assessments_id: req.params.assessmentID })
+    .select("-_id")
+    .select("-assessments_id")
+    .select("-__v")
+
+    .then((x) => {
+      return res.json(x.questions);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
