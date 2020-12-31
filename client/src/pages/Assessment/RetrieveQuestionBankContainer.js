@@ -30,14 +30,10 @@ import { Editor } from "react-draft-wysiwyg";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
-import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-  fetchAllQuestionData,
-  deleteQuestionData,
-} from "../../actions/question.actions";
+import { fetchAllQuestionData } from "../../actions/question.actions";
 
 class RetrieveQuestionBankContainer extends Component {
   constructor(props) {
@@ -87,7 +83,6 @@ class RetrieveQuestionBankContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearSucMsg();
     this.props.questionReducer.questionLoad = null;
   }
 
@@ -325,8 +320,6 @@ RetrieveQuestionBankContainer.propTypes = {
   fetchAllQuestionData: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  deleteQuestionData: PropTypes.func.isRequired,
-  clearSucMsg: PropTypes.func.isRequired,
   sucMsg: PropTypes.object.isRequired,
 };
 
@@ -338,6 +331,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchAllQuestionData,
   logout,
-  deleteQuestionData,
-  clearSucMsg,
 })(RetrieveQuestionBankContainer);
