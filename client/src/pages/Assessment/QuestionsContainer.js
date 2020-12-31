@@ -189,6 +189,11 @@ class QuestionsContainer extends Component {
                 backgroundColor={configStyles.colors.darkBlue}
                 color={configStyles.colors.white}
                 padding={"8px"}
+                onClick={() =>
+                  this.props.history.push(
+                    `/assessment/update_question/1/${type}/${assessmentID}`
+                  )
+                }
               >
                 Create Question
               </Button>
@@ -240,6 +245,13 @@ class QuestionsContainer extends Component {
                       backgroundColor={configStyles.colors.darkBlue}
                       color={configStyles.colors.white}
                       padding={"8px"}
+                      onClick={() =>
+                        this.props.history.push(
+                          `/assessment/update_question/${
+                            index + 2
+                          }/${type}/${assessmentID}`
+                        )
+                      }
                     >
                       Create Question
                     </Button>

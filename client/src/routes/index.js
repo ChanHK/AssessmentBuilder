@@ -30,6 +30,7 @@ import {
 import {
   CreateAssessmentContainer,
   RetrieveQuestionBankContainer,
+  CreateEditQuestionContainer,
 } from "../pages/Assessment";
 
 import { StartingPageContainer } from "../pages/Candidate";
@@ -121,7 +122,12 @@ export default function Routes() {
           component={RetrieveQuestionBankContainer}
           isPrivate
         />
-
+        <Route
+          path="/assessment/update_question/:section/:type(edit|create)/:assessmentID"
+          exact
+          component={CreateEditQuestionContainer}
+          isPrivate
+        />
         <Route
           path="/assessment/startingPage"
           exact
