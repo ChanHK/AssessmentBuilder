@@ -114,7 +114,7 @@ class SettingContainer extends Component {
   };
 
   onClickPassorFail = (e) => {
-    this.setState({ passOrFailSelected: e, score: "", unit: null });
+    this.setState({ passOrFailSelected: e, score: "", unit: "" });
   };
 
   deleteRangeRow = (index) => {

@@ -25,7 +25,7 @@ const AssessmentSchema = new mongoose.Schema({
           default: true,
         },
         score: {
-          type: Number,
+          type: String,
           default: "",
         },
         unit: {
