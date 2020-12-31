@@ -146,6 +146,10 @@ class QuestionsContainer extends Component {
     this.setState({ questions: array });
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+  };
+
   render() {
     const { questions, assessmentID, type } = this.state;
 
@@ -158,7 +162,7 @@ class QuestionsContainer extends Component {
     }
 
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <Button
           backgroundColor={configStyles.colors.darkBlue}
           color={configStyles.colors.white}
@@ -262,7 +266,17 @@ class QuestionsContainer extends Component {
           );
         })}
 
-        <div style={{ height: "500px" }}></div>
+        <div style={{ marginBottom: "100px" }}>
+          <Button
+            backgroundColor={configStyles.colors.darkBlue}
+            color={configStyles.colors.white}
+            padding={"8px"}
+            width={"100px"}
+            type={"submit"}
+          >
+            Save
+          </Button>
+        </div>
       </form>
     );
   }
