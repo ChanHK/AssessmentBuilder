@@ -14,8 +14,13 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import * as MdIcons from "react-icons/md";
 import * as RiIcons from "react-icons/ri";
 
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+
 const SortableItem = SortableElement(
-  ({ questionAns, choice, questionType, index }) => {
+  ({ questionAnswers, choice, questionType, index }) => {
+    console.log(choice === questionAnswers[0]);
     return (
       <>
         {questionType === "Multiple Choice" && (
@@ -23,14 +28,14 @@ const SortableItem = SortableElement(
             className={css(styles.choiceRow)}
             style={{
               backgroundColor:
-                choice === questionAns[0] ||
-                choice === questionAns[1] ||
-                choice === questionAns[2] ||
-                choice === questionAns[3] ||
-                choice === questionAns[4] ||
-                choice === questionAns[5] ||
-                choice === questionAns[6] ||
-                choice === questionAns[7]
+                choice === questionAnswers[0] ||
+                choice === questionAnswers[1] ||
+                choice === questionAnswers[2] ||
+                choice === questionAnswers[3] ||
+                choice === questionAnswers[4] ||
+                choice === questionAnswers[5] ||
+                choice === questionAnswers[6] ||
+                choice === questionAnswers[7]
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
             }}
@@ -43,7 +48,7 @@ const SortableItem = SortableElement(
             className={css(styles.choiceRow)}
             style={{
               backgroundColor:
-                choice === questionAns
+                choice === questionAnswers[0] // true or false have only one ans
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
             }}
@@ -56,7 +61,7 @@ const SortableItem = SortableElement(
             className={css(styles.choiceRow)}
             style={{
               backgroundColor:
-                choice === questionAns
+                choice === questionAnswers[0] // single ans have only one ans
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
             }}
@@ -70,13 +75,13 @@ const SortableItem = SortableElement(
 );
 
 const SortableItemList = SortableContainer(
-  ({ questionAns, questionChoice, questionType, disabled }) => (
+  ({ questionAnswers, questionChoices, questionType, disabled }) => (
     <ul>
-      {questionChoice.map((choice, index) => {
+      {questionChoices.map((choice, index) => {
         return (
           <SortableItem
             key={`item-${choice}`}
-            questionAns={questionAns}
+            questionAnswers={questionAnswers}
             choice={choice}
             questionType={questionType}
             index={index}
@@ -94,6 +99,14 @@ const SortableItemList = SortableContainer(
 class SectionContainer extends React.Component {
   render() {
     const { question, sectionIndex, current, onSortEnd } = this.props;
+    const contentBlock = htmlToDraft(question.questionDescription);
+    let editorState = "";
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      editorState = EditorState.createWithContent(contentState);
+    }
     return (
       <div className={css(styles.itemRow)}>
         <div className={css(styles.bar)}>
@@ -118,12 +131,12 @@ class SectionContainer extends React.Component {
           <ThirdLabel>Question Type: {question.questionType}</ThirdLabel>
           <ThirdLabel>Score: {question.score}</ThirdLabel>
           <ThirdLabel>Description</ThirdLabel>
-          {question.questionDescriptive}
+          {<Editor editorState={editorState} toolbarHidden={true} readOnly />}
 
           {question.questionType === "Single Choice" && (
             <SortableItemList
-              questionAns={question.questionAns}
-              questionChoice={question.questionChoice}
+              questionAnswers={question.questionAnswers}
+              questionChoices={question.questionChoices}
               questionType={question.questionType}
               sectionIndex={sectionIndex}
               onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
@@ -131,8 +144,8 @@ class SectionContainer extends React.Component {
           )}
           {question.questionType === "Multiple Choice" && (
             <SortableItemList
-              questionAns={question.questionAns}
-              questionChoice={question.questionChoice}
+              questionAnswers={question.questionAnswers}
+              questionChoices={question.questionChoices}
               questionType={question.questionType}
               sectionIndex={sectionIndex}
               onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
@@ -140,8 +153,8 @@ class SectionContainer extends React.Component {
           )}
           {question.questionType === "True or False" && (
             <SortableItemList
-              questionAns={question.questionAns}
-              questionChoice={question.questionChoice}
+              questionAnswers={question.questionAnswers}
+              questionChoices={question.questionChoices}
               questionType={question.questionType}
               sectionIndex={sectionIndex}
               onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
