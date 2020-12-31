@@ -78,7 +78,7 @@ class QuestionBankContainer extends Component {
       questionReducer.questionLoad !== null &&
       questionReducer.message === undefined
     ) {
-      this.setState({ questions: questionReducer.questionLoad.questions });
+      this.setState({ questions: questionReducer.questionLoad });
     }
   }
 

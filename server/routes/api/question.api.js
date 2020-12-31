@@ -68,7 +68,7 @@ router.get("/question", auth, (req, res) => {
     .select("-questions.questionAnswers")
     .select("-__v")
     .then((allQuestions) => {
-      return res.json(allQuestions);
+      return res.json(allQuestions.questions);
     })
     .catch((err) => console.log(err));
 });
