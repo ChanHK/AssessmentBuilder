@@ -109,7 +109,13 @@ class RetrieveQuestionBankContainer extends Component {
   };
 
   render() {
-    const { searchText, questionType, questions } = this.state;
+    const {
+      searchText,
+      questionType,
+      questions,
+      assessmentID,
+      section,
+    } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
