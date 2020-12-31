@@ -3,16 +3,24 @@ import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+import CustomRow from "../../components/GridComponents/CustomRow";
 
 import arrayMove from "array-move";
 import { withRouter } from "react-router-dom";
 
 import SortableRow from "../../components/SortableRow";
 import Button from "../../components/Button";
-
-import CustomRow from "../../components/GridComponents/CustomRow";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import * as MdIcons from "react-icons/md";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
+import { compose } from "redux";
 
 class QuestionsContainer extends Component {
   constructor(props) {
@@ -20,95 +28,65 @@ class QuestionsContainer extends Component {
     this.state = {
       assessmentID: props.assessmentID,
       type: props.type,
-      questions: [
-        [
-          {
-            questionType: "Single Choice",
-            questionDescriptive:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            questionAns: "A",
-            questionChoice: ["B", "C", "A", "D"],
-            score: 2,
-          },
-
-          {
-            questionType: "Single Choice",
-            questionDescriptive:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            questionAns: "A",
-            questionChoice: ["B", "C", "A", "D"],
-            score: 2,
-          },
-          {
-            questionType: "Single Choice",
-            questionDescriptive: "Choose A ! Free marks",
-            questionAns: "A",
-            questionChoice: ["B", "C", "A", "D"],
-            score: 2,
-          },
-        ],
-        [
-          {
-            questionType: "Multiple Choice",
-            questionDescriptive: "Is it true ?",
-            questionAns: ["it is true", "it is not false"],
-            questionChoice: [
-              "it is not true",
-              "it is not false",
-              "it is false",
-              "it is true",
-            ],
-            score: 2,
-          },
-          {
-            questionType: "Multiple Choice",
-            questionDescriptive: "adadsadsadsadsaaaaaaaaaaaaa",
-            questionAns: ["A", "B"],
-            questionChoice: ["B", "C", "A", "D"],
-            score: 2,
-          },
-          {
-            questionType: "Multiple Choice",
-            questionDescriptive:
-              "Choose one yes and one no, 1) are you gay? 2) are you lying ?",
-            questionAns: ["yes, no", "no, yes"],
-            questionChoice: ["yes, no", "no, yes"],
-            score: 2,
-          },
-        ],
-        [
-          {
-            questionType: "True or False",
-            questionDescriptive: "is A a capital letter ?",
-            questionAns: true,
-            questionChoice: [true, false],
-            score: 2,
-          },
-
-          {
-            questionType: "True or False",
-            questionDescriptive: "1+1=2",
-            questionAns: true,
-            questionChoice: [true, false],
-            score: 2,
-          },
-        ],
-        [
-          {
-            questionType: "Descriptive",
-            questionDescriptive: "Proof me that you are not gay",
-            score: 10,
-          },
-          {
-            questionType: "Descriptive",
-            questionDescriptive:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In id tortor porta, faucibus ante a, lacinia leo. Nullam ullamcorper metus id dapibus euismod. Vivamus fermentum pulvinar metus eu ornare. Sed congue ultricies felis in porta. Nullam gravida malesuada neque sit amet euismod. Nulla vehicula dui massa, eu rutrum tortor porta ut. Nulla eu ex ultrices, interdum ex a, consectetur quam. Etiam velit ipsum, eleifend eget mattis vitae, ullamcorper eget dui. Nam id placerat augue, in egestas mi. Praesent mattis tempus interdum. Quisque in lacus dictum, consectetur quam eu, dapibus justo. Phasellus vitae nulla a orci vestibulum lacinia. Vestibulum placerat ut augue a lobortis. Suspendisse elementum porta quam, ac vehicula augue sodales consectetur. In sit amet tortor ac tortor feugiat tincidunt. Proin sit amet vehicula elit. Quisque aliquet orci a accumsan suscipit. Nulla ipsum mauris, volutpat quis ultrices iaculis, sollicitudin sit amet turpis. Nulla malesuada erat nisi, sed ultricies lorem vehicula accumsan.",
-            score: 10,
-          },
-        ],
-      ],
+      questions: [[]],
     };
   }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAllAssessmentQuestion(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { assessmentQuestionReducer } = this.props;
+
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.assessmentQuestionLoad !== null &&
+      assessmentQuestionReducer.message === undefined
+    ) {
+      let biggest = 0;
+
+      assessmentQuestionReducer.assessmentQuestionLoad.forEach(
+        (item, index) => {
+          if (item.section > biggest) biggest = item.section;
+        }
+      );
+
+      let tempQuestions = [];
+      for (let i = 0; i < biggest; i++) {
+        tempQuestions.push([]);
+      }
+
+      assessmentQuestionReducer.assessmentQuestionLoad.forEach((x, index) => {
+        tempQuestions[x.section - 1].push(x);
+      });
+
+      this.setState({
+        questions: tempQuestions,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
+  }
+
   onSortEnd(arrayNum, { oldIndex, newIndex }) {
     this.setState({
       questions: [
@@ -123,8 +101,8 @@ class QuestionsContainer extends Component {
     let currentValue = current === undefined ? 0 : current;
     const question = this.state.questions[currentValue][sectionIndex];
 
-    question.questionChoice = arrayMove(
-      question.questionChoice,
+    question.questionChoices = arrayMove(
+      question.questionChoices,
       oldIndex,
       newIndex
     );
@@ -153,6 +131,10 @@ class QuestionsContainer extends Component {
   render() {
     const { questions, assessmentID, type } = this.state;
 
+    if (this.props.assessmentQuestionReducer.isLoading)
+      return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
     for (let i = 0; i < questions.length; i++) {
       if (questions[i] !== null) {
         questions[i].forEach((questions, index) => {
@@ -177,6 +159,13 @@ class QuestionsContainer extends Component {
           <SecondLabel>Questions</SecondLabel>
         )}
         <hr className={css(styles.hr)} />
+        {questions[0].length === 0 && (
+          <div style={{ marginBottom: "15px" }}>
+            <ThirdLabel>
+              Create your own questions or retrieve them from question bank
+            </ThirdLabel>
+          </div>
+        )}
         <SortableRow
           questions={questions[0]}
           onSortEnd={this.onSortEnd.bind(this, 0)}
@@ -321,4 +310,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withRouter(QuestionsContainer);
+QuestionsContainer.propTypes = {
+  fetchAllAssessmentQuestion: PropTypes.func.isRequired,
+  assessmentQuestionReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  assessmentQuestionReducer: state.assessmentQuestionReducer,
+});
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { fetchAllAssessmentQuestion, logout })
+)(QuestionsContainer);

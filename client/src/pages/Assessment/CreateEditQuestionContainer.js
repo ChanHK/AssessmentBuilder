@@ -25,9 +25,11 @@ import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+// import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
+
 import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
+// import htmlToDraft from "html-to-draftjs";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
