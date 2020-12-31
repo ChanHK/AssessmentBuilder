@@ -208,7 +208,7 @@ class QuestionsContainer extends Component {
 
         {questions.slice(1).map((item, index) => {
           return (
-            <>
+            <div key={index}>
               <CustomRow>
                 <div className={css(styles.label)}>
                   <SecondLabel>Section {index + 2}</SecondLabel>
@@ -258,7 +258,7 @@ class QuestionsContainer extends Component {
                   </div>
                 </CustomRow>
               </div>
-            </>
+            </div>
           );
         })}
 

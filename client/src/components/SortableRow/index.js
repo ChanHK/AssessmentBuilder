@@ -171,7 +171,7 @@ const SortableRow = SortableContainer(
       <div>
         {questions.map((question, index) => (
           <SortableSection
-            key={`item-${question}`}
+            key={`item-${question}-${index}`}
             question={question}
             index={index}
             sectionIndex={index}
