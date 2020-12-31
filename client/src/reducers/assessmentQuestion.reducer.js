@@ -18,7 +18,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        assessmentLoad: action.payload,
+        assessmentQuestionLoad: action.payload,
       };
     case ASSESSMENT_QUESTION.ADD_ASSESSMENT_QUESTION_FAIL:
     case ASSESSMENT_QUESTION.FETCH_ALL_ASSESSMENT_QUESTION_FAIL:
