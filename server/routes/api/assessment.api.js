@@ -23,10 +23,23 @@ router.post("/assessment/create", auth, (req, res) => {
         },
         { new: true }
       )
-        .then(() => {
-          return res
-            .status(200)
-            .json({ message: "Assessment created successfully" });
+        .then((assessment) => {
+          const data = {
+            assessments_id:
+              assessment.assessments[assessment.assessments.length - 1]._id,
+          };
+
+          db.AssessmentQuestion.create(data);
+          db.User.updateOne(
+            { _id: req.user.id },
+            {
+              $inc: { totalAssessmentsCreated: 1 },
+            }
+          );
+          return res.json({
+            assessmentID:
+              assessment.assessments[assessment.assessments.length - 1]._id,
+          });
         })
         .catch((err) => {
           return res.status(400).json({
@@ -35,24 +48,6 @@ router.post("/assessment/create", auth, (req, res) => {
         });
     })
     .catch((err) => console.log(err));
-});
-
-// @route     GET api/user/assessment/getCreated
-// @desc      GET new assessment obj id that is newly created
-// @access    Private
-router.get("/assessment/getCreate", auth, (req, res) => {
-  db.Assessment.findOne({ user_id: req.user.id })
-    .then((assessment) => {
-      return res.json({
-        assessmentID:
-          assessment.assessments[assessment.assessments.length - 1]._id,
-      });
-    })
-    .catch((err) => {
-      return res.status(400).json({
-        message: "Error, failed to retrieve assessment ID, please retry agian",
-      });
-    });
 });
 
 // @route     POST api/user/assessment/settings/update/:assessmentID
