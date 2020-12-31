@@ -42,7 +42,6 @@ class RetrieveQuestionBankContainer extends Component {
       searchText: "",
       questionType: "",
       questions: [],
-      successMsg: null,
       assessmentID: this.props.match.params.assessmentID,
       section: this.props.match.params.section,
       type: this.props.match.params.type,
@@ -65,12 +64,6 @@ class RetrieveQuestionBankContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({
-        successMsg: this.props.sucMsg.message.message,
-      });
-    }
-
     const { questionReducer } = this.props;
 
     if (
