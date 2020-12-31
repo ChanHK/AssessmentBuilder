@@ -63,7 +63,7 @@ class CreateEditQuestionContainer extends Component {
   }
 
   componentWillUnmount() {
-    // this.props.questionReducer.questionLoad = null;
+    this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
   }
 
   onChangeType = (e) => {
