@@ -57,8 +57,8 @@ const AssessmentSchema = new mongoose.Schema({
           default: false,
         },
         attemptNum: {
-          type: Number,
-          default: 1,
+          type: String,
+          default: "1",
         },
         accessCode: [String],
         accessEmail: [String],

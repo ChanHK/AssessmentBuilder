@@ -18,7 +18,7 @@ import Modal from "../../components/Modal";
 import Radio from "../../components/Radio";
 import Button from "../../components/Button";
 import Notice from "../../components/Notice";
-import Dropdown from "../../components/Dropdown";
+import CustomDropdown from "../../components/CustomDropdown";
 import UploadButton from "../../components/UploadButton";
 import Table from "../../components/Table";
 import CustomInput from "../../components/CustomInput";
@@ -426,17 +426,19 @@ class AccessContainer extends Component {
 
           <div style={{ paddingTop: "25px" }}>
             <SecondLabel>Number of attempts</SecondLabel>
-            <Dropdown
-              options={Number}
-              placeholder={"Select number"}
-              value={attemptNum}
-              onChangeValue={(e) =>
-                this.setState({
-                  attemptNum: e.target.value,
-                })
-              }
-              padding={"12px"}
-            />
+            <div style={{ height: "auto" }}>
+              <CustomDropdown
+                options={Number}
+                placeholder={"Select number"}
+                value={attemptNum}
+                onChange={(e) =>
+                  this.setState({
+                    attemptNum: e.value,
+                  })
+                }
+                // padding={"12px"}
+              />
+            </div>
           </div>
 
           <div style={{ paddingBottom: "300px", paddingTop: "25px" }}>
