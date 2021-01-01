@@ -17,7 +17,7 @@ const AssessmentQuestionSchema = new mongoose.Schema({
       },
       score: {
         type: Number,
-        default: "",
+        default: 0,
       },
       section: {
         type: Number,

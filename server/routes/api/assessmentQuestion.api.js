@@ -18,7 +18,7 @@ router.post(
           questions: {
             questionType: req.body.questionType,
             questionDescription: req.body.questionDescription,
-            score: req.body.score,
+            score: 0,
             section: req.body.section,
             questionChoices: req.body.questionChoices,
             questionAnswers: req.body.questionAnswers,
