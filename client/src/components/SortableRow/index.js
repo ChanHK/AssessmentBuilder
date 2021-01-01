@@ -20,12 +20,22 @@ import { Editor } from "react-draft-wysiwyg";
 
 const SortableItem = SortableElement(
   ({ questionAnswers, choice, questionType, index }) => {
+    const contentBlock = htmlToDraft(choice);
+    let editorState = "";
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      editorState = EditorState.createWithContent(contentState);
+    }
     return (
       <>
         {questionType === "Multiple Choice" && (
-          <div
-            className={css(styles.choiceRow)}
-            style={{
+          <Editor
+            editorState={editorState}
+            toolbarHidden={true}
+            readOnly
+            editorStyle={{
               backgroundColor:
                 choice === questionAnswers[0] ||
                 choice === questionAnswers[1] ||
@@ -37,10 +47,10 @@ const SortableItem = SortableElement(
                 choice === questionAnswers[7]
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
+              paddingLeft: "5px",
+              marginBottom: "5px",
             }}
-          >
-            {choice}
-          </div>
+          />
         )}
         {questionType === "True or False" && (
           <div
@@ -56,17 +66,19 @@ const SortableItem = SortableElement(
           </div>
         )}
         {questionType === "Single Choice" && (
-          <div
-            className={css(styles.choiceRow)}
-            style={{
+          <Editor
+            editorState={editorState}
+            toolbarHidden={true}
+            readOnly
+            editorStyle={{
               backgroundColor:
                 choice === questionAnswers[0] // single ans have only one ans
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
+              paddingLeft: "5px",
+              marginBottom: "5px",
             }}
-          >
-            {choice}
-          </div>
+          />
         )}
       </>
     );
