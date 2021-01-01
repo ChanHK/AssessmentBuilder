@@ -35,7 +35,6 @@ router.post(
           .json(response.questions[response.questions.length - 1]);
       })
       .catch((err) => {
-        console.log(req.body);
         return res.status(400).json({
           message: "Error, failed to add question, please retry agian",
         });
@@ -56,6 +55,37 @@ router.get("/assessment/question_bank/:assessmentID", auth, (req, res) => {
       return res.json(x.questions);
     })
     .catch((err) => console.log(err));
+});
+
+// @route     POST api/user/assessment/questions/update/:assessmentID
+// @desc      POST questions from question container, assessment
+// @access    Private
+router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
+  db.AssessmentQuestion.updateOne(
+    { assessments_id: req.params.assessmentID },
+    { $set: { questions: [] } }
+  )
+    .then(() => {
+      console.log(req.body);
+      db.AssessmentQuestion.findOneAndUpdate(
+        { assessments_id: req.params.assessmentID },
+        {
+          $push: {
+            questions: req.body,
+          },
+        },
+        { upsert: true, new: true }
+      )
+        .then((response) => {
+          return res.status(200).json(response.questions);
+        })
+        .catch(() => {
+          return res.status(200).json({ message: "failed in updating" });
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;
