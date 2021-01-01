@@ -28,7 +28,7 @@ class QuestionsContainer extends Component {
     this.state = {
       assessmentID: props.assessmentID,
       type: props.type,
-      questions: [[]],
+      questions: [],
     };
   }
 
@@ -159,18 +159,21 @@ class QuestionsContainer extends Component {
           <SecondLabel>Questions</SecondLabel>
         )}
         <hr className={css(styles.hr)} />
-        {questions[0].length === 0 && (
+        {questions.length === 0 && (
           <div style={{ marginBottom: "15px" }}>
             <ThirdLabel>
               Create your own questions or retrieve them from question bank
             </ThirdLabel>
           </div>
         )}
-        <SortableRow
-          questions={questions[0]}
-          onSortEnd={this.onSortEnd.bind(this, 0)}
-          onSectionSortEnd={this.onSectionSortEnd.bind(this)}
-        />
+        {questions.length >= 1 && (
+          <SortableRow
+            questions={questions[0]}
+            onSortEnd={this.onSortEnd.bind(this, 0)}
+            onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+          />
+        )}
+
         <div style={{ marginBottom: "25px" }}>
           <CustomRow>
             <div style={{ marginRight: 10 }}>
@@ -204,68 +207,69 @@ class QuestionsContainer extends Component {
           </CustomRow>
         </div>
 
-        {questions.slice(1).map((item, index) => {
-          return (
-            <div key={index}>
-              <CustomRow>
-                <div className={css(styles.label)}>
-                  <SecondLabel>Section {index + 2}</SecondLabel>
-                </div>
-                <div
-                  className={css(styles.button)}
-                  onClick={() => this.deleteSection(index + 1)}
-                >
-                  <MdIcons.MdDelete size={25} />
-                </div>
-              </CustomRow>
-              <hr className={css(styles.hr)} />
-              {item !== null && (
-                <SortableRow
-                  questions={questions[index + 1]}
-                  onSortEnd={this.onSortEnd.bind(this, index + 1)}
-                  onSectionSortEnd={this.onSectionSortEnd.bind(this)}
-                  current={index + 1}
-                />
-              )}
-              <div style={{ marginBottom: "25px" }}>
+        {questions.length >= 2 &&
+          questions.slice(1).map((item, index) => {
+            return (
+              <div key={index}>
                 <CustomRow>
-                  <div style={{ marginRight: 10 }}>
-                    <Button
-                      backgroundColor={configStyles.colors.darkBlue}
-                      color={configStyles.colors.white}
-                      padding={"8px"}
-                      onClick={() =>
-                        this.props.history.push(
-                          `/assessment/update_question/${
-                            index + 2
-                          }/${type}/${assessmentID}`
-                        )
-                      }
-                    >
-                      Create Question
-                    </Button>
+                  <div className={css(styles.label)}>
+                    <SecondLabel>Section {index + 2}</SecondLabel>
                   </div>
-                  <div>
-                    <Button
-                      backgroundColor={configStyles.colors.darkBlue}
-                      color={configStyles.colors.white}
-                      padding={"8px"}
-                      onClick={() => {
-                        this.props.history.push(
-                          `/assessment/question_bank/${
-                            index + 2
-                          }/${type}/${assessmentID}`
-                        );
-                      }}
-                    >
-                      Retrieve from Question Bank
-                    </Button>
+                  <div
+                    className={css(styles.button)}
+                    onClick={() => this.deleteSection(index + 1)}
+                  >
+                    <MdIcons.MdDelete size={25} />
                   </div>
                 </CustomRow>
+                <hr className={css(styles.hr)} />
+                {item !== null && (
+                  <SortableRow
+                    questions={questions[index + 1]}
+                    onSortEnd={this.onSortEnd.bind(this, index + 1)}
+                    onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+                    current={index + 1}
+                  />
+                )}
+                <div style={{ marginBottom: "25px" }}>
+                  <CustomRow>
+                    <div style={{ marginRight: 10 }}>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        onClick={() =>
+                          this.props.history.push(
+                            `/assessment/update_question/${
+                              index + 2
+                            }/${type}/${assessmentID}`
+                          )
+                        }
+                      >
+                        Create Question
+                      </Button>
+                    </div>
+                    <div>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        onClick={() => {
+                          this.props.history.push(
+                            `/assessment/question_bank/${
+                              index + 2
+                            }/${type}/${assessmentID}`
+                          );
+                        }}
+                      >
+                        Retrieve from Question Bank
+                      </Button>
+                    </div>
+                  </CustomRow>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
 
         <div style={{ marginBottom: "100px" }}>
           <Button
