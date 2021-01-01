@@ -109,14 +109,14 @@ class QuestionsContainer extends Component {
 
   deleteSection = (index) => {
     let array = [...this.state.questions];
-    const { questions } = this.state;
 
-    array.splice(index, 1);
+    if (index === 0) array.shift();
+    else array.splice(index, 1);
 
-    for (let x = 0; x < questions.length; x++) {
-      for (let y = 0; y < questions[x].length; y++) {
-        if (questions[x][y].section >= index + 1) {
-          questions[x][y].section = questions[x][y].section - 1;
+    for (let x = 0; x < array.length; x++) {
+      for (let y = 0; y < array[x].length; y++) {
+        if (array[x][y].section >= index + 1) {
+          array[x][y].section = array[x][y].section - 1;
         }
       }
     }
@@ -162,16 +162,28 @@ class QuestionsContainer extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <Button
-          backgroundColor={configStyles.colors.darkBlue}
-          color={configStyles.colors.white}
-          padding={"8px"}
-          onClick={this.addSection}
-        >
-          Add Section
-        </Button>
+        <div style={{ marginBottom: "15px" }}>
+          <Button
+            backgroundColor={configStyles.colors.darkBlue}
+            color={configStyles.colors.white}
+            padding={"8px"}
+            onClick={this.addSection}
+          >
+            Add Section
+          </Button>
+        </div>
         {questions.length > 1 ? (
-          <SecondLabel>Section 1</SecondLabel>
+          <CustomRow>
+            <div className={css(styles.label)}>
+              <SecondLabel>Section 1</SecondLabel>
+            </div>
+            <div
+              className={css(styles.button)}
+              onClick={() => this.deleteSection(0)}
+            >
+              <MdIcons.MdDelete size={25} />
+            </div>
+          </CustomRow>
         ) : (
           <SecondLabel>Questions</SecondLabel>
         )}
