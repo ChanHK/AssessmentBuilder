@@ -76,3 +76,42 @@ export const fetchAllAssessmentQuestion = (data) => (dispatch, getState) => {
       });
     });
 };
+
+export const updateAllAssessmentQuestion = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_BEGIN });
+
+  const tokenConfig = (getState) => {
+    const token = getState().auth.token;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (token) config.headers["x-auth-token"] = token;
+
+    return config;
+  };
+
+  axios
+    .post(
+      `/api/user/assessment/questions/update/${data.assessmentID}`,
+      data.questions,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_SUCCESS,
+          payload: res.data,
+        });
+      }, 500);
+    })
+    .catch((err) => {
+      console.log("update assessment question failed", err);
+      //   dispatch(returnErrors(res.data, res.status));
+      dispatch({
+        type: ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_FAIL,
+      });
+    });
+};

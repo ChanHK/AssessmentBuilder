@@ -17,9 +17,10 @@ import * as MdIcons from "react-icons/md";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import jwt_decode from "jwt-decode";
-import { logout } from "../../actions/auth.actions";
-import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
+import {
+  fetchAllAssessmentQuestion,
+  updateAllAssessmentQuestion,
+} from "../../actions/assessmentQuestion.actions";
 import { compose } from "redux";
 
 class QuestionsContainer extends Component {
@@ -33,18 +34,6 @@ class QuestionsContainer extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      const decoded = jwt_decode(token);
-
-      // Check for expired token
-      const currentTime = Date.now() / 1000; // to get in milliseconds
-      if (decoded.exp < currentTime) {
-        this.props.logout();
-        this.props.history.push("/login");
-      }
-    }
-
     const data = {
       assessmentID: this.state.assessmentID,
     };
@@ -126,6 +115,23 @@ class QuestionsContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+
+    const { questions, assessmentID } = this.state;
+
+    let temp = [];
+
+    for (let x = 0; x < questions.length; x++) {
+      for (let y = 0; y < questions[x].length; y++) {
+        temp.push(questions[x][y]);
+      }
+    }
+
+    const data = {
+      assessmentID: assessmentID,
+      questions: temp,
+    };
+
+    this.props.updateAllAssessmentQuestion(data);
   };
 
   render() {
@@ -316,8 +322,8 @@ const styles = StyleSheet.create({
 
 QuestionsContainer.propTypes = {
   fetchAllAssessmentQuestion: PropTypes.func.isRequired,
+  updateAllAssessmentQuestion: PropTypes.func.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -326,5 +332,8 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, { fetchAllAssessmentQuestion, logout })
+  connect(mapStateToProps, {
+    fetchAllAssessmentQuestion,
+    updateAllAssessmentQuestion,
+  })
 )(QuestionsContainer);
