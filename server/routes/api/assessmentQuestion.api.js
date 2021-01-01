@@ -105,10 +105,10 @@ router.post(
             {
               $push: {
                 questions: {
-                  questionType: req.body.questionType,
-                  questionDescription: req.body.questionDescription,
-                  questionChoices: req.body.questionChoices,
-                  questionAnswers: req.body.questionAnswers,
+                  questionType: item.questionType,
+                  questionDescription: item.questionDescription,
+                  questionChoices: item.questionChoices,
+                  questionAnswers: item.questionAnswers,
                 },
               },
             },
