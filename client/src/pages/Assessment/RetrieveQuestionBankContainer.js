@@ -236,8 +236,6 @@ class RetrieveQuestionBankContainer extends Component {
                   }
                 );
 
-                console.log(data);
-
                 this.props.addAssessmentQuestion(data);
               }}
             >

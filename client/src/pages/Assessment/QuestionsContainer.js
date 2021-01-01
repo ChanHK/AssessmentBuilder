@@ -108,8 +108,19 @@ class QuestionsContainer extends Component {
   };
 
   deleteSection = (index) => {
-    var array = [...this.state.questions];
+    let array = [...this.state.questions];
+    const { questions } = this.state;
+
     array.splice(index, 1);
+
+    for (let x = 0; x < questions.length; x++) {
+      for (let y = 0; y < questions[x].length; y++) {
+        if (questions[x][y].section >= index + 1) {
+          questions[x][y].section = questions[x][y].section - 1;
+        }
+      }
+    }
+
     this.setState({ questions: array });
   };
 
