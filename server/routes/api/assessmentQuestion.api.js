@@ -88,4 +88,46 @@ router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
     });
 });
 
+// @route     POST api/user/assessment/questions/add/question_bank/:assessmentID/:questionID
+// @desc      POST questions from question container, assessment to question bank
+// @access    Private
+router.post(
+  "/assessment/questions/add/question_bank/:assessmentID/:questionID",
+  auth,
+  (req, res) => {
+    db.AssessmentQuestion.findOne({
+      assessments_id: req.params.assessmentID,
+    }).then((assessment) => {
+      assessment.questions.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.questionID + `"`) {
+          db.QuestionBank.findOneAndUpdate(
+            { user_id: req.user.id },
+            {
+              $push: {
+                questions: {
+                  questionType: req.body.questionType,
+                  questionDescription: req.body.questionDescription,
+                  questionChoices: req.body.questionChoices,
+                  questionAnswers: req.body.questionAnswers,
+                },
+              },
+            },
+            { new: true }
+          )
+            .then((response) => {
+              return res
+                .status(200)
+                .json(response.questions[response.questions.length - 1]);
+            })
+            .catch((err) => {
+              return res
+                .status(200)
+                .json({ message: "Add question to question bank fail" });
+            });
+        }
+      });
+    });
+  }
+);
+
 module.exports = router;
