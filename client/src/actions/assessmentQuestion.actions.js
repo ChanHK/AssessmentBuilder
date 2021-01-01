@@ -2,21 +2,22 @@ import axios from "axios";
 
 import { ASSESSMENT_QUESTION } from "../utils/actionTypes";
 
+const tokenConfig = (getState) => {
+  const token = getState().auth.token;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (token) config.headers["x-auth-token"] = token;
+
+  return config;
+};
+
+
 export const addAssessmentQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT_QUESTION.ADD_ASSESSMENT_QUESTION_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .post(
@@ -41,19 +42,6 @@ export const addAssessmentQuestion = (data) => (dispatch, getState) => {
 
 export const fetchAllAssessmentQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT_QUESTION.FETCH_ALL_ASSESSMENT_QUESTION_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .get(
@@ -80,19 +68,6 @@ export const fetchAllAssessmentQuestion = (data) => (dispatch, getState) => {
 export const updateAllAssessmentQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_BEGIN });
 
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
-
   axios
     .post(
       `/api/user/assessment/questions/update/${data.assessmentID}`,
@@ -112,6 +87,31 @@ export const updateAllAssessmentQuestion = (data) => (dispatch, getState) => {
       //   dispatch(returnErrors(res.data, res.status));
       dispatch({
         type: ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_FAIL,
+      });
+    });
+};
+
+export const addToQuestionBank = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_BEGIN });
+
+  axios
+    .post(
+      `/assessment/questions/add/question_bank/${data.assessmentID}/${data.questionID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_SUCCESS,
+          payload: res.data,
+        });
+      }, 500);
+    })
+    .catch((err) => {
+      console.log("update unsuccessful", err);
+      //   dispatch(returnErrors(res.data, res.status));
+      dispatch({
+        type: ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_FAIL,
       });
     });
 };
