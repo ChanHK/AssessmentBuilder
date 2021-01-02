@@ -157,10 +157,6 @@ class SectionContainer extends Component {
               </TableButton>
               <TableButton
                 onClick={() => {
-                  const data = {
-                    assessmentID: assessmentID,
-                    questionID: question._id,
-                  };
                   this.props.history.push(
                     `/assessment/update_question/${question.section}/${this.props.match.params.type}/edit/${assessmentID}/${question._id}`
                   );
