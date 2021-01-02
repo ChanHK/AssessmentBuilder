@@ -227,9 +227,6 @@ class QuestionBankContainer extends Component {
                   questionID: row._id,
                 };
                 this.props.deleteQuestionData(data);
-                setTimeout(() => {
-                  this.props.fetchAllQuestionData();
-                }, 1000);
               }}
             >
               <MdIcons.MdDelete />

@@ -76,36 +76,28 @@ router.get("/question", auth, (req, res) => {
 // @access    Private
 router.post("/question/delete", auth, (req, res) => {
   db.QuestionBank.findOne({ user_id: req.user.id }).then((questionBank) => {
-    db.QuestionBank.findByIdAndUpdate(
-      questionBank._id,
+    db.User.updateOne(
+      { _id: req.user.id },
       {
-        $pull: { questions: { _id: req.body.questionID } },
-      },
-      { safe: true }
-    )
-      .then(() => {
-        db.User.updateOne(
-          { _id: req.user.id },
-          {
-            $inc: { totalQuestionsCreated: -1 },
-          }
-        )
-          .then(() => {
-            return res
-              .status(200)
-              .json({ message: "Question deleted successfully" });
-          })
-          .catch((err) => {
-            return res
-              .status(400)
-              .json({ message: "Update question count fail" });
+        $inc: { totalQuestionsCreated: -1 },
+      }
+    ).then(() => {
+      db.QuestionBank.findByIdAndUpdate(
+        questionBank._id,
+        {
+          $pull: { questions: { _id: req.body.questionID } },
+        },
+        { safe: true, new: true }
+      )
+        .then((response) => {
+          return res.status(200).json(response.questions);
+        })
+        .catch(() => {
+          return res.status(400).json({
+            message: "Error, failed to delete question, please retry agian",
           });
-      })
-      .catch(() => {
-        return res.status(400).json({
-          message: "Error, failed to delete question, please retry agian",
         });
-      });
+    });
   });
 });
 
