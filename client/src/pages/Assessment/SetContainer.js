@@ -123,53 +123,6 @@ class SetContainer extends Component {
 
       //stores all the sets or questions
       sets: [],
-      column: [
-        {
-          name: "Set",
-          selector: "setNo",
-          cell: (row) => (
-            <div>
-              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-                {row.setNo}
-              </div>
-            </div>
-          ),
-          width: "50px",
-        },
-        {
-          name: "Total questions",
-          selector: "totalQuestions",
-          cell: (row) => (
-            <div>
-              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-                {row.totalQuestions}
-              </div>
-            </div>
-          ),
-        },
-        {
-          name: "Max Score",
-          selector: "maxScore",
-          cell: (row) => (
-            <div>
-              <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-                {row.maxScore}
-              </div>
-            </div>
-          ),
-        },
-        {
-          name: "Action",
-          selector: "action",
-          cell: (row) => (
-            <CustomRow>
-              <TableButton>Edit</TableButton>
-              <TableButton>View</TableButton>
-              <TableButton>Delete</TableButton>
-            </CustomRow>
-          ),
-        },
-      ],
 
       //stores the number of questions that will be filter out from each sections
       sectionFilterNum: [],
@@ -260,10 +213,57 @@ class SetContainer extends Component {
       definedTakeFromSectionSelected,
       manualRandomSelected,
       sets,
-      column,
       questions,
     } = this.state;
     // console.log(questions.length);
+
+    const column = [
+      {
+        name: "Set",
+        selector: "setNo",
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.setNo}
+            </div>
+          </div>
+        ),
+        width: "50px",
+      },
+      {
+        name: "Total questions",
+        selector: "totalQuestions",
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.totalQuestions}
+            </div>
+          </div>
+        ),
+      },
+      {
+        name: "Max Score",
+        selector: "maxScore",
+        cell: (row) => (
+          <div>
+            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+              {row.maxScore}
+            </div>
+          </div>
+        ),
+      },
+      {
+        name: "Action",
+        selector: "action",
+        cell: (row) => (
+          <CustomRow>
+            <TableButton>Edit</TableButton>
+            <TableButton>View</TableButton>
+            <TableButton>Delete</TableButton>
+          </CustomRow>
+        ),
+      },
+    ];
 
     let setNumOptions = [];
 
