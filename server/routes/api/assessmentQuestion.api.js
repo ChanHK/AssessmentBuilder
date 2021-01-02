@@ -103,6 +103,33 @@ router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
     });
 });
 
+// @route     POST api/user/assessment/questions/edit/:questionID
+// @desc      POST question to questionBank
+// @access    Private
+router.post("/assessment/questions/edit/:questionID", auth, (req, res) => {
+  db.AssessmentQuestion.updateOne(
+    {
+      questions: { $elemMatch: { _id: req.params.questionID } },
+    },
+    {
+      $set: {
+        "questions.$.questionDescription": req.body.questionDescription,
+        "questions.$.score": req.body.score,
+        "questions.$.questionChoices": req.body.questionChoices,
+        "questions.$.questionAnswers": req.body.questionAnswers,
+      },
+    }
+  )
+    .then(() => {
+      return res.status(200).json({ message: "Question updated successfully" });
+    })
+    .catch(() => {
+      return res.status(400).json({
+        message: "Question update fail",
+      });
+    });
+});
+
 // @route     POST api/user/assessment/questions/add/question_bank/:assessmentID/:questionID
 // @desc      POST questions from question container, assessment to question bank
 // @access    Private
