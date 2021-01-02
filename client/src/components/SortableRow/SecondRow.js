@@ -35,7 +35,8 @@ const SortableItem = SortableElement(
     }
     return (
       <>
-        {questionType === "Multiple Choice" && (
+        {(questionType === "Multiple Choice" ||
+          questionType === "Short Answer") && (
           <Editor
             editorState={editorState}
             toolbarHidden={true}
@@ -54,6 +55,8 @@ const SortableItem = SortableElement(
                   : configStyles.colors.white,
               paddingLeft: "5px",
               marginBottom: "5px",
+              borderRadius: "5px",
+              border: "2px solid black",
             }}
           />
         )}
@@ -65,6 +68,8 @@ const SortableItem = SortableElement(
                 choice === questionAnswers[0] // true or false have only one ans
                   ? configStyles.colors.correctGreen
                   : configStyles.colors.white,
+              borderRadius: "5px",
+              border: "2px solid black",
             }}
           >
             {choice.toString()}
@@ -82,6 +87,8 @@ const SortableItem = SortableElement(
                   : configStyles.colors.white,
               paddingLeft: "5px",
               marginBottom: "5px",
+              borderRadius: "5px",
+              border: "2px solid black",
             }}
           />
         )}
@@ -108,9 +115,6 @@ const SortableItemList = SortableContainer(
     </ul>
   )
 );
-
-//for question.questionType === "Single Choice" and more
-// dont use !== 'Description' as it will produce bug
 
 class SectionContainer extends Component {
   componentWillUnmount() {
@@ -185,25 +189,7 @@ class SectionContainer extends Component {
           <ThirdLabel>Description</ThirdLabel>
           {<Editor editorState={editorState} toolbarHidden={true} readOnly />}
 
-          {question.questionType === "Single Choice" && (
-            <SortableItemList
-              questionAnswers={question.questionAnswers}
-              questionChoices={question.questionChoices}
-              questionType={question.questionType}
-              sectionIndex={sectionIndex}
-              onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
-            />
-          )}
-          {question.questionType === "Multiple Choice" && (
-            <SortableItemList
-              questionAnswers={question.questionAnswers}
-              questionChoices={question.questionChoices}
-              questionType={question.questionType}
-              sectionIndex={sectionIndex}
-              onSortEnd={onSortEnd.bind(this, sectionIndex, current)}
-            />
-          )}
-          {question.questionType === "True or False" && (
+          {question.questionType !== "Descriptive" && (
             <SortableItemList
               questionAnswers={question.questionAnswers}
               questionChoices={question.questionChoices}
@@ -250,7 +236,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   choiceRow: {
-    padding: 5,
+    padding: "15px 5px",
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
     marginBottom: "5px",
