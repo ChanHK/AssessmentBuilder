@@ -130,4 +130,35 @@ router.post(
   }
 );
 
+// @route     POST api/user/assessment/questions/delete/:assessmentID/:questionID
+// @desc      POST ($pull) delete question in assessment
+// @access    Private
+router.post(
+  "/assessment/questions/delete/:assessmentID/:questionID",
+  auth,
+  (req, res) => {
+    db.AssessmentQuestion.findOne({
+      assessments_id: req.params.assessmentID,
+    }).then((assessment) => {
+      db.AssessmentQuestion.findByIdAndUpdate(
+        assessment._id,
+        {
+          $pull: { questions: { _id: req.params.questionID } },
+        },
+        {
+          safe: true,
+        }
+      )
+        .then(() => {
+          return res
+            .status(200)
+            .json({ message: "Question deleted successfully" });
+        })
+        .catch((err) => {
+          return res.status(400).json({ message: "Question fail to delete" });
+        });
+    });
+  }
+);
+
 module.exports = router;
