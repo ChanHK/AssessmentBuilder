@@ -102,7 +102,7 @@ const SortableItem = SortableElement(
             {questionAnswers.map((item, index) => {
               if (choice === item) {
                 return (
-                  <div className={css(styles.orderRow)}>
+                  <div className={css(styles.orderRow)} key={index}>
                     <CustomRow>
                       <div className={css(styles.orderCount)}>{index + 1}</div>
                       <div style={{ width: "100%" }}>
@@ -123,6 +123,7 @@ const SortableItem = SortableElement(
                   </div>
                 );
               }
+              return null;
             })}
           </div>
         )}
