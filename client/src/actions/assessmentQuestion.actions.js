@@ -39,6 +39,28 @@ export const addAssessmentQuestion = (data) => (dispatch, getState) => {
     });
 };
 
+export const fetchAnAssessmentQuestion = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT_QUESTION.FETCH_AN_ASSESSMENT_QUESTION_BEGIN });
+
+  axios
+    .get(
+      `/api/user/assessment/question/${data.assessmentID}/${data.questionID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT_QUESTION.FETCH_AN_ASSESSMENT_QUESTION_SUCCESS,
+          payload: res.data,
+        });
+      }, 2000);
+    })
+    .catch((err) => {
+      console.log("Fetch failed", err);
+      dispatch({ type: ASSESSMENT_QUESTION.FETCH_AN_ASSESSMENT_QUESTION_FAIL });
+    });
+};
+
 export const fetchAllAssessmentQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT_QUESTION.FETCH_ALL_ASSESSMENT_QUESTION_BEGIN });
 
