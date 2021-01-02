@@ -11,6 +11,7 @@ export default function (state = initialState, action) {
     case ASSESSMENT_QUESTION.FETCH_ALL_ASSESSMENT_QUESTION_BEGIN:
     case ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_BEGIN:
     case ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_BEGIN:
+    case ASSESSMENT_QUESTION.DELETE_ASSESSMENT_QUESTION_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -18,6 +19,7 @@ export default function (state = initialState, action) {
     case ASSESSMENT_QUESTION.ADD_ASSESSMENT_QUESTION_SUCCESS:
     case ASSESSMENT_QUESTION.FETCH_ALL_ASSESSMENT_QUESTION_SUCCESS:
     case ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_SUCCESS:
+    case ASSESSMENT_QUESTION.DELETE_ASSESSMENT_QUESTION_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -28,6 +30,7 @@ export default function (state = initialState, action) {
     case ASSESSMENT_QUESTION.UPDATE_ALL_ASSESSMENT_QUESTION_FAIL:
     case ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_SUCCESS:
     case ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_FAIL:
+    case ASSESSMENT_QUESTION.DELETE_ASSESSMENT_QUESTION_FAIL:
       return {
         ...state,
         isLoading: false,

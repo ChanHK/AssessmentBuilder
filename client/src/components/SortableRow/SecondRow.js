@@ -16,7 +16,10 @@ import { Editor } from "react-draft-wysiwyg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addToQuestionBank } from "../../actions/assessmentQuestion.actions";
+import {
+  addToQuestionBank,
+  deleteAssessmentQuestion,
+} from "../../actions/assessmentQuestion.actions";
 
 const SortableItem = SortableElement(
   ({ questionAnswers, choice, questionType, index }) => {
@@ -144,7 +147,7 @@ class SectionContainer extends Component {
                     assessmentID: assessmentID,
                     questionID: question._id,
                   };
-                  //   console.log(data);
+
                   this.props.addToQuestionBank(data);
                 }}
               >
@@ -153,7 +156,16 @@ class SectionContainer extends Component {
               <TableButton>
                 <MdIcons.MdModeEdit size={20} className={css(styles.pE)} />
               </TableButton>
-              <TableButton>
+              <TableButton
+                onClick={() => {
+                  const data = {
+                    assessmentID: assessmentID,
+                    questionID: question._id,
+                  };
+
+                  this.props.deleteAssessmentQuestion(data);
+                }}
+              >
                 <MdIcons.MdDelete size={20} className={css(styles.pE)} />
               </TableButton>
             </div>
@@ -240,6 +252,7 @@ const styles = StyleSheet.create({
 SectionContainer.propTypes = {
   addToQuestionBank: PropTypes.func.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
+  deleteAssessmentQuestion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -248,4 +261,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   addToQuestionBank,
+  deleteAssessmentQuestion,
 })(SectionContainer);
