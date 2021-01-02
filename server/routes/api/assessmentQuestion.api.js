@@ -81,7 +81,6 @@ router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
     { $set: { questions: [] } }
   )
     .then(() => {
-      console.log(req.body);
       db.AssessmentQuestion.findOneAndUpdate(
         { assessments_id: req.params.assessmentID },
         {
