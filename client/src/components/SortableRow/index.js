@@ -109,7 +109,14 @@ const SortableItemList = SortableContainer(
 
 class SectionContainer extends React.Component {
   render() {
-    const { question, sectionIndex, current, onSortEnd } = this.props;
+    const {
+      question,
+      assessmentID,
+      sectionIndex,
+      current,
+      onSortEnd,
+    } = this.props;
+
     const contentBlock = htmlToDraft(question.questionDescription);
     let editorState = "";
     if (contentBlock) {
@@ -118,6 +125,7 @@ class SectionContainer extends React.Component {
       );
       editorState = EditorState.createWithContent(contentState);
     }
+
     return (
       <div className={css(styles.itemRow)}>
         <div className={css(styles.bar)}>
@@ -126,7 +134,16 @@ class SectionContainer extends React.Component {
               <ThirdLabel>Question {question.serial}</ThirdLabel>
             </div>
             <div className={css(styles.buttonCon)}>
-              <TableButton>
+              <TableButton
+                onClick={() => {
+                  const data = {
+                    assessmentID: assessmentID,
+                    questionID: question._id,
+                  };
+
+                  console.log(data);
+                }}
+              >
                 <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
               </TableButton>
               <TableButton>
@@ -178,9 +195,10 @@ class SectionContainer extends React.Component {
 }
 
 const SortableSection = SortableElement(
-  ({ question, index, sectionIndex, current, onSortEnd }) => (
+  ({ question, assessmentID, index, sectionIndex, current, onSortEnd }) => (
     <SectionContainer
       question={question}
+      assessmentID={assessmentID}
       index={index}
       sectionIndex={sectionIndex}
       onSortEnd={onSortEnd}
@@ -190,12 +208,13 @@ const SortableSection = SortableElement(
 );
 
 const SortableRow = SortableContainer(
-  ({ questions, onSectionSortEnd, current }) => {
+  ({ questions, assessmentID, onSectionSortEnd, current }) => {
     return (
       <div>
         {questions.map((question, index) => (
           <SortableSection
             key={`item-${question}-${index}`}
+            assessmentID={assessmentID}
             question={question}
             index={index}
             sectionIndex={index}

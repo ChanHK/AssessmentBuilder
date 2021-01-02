@@ -198,6 +198,7 @@ class QuestionsContainer extends Component {
         {questions.length >= 1 && (
           <SortableRow
             questions={questions[0]}
+            assessmentID={assessmentID}
             onSortEnd={this.onSortEnd.bind(this, 0)}
             onSectionSortEnd={this.onSectionSortEnd.bind(this)}
           />
@@ -255,6 +256,7 @@ class QuestionsContainer extends Component {
                 {item !== null && (
                   <SortableRow
                     questions={questions[index + 1]}
+                    assessmentID={assessmentID}
                     onSortEnd={this.onSortEnd.bind(this, index + 1)}
                     onSectionSortEnd={this.onSectionSortEnd.bind(this)}
                     current={index + 1}
