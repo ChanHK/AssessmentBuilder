@@ -229,7 +229,7 @@ class RetrieveQuestionBankContainer extends Component {
                     if (item._id === row._id) {
                       data.questionType = item.questionType;
                       data.questionDescription = item.questionDescription;
-                      data.score = "";
+                      data.score = 0;
                       data.questionChoices = item.questionChoices;
                       data.questionAnswers = item.questionAnswers;
                     }

@@ -20,7 +20,7 @@ export const addAssessmentQuestion = (data) => (dispatch, getState) => {
 
   axios
     .post(
-      `/api/user/assessment/question_bank/update/${data.assessmentID}`,
+      `/api/user/assessment/question/update/${data.assessmentID}`,
       data,
       tokenConfig(getState)
     )
