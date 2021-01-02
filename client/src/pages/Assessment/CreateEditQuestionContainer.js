@@ -25,18 +25,19 @@ import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
-// import { EditorState, convertToRaw, ContentState } from "draft-js";
-import { EditorState, convertToRaw } from "draft-js";
-
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
-// import htmlToDraft from "html-to-draftjs";
+import htmlToDraft from "html-to-draftjs";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
+import {
+  addAssessmentQuestion,
+  fetchAnAssessmentQuestion,
+} from "../../actions/assessmentQuestion.actions";
 
 class CreateEditQuestionContainer extends Component {
   constructor() {
@@ -48,7 +49,6 @@ class CreateEditQuestionContainer extends Component {
       questionChoices: [],
       choiceArrObj: [], //stores temporary choices and answer(isChecked)
       score: "",
-      successMsg: null,
     };
   }
 
@@ -62,11 +62,86 @@ class CreateEditQuestionContainer extends Component {
         this.props.history.push("/login");
       }
     }
+
+    if (this.props.match.params.type2 === "edit") {
+      const data = {
+        assessmentID: this.props.match.params.assessmentID,
+        questionID: this.props.match.params.questionID,
+      };
+
+      this.props.fetchAnAssessmentQuestion(data);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { assessmentQuestionReducer } = this.props;
+    console.log(assessmentQuestionReducer);
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.assessmentQuestionLoad !== null &&
+      assessmentQuestionReducer.message === undefined
+    ) {
+      const {
+        questionType,
+        questionAnswers,
+        questionChoices,
+        questionDescription,
+        score,
+      } = assessmentQuestionReducer.assessmentQuestionLoad;
+
+      const description = this.convertQuestionDes(questionDescription);
+      let choices = null;
+      let ans = null;
+      let arrObj = [];
+      if (questionType === "Order" || questionType === "Short Answer") {
+        choices = this.convertQuestion(questionChoices);
+        ans = this.convertQuestion(questionAnswers);
+      } else if (questionType === "True or False") {
+        choices = questionChoices;
+        ans = questionAnswers;
+      } else if (
+        questionType === "Single Choice" ||
+        questionType === "Multiple Choice"
+      ) {
+        choices = this.convertQuestion(questionChoices);
+        ans = this.convertQuestion(questionAnswers);
+        choices.forEach((item, index) => {
+          let temp = draftToHtml(convertToRaw(item.getCurrentContent()));
+          let inserted = false;
+          ans.forEach((item2, index2) => {
+            let temp2 = draftToHtml(convertToRaw(item2.getCurrentContent()));
+            if (temp === temp2) {
+              arrObj.push({ editorValue: item, isChecked: true });
+              inserted = true;
+            }
+          });
+          if (!inserted) arrObj.push({ editorValue: item, isChecked: false });
+        });
+      }
+      this.setState({
+        questionType: questionType,
+        questionDescription: description,
+        questionChoices: choices,
+        questionAns: ans,
+        choiceArrObj: arrObj,
+        score: score,
+      });
+    }
   }
 
   componentWillUnmount() {
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
   }
+
+  convertQuestionDes = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
 
   onChangeType = (e) => {
     this.setState({
@@ -220,11 +295,10 @@ class CreateEditQuestionContainer extends Component {
       data.questionAnswers = null;
     }
 
-    // if (this.props.match.params.type === "edit") {
-    //   data.questionID = this.props.match.params.questionID;
-    //   this.props.updateAQuestion(data);
-    // } else this.props.addAssessmentQuestion(data);
-    this.props.addAssessmentQuestion(data);
+    if (this.props.match.params.type2 === "edit") {
+      // data.questionID = this.props.match.params.questionID;
+      // this.props.updateAQuestion(data);
+    } else this.props.addAssessmentQuestion(data);
   };
 
   render() {
@@ -506,6 +580,7 @@ const styles = StyleSheet.create({
 
 CreateEditQuestionContainer.propTypes = {
   addAssessmentQuestion: PropTypes.func.isRequired,
+  fetchAnAssessmentQuestion: PropTypes.func.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
 };
@@ -516,5 +591,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   addAssessmentQuestion,
+  fetchAnAssessmentQuestion,
   logout,
 })(CreateEditQuestionContainer);
