@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth");
 
 const db = require("../../models");
 
-// @route     POST api/user/assessment/question_bank/update/:assessmentID
+// @route     POST api/user/assessment/question/update/:assessmentID
 // @desc      POST question from question bank to assessment collection/ from newly created question
 // @access    Private
 router.post("/assessment/question/update/:assessmentID", auth, (req, res) => {
@@ -37,6 +37,25 @@ router.post("/assessment/question/update/:assessmentID", auth, (req, res) => {
       });
     });
 });
+
+// @route     GET api/user/assessment/question/:assessmentID
+// @desc      GET all a question to edit in assessment
+// @access    Private
+router.get(
+  "/assessment/question/:assessmentID/:questionID",
+  auth,
+  (req, res) => {
+    db.AssessmentQuestion.findOne({ assessments_id: req.params.assessmentID })
+      .then((x) => {
+        x.questions.forEach((item, index) => {
+          if (JSON.stringify(item._id) === '"' + req.params.questionID + '"') {
+            return res.json(x.questions[index]);
+          }
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+);
 
 // @route     GET api/user/assessment/question_bank/:assessmentID
 // @desc      GET all questions from assessment
