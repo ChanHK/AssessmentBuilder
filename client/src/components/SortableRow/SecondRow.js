@@ -97,6 +97,35 @@ const SortableItem = SortableElement(
             />
           </div>
         )}
+        {questionType === "Order" && (
+          <div style={{ zIndex: 100 }}>
+            {questionAnswers.map((item, index) => {
+              if (choice === item) {
+                return (
+                  <div className={css(styles.orderRow)}>
+                    <CustomRow>
+                      <div className={css(styles.orderCount)}>{index + 1}</div>
+                      <div style={{ width: "100%" }}>
+                        <Editor
+                          editorState={editorState}
+                          toolbarHidden={true}
+                          readOnly
+                          editorStyle={{
+                            paddingLeft: "5px",
+                            marginBottom: "5px",
+                            borderRadius: "5px",
+                            border: "2px solid black",
+                            backgroundColor: configStyles.colors.white,
+                          }}
+                        />
+                      </div>
+                    </CustomRow>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        )}
       </>
     );
   }
@@ -245,6 +274,24 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Bold",
     fontSize: "15px",
     marginBottom: "5px",
+  },
+  orderCount: {
+    height: "auto",
+    width: "50px",
+    borderColor: configStyles.colors.black,
+    border: "2px solid",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    marginRight: "10px",
+    backgroundColor: configStyles.colors.correctGreen,
+    fontFamily: "Ubuntu-Bold",
+  },
+  orderRow: {
+    marginBottom: "10px",
+    width: "100%",
+    zIndex: 100,
   },
 });
 
