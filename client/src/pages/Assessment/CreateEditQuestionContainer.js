@@ -248,7 +248,7 @@ class CreateEditQuestionContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
-                {this.props.match.params.type === "edit" ? (
+                {this.props.match.params.type2 === "edit" ? (
                   <FirstLabel>Edit Question</FirstLabel>
                 ) : (
                   <FirstLabel>Add Question</FirstLabel>
@@ -256,7 +256,7 @@ class CreateEditQuestionContainer extends Component {
               </div>
               <form onSubmit={this.onSubmit}>
                 <CustomColumn>
-                  {this.props.match.params.type === "edit" ? (
+                  {this.props.match.params.type2 === "edit" ? (
                     <CustomRow>
                       <div className={css(styles.typeCon)}>
                         <SecondLabel marginRight={"10px"}>
