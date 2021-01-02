@@ -123,7 +123,7 @@ export default function Routes() {
           isPrivate
         />
         <Route
-          path="/assessment/update_question/:section/:type(edit|create)/:assessmentID/:questionID"
+          path="/assessment/update_question/:section/:type(edit|create)/:type2(edit|create)/:assessmentID/:questionID"
           exact
           component={CreateEditQuestionContainer}
           isPrivate
