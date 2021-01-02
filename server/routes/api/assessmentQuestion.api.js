@@ -115,9 +115,16 @@ router.post(
             { new: true }
           )
             .then(() => {
-              return res
-                .status(200)
-                .json({ message: "Add question to question bank success" });
+              db.User.updateOne(
+                { _id: req.user.id },
+                {
+                  $inc: { totalQuestionsCreated: 1 },
+                }
+              ).then(() => {
+                return res
+                  .status(200)
+                  .json({ message: "Add question to question bank success" });
+              });
             })
             .catch((err) => {
               return res
