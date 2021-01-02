@@ -151,6 +151,20 @@ class CreateEditQuestionContainer extends Component {
     }
   };
 
+  convertQuestion = (data) => {
+    let result = [];
+    for (let i = 0; i < data.length; i++) {
+      const a = htmlToDraft(data[i]);
+      let c = "";
+      if (a) {
+        const b = ContentState.createFromBlockArray(a.contentBlocks);
+        c = EditorState.createWithContent(b);
+      }
+      result[i] = c;
+    }
+    return result;
+  };
+
   onChangeType = (e) => {
     this.setState({
       questionType: e.value,
