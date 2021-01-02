@@ -161,3 +161,27 @@ export const deleteAssessmentQuestion = (data) => (dispatch, getState) => {
       });
     });
 };
+
+export const updateAnAssessmentQuestion = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT_QUESTION.UPDATE_AN_ASSESSMENT_QUESTION_BEGIN });
+
+  axios
+    .post(
+      `/api/user/assessment/questions/edit/${data.questionID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT_QUESTION.UPDATE_AN_ASSESSMENT_QUESTION_SUCCESS,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("update assessment question failed", err);
+      dispatch({
+        type: ASSESSMENT_QUESTION.UPDATE_AN_ASSESSMENT_QUESTION_FAIL,
+      });
+    });
+};

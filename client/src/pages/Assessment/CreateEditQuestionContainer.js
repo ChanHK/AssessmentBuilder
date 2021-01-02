@@ -37,6 +37,7 @@ import { connect } from "react-redux";
 import {
   addAssessmentQuestion,
   fetchAnAssessmentQuestion,
+  updateAnAssessmentQuestion,
 } from "../../actions/assessmentQuestion.actions";
 
 class CreateEditQuestionContainer extends Component {
@@ -74,8 +75,14 @@ class CreateEditQuestionContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.assessmentQuestionReducer.direct) {
+      this.props.history.push(
+        `/assessment/${this.props.match.params.type}/questions/${this.props.match.params.assessmentID}`
+      );
+    }
+
     const { assessmentQuestionReducer } = this.props;
-    console.log(assessmentQuestionReducer);
+
     if (
       prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
       assessmentQuestionReducer.assessmentQuestionLoad !== null &&
@@ -131,6 +138,7 @@ class CreateEditQuestionContainer extends Component {
 
   componentWillUnmount() {
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
+    this.props.assessmentQuestionReducer.direct = false;
   }
 
   convertQuestionDes = (data) => {
@@ -296,8 +304,8 @@ class CreateEditQuestionContainer extends Component {
     }
 
     if (this.props.match.params.type2 === "edit") {
-      // data.questionID = this.props.match.params.questionID;
-      // this.props.updateAQuestion(data);
+      data.questionID = this.props.match.params.questionID;
+      this.props.updateAnAssessmentQuestion(data);
     } else this.props.addAssessmentQuestion(data);
   };
 
@@ -582,6 +590,7 @@ CreateEditQuestionContainer.propTypes = {
   addAssessmentQuestion: PropTypes.func.isRequired,
   fetchAnAssessmentQuestion: PropTypes.func.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
+  updateAnAssessmentQuestion: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 };
 
@@ -592,5 +601,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   addAssessmentQuestion,
   fetchAnAssessmentQuestion,
+  updateAnAssessmentQuestion,
   logout,
 })(CreateEditQuestionContainer);

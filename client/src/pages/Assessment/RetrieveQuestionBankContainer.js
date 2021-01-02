@@ -79,6 +79,7 @@ class RetrieveQuestionBankContainer extends Component {
   componentWillUnmount() {
     this.props.questionReducer.questionLoad = null;
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
+    this.props.assessmentQuestionReducer.direct = false;
   }
 
   onChangeSearchText = (e) => {
