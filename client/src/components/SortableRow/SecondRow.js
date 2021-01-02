@@ -20,6 +20,8 @@ import {
   addToQuestionBank,
   deleteAssessmentQuestion,
 } from "../../actions/assessmentQuestion.actions";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 
 const SortableItem = SortableElement(
   ({ questionAnswers, choice, questionType, index }) => {
@@ -153,7 +155,17 @@ class SectionContainer extends Component {
               >
                 <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
               </TableButton>
-              <TableButton>
+              <TableButton
+                onClick={() => {
+                  const data = {
+                    assessmentID: assessmentID,
+                    questionID: question._id,
+                  };
+                  this.props.history.push(
+                    `/assessment/update_question/${question.section}/${this.props.match.params.type}/edit/${assessmentID}/${question._id}`
+                  );
+                }}
+              >
                 <MdIcons.MdModeEdit size={20} className={css(styles.pE)} />
               </TableButton>
               <TableButton
@@ -259,7 +271,10 @@ const mapStateToProps = (state) => ({
   assessmentQuestionReducer: state.assessmentQuestionReducer,
 });
 
-export default connect(mapStateToProps, {
-  addToQuestionBank,
-  deleteAssessmentQuestion,
-})(SectionContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, {
+    addToQuestionBank,
+    deleteAssessmentQuestion,
+  })
+)(SectionContainer);
