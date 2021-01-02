@@ -213,7 +213,7 @@ class QuestionsContainer extends Component {
                 padding={"8px"}
                 onClick={() =>
                   this.props.history.push(
-                    `/assessment/update_question/1/${type}/${assessmentID}`
+                    `/assessment/update_question/1/${type}/${assessmentID}/0`
                   )
                 }
               >
@@ -273,7 +273,7 @@ class QuestionsContainer extends Component {
                           this.props.history.push(
                             `/assessment/update_question/${
                               index + 2
-                            }/${type}/${assessmentID}`
+                            }/${type}/${assessmentID}/0`
                           )
                         }
                       >
