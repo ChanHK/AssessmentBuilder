@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-
 import { StyleSheet, css } from "aphrodite";
-
-import Radio from "../../components/Radio";
+import * as configStyles from "../../config/styles";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import * as configStyles from "../../config/styles";
-
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
+import Radio from "../../components/Radio";
 import Dropdown from "../../components/Dropdown";
 import Wrapper from "../../components/Wrapper";
 import CustomDatePicker from "../../components/CustomDatePicker";
