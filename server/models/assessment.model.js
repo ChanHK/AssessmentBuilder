@@ -63,6 +63,29 @@ const AssessmentSchema = new mongoose.Schema({
         accessCode: [String],
         accessEmail: [String],
       },
+      sets: {
+        fixedSelected: {
+          type: Boolean,
+          default: true,
+        },
+        randomSelected: {
+          type: Boolean,
+          default: false,
+        },
+        manualSelected: {
+          type: Boolean,
+          default: false,
+        },
+        manualRandomSelected: {
+          type: Boolean,
+          default: false,
+        },
+        generatedSets: [
+          {
+            questionIDS: [String],
+          },
+        ],
+      },
     },
   ],
 });
