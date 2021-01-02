@@ -97,7 +97,7 @@ router.post("/question/delete", auth, (req, res) => {
           })
           .catch((err) => {
             return res
-              .status(200)
+              .status(400)
               .json({ message: "Update question count fail" });
           });
       })
