@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "fixed",
     top: "0",
-    zIndex: 1,
+    zIndex: 100,
     width: "100%",
   },
   icon: {

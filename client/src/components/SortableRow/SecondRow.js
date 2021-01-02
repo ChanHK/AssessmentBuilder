@@ -37,28 +37,30 @@ const SortableItem = SortableElement(
       <>
         {(questionType === "Multiple Choice" ||
           questionType === "Short Answer") && (
-          <Editor
-            editorState={editorState}
-            toolbarHidden={true}
-            readOnly
-            editorStyle={{
-              backgroundColor:
-                choice === questionAnswers[0] ||
-                choice === questionAnswers[1] ||
-                choice === questionAnswers[2] ||
-                choice === questionAnswers[3] ||
-                choice === questionAnswers[4] ||
-                choice === questionAnswers[5] ||
-                choice === questionAnswers[6] ||
-                choice === questionAnswers[7]
-                  ? configStyles.colors.correctGreen
-                  : configStyles.colors.white,
-              paddingLeft: "5px",
-              marginBottom: "5px",
-              borderRadius: "5px",
-              border: "2px solid black",
-            }}
-          />
+          <div style={{ zIndex: 100 }}>
+            <Editor
+              editorState={editorState}
+              toolbarHidden={true}
+              readOnly
+              editorStyle={{
+                backgroundColor:
+                  choice === questionAnswers[0] ||
+                  choice === questionAnswers[1] ||
+                  choice === questionAnswers[2] ||
+                  choice === questionAnswers[3] ||
+                  choice === questionAnswers[4] ||
+                  choice === questionAnswers[5] ||
+                  choice === questionAnswers[6] ||
+                  choice === questionAnswers[7]
+                    ? configStyles.colors.correctGreen
+                    : configStyles.colors.white,
+                paddingLeft: "5px",
+                marginBottom: "5px",
+                borderRadius: "5px",
+                border: "2px solid black",
+              }}
+            />
+          </div>
         )}
         {questionType === "True or False" && (
           <div
@@ -70,27 +72,30 @@ const SortableItem = SortableElement(
                   : configStyles.colors.white,
               borderRadius: "5px",
               border: "2px solid black",
+              zIndex: 100,
             }}
           >
             {choice.toString()}
           </div>
         )}
         {questionType === "Single Choice" && (
-          <Editor
-            editorState={editorState}
-            toolbarHidden={true}
-            readOnly
-            editorStyle={{
-              backgroundColor:
-                choice === questionAnswers[0] // single ans have only one ans
-                  ? configStyles.colors.correctGreen
-                  : configStyles.colors.white,
-              paddingLeft: "5px",
-              marginBottom: "5px",
-              borderRadius: "5px",
-              border: "2px solid black",
-            }}
-          />
+          <div style={{ zIndex: 100 }}>
+            <Editor
+              editorState={editorState}
+              toolbarHidden={true}
+              readOnly
+              editorStyle={{
+                backgroundColor:
+                  choice === questionAnswers[0] // single ans have only one ans
+                    ? configStyles.colors.correctGreen
+                    : configStyles.colors.white,
+                paddingLeft: "5px",
+                marginBottom: "5px",
+                borderRadius: "5px",
+                border: "2px solid black",
+              }}
+            />
+          </div>
         )}
       </>
     );
