@@ -1,15 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, css } from "aphrodite";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import * as configStyles from "../../config/styles";
 
-// import Button from "../../components/Button";
-import TableButton from "../../components/TableButton";
-
-import CustomRow from "../../components/GridComponents/CustomRow";
-
-// import SecondLabel from "../../components/LabelComponent/SecondLabel";
-import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+import TableButton from "../TableButton";
+import CustomRow from "../GridComponents/CustomRow";
+import ThirdLabel from "../LabelComponent/ThirdLabel";
 
 import * as MdIcons from "react-icons/md";
 import * as RiIcons from "react-icons/ri";
@@ -17,6 +13,10 @@ import * as RiIcons from "react-icons/ri";
 import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addToQuestionBank } from "../../actions/assessmentQuestion.actions";
 
 const SortableItem = SortableElement(
   ({ questionAnswers, choice, questionType, index }) => {
@@ -107,7 +107,11 @@ const SortableItemList = SortableContainer(
 //for question.questionType === "Single Choice" and more
 // dont use !== 'Description' as it will produce bug
 
-class SectionContainer extends React.Component {
+class SectionContainer extends Component {
+  componentWillUnmount() {
+    this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
+  }
+
   render() {
     const {
       question,
@@ -140,8 +144,8 @@ class SectionContainer extends React.Component {
                     assessmentID: assessmentID,
                     questionID: question._id,
                   };
-
-                  console.log(data);
+                  //   console.log(data);
+                  this.props.addToQuestionBank(data);
                 }}
               >
                 <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
@@ -194,39 +198,6 @@ class SectionContainer extends React.Component {
   }
 }
 
-const SortableSection = SortableElement(
-  ({ question, assessmentID, index, sectionIndex, current, onSortEnd }) => (
-    <SectionContainer
-      question={question}
-      assessmentID={assessmentID}
-      index={index}
-      sectionIndex={sectionIndex}
-      onSortEnd={onSortEnd}
-      current={current}
-    />
-  )
-);
-
-const SortableRow = SortableContainer(
-  ({ questions, assessmentID, onSectionSortEnd, current }) => {
-    return (
-      <div>
-        {questions.map((question, index) => (
-          <SortableSection
-            key={`item-${question}-${index}`}
-            assessmentID={assessmentID}
-            question={question}
-            index={index}
-            sectionIndex={index}
-            onSortEnd={onSectionSortEnd}
-            current={current}
-          />
-        ))}
-      </div>
-    );
-  }
-);
-
 const styles = StyleSheet.create({
   itemRow: {
     backgroundColor: configStyles.colors.white,
@@ -266,4 +237,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SortableRow;
+SectionContainer.propTypes = {
+  addToQuestionBank: PropTypes.func.isRequired,
+  assessmentQuestionReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  assessmentQuestionReducer: state.assessmentQuestionReducer,
+});
+
+export default connect(mapStateToProps, {
+  addToQuestionBank,
+})(SectionContainer);

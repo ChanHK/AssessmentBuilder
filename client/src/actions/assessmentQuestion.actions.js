@@ -15,7 +15,6 @@ const tokenConfig = (getState) => {
   return config;
 };
 
-
 export const addAssessmentQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT_QUESTION.ADD_ASSESSMENT_QUESTION_BEGIN });
 
@@ -96,14 +95,14 @@ export const addToQuestionBank = (data) => (dispatch, getState) => {
 
   axios
     .post(
-      `/assessment/questions/add/question_bank/${data.assessmentID}/${data.questionID}`,
+      `/api/user/assessment/questions/add/question_bank/${data.assessmentID}/${data.questionID}`,
+      data,
       tokenConfig(getState)
     )
     .then((res) => {
       setTimeout(() => {
         dispatch({
           type: ASSESSMENT_QUESTION.ADD_TO_QUESTION_BANK_SUCCESS,
-          payload: res.data,
         });
       }, 500);
     })

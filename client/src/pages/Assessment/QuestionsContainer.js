@@ -9,7 +9,7 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import arrayMove from "array-move";
 import { withRouter } from "react-router-dom";
 
-import SortableRow from "../../components/SortableRow";
+import SortableRow from "../../components/SortableRow/FirstRow";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
 

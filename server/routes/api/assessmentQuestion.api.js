@@ -114,14 +114,14 @@ router.post(
             },
             { new: true }
           )
-            .then((response) => {
+            .then(() => {
               return res
                 .status(200)
-                .json(response.questions[response.questions.length - 1]);
+                .json({ message: "Add question to question bank success" });
             })
             .catch((err) => {
               return res
-                .status(200)
+                .status(400)
                 .json({ message: "Add question to question bank fail" });
             });
         }
