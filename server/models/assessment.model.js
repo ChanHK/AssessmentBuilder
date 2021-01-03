@@ -80,11 +80,6 @@ const AssessmentSchema = new mongoose.Schema({
           type: Boolean,
           default: false,
         },
-        generatedSets: [
-          {
-            questionIDS: [String],
-          },
-        ],
       },
     },
   ],
