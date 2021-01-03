@@ -225,4 +225,26 @@ router.post("/assessment/sets/update/:assessmentID", auth, (req, res) => {
     });
 });
 
+// @route     GET api/user/assessment/sets/fetch/:assessmentID
+// @desc      GET set from assessment collection
+// @access    Private
+router.get("/assessment/sets/fetch/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOne({
+    assessments: { $elemMatch: { _id: req.params.assessmentID } },
+  })
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .then((array) => {
+      let i = 0;
+      array.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          i = index;
+        }
+      });
+      return res.json(array.assessments[i].sets);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
