@@ -132,3 +132,25 @@ export const updateAssessmentSet = (data) => (dispatch, getState) => {
       dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SET_FAIL });
     });
 };
+
+export const fetchAssessmentSet = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_SET_BEGIN });
+
+  axios
+    .get(
+      `/api/user/assessment/sets/fetch/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT.FETCH_ASSESSMENT_SET_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch assessment sets data failed", err);
+      dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_SET_FAIL });
+    });
+};

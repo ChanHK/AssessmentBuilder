@@ -21,7 +21,10 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { updateAssessmentSet } from "../../actions/assessment.actions";
+import {
+  updateAssessmentSet,
+  fetchAssessmentSet,
+} from "../../actions/assessment.actions";
 
 class SetContainer extends Component {
   constructor(props) {
@@ -51,6 +54,12 @@ class SetContainer extends Component {
   }
 
   componentDidMount() {
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAssessmentSet(data);
+
     let count = 0;
     const { questions } = this.state;
     questions.forEach(
@@ -477,6 +486,7 @@ const styles = StyleSheet.create({
 
 SetContainer.propTypes = {
   updateAssessmentSet: PropTypes.func.isRequired,
+  fetchAssessmentSet: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
 };
 
@@ -486,4 +496,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   updateAssessmentSet,
+  fetchAssessmentSet,
 })(SetContainer);
