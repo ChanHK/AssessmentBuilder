@@ -241,6 +241,7 @@ class SetContainer extends Component {
       manualRandomSelected,
       sets,
       questions,
+      sectionFilterNum,
     } = this.state;
 
     const column = [
@@ -456,7 +457,7 @@ class SetContainer extends Component {
                                 onChangeValue={(e) =>
                                   this.onChangeSectionFilterNum(e, index)
                                 }
-                                value={sets[index]}
+                                value={sectionFilterNum[index]}
                               />
                             </div>
                             <div className={css(styles.text)}>
