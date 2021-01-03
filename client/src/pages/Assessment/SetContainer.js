@@ -6,7 +6,7 @@ import * as configStyles from "../../config/styles";
 import Radio from "../../components/Radio";
 import Wrapper from "../../components/Wrapper";
 import CustomInput from "../../components/CustomInput";
-import Dropdown from "../../components/Dropdown";
+import CustomDropdown from "../../components/CustomDropdown";
 import CustomSwitch from "../../components/CustomSwitch";
 import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
@@ -26,6 +26,8 @@ import {
   fetchAssessmentSet,
 } from "../../actions/assessment.actions";
 import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
+
+const dropdownData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
 class SetContainer extends Component {
   constructor(props) {
@@ -161,7 +163,7 @@ class SetContainer extends Component {
       }
 
       if (randomTakeFromTotalSelected) {
-        for (let i = 0; i < setNum; i++) {
+        for (let i = 0; i < parseInt(setNum); i++) {
           let generated = [];
           generated.push(this.getRandom(questionsAllID, questionNum));
           let temp3 = generatedSets;
@@ -294,15 +296,6 @@ class SetContainer extends Component {
       return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    let setNumOptions = [];
-
-    //limit set num to 10 and pass to dropdown
-    for (let i = 0; i < 10; i++) {
-      setNumOptions.push({
-        value: i + 1,
-      });
-    }
-
     return (
       <form onSubmit={this.onSubmit}>
         <SecondLabel>Question Order and Assessment Set Generation</SecondLabel>
@@ -415,16 +408,15 @@ class SetContainer extends Component {
                       <div className={css(styles.block)}>
                         <CustomColumn>
                           <ThirdLabel>Number of sets</ThirdLabel>
-                          <Dropdown
-                            options={setNumOptions}
+                          <CustomDropdown
+                            options={dropdownData}
                             placeholder={"Select number of sets"}
                             value={setNum}
-                            onChangeValue={(e) =>
+                            onChange={(e) =>
                               this.setState({
-                                setNum: e.target.value,
+                                setNum: e.value,
                               })
                             }
-                            padding={"12px"}
                           />
                         </CustomColumn>
                       </div>
