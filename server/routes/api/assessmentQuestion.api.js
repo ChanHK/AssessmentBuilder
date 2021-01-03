@@ -57,15 +57,14 @@ router.get(
   }
 );
 
-// @route     GET api/user/assessment/question_bank/:assessmentID
+// @route     GET api/user/assessment/questions/fetch/:assessmentID
 // @desc      GET all questions from assessment
 // @access    Private
-router.get("/assessment/question_bank/:assessmentID", auth, (req, res) => {
+router.get("/assessment/questions/fetch/:assessmentID", auth, (req, res) => {
   db.AssessmentQuestion.findOne({ assessments_id: req.params.assessmentID })
     .select("-_id")
     .select("-assessments_id")
     .select("-__v")
-
     .then((x) => {
       return res.json(x.questions);
     })

@@ -66,7 +66,7 @@ export const fetchAllAssessmentQuestion = (data) => (dispatch, getState) => {
 
   axios
     .get(
-      `/api/user/assessment/question_bank/${data.assessmentID}`,
+      `/api/user/assessment/questions/fetch/${data.assessmentID}`,
       tokenConfig(getState)
     )
     .then((res) => {
