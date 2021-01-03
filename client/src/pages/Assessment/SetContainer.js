@@ -50,7 +50,7 @@ class SetContainer extends Component {
       questionsAllID: [], //questions ID of all questions (array)
       questionsAllIDSection: [], //questions ID of all questions but with section (array of array)
       generatedSets: [], //(array)
-      setData: [], //stores all the sets or questions (array of obj)
+      // setData: [], //stores all the sets or questions (array of obj)
     };
   }
 
@@ -155,19 +155,31 @@ class SetContainer extends Component {
           temp = temp.concat(item);
         });
 
-        let temp2 = generatedSets;
+        let temp2 = [...this.state.generatedSets];
         temp2.push(temp);
+
         this.setState({ generatedSets: temp2 });
       }
 
       if (randomTakeFromTotalSelected) {
-        for (let i = 0; i < parseInt(setNum); i++) {
+        let array2D = [];
+        for (let i = 0; i < setNum; i++) {
           let generated = [];
           generated.push(this.getRandom(questionsAllID, questionNum));
-          let temp3 = generatedSets;
-          temp3.push(generated);
-          this.setState({ generatedSets: temp3 });
+
+          let temp3 = [];
+          generated.forEach((item, index) => {
+            temp3 = temp3.concat(item);
+          });
+          array2D.push(temp3);
         }
+
+        let temp4 = [...this.state.generatedSets];
+        array2D.forEach((item, index) => {
+          temp4.push(item);
+        });
+
+        this.setState({ generatedSets: temp4 });
       }
     }
   };
@@ -237,7 +249,7 @@ class SetContainer extends Component {
       setNum,
       definedTakeFromSectionSelected,
       manualRandomSelected,
-      setData,
+      // setData,
       questions,
       sectionFilterNum,
     } = this.state;
@@ -245,11 +257,11 @@ class SetContainer extends Component {
     const column = [
       {
         name: "Set",
-        selector: "setNo",
+        selector: "serial",
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.setNo}
+              {row.serial}
             </div>
           </div>
         ),
@@ -287,6 +299,8 @@ class SetContainer extends Component {
         ),
       },
     ];
+
+    const setData = this.generateSetData();
 
     const { assessmentReducer, assessmentQuestionReducer } = this.props;
     if (assessmentReducer.isLoading || assessmentQuestionReducer.isLoading)
