@@ -137,7 +137,6 @@ class SetContainer extends Component {
       questionNum,
       questionsAllID,
       questionsAllIDSection,
-      generatedSets,
     } = this.state;
 
     if (totalQuestionNumber > 0) {

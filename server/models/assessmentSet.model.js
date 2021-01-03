@@ -5,11 +5,7 @@ const AssessmentGeneratedSetSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Assessment.assessments",
   },
-  generatedSets: [
-    {
-      questionIDs: [String],
-    },
-  ],
+  generatedSets: [[String]],
 });
 
 module.exports = mongoose.model("AssessmentSet", AssessmentGeneratedSetSchema);
