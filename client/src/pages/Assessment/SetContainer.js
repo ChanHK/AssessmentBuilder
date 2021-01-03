@@ -320,10 +320,18 @@ class SetContainer extends Component {
       },
       {
         name: "Action",
-        selector: "id",
+        selector: "serial",
         cell: (row) => (
           <CustomRow>
-            <TableButton>Delete</TableButton>
+            <TableButton
+              onClick={() => {
+                let temp = [...this.state.generatedSets];
+                temp.splice(row.serial - 1, 1);
+                this.setState({ generatedSets: temp });
+              }}
+            >
+              Delete
+            </TableButton>
           </CustomRow>
         ),
       },
