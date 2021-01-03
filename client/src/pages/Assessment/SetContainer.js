@@ -11,12 +11,17 @@ import CustomSwitch from "../../components/CustomSwitch";
 import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { updateAssessmentSet } from "../../actions/assessment.actions";
 
 class SetContainer extends Component {
   constructor(props) {
@@ -52,6 +57,34 @@ class SetContainer extends Component {
       (item, index) => (count = questions[index].length + count)
     );
     this.setState({ totalQuestionNumber: count });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { assessmentReducer } = this.props;
+
+    if (
+      prevProps.assessmentReducer !== assessmentReducer &&
+      assessmentReducer.assessmentLoad !== null &&
+      assessmentReducer.message === undefined
+    ) {
+      const {
+        fixedSelected,
+        randomSelected,
+        manualSelected,
+        manualRandomSelected,
+      } = assessmentReducer.assessmentLoad;
+
+      this.setState({
+        fixedSelected: fixedSelected,
+        randomSelected: randomSelected,
+        manualSelected: manualSelected,
+        manualRandomSelected: manualRandomSelected,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.assessmentReducer.assessmentLoad = null;
   }
 
   fixedOnClick = (e) => {
@@ -115,6 +148,27 @@ class SetContainer extends Component {
         ...this.state.sectionFilterNum.slice(index + 1),
       ],
     });
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const {
+      fixedSelected,
+      randomSelected,
+      manualSelected,
+      manualRandomSelected,
+      assessmentID,
+    } = this.state;
+
+    const set = {
+      fixedSelected: fixedSelected,
+      randomSelected: randomSelected,
+      manualSelected: manualSelected,
+      manualRandomSelected: manualRandomSelected,
+      assessmentID: assessmentID,
+    };
+
+    this.props.updateAssessmentSet(set);
   };
 
   render() {
@@ -181,6 +235,9 @@ class SetContainer extends Component {
       },
     ];
 
+    if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
     let setNumOptions = [];
 
     //limit set num to 10
@@ -191,12 +248,13 @@ class SetContainer extends Component {
       });
     }
 
+    /////////////////
     if (totalQuestionNumber === "") {
       return false;
     }
 
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <SecondLabel>Question Order and Assessment Set Generation</SecondLabel>
         <div className={css(styles.bar)}>
           <CustomColumn>
@@ -362,10 +420,19 @@ class SetContainer extends Component {
               <SecondLabel> Sets</SecondLabel>
               <Table data={sets} columns={column} />
             </div>
-
-            <div style={{ marginBottom: "500px" }}></div>
           </>
         )}
+        <div style={{ marginBottom: "100px" }}>
+          <Button
+            backgroundColor={configStyles.colors.darkBlue}
+            color={configStyles.colors.white}
+            padding={"8px"}
+            width={"100px"}
+            type={"submit"}
+          >
+            Save
+          </Button>
+        </div>
       </form>
     );
   }
@@ -408,4 +475,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetContainer;
+SetContainer.propTypes = {
+  updateAssessmentSet: PropTypes.func.isRequired,
+  assessmentReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  assessmentReducer: state.assessmentReducer,
+});
+
+export default connect(mapStateToProps, {
+  updateAssessmentSet,
+})(SetContainer);

@@ -11,6 +11,8 @@ export default function (state = initialState, action) {
     case ASSESSMENT.FETCH_ASSESSMENT_SETTINGS_BEGIN:
     case ASSESSMENT.UPDATE_ASSESSMENT_ACCESS_BEGIN:
     case ASSESSMENT.FETCH_ASSESSMENT_ACCESS_BEGIN:
+    case ASSESSMENT.UPDATE_ASSESSMENT_SET_BEGIN:
+    case ASSESSMENT.FETCH_ASSESSMENT_SET_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -19,6 +21,8 @@ export default function (state = initialState, action) {
     case ASSESSMENT.FETCH_ASSESSMENT_SETTINGS_SUCCESS:
     case ASSESSMENT.UPDATE_ASSESSMENT_ACCESS_SUCCESS:
     case ASSESSMENT.FETCH_ASSESSMENT_ACCESS_SUCCESS:
+    case ASSESSMENT.UPDATE_ASSESSMENT_SET_SUCCESS:
+    case ASSESSMENT.FETCH_ASSESSMENT_SET_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -28,6 +32,8 @@ export default function (state = initialState, action) {
     case ASSESSMENT.FETCH_ASSESSMENT_SETTINGS_FAIL:
     case ASSESSMENT.UPDATE_ASSESSMENT_ACCESS_FAIL:
     case ASSESSMENT.FETCH_ASSESSMENT_ACCESS_FAIL:
+    case ASSESSMENT.UPDATE_ASSESSMENT_SET_FAIL:
+    case ASSESSMENT.FETCH_ASSESSMENT_SET_FAIL:
       return {
         ...state,
         isLoading: false,

@@ -108,3 +108,27 @@ export const fetchAssessmentAccess = (data) => (dispatch, getState) => {
       dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_ACCESS_FAIL });
     });
 };
+
+export const updateAssessmentSet = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SET_BEGIN });
+
+  axios
+    .post(
+      `/api/user/assessment/sets/update/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT.UPDATE_ASSESSMENT_SET_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("Update assessment set data failed", err);
+      //   dispatch(returnErrors(res.data, res.status));
+      dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SET_FAIL });
+    });
+};
