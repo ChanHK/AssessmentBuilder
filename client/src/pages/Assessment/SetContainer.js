@@ -25,6 +25,7 @@ import {
   updateAssessmentSet,
   fetchAssessmentSet,
 } from "../../actions/assessment.actions";
+import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
 
 class SetContainer extends Component {
   constructor(props) {
@@ -59,17 +60,11 @@ class SetContainer extends Component {
     };
 
     this.props.fetchAssessmentSet(data);
-
-    let count = 0;
-    const { questions } = this.state;
-    questions.forEach(
-      (item, index) => (count = questions[index].length + count)
-    );
-    this.setState({ totalQuestionNumber: count });
+    this.props.fetchAllAssessmentQuestion(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { assessmentReducer } = this.props;
+    const { assessmentReducer, assessmentQuestionReducer } = this.props;
 
     if (
       prevProps.assessmentReducer !== assessmentReducer &&
@@ -88,6 +83,35 @@ class SetContainer extends Component {
         randomSelected: randomSelected,
         manualSelected: manualSelected,
         manualRandomSelected: manualRandomSelected,
+      });
+    }
+
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.assessmentQuestionLoad !== null &&
+      assessmentQuestionReducer.message === undefined
+    ) {
+      let biggest = 0;
+
+      assessmentQuestionReducer.assessmentQuestionLoad.forEach(
+        (item, index) => {
+          if (item.section > biggest) biggest = item.section;
+        }
+      );
+
+      let tempQuestions = [];
+      for (let i = 0; i < biggest; i++) {
+        tempQuestions.push([]);
+      }
+
+      assessmentQuestionReducer.assessmentQuestionLoad.forEach((x, index) => {
+        tempQuestions[x.section - 1].push(x);
+      });
+
+      this.setState({
+        questions: tempQuestions,
+        totalQuestionNumber:
+          assessmentQuestionReducer.assessmentQuestionLoad.length,
       });
     }
   }
@@ -156,7 +180,6 @@ class SetContainer extends Component {
       sets,
       questions,
     } = this.state;
-    // console.log(questions.length);
 
     const column = [
       {
@@ -206,7 +229,9 @@ class SetContainer extends Component {
       },
     ];
 
-    if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
+    const { assessmentReducer, assessmentQuestionReducer } = this.props;
+    if (assessmentReducer.isLoading || assessmentQuestionReducer.isLoading)
+      return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     let setNumOptions = [];
@@ -486,14 +511,17 @@ const styles = StyleSheet.create({
 SetContainer.propTypes = {
   updateAssessmentSet: PropTypes.func.isRequired,
   fetchAssessmentSet: PropTypes.func.isRequired,
+  fetchAllAssessmentQuestion: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
+  assessmentQuestionReducer: state.assessmentQuestionReducer,
 });
 
 export default connect(mapStateToProps, {
   updateAssessmentSet,
   fetchAssessmentSet,
+  fetchAllAssessmentQuestion,
 })(SetContainer);
