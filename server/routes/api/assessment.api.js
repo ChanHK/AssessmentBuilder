@@ -102,17 +102,20 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
 // @desc      GET settings from assessment collection
 // @access    Private
 router.get("/assessment/settings/fetch/:assessmentID", auth, (req, res) => {
-  db.Assessment.findOne(
-    { user_id: req.user.id },
-    {
-      assessments: { $elemMatch: { _id: req.params.assessmentID } },
-    }
-  )
+  db.Assessment.findOne({
+    assessments: { $elemMatch: { _id: req.params.assessmentID } },
+  })
     .select("-_id")
     .select("-user_id")
     .select("-__v")
-    .then((assessment) => {
-      return res.json(assessment.assessments[0].settings);
+    .then((array) => {
+      let i = 0;
+      array.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          i = index;
+        }
+      });
+      return res.json(array.assessments[i].settings);
     })
     .catch((err) => console.log(err));
 });
@@ -164,17 +167,20 @@ router.post("/assessment/access/update/:assessmentID", auth, (req, res) => {
 // @desc      GET access from assessment collection
 // @access    Private
 router.get("/assessment/access/fetch/:assessmentID", auth, (req, res) => {
-  db.Assessment.findOne(
-    { user_id: req.user.id },
-    {
-      assessments: { $elemMatch: { _id: req.params.assessmentID } },
-    }
-  )
+  db.Assessment.findOne({
+    assessments: { $elemMatch: { _id: req.params.assessmentID } },
+  })
     .select("-_id")
     .select("-user_id")
     .select("-__v")
-    .then((assessment) => {
-      return res.json(assessment.assessments[0].access);
+    .then((array) => {
+      let i = 0;
+      array.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          i = index;
+        }
+      });
+      return res.json(array.assessments[i].access);
     })
     .catch((err) => console.log(err));
 });
