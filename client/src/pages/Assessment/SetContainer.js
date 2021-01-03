@@ -37,20 +37,20 @@ class SetContainer extends Component {
       randomTakeFromTotalSelected: false,
       questionNum: "", // question number in a set
       setNum: "", // number of set that will be generated
-      totalQuestionNumber: "", // total questions in Question section
+      totalQuestionNumber: 0, // total questions in Question section
       definedTakeFromSectionSelected: false, //take questions from diff sections
       manualRandomSelected: false, // does the set questions choices need to randomize?
-
+      sectionFilterNum: [], //stores the number of questions that will be filter out from each sections
       assessmentID: props.assessmentID,
       type: props.type,
 
       questions: [], //separated based on sections
+      questionsAllID: [], //questions ID of all questions
+      questionsAllIDSection: [], //questions ID of all questions but with section
+      generatedSets: [],
 
       //stores all the sets or questions
       sets: [],
-
-      //stores the number of questions that will be filter out from each sections
-      sectionFilterNum: [],
     };
   }
 
@@ -100,18 +100,25 @@ class SetContainer extends Component {
       );
 
       let tempQuestions = [];
+      let questionsAllIDSection = [];
       for (let i = 0; i < biggest; i++) {
         tempQuestions.push([]);
+        questionsAllIDSection.push([]);
       }
 
+      let questionsAllID = [];
       assessmentQuestionReducer.assessmentQuestionLoad.forEach((x, index) => {
         tempQuestions[x.section - 1].push(x);
+        questionsAllIDSection[x.section - 1].push(x._id);
+        questionsAllID.push(x._id);
       });
 
       this.setState({
         questions: tempQuestions,
         totalQuestionNumber:
           assessmentQuestionReducer.assessmentQuestionLoad.length,
+        questionsAllID: questionsAllID,
+        questionsAllIDSection: questionsAllIDSection,
       });
     }
   }
@@ -124,29 +131,43 @@ class SetContainer extends Component {
     const {
       totalQuestionNumber,
       sectionFilterNum,
-      questions,
       definedTakeFromSectionSelected,
       randomTakeFromTotalSelected,
       setNum,
       questionNum,
-      questionsNotSepated,
+      questionsAllID,
+      questionsAllIDSection,
+      generatedSets,
     } = this.state;
-
-    console.log(questionsNotSepated);
 
     if (totalQuestionNumber > 0) {
       if (definedTakeFromSectionSelected) {
         let generated = [];
 
-        questions.forEach((item, index) => {
+        questionsAllIDSection.forEach((item, index) => {
           generated.push(
             this.getRandom(item, parseInt(sectionFilterNum[index]))
           );
         });
 
-        console.log(generated);
+        let temp = [];
+        generated.forEach((item, index) => {
+          temp = temp.concat(item);
+        });
+
+        let temp2 = generatedSets;
+        temp2.push(temp);
+        this.setState({ generatedSets: temp2 });
       }
+
       if (randomTakeFromTotalSelected) {
+        for (let i = 0; i < setNum; i++) {
+          let generated = [];
+          generated.push(this.getRandom(questionsAllID, questionNum));
+          let temp3 = generatedSets;
+          temp3.push(generated);
+          this.setState({ generatedSets: temp3 });
+        }
       }
     }
   };
@@ -275,17 +296,11 @@ class SetContainer extends Component {
 
     let setNumOptions = [];
 
-    //limit set num to 10
-    //pass to dropdown
+    //limit set num to 10 and pass to dropdown
     for (let i = 0; i < 10; i++) {
       setNumOptions.push({
         value: i + 1,
       });
-    }
-
-    /////////////////
-    if (totalQuestionNumber === "") {
-      return false;
     }
 
     return (
