@@ -44,7 +44,7 @@ class SetContainer extends Component {
       assessmentID: props.assessmentID,
       type: props.type,
 
-      questions: [],
+      questions: [], //separated based on sections
 
       //stores all the sets or questions
       sets: [],
@@ -121,9 +121,48 @@ class SetContainer extends Component {
   }
 
   generateSetButtonClick = () => {
-    if (this.state.totalQuestionNumber > 0) {
-      //generate stuff
+    const {
+      totalQuestionNumber,
+      sectionFilterNum,
+      questions,
+      definedTakeFromSectionSelected,
+      randomTakeFromTotalSelected,
+      setNum,
+      questionNum,
+      questionsNotSepated,
+    } = this.state;
+
+    console.log(questionsNotSepated);
+
+    if (totalQuestionNumber > 0) {
+      if (definedTakeFromSectionSelected) {
+        let generated = [];
+
+        questions.forEach((item, index) => {
+          generated.push(
+            this.getRandom(item, parseInt(sectionFilterNum[index]))
+          );
+        });
+
+        console.log(generated);
+      }
+      if (randomTakeFromTotalSelected) {
+      }
     }
+  };
+
+  getRandom = (arr, n) => {
+    let result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+    if (n > len)
+      throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+      let x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
   };
 
   onChangeQuestionNum = (e) => {
@@ -330,7 +369,7 @@ class SetContainer extends Component {
                       />
                     </div>
                     <ThirdLabel>
-                      Filter out questions from of all the questions randomly
+                      Filter out questions randomly based on total questions
                     </ThirdLabel>
                   </div>
                 </CustomRow>
@@ -391,7 +430,7 @@ class SetContainer extends Component {
                         }}
                       />
                     </div>
-                    <ThirdLabel>Filter questions from the sections</ThirdLabel>
+                    <ThirdLabel>Filter questions based on sections</ThirdLabel>
                   </div>
                 </CustomRow>
                 {definedTakeFromSectionSelected && (
@@ -434,7 +473,7 @@ class SetContainer extends Component {
                 />
                 <div style={{ marginLeft: "15px" }}>
                   <ThirdLabel>
-                    Randomize the choices for each questions
+                    Randomize the choices for each questions during test
                   </ThirdLabel>
                 </div>
               </CustomRow>
