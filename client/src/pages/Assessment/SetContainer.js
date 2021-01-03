@@ -52,7 +52,7 @@ class SetContainer extends Component {
       generatedSets: [],
 
       //stores all the sets or questions
-      sets: [],
+      setData: [],
     };
   }
 
@@ -239,7 +239,7 @@ class SetContainer extends Component {
       setNum,
       definedTakeFromSectionSelected,
       manualRandomSelected,
-      sets,
+      setData,
       questions,
       sectionFilterNum,
     } = this.state;
@@ -496,7 +496,7 @@ class SetContainer extends Component {
 
             <div style={{ marginTop: 20 }}>
               <SecondLabel>Sets</SecondLabel>
-              <Table data={sets} columns={column} />
+              <Table data={setData} columns={column} />
             </div>
           </>
         )}
