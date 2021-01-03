@@ -4,21 +4,21 @@ import { ASSESSMENT } from "../utils/actionTypes";
 
 // import { returnErrors } from "./error.actions";
 
+const tokenConfig = (getState) => {
+  const token = getState().auth.token;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (token) config.headers["x-auth-token"] = token;
+
+  return config;
+};
+
 export const updateAssessmentSetting = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SETTINGS_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .post(
@@ -44,19 +44,6 @@ export const updateAssessmentSetting = (data) => (dispatch, getState) => {
 export const fetchAssessmentSetting = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_SETTINGS_BEGIN });
 
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
-
   axios
     .get(
       `/api/user/assessment/settings/fetch/${data.assessmentID}`,
@@ -78,19 +65,6 @@ export const fetchAssessmentSetting = (data) => (dispatch, getState) => {
 
 export const updateAssessmentAccess = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_ACCESS_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .post(
@@ -115,19 +89,6 @@ export const updateAssessmentAccess = (data) => (dispatch, getState) => {
 
 export const fetchAssessmentAccess = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_ACCESS_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .get(
