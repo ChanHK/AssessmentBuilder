@@ -42,17 +42,15 @@ class SetContainer extends Component {
       totalQuestionNumber: 0, // total questions in Question section
       definedTakeFromSectionSelected: false, //take questions from diff sections
       manualRandomSelected: false, // does the set questions choices need to randomize?
-      sectionFilterNum: [], //stores the number of questions that will be filter out from each sections
+      sectionFilterNum: [], //stores the number of questions that will be filter out from each sections (array)
       assessmentID: props.assessmentID,
       type: props.type,
 
-      questions: [], //separated based on sections
-      questionsAllID: [], //questions ID of all questions
-      questionsAllIDSection: [], //questions ID of all questions but with section
-      generatedSets: [],
-
-      //stores all the sets or questions
-      setData: [],
+      questions: [], //separated based on sections (array of array of obj)
+      questionsAllID: [], //questions ID of all questions (array)
+      questionsAllIDSection: [], //questions ID of all questions but with section (array of array)
+      generatedSets: [], //(array)
+      setData: [], //stores all the sets or questions (array of obj)
     };
   }
 
