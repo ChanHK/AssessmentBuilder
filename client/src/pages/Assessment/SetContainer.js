@@ -452,7 +452,7 @@ class SetContainer extends Component {
                   <div className={css(styles.sectionCon)}>
                     <CustomColumn>
                       {questions.map((value, index) => (
-                        <div style={{ marginBottom: "15px" }}>
+                        <div style={{ marginBottom: "15px" }} key={index}>
                           <ThirdLabel textDecoration={"underline"}>
                             Section {index + 1}
                           </ThirdLabel>
