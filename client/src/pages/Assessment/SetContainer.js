@@ -644,6 +644,8 @@ SetContainer.propTypes = {
   fetchAllAssessmentQuestion: PropTypes.func.isRequired,
   fetchAssessmentSetQuestionID: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
+  assessmentQuestionReducer: PropTypes.object.isRequired,
+  assessmentSetReducer: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
