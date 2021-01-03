@@ -185,4 +185,44 @@ router.get("/assessment/access/fetch/:assessmentID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/assessment/sets/update/:assessmentID
+// @desc      POST sets to assessment collection
+// @access    Private
+router.post("/assessment/sets/update/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOneAndUpdate(
+    { assessments: { $elemMatch: { _id: req.params.assessmentID } } },
+    {
+      $set: {
+        "assessments.$.sets.fixedSelected": req.body.fixedSelected,
+        "assessments.$.sets.randomSelected": req.body.randomSelected,
+        "assessments.$.sets.manualSelected": req.body.manualSelected,
+        "assessments.$.sets.manualRandomSelected":
+          req.body.manualRandomSelected,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .select("-__v")
+    .select("-_id")
+    .select("-user_id")
+
+    .then((response) => {
+      let count = 0;
+      response.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          count = index;
+        }
+      });
+
+      return res.status(200).json(response.assessments[count].sets);
+    })
+    .catch(() => {
+      return res.status(400).json({
+        message: "Error, failed to update sets, please retry agian",
+      });
+    });
+});
+
 module.exports = router;
