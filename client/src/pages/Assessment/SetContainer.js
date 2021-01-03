@@ -283,8 +283,6 @@ class SetContainer extends Component {
         selector: "action",
         cell: (row) => (
           <CustomRow>
-            <TableButton>Edit</TableButton>
-            <TableButton>View</TableButton>
             <TableButton>Delete</TableButton>
           </CustomRow>
         ),
@@ -496,7 +494,7 @@ class SetContainer extends Component {
             </div>
 
             <div style={{ marginTop: 20 }}>
-              <SecondLabel> Sets</SecondLabel>
+              <SecondLabel>Sets</SecondLabel>
               <Table data={sets} columns={column} />
             </div>
           </>
