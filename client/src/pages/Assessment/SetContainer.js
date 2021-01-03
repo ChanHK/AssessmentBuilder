@@ -27,7 +27,10 @@ import {
   fetchAssessmentSet,
 } from "../../actions/assessment.actions";
 import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
-import { updateAssessmentSetQuestionID } from "../../actions/assessmentSet.actions";
+import {
+  updateAssessmentSetQuestionID,
+  fetchAssessmentSetQuestionID,
+} from "../../actions/assessmentSet.actions";
 
 const dropdownData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
@@ -62,10 +65,15 @@ class SetContainer extends Component {
 
     this.props.fetchAssessmentSet(data);
     this.props.fetchAllAssessmentQuestion(data);
+    this.props.fetchAssessmentSetQuestionID(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { assessmentReducer, assessmentQuestionReducer } = this.props;
+    const {
+      assessmentReducer,
+      assessmentQuestionReducer,
+      assessmentSetReducer,
+    } = this.props;
 
     if (
       prevProps.assessmentReducer !== assessmentReducer &&
@@ -85,6 +93,15 @@ class SetContainer extends Component {
         manualSelected: manualSelected,
         manualRandomSelected: manualRandomSelected,
       });
+    }
+
+    if (
+      prevProps.assessmentSetReducer !== assessmentSetReducer &&
+      assessmentSetReducer.assessmentSetLoad !== null &&
+      assessmentSetReducer.message === undefined
+    ) {
+      const { assessmentSetLoad } = assessmentSetReducer;
+      this.setState({ generatedSets: assessmentSetLoad });
     }
 
     if (
@@ -625,6 +642,7 @@ SetContainer.propTypes = {
   fetchAssessmentSet: PropTypes.func.isRequired,
   updateAssessmentSetQuestionID: PropTypes.func.isRequired,
   fetchAllAssessmentQuestion: PropTypes.func.isRequired,
+  fetchAssessmentSetQuestionID: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
 };
 
@@ -638,5 +656,6 @@ export default connect(mapStateToProps, {
   updateAssessmentSet,
   fetchAssessmentSet,
   fetchAllAssessmentQuestion,
+  fetchAssessmentSetQuestionID,
   updateAssessmentSetQuestionID,
 })(SetContainer);

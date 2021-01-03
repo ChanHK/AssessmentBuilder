@@ -78,8 +78,6 @@ export const fetchAllAssessmentQuestion = (data) => (dispatch, getState) => {
       }, 3000);
     })
     .catch((err) => {
-      console.log("Fetch question to assessment failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({
         type: ASSESSMENT_QUESTION.FETCH_ALL_ASSESSMENT_QUESTION_FAIL,
       });

@@ -31,4 +31,23 @@ router.post(
   }
 );
 
+// @route     GET api/user/assessment/sets/question_ids/fetch/:assessmentID
+// @desc      GET sets from assessmentsets collection
+// @access    Private
+router.get(
+  "/assessment/sets/question_ids/fetch/:assessmentID",
+  auth,
+  (req, res) => {
+    db.AssessmentSet.findOne({ assessments_id: req.params.assessmentID })
+      .then((response) => {
+        return res.status(200).json(response.generatedSets);
+      })
+      .catch(() => {
+        return res.status(400).json({
+          message: "Error, failed to obtain set, please retry agian",
+        });
+      });
+  }
+);
+
 module.exports = router;

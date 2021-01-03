@@ -147,7 +147,7 @@ export const fetchAssessmentSet = (data) => (dispatch, getState) => {
           type: ASSESSMENT.FETCH_ASSESSMENT_SET_SUCCESS,
           payload: res.data,
         });
-      }, 1500);
+      }, 3000);
     })
     .catch((err) => {
       console.log("fetch assessment sets data failed", err);
