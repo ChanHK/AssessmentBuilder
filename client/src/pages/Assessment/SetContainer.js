@@ -27,6 +27,7 @@ import {
   fetchAssessmentSet,
 } from "../../actions/assessment.actions";
 import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
+import { updateAssessmentSetQuestionID } from "../../actions/assessmentSet.actions";
 
 const dropdownData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
@@ -125,6 +126,8 @@ class SetContainer extends Component {
 
   componentWillUnmount() {
     this.props.assessmentReducer.assessmentLoad = null;
+    this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
+    this.props.assessmentSetReducer.assessmentSetLoad = null;
   }
 
   generateSetButtonClick = () => {
@@ -254,6 +257,7 @@ class SetContainer extends Component {
       manualSelected,
       manualRandomSelected,
       assessmentID,
+      generatedSets,
     } = this.state;
 
     const set = {
@@ -264,7 +268,13 @@ class SetContainer extends Component {
       assessmentID: assessmentID,
     };
 
+    const setQuestionID = {
+      assessmentID: assessmentID,
+      generatedSets: generatedSets,
+    };
+
     this.props.updateAssessmentSet(set);
+    this.props.updateAssessmentSetQuestionID(setQuestionID);
   };
 
   render() {
@@ -338,8 +348,17 @@ class SetContainer extends Component {
 
     const setData = this.generateSetData();
 
-    const { assessmentReducer, assessmentQuestionReducer } = this.props;
-    if (assessmentReducer.isLoading || assessmentQuestionReducer.isLoading)
+    const {
+      assessmentReducer,
+      assessmentQuestionReducer,
+      assessmentSetReducer,
+    } = this.props;
+
+    if (
+      assessmentReducer.isLoading ||
+      assessmentQuestionReducer.isLoading ||
+      assessmentSetReducer.isLoading
+    )
       return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
@@ -604,6 +623,7 @@ const styles = StyleSheet.create({
 SetContainer.propTypes = {
   updateAssessmentSet: PropTypes.func.isRequired,
   fetchAssessmentSet: PropTypes.func.isRequired,
+  updateAssessmentSetQuestionID: PropTypes.func.isRequired,
   fetchAllAssessmentQuestion: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
 };
@@ -611,10 +631,12 @@ SetContainer.propTypes = {
 const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
   assessmentQuestionReducer: state.assessmentQuestionReducer,
+  assessmentSetReducer: state.assessmentSetReducer,
 });
 
 export default connect(mapStateToProps, {
   updateAssessmentSet,
   fetchAssessmentSet,
   fetchAllAssessmentQuestion,
+  updateAssessmentSetQuestionID,
 })(SetContainer);

@@ -7,6 +7,7 @@ import profileReducer from "./profile.reducer";
 import questionReducer from "./question.reducer";
 import assessmentReducer from "./assessment.reducer";
 import assessmentQuestionReducer from "./assessmentQuestion.reducer";
+import assessmentSetReducer from "./assessmentSet.reducer";
 
 const Reducers = combineReducers({
   //add reducer here
@@ -17,6 +18,7 @@ const Reducers = combineReducers({
   questionReducer: questionReducer,
   assessmentReducer: assessmentReducer,
   assessmentQuestionReducer: assessmentQuestionReducer,
+  assessmentSetReducer: assessmentSetReducer,
 });
 
 export default Reducers;

@@ -20,9 +20,8 @@ router.post(
       },
       { new: true }
     )
-      .select("-__v")
       .then((response) => {
-        return res.status(200).json(response);
+        return res.status(200).json(response.generatedSets);
       })
       .catch(() => {
         return res.status(400).json({
