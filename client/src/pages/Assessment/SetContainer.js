@@ -19,6 +19,7 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
+import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -50,7 +51,6 @@ class SetContainer extends Component {
       questionsAllID: [], //questions ID of all questions (array)
       questionsAllIDSection: [], //questions ID of all questions but with section (array of array)
       generatedSets: [], //(array)
-      // setData: [], //stores all the sets or questions (array of obj)
     };
   }
 
@@ -217,6 +217,36 @@ class SetContainer extends Component {
     });
   };
 
+  generateSetData = () => {
+    const { generatedSets } = this.state;
+    const { assessmentQuestionLoad } = this.props.assessmentQuestionReducer;
+
+    let temp = [];
+    if (generatedSets.length > 0) {
+      generatedSets.forEach((item, index) => {
+        let score = 0;
+        let count = 0;
+        item.forEach((item12, index12) => {
+          assessmentQuestionLoad.forEach((item2, index2) => {
+            if (item12 === item2._id) {
+              score = score + item2.score;
+              count++;
+            }
+          });
+        });
+        temp.push({
+          totalQuestions: count,
+          maxScore: score,
+          id: uuidv4(),
+        });
+      });
+      temp.forEach((x, index) => {
+        x.serial = index + 1;
+      });
+      return temp;
+    } else return [];
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -249,7 +279,6 @@ class SetContainer extends Component {
       setNum,
       definedTakeFromSectionSelected,
       manualRandomSelected,
-      // setData,
       questions,
       sectionFilterNum,
     } = this.state;
@@ -291,7 +320,7 @@ class SetContainer extends Component {
       },
       {
         name: "Action",
-        selector: "action",
+        selector: "id",
         cell: (row) => (
           <CustomRow>
             <TableButton>Delete</TableButton>
