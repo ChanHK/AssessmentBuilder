@@ -30,6 +30,7 @@ router.post("/assessment/create", auth, (req, res) => {
           };
 
           db.AssessmentQuestion.create(data);
+          db.AssessmentSet.create(data);
           db.User.updateOne(
             { _id: req.user.id },
             {
