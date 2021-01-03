@@ -3,4 +3,5 @@ module.exports = {
   QuestionBank: require("./questionBank.model"),
   Assessment: require("./assessment.model"),
   AssessmentQuestion: require("./assessmentQuestion.model"),
+  AssessmentSet: require("./assessmentSet.model"),
 };
