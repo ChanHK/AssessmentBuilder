@@ -96,44 +96,10 @@ class SetContainer extends Component {
     this.props.assessmentReducer.assessmentLoad = null;
   }
 
-  fixedOnClick = (e) => {
-    this.setState({
-      fixedSelected: e.target.checked,
-      randomSelected: false,
-      manualSelected: false,
-    });
-  };
-
-  randomOnClick = (e) => {
-    this.setState({
-      randomSelected: e.target.checked,
-      fixedSelected: false,
-      manualSelected: false,
-    });
-  };
-
-  manualOnClick = (e) => {
-    this.setState({
-      manualSelected: e.target.checked,
-      fixedSelected: false,
-      randomSelected: false,
-    });
-  };
-
-  randomTakeFromTotalOnClick = (e) => {
-    this.setState({
-      randomTakeFromTotalSelected: e.target.checked,
-      definedTakeFromSectionSelected: false,
-      manualRandomSelected: e.target.checked,
-    });
-  };
-
-  definedTakeFromSectionOnClick = (e) => {
-    this.setState({
-      definedTakeFromSectionSelected: e.target.checked,
-      randomTakeFromTotalSelected: false,
-      manualRandomSelected: e.target.checked,
-    });
+  generateSetButtonClick = () => {
+    if (this.state.totalQuestionNumber > 0) {
+      //generate stuff
+    }
   };
 
   onChangeQuestionNum = (e) => {
@@ -143,10 +109,6 @@ class SetContainer extends Component {
     const newVal =
       val < max ? val : parseInt(val.toString().substring(0, maxLength));
     this.setState({ questionNum: newVal });
-  };
-
-  randomChoiceSelected = (e) => {
-    this.setState({ manualRandomSelected: e });
   };
 
   onChangeSectionFilterNum = (e, index) => {
@@ -270,7 +232,17 @@ class SetContainer extends Component {
             <CustomRow>
               <div className={css(styles.radionCon)}>
                 <div style={{ paddingRight: "20px" }}>
-                  <Radio checked={fixedSelected} onChange={this.fixedOnClick} />
+                  <Radio
+                    checked={fixedSelected}
+                    onChange={(e) => {
+                      this.setState({
+                        fixedSelected: e.target.checked,
+                        randomSelected: false,
+                        manualSelected: false,
+                        manualRandomSelected: false,
+                      });
+                    }}
+                  />
                 </div>
                 <ThirdLabel>Fixed order of questions and choices</ThirdLabel>
               </div>
@@ -280,7 +252,14 @@ class SetContainer extends Component {
                 <div style={{ paddingRight: "20px" }}>
                   <Radio
                     checked={randomSelected}
-                    onChange={this.randomOnClick}
+                    onChange={(e) =>
+                      this.setState({
+                        randomSelected: e.target.checked,
+                        fixedSelected: false,
+                        manualSelected: false,
+                        manualRandomSelected: false,
+                      })
+                    }
                   />
                 </div>
                 <ThirdLabel>Random order of questions and choices</ThirdLabel>
@@ -291,7 +270,14 @@ class SetContainer extends Component {
                 <div style={{ paddingRight: "20px" }}>
                   <Radio
                     checked={manualSelected}
-                    onChange={this.manualOnClick}
+                    onChange={(e) =>
+                      this.setState({
+                        manualSelected: e.target.checked,
+                        fixedSelected: false,
+                        randomSelected: false,
+                        manualRandomSelected: true,
+                      })
+                    }
                   />
                 </div>
                 <ThirdLabel>Define sets manually</ThirdLabel>
@@ -309,7 +295,13 @@ class SetContainer extends Component {
                     <div style={{ paddingRight: "20px" }}>
                       <Radio
                         checked={randomTakeFromTotalSelected}
-                        onChange={this.randomTakeFromTotalOnClick}
+                        onChange={(e) =>
+                          this.setState({
+                            randomTakeFromTotalSelected: e.target.checked,
+                            definedTakeFromSectionSelected: false,
+                            manualRandomSelected: e.target.checked,
+                          })
+                        }
                       />
                     </div>
                     <ThirdLabel>
@@ -365,7 +357,13 @@ class SetContainer extends Component {
                     <div style={{ paddingRight: "20px" }}>
                       <Radio
                         checked={definedTakeFromSectionSelected}
-                        onChange={this.definedTakeFromSectionOnClick}
+                        onChange={(e) => {
+                          this.setState({
+                            definedTakeFromSectionSelected: e.target.checked,
+                            randomTakeFromTotalSelected: false,
+                            manualRandomSelected: e.target.checked,
+                          });
+                        }}
                       />
                     </div>
                     <ThirdLabel>Filter questions from the sections</ThirdLabel>
@@ -406,7 +404,7 @@ class SetContainer extends Component {
               </CustomColumn>
               <CustomRow>
                 <CustomSwitch
-                  onChange={this.randomChoiceSelected}
+                  onChange={(e) => this.setState({ manualRandomSelected: e })}
                   checked={manualRandomSelected}
                 />
                 <div style={{ marginLeft: "15px" }}>
@@ -420,6 +418,7 @@ class SetContainer extends Component {
                 color={configStyles.colors.white}
                 padding={"8px"}
                 type={"button"}
+                onClick={this.generateSetButtonClick}
               >
                 Generate
               </Button>
