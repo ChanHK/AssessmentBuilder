@@ -38,7 +38,7 @@ class AccessContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      link: "http://abc/abc/abc.com",
+      link: `http://localhost:3000/assessment/start/${props.assessmentID}`,
 
       showModal: false, // display enlarged QR code
       noAuthenticationSelected: true,
@@ -89,7 +89,7 @@ class AccessContainer extends Component {
       }
 
       this.setState({
-        link: link,
+        link: link === "" ? this.state.link : "",
         noAuthenticationSelected: noAuthenticationSelected,
         withAuthenticationSelected: withAuthenticationSelected,
         attemptNum: attemptNum,
