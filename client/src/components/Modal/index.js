@@ -14,7 +14,6 @@ const Modal = (props) => (
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: "rgba(20,20,20,0.9)", //#333333
-    zIndex: 10,
     width: "100%",
     height: "100%",
     position: "fixed",
