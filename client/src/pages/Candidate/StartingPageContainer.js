@@ -8,41 +8,109 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
+import ScrollArrow from "../../components/ScrollArrow";
 import CustomEditor from "../../components/CustomEditor";
+import CustomInput from "../../components/CustomInput";
+import Button from "../../components/Button";
+
+// import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { EditorState } from "draft-js";
+// import draftToHtml from "draftjs-to-html";
+// import htmlToDraft from "html-to-draftjs";
 
 class StartingPageContainer extends Component {
   constructor() {
     super();
     this.state = {
       assessmentTitle: "mathematics exam degree year 3",
-      instruction: "",
+      instruction: EditorState.createEmpty(),
       name: "",
       email: "",
       accessCode: "",
     };
   }
 
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+  };
+
   render() {
-    const { assessmentTitle } = this.state;
+    const {
+      assessmentTitle,
+      instruction,
+      name,
+      email,
+      accessCode,
+    } = this.state;
+
     return (
       <>
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer>
-            <div className={css(styles.whiteCon)}>
+            <form className={css(styles.whiteCon)} onSubmit={this.onSubmit}>
               <CustomColumn>
                 <div style={{ flexDirection: "row", marginBottom: "25px" }}>
                   <h4 className={css(styles.text)}>{assessmentTitle}</h4>
                 </div>
                 <CustomSubLabel>Instructions</CustomSubLabel>
-                <div>
+                <div style={{ marginBottom: "25px" }}>
                   <CustomEditor
                     toolbarHidden={true}
                     readOnly={true}
                     heightAuto={true}
+                    editorState={instruction}
                   />
                 </div>
+
+                <CustomSubLabel>Candidate Name</CustomSubLabel>
+                <div style={{ marginBottom: "25px" }}>
+                  <CustomInput
+                    name={"name"}
+                    type={"text"}
+                    onChangeValue={this.onChange}
+                    placeholder={"Enter your name"}
+                    value={name}
+                  />
+                </div>
+                <CustomSubLabel>Candidate Email</CustomSubLabel>
+                <div style={{ marginBottom: "25px" }}>
+                  <CustomInput
+                    name={"email"}
+                    type={"text"}
+                    onChangeValue={this.onChange}
+                    placeholder={"Enter your email"}
+                    value={email}
+                  />
+                </div>
+                <CustomSubLabel>Candidate Access Code</CustomSubLabel>
+                <div style={{ marginBottom: "25px" }}>
+                  <CustomInput
+                    name={"accessCode"}
+                    type={"text"}
+                    onChangeValue={this.onChange}
+                    placeholder={"Enter your access code"}
+                    value={accessCode}
+                  />
+                </div>
+
+                <div style={{ marginBottom: "250px" }}>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    width={"100px"}
+                    type={"submit"}
+                  >
+                    Start Test
+                  </Button>
+                </div>
               </CustomColumn>
-            </div>
+            </form>
           </CustomMidContainer>
         </CustomFullContainer>
       </>
