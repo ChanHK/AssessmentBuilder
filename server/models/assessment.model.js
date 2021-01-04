@@ -81,6 +81,32 @@ const AssessmentSchema = new mongoose.Schema({
           default: false,
         },
       },
+      timer: {
+        assessmentTimeSelected: {
+          type: Boolean,
+          default: false,
+        },
+        questionTimeSelected: {
+          type: Boolean,
+          default: false,
+        },
+        noLimitSelected: {
+          type: Boolean,
+          default: true,
+        },
+        time: {
+          type: String,
+          default: "",
+        },
+        startDate: {
+          type: Date,
+          default: "",
+        },
+        endDate: {
+          type: Date,
+          default: "",
+        },
+      },
     },
   ],
 });
