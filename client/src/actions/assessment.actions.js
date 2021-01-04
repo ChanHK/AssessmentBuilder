@@ -1,8 +1,5 @@
 import axios from "axios";
-
 import { ASSESSMENT } from "../utils/actionTypes";
-
-// import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
   const token = getState().auth.token;
@@ -36,7 +33,6 @@ export const updateAssessmentSetting = (data) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log("Update assessment settings data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SETTINGS_FAIL });
     });
 };
@@ -82,7 +78,6 @@ export const updateAssessmentAccess = (data) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log("Update assessment access data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_ACCESS_FAIL });
     });
 };
@@ -128,7 +123,6 @@ export const updateAssessmentSet = (data) => (dispatch, getState) => {
     })
     .catch((err) => {
       console.log("Update assessment set data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_SET_FAIL });
     });
 };
@@ -152,5 +146,50 @@ export const fetchAssessmentSet = (data) => (dispatch, getState) => {
     .catch((err) => {
       console.log("fetch assessment sets data failed", err);
       dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_SET_FAIL });
+    });
+};
+
+export const updateAssessmentTimer = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_TIMER_BEGIN });
+
+  axios
+    .post(
+      `/api/user/assessment/timer/update/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT.UPDATE_ASSESSMENT_TIMER_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("Update assessment timer data failed", err);
+      dispatch({ type: ASSESSMENT.UPDATE_ASSESSMENT_TIMER_FAIL });
+    });
+};
+
+export const fetchAssessmentTimer = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_TIMER_BEGIN });
+
+  axios
+    .get(
+      `/api/user/assessment/timer/fetch/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT.FETCH_ASSESSMENT_TIMER_SUCCESS,
+          payload: res.data,
+        });
+      }, 3000);
+    })
+    .catch((err) => {
+      console.log("fetch assessment timer data failed", err);
+      dispatch({ type: ASSESSMENT.FETCH_ASSESSMENT_TIMER_FAIL });
     });
 };
