@@ -247,4 +247,65 @@ router.get("/assessment/sets/fetch/:assessmentID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/assessment/timer/update/:assessmentID
+// @desc      POST timer to assessment collection
+// @access    Private
+router.post("/assessment/timer/update/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOneAndUpdate(
+    { assessments: { $elemMatch: { _id: req.params.assessmentID } } },
+    {
+      $set: {
+        "assessments.$.timer.assessmentTimeSelected":
+          req.body.assessmentTimeSelected,
+        "assessments.$.timer.questionTimeSelected":
+          req.body.questionTimeSelected,
+        "assessments.$.timer.noLimitSelected": req.body.noLimitSelected,
+        "assessments.$.timer.time": req.body.time,
+        "assessments.$.timer.startDate": req.body.startDate,
+        "assessments.$.timer.endDate": req.body.endDate,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .then((response) => {
+      let count = null;
+      response.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          count = index;
+        }
+      });
+
+      return res.status(200).json(response.assessments[count].timer);
+    })
+    .catch(() => {
+      return res.status(400).json({
+        message: "Error, failed to update timer, please retry agian",
+      });
+    });
+});
+
+// @route     GET api/user/assessment/timer/fetch/:assessmentID
+// @desc      GET timer from assessment collection
+// @access    Private
+router.get("/assessment/timer/fetch/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOne({
+    assessments: { $elemMatch: { _id: req.params.assessmentID } },
+  })
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .then((array) => {
+      let i = 0;
+      array.assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          i = index;
+        }
+      });
+      return res.json(array.assessments[i].timer);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
