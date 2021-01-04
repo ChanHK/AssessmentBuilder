@@ -129,7 +129,7 @@ export default function Routes() {
           isPrivate
         />
         <Route
-          path="/assessment/startingPage"
+          path="/assessment/start/:assessmentID"
           exact
           component={StartingPageContainer}
           isPrivate
