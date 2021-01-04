@@ -9,7 +9,7 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import Radio from "../../components/Radio";
-import Dropdown from "../../components/Dropdown";
+import CustomDropdown from "../../components/CustomDropdown";
 import Wrapper from "../../components/Wrapper";
 import CustomDatePicker from "../../components/CustomDatePicker";
 import Button from "../../components/Button";
@@ -37,9 +37,9 @@ class TimerContainer extends Component {
       assessmentTimeSelected: e.target.checked,
       questionTimeSelected: false,
       noLimitSelected: false,
-      hour: null,
-      minute: null,
-      second: null,
+      hour: "",
+      minute: "",
+      second: "",
     });
   };
 
@@ -48,9 +48,9 @@ class TimerContainer extends Component {
       questionTimeSelected: e.target.checked,
       assessmentTimeSelected: false,
       noLimitSelected: false,
-      hour: null,
-      minute: null,
-      second: null,
+      hour: "",
+      minute: "",
+      second: "",
     });
   };
 
@@ -59,19 +59,10 @@ class TimerContainer extends Component {
       noLimitSelected: e.target.checked,
       assessmentTimeSelected: false,
       questionTimeSelected: false,
-      hour: null,
-      minute: null,
-      second: null,
+      hour: "",
+      minute: "",
+      second: "",
     });
-  };
-
-  getStartDate = (e) => {
-    // console.log(e);
-    this.setState({ startDate: e });
-  };
-
-  getEndDate = (e) => {
-    this.setState({ endDate: e });
   };
 
   render() {
@@ -112,29 +103,27 @@ class TimerContainer extends Component {
                   widthChange={1425}
                 >
                   <div className={css(styles.block)}>
-                    <Dropdown
+                    <CustomDropdown
                       options={Hour}
                       placeholder={"Select hour"}
                       value={hour}
-                      onChangeValue={(e) =>
+                      onChang={(e) =>
                         this.setState({
-                          hour: e.target.value,
+                          hour: e.value,
                         })
                       }
-                      padding={"12px"}
                     />
                   </div>
                   <div className={css(styles.block)}>
-                    <Dropdown
+                    <CustomDropdown
                       options={MinuteSeconds}
                       placeholder={"Select minute"}
                       value={minute}
-                      onChangeValue={(e) =>
+                      onChange={(e) =>
                         this.setState({
-                          minute: e.target.value,
+                          minute: e.value,
                         })
                       }
-                      padding={"12px"}
                     />
                   </div>
                 </Wrapper>
@@ -161,29 +150,27 @@ class TimerContainer extends Component {
                   widthChange={1425}
                 >
                   <div className={css(styles.block)}>
-                    <Dropdown
+                    <CustomDropdown
                       options={MinuteSeconds}
                       placeholder={"Select minutes"}
                       value={minute}
-                      onChangeValue={(e) =>
+                      onChange={(e) =>
                         this.setState({
-                          minute: e.target.value,
+                          minute: e.value,
                         })
                       }
-                      padding={"12px"}
                     />
                   </div>
                   <div className={css(styles.block)}>
-                    <Dropdown
+                    <CustomDropdown
                       options={MinuteSeconds}
                       placeholder={"Select seconds"}
                       value={second}
-                      onChangeValue={(e) =>
+                      onChange={(e) =>
                         this.setState({
-                          second: e.target.value,
+                          second: e.value,
                         })
                       }
-                      padding={"12px"}
                     />
                   </div>
                 </Wrapper>
@@ -211,7 +198,7 @@ class TimerContainer extends Component {
                 <ThirdLabel>Start Date</ThirdLabel>
                 <CustomDatePicker
                   selected={startDate}
-                  onChange={this.getStartDate}
+                  onChange={(e) => this.setState({ startDate: e })}
                   placeholderText={"Select start date"}
                   startDate={startDate}
                   endDate={endDate}
@@ -226,7 +213,7 @@ class TimerContainer extends Component {
                 <ThirdLabel>End Date</ThirdLabel>
                 <CustomDatePicker
                   selected={endDate}
-                  onChange={this.getEndDate}
+                  onChange={(e) => this.setState({ endDate: e })}
                   placeholderText={"Select end date"}
                   startDate={startDate}
                   endDate={endDate}
