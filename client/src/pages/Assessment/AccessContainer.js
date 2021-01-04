@@ -331,7 +331,7 @@ class AccessContainer extends Component {
               includeMargin
               className={css(styles.qr)}
               onClick={this.modalHandler}
-              style={{ minWidth: "30%" }}
+              size={260}
             />
           </div>
           <Modal show={showModal}>
@@ -342,6 +342,7 @@ class AccessContainer extends Component {
               includeMargin
               className={css(styles.modal)}
               onClick={this.modalHandler}
+              size={600}
             />
           </Modal>
 

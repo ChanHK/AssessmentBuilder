@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     overflow: "auto",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 200,
   },
   content: {
     width: "65%",
