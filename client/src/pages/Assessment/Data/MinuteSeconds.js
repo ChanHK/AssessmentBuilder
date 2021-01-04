@@ -1,5 +1,5 @@
 const MinuteSeconds = [
-  "0",
+  "00",
   "01",
   "02",
   "03",
