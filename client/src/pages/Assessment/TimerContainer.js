@@ -13,13 +13,22 @@ import CustomDropdown from "../../components/CustomDropdown";
 import Wrapper from "../../components/Wrapper";
 import CustomDatePicker from "../../components/CustomDatePicker";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import Hour from "./Data/Hour";
 import MinuteSeconds from "./Data/MinuteSeconds";
 
+import moment from "moment";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import {
+  updateAssessmentTimer,
+  fetchAssessmentTimer,
+} from "../../actions/assessment.actions";
+
 class TimerContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       assessmentTimeSelected: false,
       questionTimeSelected: false,
@@ -29,7 +38,51 @@ class TimerContainer extends Component {
       noLimitSelected: false,
       startDate: "",
       endDate: "",
+      assessmentID: props.assessmentID,
+      type: props.type,
     };
+  }
+
+  componentDidMount() {
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAssessmentTimer(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { assessmentReducer } = this.props;
+
+    if (
+      prevProps.assessmentReducer !== assessmentReducer &&
+      assessmentReducer.assessmentLoad !== null &&
+      assessmentReducer.message === undefined
+    ) {
+      const {
+        assessmentTimeSelected,
+        questionTimeSelected,
+        time,
+        noLimitSelected,
+        startDate,
+        endDate,
+      } = assessmentReducer.assessmentLoad;
+
+      this.setState({
+        assessmentTimeSelected: assessmentTimeSelected,
+        questionTimeSelected: questionTimeSelected,
+        hour: assessmentTimeSelected ? time.substring(0, 2) : "",
+        minute: time.substring(3, 5),
+        second: questionTimeSelected ? time.substring(6, 9) : "",
+        noLimitSelected: noLimitSelected,
+        startDate: moment(startDate).toDate(),
+        endDate: moment(endDate).toDate(),
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.assessmentReducer.assessmentLoad = null;
   }
 
   assessmentTimeOnClick = (e) => {
@@ -65,6 +118,38 @@ class TimerContainer extends Component {
     });
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+
+    const {
+      assessmentTimeSelected,
+      questionTimeSelected,
+      hour,
+      minute,
+      second,
+      noLimitSelected,
+      startDate,
+      endDate,
+      assessmentID,
+    } = this.state;
+
+    let time = "";
+    if (assessmentTimeSelected) time = hour + ":" + minute + ":00";
+    if (questionTimeSelected) time = "00:" + minute + ":" + second;
+
+    let data = {
+      assessmentTimeSelected: assessmentTimeSelected,
+      questionTimeSelected: questionTimeSelected,
+      time: time,
+      noLimitSelected: noLimitSelected,
+      startDate: startDate,
+      endDate: endDate,
+      assessmentID: assessmentID,
+    };
+
+    this.props.updateAssessmentTimer(data);
+  };
+
   render() {
     const {
       assessmentTimeSelected,
@@ -77,8 +162,11 @@ class TimerContainer extends Component {
       endDate,
     } = this.state;
 
+    if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <SecondLabel>Duration</SecondLabel>
         <div className={css(styles.bar)}>
           <CustomColumn>
@@ -107,7 +195,7 @@ class TimerContainer extends Component {
                       options={Hour}
                       placeholder={"Select hour"}
                       value={hour}
-                      onChang={(e) =>
+                      onChange={(e) =>
                         this.setState({
                           hour: e.value,
                         })
@@ -275,4 +363,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TimerContainer;
+TimerContainer.propTypes = {
+  updateAssessmentTimer: PropTypes.func.isRequired,
+  fetchAssessmentTimer: PropTypes.func.isRequired,
+  assessmentReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  assessmentReducer: state.assessmentReducer,
+});
+
+export default connect(mapStateToProps, {
+  updateAssessmentTimer,
+  fetchAssessmentTimer,
+})(TimerContainer);
