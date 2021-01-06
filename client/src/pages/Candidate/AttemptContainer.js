@@ -14,6 +14,7 @@ import CustomEditor from "../../components/CustomEditor";
 import Button from "../../components/Button";
 import TextArea from "../../components/TextArea";
 
+import Countdown from "react-countdown";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
@@ -115,12 +116,20 @@ class AttemptContainer extends Component {
           <CustomMidContainer>
             <form onSubmit={this.onSubmit} className={css(styles.con)}>
               <CustomColumn>
+                <div
+                  style={{ marginTop: "25px" }}
+                  className={css(styles.countdownCon)}
+                >
+                  <Countdown
+                    date={Date.now() + 10000}
+                    className={css(styles.countdown)}
+                  />
+                </div>
                 <div style={{ marginTop: "25px" }}>
                   <h4 className={css(styles.questionText)}>
                     Question {index + 1}
                   </h4>
                 </div>
-
                 <div>
                   <div style={{ marginBottom: "25px", marginTop: "15px" }}>
                     <CustomEditor
@@ -284,7 +293,6 @@ class AttemptContainer extends Component {
                     </div>
                   )}
                 </div>
-
                 <div className={css(styles.buttonRowCon)}>
                   <CustomRow>
                     <div style={{ marginRight: "15px" }}>
@@ -346,6 +354,7 @@ const styles = StyleSheet.create({
   buttonRowCon: {
     width: "100%",
     display: "flex",
+    marginBottom: "100px",
   },
   tfRow: {
     width: "100%",
@@ -382,6 +391,18 @@ const styles = StyleSheet.create({
     width: "100px",
     height: "70px",
     cursor: "pointer",
+  },
+  countdownCon: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+    height: "auto",
+  },
+  countdown: {
+    border: "2px solid",
+    borderColor: configStyles.colors.darkBlue,
+    padding: "10px",
+    borderRadius: "5px",
   },
 });
 
