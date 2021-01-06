@@ -49,24 +49,28 @@ class AttemptContainer extends Component {
           questionChoices: ["a", "b", "c"],
           questionDescription: "thirddddddd",
           response: "",
+          checked: null,
         },
         {
           questionType: "True or False",
           questionChoices: ["true", "false"],
           questionDescription: "fourthhhhhhhh",
           response: "",
+          checked: null,
         },
         {
           questionType: "Short Answer",
           questionChoices: ["a", "b", "c"],
           questionDescription: "fifthhhhhhhhhhhh",
           response: "",
+          checked: null,
         },
         {
           questionType: "Order",
           questionChoices: ["a", "b", "c"],
           questionDescription: "sixthhhhhhhhhhhhh",
-          response: "",
+          response: [],
+          checked: null,
         },
       ],
     });
@@ -103,7 +107,7 @@ class AttemptContainer extends Component {
   render() {
     const { question, index } = this.state;
     if (question.length === 0) return false;
-    console.log(question[0]);
+    // console.log(question[0]);
     return (
       <>
         <ScrollArrow />
@@ -239,6 +243,46 @@ class AttemptContainer extends Component {
                       })}
                     </div>
                   )}
+
+                  {question[index].questionType === "Order" && (
+                    <div style={{ marginBottom: "25px" }}>
+                      {question[index].questionChoices.map((item, x) => {
+                        return (
+                          <div className={css(styles.choiceRow)}>
+                            <CustomRow>
+                              <div
+                                className={css(styles.countBox)}
+                                onClick={() => {
+                                  this.setState({
+                                    question: [
+                                      ...question.slice(0, index),
+                                      {
+                                        ...question[index],
+                                        response: [
+                                          //slice here
+                                        ],
+                                      },
+                                      ...question.slice(index + 1),
+                                    ],
+                                  });
+                                }}
+                              >
+                                {question[index].response[x]}
+                              </div>
+                              <div style={{ width: "100%" }}>
+                                <CustomEditor
+                                  toolbarHidden={true}
+                                  readOnly={true}
+                                  heightAuto={true}
+                                  editorState={this.convertHtml(item)}
+                                />
+                              </div>
+                            </CustomRow>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 <div className={css(styles.buttonRowCon)}>
@@ -328,6 +372,16 @@ const styles = StyleSheet.create({
   checkBox: {
     width: "20px",
     height: "26px",
+  },
+  countBox: {
+    backgroundColor: configStyles.colors.lightGrey,
+    border: "2px solid",
+    borderRadius: "5px",
+    borderColor: configStyles.colors.black,
+    marginRight: "15px",
+    width: "100px",
+    height: "70px",
+    cursor: "pointer",
   },
 });
 
