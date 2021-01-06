@@ -12,6 +12,7 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 import ScrollArrow from "../../components/ScrollArrow";
 import CustomEditor from "../../components/CustomEditor";
 import Button from "../../components/Button";
+import TextArea from "../../components/TextArea";
 
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -24,6 +25,49 @@ class AttemptContainer extends Component {
       index: 0, //array index
       question: [],
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      question: [
+        {
+          questionType: "Single Choice",
+          questionChoices: ["a", "b", "c"],
+          questionDescription: "firstttttttttt",
+          response: "",
+        },
+        {
+          questionType: "Multiple Choice",
+          questionChoices: ["a", "b", "c"],
+          questionDescription: "secondddddddddd",
+          response: "",
+        },
+        {
+          questionType: "Descriptive",
+          questionChoices: ["a", "b", "c"],
+          questionDescription: "thirddddddd",
+          response: "",
+        },
+        {
+          questionType: "True or False",
+          questionChoices: ["a", "b", "c"],
+          questionDescription: "fourthhhhhhhh",
+          response: "",
+        },
+        {
+          questionType: "Short Answer",
+          questionChoices: ["a", "b", "c"],
+          questionDescription: "fifthhhhhhhhhhhh",
+          response: "",
+        },
+        {
+          questionType: "Order",
+          questionChoices: ["a", "b", "c"],
+          questionDescription: "sixthhhhhhhhhhhhh",
+          response: "",
+        },
+      ],
+    });
   }
 
   convertHtml = (data) => {
@@ -56,6 +100,7 @@ class AttemptContainer extends Component {
 
   render() {
     const { question, index } = this.state;
+    if (question.length === 0) return false;
 
     return (
       <>
@@ -70,15 +115,39 @@ class AttemptContainer extends Component {
                   </h4>
                 </div>
 
-                <div style={{ marginBottom: "25px", marginTop: "15px" }}>
-                  <CustomEditor
-                    toolbarHidden={true}
-                    readOnly={true}
-                    heightAuto={true}
-                    editorState={this.convertHtml(
-                      question[index].questionDescription
-                    )}
-                  />
+                <div>
+                  <div style={{ marginBottom: "25px", marginTop: "15px" }}>
+                    <CustomEditor
+                      toolbarHidden={true}
+                      readOnly={true}
+                      heightAuto={true}
+                      editorState={this.convertHtml(
+                        question[index].questionDescription
+                      )}
+                    />
+                  </div>
+
+                  {question[index].questionType === "Descriptive" && (
+                    <div style={{ marginBottom: "25px" }}>
+                      <TextArea
+                        type={"text"}
+                        placeholder={"Enter your answer here"}
+                        onChange={(e) => {
+                          this.setState({
+                            question: [
+                              ...question.slice(0, index),
+                              {
+                                ...question[index],
+                                response: e.target.value,
+                              },
+                              ...question.slice(index + 1),
+                            ],
+                          });
+                        }}
+                        value={question[index].response}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className={css(styles.buttonRowCon)}>
