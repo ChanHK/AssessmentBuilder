@@ -50,7 +50,7 @@ class AttemptContainer extends Component {
         },
         {
           questionType: "True or False",
-          questionChoices: ["a", "b", "c"],
+          questionChoices: ["true", "false"],
           questionDescription: "fourthhhhhhhh",
           response: "",
         },
@@ -101,7 +101,7 @@ class AttemptContainer extends Component {
   render() {
     const { question, index } = this.state;
     if (question.length === 0) return false;
-
+    console.log(question[3]);
     return (
       <>
         <ScrollArrow />
@@ -127,7 +127,8 @@ class AttemptContainer extends Component {
                     />
                   </div>
 
-                  {question[index].questionType === "Descriptive" && (
+                  {(question[index].questionType === "Descriptive" ||
+                    question[index].questionType === "Short Answer") && (
                     <div style={{ marginBottom: "25px" }}>
                       <TextArea
                         type={"text"}
@@ -146,6 +147,38 @@ class AttemptContainer extends Component {
                         }}
                         value={question[index].response}
                       />
+                    </div>
+                  )}
+
+                  {question[index].questionType === "True or False" && (
+                    <div style={{ marginBottom: "25px" }}>
+                      {question[index].questionChoices.map((item, x) => {
+                        return (
+                          <div
+                            className={css(styles.tfRow, styles.noSelect)}
+                            onClick={() => {
+                              this.setState({
+                                question: [
+                                  ...question.slice(0, index),
+                                  {
+                                    ...question[index],
+                                    response: item,
+                                  },
+                                  ...question.slice(index + 1),
+                                ],
+                              });
+                            }}
+                            style={{
+                              backgroundColor:
+                                question[index].response === item
+                                  ? configStyles.colors.correctGreen
+                                  : "inherit",
+                            }}
+                          >
+                            {item}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -211,6 +244,23 @@ const styles = StyleSheet.create({
   buttonRowCon: {
     width: "100%",
     display: "flex",
+  },
+  tfRow: {
+    width: "100%",
+    border: "2px solid",
+    borderColor: configStyles.colors.black,
+    borderRadius: "5px",
+    padding: "10px",
+    marginBottom: "25px",
+  },
+  noSelect: {
+    userSelect:
+      "none" /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */,
+    webkitTouchCallout: "none" /* iOS Safari */,
+    webkitUserSelect: "none" /* Safari */,
+    khtmlUserSelect: "none" /* Konqueror HTML */,
+    mozUserSelect: "none" /* Old versions of Firefox */,
+    msUserSelect: "none" /* Internet Explorer/Edge */,
   },
 });
 
