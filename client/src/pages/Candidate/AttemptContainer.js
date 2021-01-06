@@ -35,12 +35,14 @@ class AttemptContainer extends Component {
           questionChoices: ["a", "b", "c"],
           questionDescription: "firstttttttttt",
           response: "",
+          checked: [false, false, false],
         },
         {
           questionType: "Multiple Choice",
           questionChoices: ["a", "b", "c"],
           questionDescription: "secondddddddddd",
           response: "",
+          checked: [false, false, false],
         },
         {
           questionType: "Descriptive",
@@ -101,7 +103,7 @@ class AttemptContainer extends Component {
   render() {
     const { question, index } = this.state;
     if (question.length === 0) return false;
-    console.log(question[3]);
+    console.log(question[0]);
     return (
       <>
         <ScrollArrow />
@@ -126,6 +128,62 @@ class AttemptContainer extends Component {
                       )}
                     />
                   </div>
+
+                  {question[index].questionType === "Single Choice" && (
+                    <div style={{ marginBottom: "25px" }}>
+                      {question[index].questionChoices.map((item, x) => {
+                        return (
+                          <div className={css(styles.choiceRow)}>
+                            <CustomRow>
+                              <div style={{ marginRight: "10px" }}>
+                                <input
+                                  type="checkbox"
+                                  checked={question[index].checked[x]}
+                                  className={css(styles.checkBox)}
+                                />
+                              </div>
+                              <div style={{ width: "100%" }}>
+                                <CustomEditor
+                                  toolbarHidden={true}
+                                  readOnly={true}
+                                  heightAuto={true}
+                                  editorState={this.convertHtml(item)}
+                                />
+                              </div>
+                            </CustomRow>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {question[index].questionType === "Multiple Choice" && (
+                    <div style={{ marginBottom: "25px" }}>
+                      {question[index].questionChoices.map((item, x) => {
+                        return (
+                          <div className={css(styles.choiceRow)}>
+                            <CustomRow>
+                              <div style={{ marginRight: "10px" }}>
+                                <input
+                                  type="checkbox"
+                                  checked={question[index].checked[x]}
+                                  className={css(styles.checkBox)}
+                                />
+                              </div>
+                              <div style={{ width: "100%" }}>
+                                <CustomEditor
+                                  toolbarHidden={true}
+                                  readOnly={true}
+                                  heightAuto={true}
+                                  editorState={this.convertHtml(item)}
+                                />
+                              </div>
+                            </CustomRow>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   {(question[index].questionType === "Descriptive" ||
                     question[index].questionType === "Short Answer") && (
@@ -261,6 +319,15 @@ const styles = StyleSheet.create({
     khtmlUserSelect: "none" /* Konqueror HTML */,
     mozUserSelect: "none" /* Old versions of Firefox */,
     msUserSelect: "none" /* Internet Explorer/Edge */,
+  },
+  choiceRow: {
+    width: "100%",
+    display: "flex",
+    marginBottom: "25px",
+  },
+  checkBox: {
+    width: "20px",
+    height: "26px",
   },
 });
 
