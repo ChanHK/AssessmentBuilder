@@ -16,7 +16,7 @@ const LoaderSpinner = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: "fixed",
     // backgroundColor: "rgba(0, 0, 0, 0.5)",
     justifyContent: "center",
     alignItems: "center",

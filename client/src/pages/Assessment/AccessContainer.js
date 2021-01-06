@@ -89,7 +89,7 @@ class AccessContainer extends Component {
       }
 
       this.setState({
-        link: link === "" ? this.state.link : "",
+        link: link === "" ? this.state.link : link,
         noAuthenticationSelected: noAuthenticationSelected,
         withAuthenticationSelected: withAuthenticationSelected,
         attemptNum: attemptNum,
