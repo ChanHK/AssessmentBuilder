@@ -1,3 +1,4 @@
 import StartingPageContainer from "./StartingPageContainer";
+import AttemptContainer from "./AttemptContainer";
 
-export { StartingPageContainer };
+export { StartingPageContainer, AttemptContainer };

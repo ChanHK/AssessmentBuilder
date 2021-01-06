@@ -33,7 +33,7 @@ import {
   CreateEditQuestionContainer,
 } from "../pages/Assessment";
 
-import { StartingPageContainer } from "../pages/Candidate";
+import { StartingPageContainer, AttemptContainer } from "../pages/Candidate";
 
 export default function Routes() {
   return (
@@ -132,6 +132,12 @@ export default function Routes() {
           path="/assessment/start/:assessmentID"
           exact
           component={StartingPageContainer}
+          isPrivate
+        />
+        <Route
+          path="/assessment/attempt"
+          exact
+          component={AttemptContainer}
           isPrivate
         />
 
