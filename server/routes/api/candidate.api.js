@@ -12,6 +12,25 @@ router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
   db.Assessment.findOne({
     assessments: { $elemMatch: { _id: req.params.assessmentID } },
   })
+    .select("-assessments.settings.gradeRange")
+    .select("-assessments.settings.gradeValue")
+    .select("-assessments.settings.gradeUnit")
+    .select("-assessments.settings.addGradingSelected")
+    .select("-assessments.settings.unit")
+    .select("-assessments.settings.score")
+    .select("-assessments.settings.passOrFailSelected")
+    .select("-assessments.settings.testDescription")
+
+    .select("-assessments.access.accessCode")
+    .select("-assessments.access.accessEmail")
+    .select("-assessments.access.attemptNum")
+    .select("-assessments.access.link")
+
+    .select("-assessments.timer.startDate")
+    .select("-assessments.timer.endDate")
+
+    .select("-assessments._id")
+
     .then((array) => {
       let i = 0;
       array.assessments.forEach((item, index) => {
@@ -19,7 +38,7 @@ router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
           i = index;
         }
       });
-      return res.json(array.assessments[i].settings);
+      return res.json(array.assessments[i]);
     })
     .catch((err) => console.log(err));
 });

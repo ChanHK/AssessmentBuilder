@@ -70,7 +70,7 @@ class StartingPageContainer extends Component {
       const {
         testName,
         testInstruction,
-      } = candidateReducer.assessmentStartInfo;
+      } = candidateReducer.assessmentStartInfo.settings;
 
       let temp = this.convert(testInstruction);
 
@@ -129,7 +129,7 @@ class StartingPageContainer extends Component {
 
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
-    console.log(msg);
+
     return (
       <>
         <ScrollArrow />
