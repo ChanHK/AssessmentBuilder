@@ -2,14 +2,13 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const auth = require("../../middleware/auth");
 
 const db = require("../../models");
 
 // @route     GET api/candidate/start/assessment/fetch/:assessmentID
 // @desc      GET assessment name and instructions
 // @access    Private
-router.get("/start/assessment/fetch/:assessmentID", auth, (req, res) => {
+router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
   db.Assessment.findOne({
     assessments: { $elemMatch: { _id: req.params.assessmentID } },
   })
@@ -28,5 +27,6 @@ router.get("/start/assessment/fetch/:assessmentID", auth, (req, res) => {
 // @route     POST api/auth/candidate/join
 // @desc      register user and return JWT token
 // @access    Public
+// router.post("/start/assessment/register/:assessmentID");
 
 module.exports = router;
