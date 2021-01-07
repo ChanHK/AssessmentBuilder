@@ -1,5 +1,6 @@
 import axios from "axios";
 import { CANDIDATE } from "../utils/actionTypes";
+import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
   const token = getState().auth.token;
@@ -33,5 +34,34 @@ export const fetchAssessmentInfo = (data) => (dispatch, getState) => {
     .catch((err) => {
       console.log("fetch failed", err);
       dispatch({ type: CANDIDATE.FETCH_ASSESSMENT_START_INFO_FAIL });
+    });
+};
+
+export const candidateRegister = (data) => (dispatch) => {
+  dispatch({ type: CANDIDATE.CANDIDATE_REQ_WITH_AC_BEGIN });
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios
+    .post(
+      `/api/candidate/start/assessment/register/with_auth/${data.assessmentID}`,
+      data,
+      config
+    )
+    .then((res) =>
+      dispatch({
+        type: CANDIDATE.CANDIDATE_REQ_WITH_AC_SUCCESS,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      console.log(err.response.data);
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL,
+      });
     });
 };
