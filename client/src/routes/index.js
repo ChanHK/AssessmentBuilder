@@ -52,13 +52,28 @@ export default function Routes() {
           component={ResetPasswordContainer}
         />
 
-        <Route path="/home" exact component={HomeContainer} isPrivate />
-        <Route path="/profile" exact component={ProfileContainer} isPrivate />
+        <Route
+          path="/home"
+          exact
+          component={HomeContainer}
+          isPrivate
+          role={"User"}
+        />
+
+        <Route
+          path="/profile"
+          exact
+          component={ProfileContainer}
+          isPrivate
+          role={"User"}
+        />
+
         <Route
           path="/profile/edit"
           exact
           component={EditProfileContainer}
           isPrivate
+          role={"User"}
         />
 
         <Route
@@ -66,18 +81,21 @@ export default function Routes() {
           exact
           component={QuestionBankContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/questionbank/question/:type(edit|create)/:questionID"
           exact
           component={CreateQuestionContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/questionbank/question_view/:questionID"
           exact
           component={ViewQuestionContainer}
           isPrivate
+          role={"User"}
         />
 
         <Route
@@ -85,60 +103,70 @@ export default function Routes() {
           exact
           component={GradeContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/descriptiveResponses"
           exact
           component={DescriptiveResponsesContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/statistics"
           exact
           component={StatisticsContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/results"
           exact
           component={ResultsContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/response"
           exact
           component={ViewResponseContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/:type(edit|create)/:selected(settings|questions|set|access|timer)/:assessmentID"
           exact
           component={CreateAssessmentContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/question_bank/:section/:type(edit|create)/:assessmentID"
           exact
           component={RetrieveQuestionBankContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/update_question/:section/:type(edit|create)/:type2(edit|create)/:assessmentID/:questionID"
           exact
           component={CreateEditQuestionContainer}
           isPrivate
+          role={"User"}
         />
         <Route
           path="/assessment/start/:assessmentID"
           exact
           component={StartingPageContainer}
           isPrivate
+          role={"Candidate"}
         />
         <Route
           path="/assessment/attempt"
           exact
           component={AttemptContainer}
           isPrivate
+          role={"Candidate"}
         />
 
         {/* redirect user to SignIn page if route does not exist and user is not authenticated */}

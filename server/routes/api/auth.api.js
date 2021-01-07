@@ -47,6 +47,7 @@ router.post("/register", (req, res) => {
                 (err, token) => {
                   if (err) throw err;
                   res.json({
+                    role: "User",
                     token: token,
                   });
                 }
@@ -97,6 +98,7 @@ router.post("/login", (req, res) => {
             (err, token) => {
               if (err) throw err;
               res.json({
+                role: "User",
                 token: token,
               });
             }
