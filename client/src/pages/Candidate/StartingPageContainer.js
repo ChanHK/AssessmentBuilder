@@ -19,20 +19,25 @@ import htmlToDraft from "html-to-draftjs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchAssessmentInfo } from "../../actions/candidate.actions";
+import {
+  fetchAssessmentInfo,
+  candidateRegister,
+} from "../../actions/candidate.actions";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
+import { clearErrors } from "../../actions/error.actions";
 
 class StartingPageContainer extends Component {
   constructor() {
     super();
     this.state = {
-      assessmentTitle: "mathematics exam degree year 3",
+      assessmentTitle: "",
       instruction: EditorState.createEmpty(),
       name: "",
       email: "",
       accessCode: "",
+      msg: null,
     };
   }
 
@@ -74,9 +79,14 @@ class StartingPageContainer extends Component {
         instruction: temp,
       });
     }
+
+    if (prevProps.errors !== this.props.errors) {
+      this.setState({ msg: this.props.errors.message });
+    }
   }
 
   componentWillUnmount() {
+    this.props.clearErrors();
     this.props.candidateReducer.assessmentStartInfo = null;
   }
 
@@ -96,6 +106,15 @@ class StartingPageContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    const { name, email, accessCode } = this.state;
+    const data = {
+      assessmentID: this.props.match.params.assessmentID,
+      name: name,
+      email: email,
+      accessCode: accessCode,
+    };
+
+    this.props.candidateRegister(data);
   };
 
   render() {
@@ -105,11 +124,12 @@ class StartingPageContainer extends Component {
       name,
       email,
       accessCode,
+      msg,
     } = this.state;
 
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
-
+    console.log(msg);
     return (
       <>
         <ScrollArrow />
@@ -160,6 +180,9 @@ class StartingPageContainer extends Component {
                     value={accessCode}
                   />
                 </div>
+                <div className={css(styles.redText)}>
+                  {msg === null ? null : "*" + msg.message}
+                </div>
 
                 <div style={{ marginBottom: "250px" }}>
                   <Button
@@ -202,18 +225,30 @@ const styles = StyleSheet.create({
     height: "auto",
     backgroundColor: "inherit",
   },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
+  },
 });
 
 StartingPageContainer.propTypes = {
   fetchAssessmentInfo: PropTypes.func.isRequired,
   candidateReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  candidateRegister: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   candidateReducer: state.candidateReducer,
+  errors: state.errors,
 });
 
-export default connect(mapStateToProps, { fetchAssessmentInfo, logout })(
-  StartingPageContainer
-);
+export default connect(mapStateToProps, {
+  fetchAssessmentInfo,
+  logout,
+  candidateRegister,
+  clearErrors,
+})(StartingPageContainer);
