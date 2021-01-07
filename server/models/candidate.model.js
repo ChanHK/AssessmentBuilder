@@ -14,7 +14,7 @@ const CandidateSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  assessment: [[String]],
+  assessment_set: [[String]],
   response: [[String]],
 });
 
