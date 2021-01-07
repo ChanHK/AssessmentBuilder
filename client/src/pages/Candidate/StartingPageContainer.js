@@ -38,6 +38,7 @@ class StartingPageContainer extends Component {
       email: "",
       accessCode: "",
       msg: null,
+      withAuthenticationSelected: false,
     };
   }
 
@@ -45,9 +46,7 @@ class StartingPageContainer extends Component {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
       const decoded = jwt_decode(token);
-
-      // Check for expired token
-      const currentTime = Date.now() / 1000; // to get in milliseconds
+      const currentTime = Date.now() / 1000;
       if (decoded.exp < currentTime) {
         this.props.logout();
         this.props.history.push("/login");
@@ -72,16 +71,22 @@ class StartingPageContainer extends Component {
         testInstruction,
       } = candidateReducer.assessmentStartInfo.settings;
 
+      const {
+        withAuthenticationSelected,
+      } = candidateReducer.assessmentStartInfo.access;
+
       let temp = this.convert(testInstruction);
 
       this.setState({
         assessmentTitle: testName,
         instruction: temp,
+        withAuthenticationSelected: withAuthenticationSelected,
       });
     }
 
-    if (prevProps.errors !== this.props.errors) {
-      this.setState({ msg: this.props.errors.message });
+    const { errors } = this.props;
+    if (prevProps.errors !== errors && errors.message !== undefined) {
+      this.setState({ msg: errors.message });
     }
   }
 
@@ -106,7 +111,7 @@ class StartingPageContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, accessCode } = this.state;
+    const { name, email, accessCode, withAuthenticationSelected } = this.state;
     const data = {
       assessmentID: this.props.match.params.assessmentID,
       name: name,
@@ -114,7 +119,7 @@ class StartingPageContainer extends Component {
       accessCode: accessCode,
     };
 
-    this.props.candidateRegister(data);
+    if (withAuthenticationSelected) this.props.candidateRegister(data);
   };
 
   render() {
@@ -125,6 +130,7 @@ class StartingPageContainer extends Component {
       email,
       accessCode,
       msg,
+      withAuthenticationSelected,
     } = this.state;
 
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
@@ -171,15 +177,19 @@ class StartingPageContainer extends Component {
                   />
                 </div>
                 <CustomSubLabel>Candidate Access Code</CustomSubLabel>
-                <div style={{ marginBottom: "25px" }}>
-                  <CustomInput
-                    name={"accessCode"}
-                    type={"text"}
-                    onChangeValue={this.onChange}
-                    placeholder={"Enter your access code"}
-                    value={accessCode}
-                  />
-                </div>
+                <>
+                  {withAuthenticationSelected && (
+                    <div style={{ marginBottom: "25px" }}>
+                      <CustomInput
+                        name={"accessCode"}
+                        type={"text"}
+                        onChangeValue={this.onChange}
+                        placeholder={"Enter your access code"}
+                        value={accessCode}
+                      />
+                    </div>
+                  )}
+                </>
                 <div className={css(styles.redText)}>
                   {msg === null ? null : "*" + msg.message}
                 </div>
@@ -210,7 +220,6 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "grey",
     marginTop: "100px",
     padding: "0px 20px",
     height: "auto",
