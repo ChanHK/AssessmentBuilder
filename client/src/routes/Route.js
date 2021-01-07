@@ -9,7 +9,7 @@ const RouteWrapper = ({ component: Component, isPrivate, role, ...rest }) => {
   // console.log(logged);
 
   // if user have not logged in, direct to register page
-  if (isPrivate && !logged) {
+  if (isPrivate && !logged && role === "User") {
     return <Redirect to="/" />;
   }
 
