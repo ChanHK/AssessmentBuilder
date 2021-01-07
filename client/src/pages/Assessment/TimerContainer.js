@@ -75,8 +75,8 @@ class TimerContainer extends Component {
         minute: time.substring(3, 5),
         second: questionTimeSelected ? time.substring(6, 9) : "",
         noLimitSelected: noLimitSelected,
-        startDate: moment(startDate).toDate(),
-        endDate: moment(endDate).toDate(),
+        startDate: startDate === null ? "" : moment(startDate).toDate(),
+        endDate: endDate === null ? "" : moment(endDate).toDate(),
       });
     }
   }
