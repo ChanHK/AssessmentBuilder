@@ -176,9 +176,11 @@ class StartingPageContainer extends Component {
                     value={email}
                   />
                 </div>
-                <CustomSubLabel>Candidate Access Code</CustomSubLabel>
-                <>
-                  {withAuthenticationSelected && (
+
+                {withAuthenticationSelected && (
+                  <>
+                    <CustomSubLabel>Candidate Access Code</CustomSubLabel>
+
                     <div style={{ marginBottom: "25px" }}>
                       <CustomInput
                         name={"accessCode"}
@@ -188,8 +190,9 @@ class StartingPageContainer extends Component {
                         value={accessCode}
                       />
                     </div>
-                  )}
-                </>
+                  </>
+                )}
+
                 <div className={css(styles.redText)}>
                   {msg === null ? null : "*" + msg.message}
                 </div>
