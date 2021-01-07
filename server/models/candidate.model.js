@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 //response
-const CandidateSchema = new mongoosse.Schema({
+const CandidateSchema = new mongoose.Schema({
   assessments_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Assessment.assessments",
