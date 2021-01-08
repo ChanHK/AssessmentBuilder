@@ -3,6 +3,7 @@ import { CANDIDATE } from "../utils/actionTypes";
 const initialState = {
   isLoading: false,
   assessmentStartInfo: null,
+  direct: false,
 };
 
 export default function (state = initialState, action) {
@@ -34,6 +35,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+        direct: true,
       };
     default:
       return state;

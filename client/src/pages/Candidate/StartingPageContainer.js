@@ -40,6 +40,8 @@ class StartingPageContainer extends Component {
       accessCode: "",
       msg: null,
       withAuthenticationSelected: false,
+      setLength: 0,
+      type: "", // random? fixed? or manual
     };
   }
 
@@ -76,12 +78,26 @@ class StartingPageContainer extends Component {
         withAuthenticationSelected,
       } = candidateReducer.assessmentStartInfo.access;
 
+      const {
+        totalSetNum,
+        fixedSelected,
+        randomSelected,
+        manualSelected,
+        manualRandomSelected,
+      } = candidateReducer.assessmentStartInfo.sets;
+
+      if (fixedSelected) this.setState({ type: 1 });
+      if (randomSelected) this.setState({ type: 2 });
+      if (manualSelected) this.setState({ type: 3 });
+      if (manualRandomSelected) this.setState({ type: 4 });
+
       let temp = this.convert(testInstruction);
 
       this.setState({
         assessmentTitle: testName,
         instruction: temp,
         withAuthenticationSelected: withAuthenticationSelected,
+        setLength: totalSetNum,
       });
     }
 
@@ -94,6 +110,7 @@ class StartingPageContainer extends Component {
   componentWillUnmount() {
     this.props.clearErrors();
     this.props.candidateReducer.assessmentStartInfo = null;
+    this.props.candidateReducer.direct = false;
   }
 
   convert = (data) => {
@@ -133,7 +150,23 @@ class StartingPageContainer extends Component {
       accessCode,
       msg,
       withAuthenticationSelected,
+      setLength,
+      type,
     } = this.state;
+
+    if (this.props.candidateReducer.direct) {
+      let temp = [];
+
+      for (let i = 0; i < setLength; i++) {
+        temp.push(i);
+      }
+
+      let set = temp[Math.floor(Math.random() * temp.length)];
+
+      this.props.history.push(
+        `/assessment/attempt/${set}/${type}/${this.props.match.params.assessmentID}`
+      );
+    }
 
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
