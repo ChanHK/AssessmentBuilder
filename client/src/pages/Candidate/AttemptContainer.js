@@ -154,6 +154,25 @@ class AttemptContainer extends Component {
                                   type="checkbox"
                                   checked={question[index].checked[x]}
                                   className={css(styles.checkBox)}
+                                  onChange={(e) => {
+                                    let temp = question[index].checked;
+                                    for (let i = 0; i < temp.length; i++) {
+                                      temp[i] = false;
+                                    }
+                                    temp[x] = true;
+                                    this.setState({
+                                      question: [
+                                        ...question.slice(0, index),
+                                        {
+                                          ...question[index],
+                                          response:
+                                            question[index].questionChoices[x],
+                                          checked: temp,
+                                        },
+                                        ...question.slice(index + 1),
+                                      ],
+                                    });
+                                  }}
                                 />
                               </div>
                               <div style={{ width: "100%" }}>
