@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import jwt_decode from "jwt-decode";
 
 import history from "./services/history";
 import Routes from "./routes";
