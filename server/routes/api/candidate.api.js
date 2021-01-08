@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth = require("../../middleware/cand.auth");
 
 const db = require("../../models");
 
 // @route     GET api/candidate/start/assessment/fetch/:assessmentID
-// @desc      GET assessment name and instructions
+// @desc      GET assessment settings, set, timer, access
 // @access    Public
 router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
   db.Assessment.findOne({
@@ -151,6 +151,23 @@ router.post(
           });
       })
       .catch((err) => console.log(err));
+  }
+);
+
+// @route     GET api/candidate/attempt/assessment/fetch/set/:assessmentID
+// @desc      GET question set
+// @access    Private (candidate)
+router.get(
+  "/attempt/assessment/fetch/set/:set/:assessmentID",
+  auth,
+  (req, res) => {
+    db.AssessmentSet.findOne({ assessments_id: req.params.assessmentID })
+      .then((array) => {
+        return res.json(array.generatedSets[req.params.set]);
+      })
+      .catch(() => {
+        return res.json({ message: "Fetch failed" });
+      });
   }
 );
 
