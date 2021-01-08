@@ -25,6 +25,7 @@ class AttemptContainer extends Component {
     this.state = {
       index: 0, //array index
       question: [],
+      orderCount: 0,
     };
   }
 
@@ -106,7 +107,7 @@ class AttemptContainer extends Component {
   };
 
   render() {
-    const { question, index } = this.state;
+    const { question, index, orderCount } = this.state;
     if (question.length === 0) return false;
     // console.log(question[0]);
     return (
@@ -260,16 +261,28 @@ class AttemptContainer extends Component {
                           <div className={css(styles.choiceRow)}>
                             <CustomRow>
                               <div
-                                className={css(styles.countBox)}
+                                className={css(
+                                  styles.countBox,
+                                  styles.noSelect
+                                )}
                                 onClick={() => {
+                                  let temp = question[index].response;
+                                  temp[x] = orderCount;
+                                  if (
+                                    orderCount <
+                                    question[index].questionChoices.length - 1
+                                  ) {
+                                    this.setState({
+                                      orderCount: orderCount + 1,
+                                    });
+                                  } else this.setState({ orderCount: 0 });
+
                                   this.setState({
                                     question: [
                                       ...question.slice(0, index),
                                       {
                                         ...question[index],
-                                        response: [
-                                          //slice here
-                                        ],
+                                        response: temp,
                                       },
                                       ...question.slice(index + 1),
                                     ],
@@ -391,6 +404,10 @@ const styles = StyleSheet.create({
     width: "100px",
     height: "70px",
     cursor: "pointer",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "Ubuntu-bold",
+    display: "flex",
   },
   countdownCon: {
     width: "100%",
