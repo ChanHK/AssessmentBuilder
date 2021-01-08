@@ -80,6 +80,10 @@ const AssessmentSchema = new mongoose.Schema({
           type: Boolean,
           default: false,
         },
+        totalSetNum: {
+          type: Number,
+          default: 0,
+        },
       },
       timer: {
         assessmentTimeSelected: {

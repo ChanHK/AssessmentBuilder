@@ -283,6 +283,7 @@ class SetContainer extends Component {
       manualSelected: manualSelected,
       manualRandomSelected: manualRandomSelected,
       assessmentID: assessmentID,
+      totalSetNum: generatedSets.length,
     };
 
     const setQuestionID = {

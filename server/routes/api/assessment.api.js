@@ -198,6 +198,7 @@ router.post("/assessment/sets/update/:assessmentID", auth, (req, res) => {
         "assessments.$.sets.manualSelected": req.body.manualSelected,
         "assessments.$.sets.manualRandomSelected":
           req.body.manualRandomSelected,
+        "assessments.$.sets.totalSetNum": req.body.totalSetNum,
       },
     },
     {
