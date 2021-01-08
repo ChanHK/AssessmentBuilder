@@ -6,20 +6,6 @@ import jwt_decode from "jwt-decode";
 import history from "./services/history";
 import Routes from "./routes";
 import store from "./config/store";
-import { logout } from "./actions/auth.actions";
-
-if (localStorage.getItem("token")) {
-  const token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
-  console.log("from App.js", token);
-  // Check for expired token
-  const currentTime = Date.now() / 1000; // to get in milliseconds
-  if (decoded.exp < currentTime) {
-    store.dispatch(logout());
-
-    window.location.href = "/login";
-  }
-}
 
 class App extends Component {
   render() {
