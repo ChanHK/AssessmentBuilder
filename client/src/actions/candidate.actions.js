@@ -66,7 +66,7 @@ export const candidateRegister = (data) => (dispatch) => {
 };
 
 export const candidateRegister2 = (data) => (dispatch) => {
-  dispatch({ type: CANDIDATE.CANDIDATE_REQ_WITH_AC_BEGIN });
+  dispatch({ type: CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_BEGIN });
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -81,14 +81,14 @@ export const candidateRegister2 = (data) => (dispatch) => {
     )
     .then((res) =>
       dispatch({
-        type: CANDIDATE.CANDIDATE_REQ_WITH_AC_SUCCESS,
+        type: CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_SUCCESS,
         payload: res.data,
       })
     )
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
-        type: CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL,
+        type: CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_FAIL,
       });
     });
 };
