@@ -18,12 +18,15 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
 class AttemptContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       index: 0, //array index
       question: [],
       orderCount: 0,
+      set: this.props.match.params.set,
+      type: this.props.match.params.type, //random, fixed or manual | manual with random ?
+      assessmentID: this.props.match.params.assessmentID,
     };
   }
 
