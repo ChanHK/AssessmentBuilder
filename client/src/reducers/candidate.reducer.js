@@ -9,6 +9,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case CANDIDATE.FETCH_ASSESSMENT_START_INFO_BEGIN:
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_BEGIN:
+    case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -21,11 +22,13 @@ export default function (state = initialState, action) {
       };
     case CANDIDATE.FETCH_ASSESSMENT_START_INFO_FAIL:
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL:
+    case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_FAIL:
       return {
         ...state,
         isLoading: false,
       };
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_SUCCESS:
+    case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("role", action.payload.role);
       return {

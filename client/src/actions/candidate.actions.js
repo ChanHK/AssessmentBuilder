@@ -58,7 +58,34 @@ export const candidateRegister = (data) => (dispatch) => {
       })
     )
     .catch((err) => {
-      console.log(err.response.data);
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL,
+      });
+    });
+};
+
+export const candidateRegister2 = (data) => (dispatch) => {
+  dispatch({ type: CANDIDATE.CANDIDATE_REQ_WITH_AC_BEGIN });
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axios
+    .post(
+      `/api/candidate/start/assessment/register/without_auth/${data.assessmentID}`,
+      data,
+      config
+    )
+    .then((res) =>
+      dispatch({
+        type: CANDIDATE.CANDIDATE_REQ_WITH_AC_SUCCESS,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
         type: CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL,

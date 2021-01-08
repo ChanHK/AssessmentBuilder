@@ -22,6 +22,7 @@ import { connect } from "react-redux";
 import {
   fetchAssessmentInfo,
   candidateRegister,
+  candidateRegister2,
 } from "../../actions/candidate.actions";
 
 import jwt_decode from "jwt-decode";
@@ -120,6 +121,7 @@ class StartingPageContainer extends Component {
     };
 
     if (withAuthenticationSelected) this.props.candidateRegister(data);
+    else this.props.candidateRegister2(data);
   };
 
   render() {
@@ -251,6 +253,7 @@ StartingPageContainer.propTypes = {
   candidateRegister: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
   clearErrors: PropTypes.func.isRequired,
+  candidateRegister2: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -263,4 +266,5 @@ export default connect(mapStateToProps, {
   logout,
   candidateRegister,
   clearErrors,
+  candidateRegister2,
 })(StartingPageContainer);
