@@ -7,7 +7,7 @@ const db = require("../../models");
 
 // @route     GET api/candidate/start/assessment/fetch/:assessmentID
 // @desc      GET assessment name and instructions
-// @access    Private
+// @access    Public
 router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
   db.Assessment.findOne({
     assessments: { $elemMatch: { _id: req.params.assessmentID } },
@@ -45,7 +45,7 @@ router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
 });
 
 // @route     POST api/candidate/start/assessment/register/with_auth/:assessmentID
-// @desc      register user and return JWT token
+// @desc      register user and return JWT token (with code)
 // @access    Public
 router.post(
   "/start/assessment/register/with_auth/:assessmentID",
@@ -102,5 +102,10 @@ router.post(
       .catch((err) => console.log(err));
   }
 );
+
+// @route     POST api/candidate/start/assessment/register/without_auth/:assessmentID
+// @desc      register user and return JWT token (without code)
+// @access    Public
+
 
 module.exports = router;
