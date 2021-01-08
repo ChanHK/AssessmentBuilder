@@ -154,7 +154,7 @@ class AttemptContainer extends Component {
                                   type="checkbox"
                                   checked={question[index].checked[x]}
                                   className={css(styles.checkBox)}
-                                  onChange={(e) => {
+                                  onChange={() => {
                                     let temp = question[index].checked;
                                     for (let i = 0; i < temp.length; i++) {
                                       temp[i] = false;
@@ -201,6 +201,30 @@ class AttemptContainer extends Component {
                                   type="checkbox"
                                   checked={question[index].checked[x]}
                                   className={css(styles.checkBox)}
+                                  onChange={(e) => {
+                                    let temp = question[index].checked;
+                                    temp[x] = e.target.checked;
+
+                                    let array = [];
+                                    temp.forEach((ele, y) => {
+                                      if (ele)
+                                        array.push(
+                                          question[index].questionChoices[y]
+                                        );
+                                    });
+
+                                    this.setState({
+                                      question: [
+                                        ...question.slice(0, index),
+                                        {
+                                          ...question[index],
+                                          response: array,
+                                          checked: temp,
+                                        },
+                                        ...question.slice(index + 1),
+                                      ],
+                                    });
+                                  }}
                                 />
                               </div>
                               <div style={{ width: "100%" }}>
