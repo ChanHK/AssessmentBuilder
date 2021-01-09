@@ -92,3 +92,28 @@ export const candidateRegister2 = (data) => (dispatch) => {
       });
     });
 };
+
+export const fetchAssessmentSetForCandidate = (data) => (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_BEGIN });
+
+  axios
+    .get(
+      `/api/candidate/attempt/assessment/fetch/set/${data.set}/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_FAIL });
+    });
+};

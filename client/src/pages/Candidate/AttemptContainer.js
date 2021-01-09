@@ -17,6 +17,10 @@ import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchAssessmentSetForCandidate } from "../../actions/candidate.actions";
+
 class AttemptContainer extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +35,15 @@ class AttemptContainer extends Component {
   }
 
   componentDidMount() {
+    const { set, assessmentID } = this.state;
+
+    const data = {
+      set: set,
+      assessmentID: assessmentID,
+    };
+
+    this.props.fetchAssessmentSetForCandidate(data);
+
     this.setState({
       question: [
         {
@@ -77,6 +90,21 @@ class AttemptContainer extends Component {
         },
       ],
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { candidateReducer } = this.props;
+    let setArray = [];
+    if (
+      prevProps.candidateReducer !== candidateReducer &&
+      candidateReducer.setIDs !== null
+    ) {
+      setArray = candidateReducer.setIDs;
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.candidateReducer.setIDs = null;
   }
 
   convertHtml = (data) => {
@@ -467,4 +495,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AttemptContainer;
+AttemptContainer.propTypes = {
+  candidateReducer: PropTypes.object.isRequired,
+  fetchAssessmentSetForCandidate: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  candidateReducer: state.candidateReducer,
+});
+
+export default connect(mapStateToProps, {
+  fetchAssessmentSetForCandidate,
+})(AttemptContainer);

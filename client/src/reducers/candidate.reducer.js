@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   assessmentStartInfo: null,
   direct: false,
+  setIDs: null,
 };
 
 export default function (state = initialState, action) {
@@ -11,6 +12,7 @@ export default function (state = initialState, action) {
     case CANDIDATE.FETCH_ASSESSMENT_START_INFO_BEGIN:
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_BEGIN:
     case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_BEGIN:
+    case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -24,6 +26,7 @@ export default function (state = initialState, action) {
     case CANDIDATE.FETCH_ASSESSMENT_START_INFO_FAIL:
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL:
     case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_FAIL:
+    case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -36,6 +39,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         direct: true,
+      };
+    case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        setIDs: action.payload,
       };
     default:
       return state;
