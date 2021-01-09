@@ -52,7 +52,7 @@ class StartingPageContainer extends Component {
       const currentTime = Date.now() / 1000;
       if (decoded.exp < currentTime) {
         this.props.logout();
-        this.props.history.push("/login");
+        // this.props.history.push("/login"); ###push to error page
       }
     }
     const data = {
