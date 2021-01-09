@@ -47,11 +47,19 @@ class AttemptContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { candidateReducer } = this.props;
-
+    const { type } = this.state;
     if (
       prevProps.candidateReducer !== candidateReducer &&
       candidateReducer.questionSet !== null
     ) {
+      if (type === 2) {
+        //randomize questions and choices
+      }
+
+      if (type === 4) {
+        //randomize choices
+      }
+
       const { questionSet } = this.props.candidateReducer;
       this.setState({ question: questionSet });
     }
