@@ -32,6 +32,7 @@ class AttemptContainer extends Component {
       type: this.props.match.params.type, //random, fixed or manual | manual with random ?
       assessmentID: this.props.match.params.assessmentID,
       set: this.props.match.params.set,
+      timeSettings: this.props.match.params.timeSettings,
     };
   }
 
@@ -89,7 +90,7 @@ class AttemptContainer extends Component {
   };
 
   render() {
-    const { question, index, orderCount } = this.state;
+    const { question, index, orderCount, timeSettings } = this.state;
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
     if (question.length === 0) return false;
@@ -105,10 +106,12 @@ class AttemptContainer extends Component {
                   style={{ marginTop: "25px" }}
                   className={css(styles.countdownCon)}
                 >
-                  <Countdown
-                    date={Date.now() + 10000}
-                    className={css(styles.countdown)}
-                  />
+                  {timeSettings !== "3" && (
+                    <Countdown
+                      date={Date.now() + 10000}
+                      className={css(styles.countdown)}
+                    />
+                  )}
                 </div>
                 <div style={{ marginTop: "25px" }}>
                   <h4 className={css(styles.questionText)}>
@@ -335,18 +338,20 @@ class AttemptContainer extends Component {
                 </div>
                 <div className={css(styles.buttonRowCon)}>
                   <CustomRow>
-                    <div style={{ marginRight: "15px" }}>
-                      <Button
-                        backgroundColor={configStyles.colors.darkBlue}
-                        color={configStyles.colors.white}
-                        padding={"8px"}
-                        width={"75px"}
-                        type={"button"}
-                        onClick={this.back}
-                      >
-                        Back
-                      </Button>
-                    </div>
+                    {timeSettings !== "2" && (
+                      <div style={{ marginRight: "15px" }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          width={"75px"}
+                          type={"button"}
+                          onClick={this.back}
+                        >
+                          Back
+                        </Button>
+                      </div>
+                    )}
                     <div style={{ marginRight: "15px" }}>
                       <Button
                         backgroundColor={configStyles.colors.darkBlue}

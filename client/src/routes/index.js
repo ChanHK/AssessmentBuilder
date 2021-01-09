@@ -162,7 +162,7 @@ export default function Routes() {
           role={"Candidate"}
         />
         <Route
-          path="/assessment/attempt/:set/:type(1|2|3|4)/:assessmentID"
+          path="/assessment/attempt/:set/:type(1|2|3|4)/:timeSettings(1|2|3)/:assessmentID"
           exact
           component={AttemptContainer}
           isPrivate

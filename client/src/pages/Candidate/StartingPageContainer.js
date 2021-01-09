@@ -42,6 +42,8 @@ class StartingPageContainer extends Component {
       withAuthenticationSelected: false,
       setLength: 0,
       type: "", // random? fixed? or manual
+      time: "",
+      timeSettings: "",
     };
   }
 
@@ -86,10 +88,21 @@ class StartingPageContainer extends Component {
         manualRandomSelected,
       } = candidateReducer.assessmentStartInfo.sets;
 
+      const {
+        assessmentTimeSelected,
+        questionTimeSelected,
+        noLimitSelected,
+        time,
+      } = candidateReducer.assessmentStartInfo.timer;
+
       if (fixedSelected) this.setState({ type: 1 });
       if (randomSelected) this.setState({ type: 2 });
       if (manualSelected) this.setState({ type: 3 });
       if (manualRandomSelected) this.setState({ type: 4 });
+
+      if (assessmentTimeSelected) this.setState({ timeSettings: 1 });
+      if (questionTimeSelected) this.setState({ timeSettings: 2 });
+      if (noLimitSelected) this.setState({ timeSettings: 3 });
 
       let temp = this.convert(testInstruction);
 
@@ -98,6 +111,7 @@ class StartingPageContainer extends Component {
         instruction: temp,
         withAuthenticationSelected: withAuthenticationSelected,
         setLength: totalSetNum,
+        time: time,
       });
     }
 
@@ -152,6 +166,7 @@ class StartingPageContainer extends Component {
       withAuthenticationSelected,
       setLength,
       type,
+      timeSettings,
     } = this.state;
 
     if (this.props.candidateReducer.direct) {
@@ -164,7 +179,7 @@ class StartingPageContainer extends Component {
       let set = temp[Math.floor(Math.random() * temp.length)];
 
       this.props.history.push(
-        `/assessment/attempt/${set}/${type}/${this.props.match.params.assessmentID}`
+        `/assessment/attempt/${set}/${type}/${timeSettings}/${this.props.match.params.assessmentID}`
       );
     }
 
