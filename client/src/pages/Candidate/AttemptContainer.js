@@ -28,83 +28,35 @@ class AttemptContainer extends Component {
       index: 0, //array index
       question: [],
       orderCount: 0,
-      set: this.props.match.params.set,
       type: this.props.match.params.type, //random, fixed or manual | manual with random ?
       assessmentID: this.props.match.params.assessmentID,
+      set: this.props.match.params.set,
     };
   }
 
   componentDidMount() {
-    const { set, assessmentID } = this.state;
-
     const data = {
-      set: set,
-      assessmentID: assessmentID,
+      set: this.state.set,
+      assessmentID: this.state.assessmentID,
     };
 
     this.props.fetchAssessmentSetForCandidate(data);
-
-    this.setState({
-      question: [
-        {
-          questionType: "Single Choice",
-          questionChoices: ["a", "b", "c"],
-          questionDescription: "firstttttttttt",
-          response: "",
-          checked: [false, false, false],
-        },
-        {
-          questionType: "Multiple Choice",
-          questionChoices: ["a", "b", "c"],
-          questionDescription: "secondddddddddd",
-          response: "",
-          checked: [false, false, false],
-        },
-        {
-          questionType: "Descriptive",
-          questionChoices: ["a", "b", "c"],
-          questionDescription: "thirddddddd",
-          response: "",
-          checked: null,
-        },
-        {
-          questionType: "True or False",
-          questionChoices: ["true", "false"],
-          questionDescription: "fourthhhhhhhh",
-          response: "",
-          checked: null,
-        },
-        {
-          questionType: "Short Answer",
-          questionChoices: ["a", "b", "c"],
-          questionDescription: "fifthhhhhhhhhhhh",
-          response: "",
-          checked: null,
-        },
-        {
-          questionType: "Order",
-          questionChoices: ["a", "b", "c"],
-          questionDescription: "sixthhhhhhhhhhhhh",
-          response: [],
-          checked: null,
-        },
-      ],
-    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { candidateReducer } = this.props;
-    let setArray = [];
+
     if (
       prevProps.candidateReducer !== candidateReducer &&
-      candidateReducer.setIDs !== null
+      candidateReducer.questionSet !== null
     ) {
-      setArray = candidateReducer.setIDs;
+      const { questionSet } = this.props.candidateReducer;
+      this.setState({ question: questionSet });
     }
   }
 
   componentWillUnmount() {
-    this.props.candidateReducer.setIDs = null;
+    this.props.candidateReducer.questionSet = null;
   }
 
   convertHtml = (data) => {
@@ -497,7 +449,7 @@ const styles = StyleSheet.create({
 
 AttemptContainer.propTypes = {
   candidateReducer: PropTypes.object.isRequired,
-  fetchAssessmentSetForCandidate: PropTypes.func.isRequired,
+  fetchAssessmentSetForCandidate: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

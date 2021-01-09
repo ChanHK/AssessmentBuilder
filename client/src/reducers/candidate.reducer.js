@@ -4,7 +4,7 @@ const initialState = {
   isLoading: false,
   assessmentStartInfo: null,
   direct: false,
-  setIDs: null,
+  questionSet: null,
 };
 
 export default function (state = initialState, action) {
@@ -44,7 +44,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        setIDs: action.payload,
+        questionSet: action.payload,
       };
     default:
       return state;
