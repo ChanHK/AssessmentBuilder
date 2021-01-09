@@ -11,6 +11,7 @@ import ScrollArrow from "../../components/ScrollArrow";
 import CustomEditor from "../../components/CustomEditor";
 import Button from "../../components/Button";
 import TextArea from "../../components/TextArea";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import Countdown from "react-countdown";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
@@ -89,6 +90,8 @@ class AttemptContainer extends Component {
 
   render() {
     const { question, index, orderCount } = this.state;
+    if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
     if (question.length === 0) return false;
     // console.log(question[0]);
     return (
