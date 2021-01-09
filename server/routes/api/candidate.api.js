@@ -23,7 +23,6 @@ router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
 
     .select("-assessments.access.accessCode")
     .select("-assessments.access.accessEmail")
-    .select("-assessments.access.attemptNum")
     .select("-assessments.access.link")
     .select("-assessments.access.noAuthenticationSelected")
 
