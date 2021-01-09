@@ -13,6 +13,7 @@ export default function (state = initialState, action) {
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_BEGIN:
     case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_BEGIN:
     case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_BEGIN:
+    case CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -27,6 +28,7 @@ export default function (state = initialState, action) {
     case CANDIDATE.CANDIDATE_REQ_WITH_AC_FAIL:
     case CANDIDATE.CANDIDATE_REQ_WITHOUT_AC_FAIL:
     case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_FAIL:
+    case CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -41,6 +43,7 @@ export default function (state = initialState, action) {
         direct: true,
       };
     case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_SUCCESS:
+    case CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_SUCCESS:
       return {
         ...state,
         isLoading: false,

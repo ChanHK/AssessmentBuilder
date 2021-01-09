@@ -117,3 +117,27 @@ export const fetchAssessmentSetForCandidate = (data) => (
       dispatch({ type: CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_FAIL });
     });
 };
+
+export const fetchAllQuestionForCandidate = (data) => (dispatch, getState) => {
+  dispatch({ type: CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_BEGIN });
+
+  axios
+    .get(
+      `/api/candidate/attempt/assessment/fetch/all_questions/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({
+        type: CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_FAIL,
+      });
+    });
+};
