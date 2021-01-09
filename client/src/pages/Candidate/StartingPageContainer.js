@@ -46,15 +46,15 @@ class StartingPageContainer extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      const decoded = jwt_decode(token);
-      const currentTime = Date.now() / 1000;
-      if (decoded.exp < currentTime) {
-        this.props.logout();
-        // this.props.history.push("/login"); ###push to error page
-      }
-    }
+    // if (localStorage.getItem("token")) {
+    //   const token = localStorage.getItem("token");
+    //   const decoded = jwt_decode(token);
+    //   const currentTime = Date.now() / 1000;
+    //   if (decoded.exp < currentTime) {
+    //     this.props.logout();
+    //     // this.props.history.push("/login"); ###push to error page
+    //   }
+    // }
     const data = {
       assessmentID: this.props.match.params.assessmentID,
     };
