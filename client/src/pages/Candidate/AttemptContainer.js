@@ -45,7 +45,7 @@ class AttemptContainer extends Component {
       assessmentID: this.state.assessmentID,
     };
 
-    if ((this.state.type === 1) | (this.state.type === 2)) {
+    if (this.state.type === "1" || this.state.type === "2") {
       this.props.fetchAllQuestionForCandidate(data);
     } else this.props.fetchAssessmentSetForCandidate(data);
   }
@@ -57,15 +57,30 @@ class AttemptContainer extends Component {
       prevProps.candidateReducer !== candidateReducer &&
       candidateReducer.questionSet !== null
     ) {
-      if (type === 2) {
+      if (type === "2") {
         //randomize questions and choices
       }
 
-      if (type === 4) {
+      if (type === "4") {
         //randomize choices
       }
 
       const { questionSet } = this.props.candidateReducer;
+      let temp = questionSet;
+
+      temp.forEach((item, index) => {
+        if (
+          item.questionType === "Single Choice" ||
+          item.questionType === "Multiple Choice"
+        ) {
+          let checked = [];
+          for (let i = 0; i < item.questionChoices.length; i++) {
+            checked.push(false);
+          }
+          temp[index].checked = checked;
+        }
+      });
+
       this.setState({ question: questionSet });
     }
   }
@@ -107,7 +122,7 @@ class AttemptContainer extends Component {
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
     if (question.length === 0) return false;
-    // console.log(question[0]);
+    // console.log(question);
     return (
       <>
         <ScrollArrow />
