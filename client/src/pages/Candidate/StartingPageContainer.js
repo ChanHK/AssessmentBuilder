@@ -25,7 +25,7 @@ import {
   candidateRegister2,
 } from "../../actions/candidate.actions";
 
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 import { clearErrors } from "../../actions/error.actions";
 
