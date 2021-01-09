@@ -167,6 +167,8 @@ router.get(
         db.AssessmentQuestion.findOne({
           assessments_id: req.params.assessmentID,
         })
+          .select("-questions.score")
+          .select("-questions.section")
           .then((array) => {
             //retrieve all questions
             let temp = [];
@@ -197,6 +199,26 @@ router.get(
       .catch(() => {
         return res.json({ message: "Fetch failed 1" });
       });
+  }
+);
+
+// @route     GET api/candidate/attempt/assessment/fetch/all_questions/:assessmentID
+// @desc      GET all questions for candidate
+// @access    Private (candidate)
+router.get(
+  "/attempt/assessment/fetch/all_questions/:assessmentID",
+  auth,
+  (req, res) => {
+    db.AssessmentQuestion.findOne({
+      assessments_id: req.params.assessmentID,
+    })
+      .select("-questions.score")
+      .select("-questions.section")
+
+      .then((array) => {
+        return res.json(array.questions);
+      })
+      .catch((err) => console.log(err));
   }
 );
 
