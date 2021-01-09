@@ -171,4 +171,39 @@ router.get(
   }
 );
 
+// @route     GET api/candidate/attempt/assessment/fetch/set/:assessmentID
+// @desc      GET question based on id
+// @access    Private (candidate)
+router.get("/attempt/assessment/fetch/set/:assessmentID", auth, (req, res) => {
+  db.AssessmentQuestion.findOne({
+    assessments_id: req.params.assessmentID,
+  })
+    .then((array) => {
+      //retrieve all questions
+      let temp = [];
+      array.questions.forEach((item, index) => {
+        req.body.questionSet.forEach((item2, index2) => {
+          if (JSON.stringify(item._id) === `"` + item2 + `"`) {
+            temp.push(array.questions[index]);
+          }
+        });
+      });
+
+      // sort temp based on the order in set
+      let temp2 = [];
+      req.body.questionSet.forEach((item3, index3) => {
+        temp.forEach((item4, index4) => {
+          if (JSON.stringify(item4._id) === `"` + item3 + `"`) {
+            temp2.push(temp[index4]);
+          }
+        });
+      });
+
+      return res.json(temp2);
+    })
+    .catch(() => {
+      return res.json({ message: "Fetch failed" });
+    });
+});
+
 module.exports = router;
