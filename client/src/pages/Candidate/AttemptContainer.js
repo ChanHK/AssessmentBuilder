@@ -57,14 +57,6 @@ class AttemptContainer extends Component {
       prevProps.candidateReducer !== candidateReducer &&
       candidateReducer.questionSet !== null
     ) {
-      if (type === "2") {
-        //randomize questions and choices
-      }
-
-      if (type === "4") {
-        //randomize choices
-      }
-
       const { questionSet } = this.props.candidateReducer;
       let temp = questionSet;
 
@@ -81,6 +73,25 @@ class AttemptContainer extends Component {
         }
       });
 
+      if (type === "2") {
+        //randomize questions
+        temp = this.shuffleArray(temp);
+      }
+
+      if (type === "4" || type === "2") {
+        //randomize choices
+        temp.forEach((item, index) => {
+          if (
+            item.questionType !== "Descriptive" &&
+            item.questionType !== "Short Answer"
+          ) {
+            temp[index].questionChoices = this.shuffleArray(
+              item.questionChoices
+            );
+          }
+        });
+      }
+
       this.setState({ question: questionSet });
     }
   }
@@ -88,6 +99,18 @@ class AttemptContainer extends Component {
   componentWillUnmount() {
     this.props.candidateReducer.questionSet = null;
   }
+
+  shuffleArray = (array) => {
+    console.log(array);
+    for (let i = array.length - 1; i > 0; i--) {
+      console.log("running");
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    console.log(array);
+    console.log("----------------------------------------------");
+    return array;
+  };
 
   convertHtml = (data) => {
     const contentBlock = htmlToDraft(data);
