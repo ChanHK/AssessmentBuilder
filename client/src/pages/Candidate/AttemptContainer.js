@@ -73,6 +73,7 @@ class AttemptContainer extends Component {
           }
           temp[index].checked = checked;
         }
+        temp[index].response = "";
       });
 
       if (type === "2") {
