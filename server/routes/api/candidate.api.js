@@ -111,17 +111,7 @@ router.post(
     db.Assessment.findOne({
       assessments: { $elemMatch: { _id: req.params.assessmentID } },
     })
-      .then((array) => {
-        let i = 0;
-        array.assessments.forEach((item, index) => {
-          if (
-            JSON.stringify(item._id) ===
-            `"` + req.params.assessmentID + `"`
-          ) {
-            i = index;
-          }
-        });
-
+      .then(() => {
         const newCand = {
           assessments_id: req.params.assessmentID,
           name: req.body.name,
@@ -212,7 +202,6 @@ router.get(
       assessments_id: req.params.assessmentID,
     })
       .select("-questions.section")
-
       .then((array) => {
         return res.json(array.questions);
       })
@@ -228,7 +217,7 @@ router.post("/attempt/assessment/submit/:assessmentID", auth, (req, res) => {
     { _id: req.cand.id, assessments_id: req.params.assessmentID },
     {
       $push: {
-        response: req.body,
+        response: req.body.response,
       },
     },
     { upsert: true, new: true }
