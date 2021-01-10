@@ -130,9 +130,9 @@ class StartingPageContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearErrors();
     this.props.candidateReducer.assessmentStartInfo = null;
     this.props.candidateReducer.direct = false;
+    this.props.clearErrors();
   }
 
   convert = (data) => {

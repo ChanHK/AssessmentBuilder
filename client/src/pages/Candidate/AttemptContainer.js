@@ -190,13 +190,17 @@ class AttemptContainer extends Component {
       timeSettings,
       time,
       completions,
+      assessmentID,
     } = this.state;
+
+    if (this.props.candidateReducer.directStart) {
+      this.props.history.push(`/assessment/start/${assessmentID}`);
+    }
 
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     if (question.length === 0) return false;
-    // console.log(question);
 
     return (
       <>

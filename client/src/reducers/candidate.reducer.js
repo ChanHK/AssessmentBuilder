@@ -5,6 +5,7 @@ const initialState = {
   assessmentStartInfo: null,
   direct: false,
   questionSet: null,
+  directStart: false,
 };
 
 export default function (state = initialState, action) {
@@ -57,7 +58,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        direct: true,
+        directStart: true,
       };
     default:
       return state;

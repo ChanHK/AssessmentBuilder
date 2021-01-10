@@ -144,8 +144,7 @@ export const fetchAllQuestionForCandidate = (data) => (dispatch, getState) => {
 
 export const uploadCandidateResponses = (data) => (dispatch, getState) => {
   dispatch({ type: CANDIDATE.UPLOAD_CANDIDATE_RESPONSE_BEGIN });
-
-  console.log(data.response);
+  
   axios
     .post(
       `/api/candidate/attempt/assessment/submit/${data.assessmentID}`,
