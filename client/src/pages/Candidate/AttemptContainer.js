@@ -14,8 +14,7 @@ import TextArea from "../../components/TextArea";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
 import Countdown from "react-countdown";
-import { EditorState, convertToRaw, ContentState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
+import { EditorState, ContentState } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 
 import PropTypes from "prop-types";
