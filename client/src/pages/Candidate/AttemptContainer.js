@@ -74,6 +74,7 @@ class AttemptContainer extends Component {
           temp[index].checked = checked;
         }
         temp[index].response = "";
+        temp[index].question_id = temp[index]._id;
       });
 
       if (type === "2") {
