@@ -36,6 +36,8 @@ class AttemptContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       set: this.props.match.params.set,
       timeSettings: this.props.match.params.timeSettings,
+      time: parseInt(this.props.match.params.totalSec),
+      completions: 0, //for countdown
     };
   }
 
@@ -132,16 +134,35 @@ class AttemptContainer extends Component {
     }
   };
 
+  questionTime = () => {
+    const { index, question, completions } = this.state;
+    if (index < question.length - 1) {
+      this.setState({ index: index + 1, completions: completions + 1 });
+    } else {
+      this.onSubmit();
+    }
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
   };
 
   render() {
-    const { question, index, orderCount, timeSettings } = this.state;
+    const {
+      question,
+      index,
+      orderCount,
+      timeSettings,
+      time,
+      completions,
+    } = this.state;
+
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
     if (question.length === 0) return false;
     // console.log(question);
+
     return (
       <>
         <ScrollArrow />
@@ -153,10 +174,12 @@ class AttemptContainer extends Component {
                   style={{ marginTop: "25px" }}
                   className={css(styles.countdownCon)}
                 >
-                  {timeSettings !== "3" && (
+                  {timeSettings === "2" && (
                     <Countdown
-                      date={Date.now() + 10000}
+                      key={completions}
+                      date={Date.now() + time}
                       className={css(styles.countdown)}
+                      onComplete={this.questionTime}
                     />
                   )}
                 </div>
