@@ -23,6 +23,7 @@ import { connect } from "react-redux";
 import {
   fetchAssessmentSetForCandidate,
   fetchAllQuestionForCandidate,
+  uploadCandidateResponses,
 } from "../../actions/candidate.actions";
 
 class AttemptContainer extends Component {
@@ -159,11 +160,26 @@ class AttemptContainer extends Component {
   };
 
   submit = () => {
-    console.log("called");
+    const { question, assessmentID } = this.state;
+
+    const data = {
+      assessmentID: assessmentID,
+      response: question,
+    };
+
+    this.props.uploadCandidateResponses(data);
   };
 
   onSubmit = (e) => {
     e.preventDefault();
+    const { question, assessmentID } = this.state;
+
+    const data = {
+      assessmentID: assessmentID,
+      response: question,
+    };
+
+    this.props.uploadCandidateResponses(data);
   };
 
   render() {
@@ -556,6 +572,7 @@ AttemptContainer.propTypes = {
   candidateReducer: PropTypes.object.isRequired,
   fetchAssessmentSetForCandidate: PropTypes.func.isRequired,
   fetchAllQuestionForCandidate: PropTypes.func.isRequired,
+  uploadCandidateResponses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -565,4 +582,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchAssessmentSetForCandidate,
   fetchAllQuestionForCandidate,
+  uploadCandidateResponses,
 })(AttemptContainer);
