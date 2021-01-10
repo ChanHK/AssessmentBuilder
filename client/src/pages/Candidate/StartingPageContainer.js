@@ -106,12 +106,20 @@ class StartingPageContainer extends Component {
 
       let temp = this.convert(testInstruction);
 
+      let hour = time.substring(0, 2);
+      let minute = time.substring(3, 5);
+      let second = time.substring(6, 9);
+
+      let totalSec =
+        (parseInt(hour) * 3600 + parseInt(minute) * 60 + parseInt(second)) *
+        1000;
+
       this.setState({
         assessmentTitle: testName,
         instruction: temp,
         withAuthenticationSelected: withAuthenticationSelected,
         setLength: totalSetNum,
-        time: time,
+        time: totalSec.toString(),
       });
     }
 
@@ -167,6 +175,7 @@ class StartingPageContainer extends Component {
       setLength,
       type,
       timeSettings,
+      time,
     } = this.state;
 
     if (this.props.candidateReducer.direct) {
@@ -179,7 +188,7 @@ class StartingPageContainer extends Component {
       let set = temp[Math.floor(Math.random() * temp.length)];
 
       this.props.history.push(
-        `/assessment/attempt/${set}/${type}/${timeSettings}/${this.props.match.params.assessmentID}`
+        `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${this.props.match.params.assessmentID}`
       );
     }
 
