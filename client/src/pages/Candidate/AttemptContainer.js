@@ -143,6 +143,19 @@ class AttemptContainer extends Component {
     }
   };
 
+  countRender = ({ hours, minutes, seconds, completed }) => {
+    let totalSec =
+      (parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds)) *
+      1000;
+    if (this.state.time !== totalSec) this.setState({ time: totalSec });
+    if (completed) this.submit();
+    return (
+      <div className={css(styles.countdown)}>
+        {hours}:{minutes}:{seconds}
+      </div>
+    );
+  };
+
   submit = () => {
     console.log("called");
   };
@@ -191,7 +204,7 @@ class AttemptContainer extends Component {
                     <Countdown
                       date={Date.now() + time}
                       className={css(styles.countdown)}
-                      onComplete={this.submit()} //for assessment time
+                      renderer={this.countRender}
                     />
                   )}
                 </div>
