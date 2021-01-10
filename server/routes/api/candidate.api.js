@@ -167,7 +167,6 @@ router.get(
         db.AssessmentQuestion.findOne({
           assessments_id: req.params.assessmentID,
         })
-          .select("-questions.score")
           .select("-questions.section")
           .then((array) => {
             //retrieve all questions
@@ -212,7 +211,6 @@ router.get(
     db.AssessmentQuestion.findOne({
       assessments_id: req.params.assessmentID,
     })
-      .select("-questions.score")
       .select("-questions.section")
 
       .then((array) => {
