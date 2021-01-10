@@ -139,8 +139,12 @@ class AttemptContainer extends Component {
     if (index < question.length - 1) {
       this.setState({ index: index + 1, completions: completions + 1 });
     } else {
-      this.onSubmit();
+      this.submit();
     }
+  };
+
+  submit = () => {
+    console.log("called");
   };
 
   onSubmit = (e) => {
@@ -180,6 +184,14 @@ class AttemptContainer extends Component {
                       date={Date.now() + time}
                       className={css(styles.countdown)}
                       onComplete={this.questionTime}
+                    />
+                  )}
+
+                  {timeSettings === "1" && (
+                    <Countdown
+                      date={Date.now() + time}
+                      className={css(styles.countdown)}
+                      onComplete={this.submit()} //for assessment time
                     />
                   )}
                 </div>
