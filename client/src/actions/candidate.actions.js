@@ -3,7 +3,7 @@ import { CANDIDATE } from "../utils/actionTypes";
 import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
-  const token = getState().auth.token;
+  const token = getState().candidateReducer.token;
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -144,11 +144,11 @@ export const fetchAllQuestionForCandidate = (data) => (dispatch, getState) => {
 
 export const uploadCandidateResponses = (data) => (dispatch, getState) => {
   dispatch({ type: CANDIDATE.UPLOAD_CANDIDATE_RESPONSE_BEGIN });
-  
+
   axios
     .post(
       `/api/candidate/attempt/assessment/submit/${data.assessmentID}`,
-      data.response,
+      data,
       tokenConfig(getState)
     )
     .then((res) =>
