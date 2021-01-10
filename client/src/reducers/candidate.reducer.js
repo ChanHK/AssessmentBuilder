@@ -6,6 +6,8 @@ const initialState = {
   direct: false,
   questionSet: null,
   directStart: false,
+  token: localStorage.getItem("token"),
+  role: localStorage.getItem("role"),
 };
 
 export default function (state = initialState, action) {
@@ -44,6 +46,7 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         direct: true,
+        token: action.payload.token,
       };
     case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_SUCCESS:
     case CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_SUCCESS:
@@ -59,6 +62,7 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         directStart: true,
+        token: null,
       };
     default:
       return state;
