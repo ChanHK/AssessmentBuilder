@@ -14,8 +14,25 @@ const CandidateSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  assessment_set: [[String]],
-  response: [[String]],
+  response: [
+    {
+      question_id: {
+        type: String,
+        default: "",
+      },
+      questionAnswers: [String],
+      questionChoices: [String],
+      questionDescription: {
+        type: String,
+        default: "",
+      },
+      response: [String],
+      score: {
+        type: Number,
+        default: 0,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Candidate", CandidateSchema);
