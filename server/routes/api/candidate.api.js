@@ -220,4 +220,25 @@ router.get(
   }
 );
 
+// @route     POST api/candidate/attempt/assessment/submit/:assessmentID
+// @desc      POST candidate response
+// @access    Private (candidate)
+router.post("/attempt/assessment/submit/:assessmentID", auth, (req, res) => {
+  db.Candidate.updateOne(
+    { _id: req.cand.id, assessments_id: req.params.assessmentID },
+    {
+      $push: {
+        response: req.body,
+      },
+    },
+    { upsert: true, new: true }
+  )
+    .then(() => {
+      return res.status(200).json("Update success");
+    })
+    .catch(() => {
+      return res.status(200).json({ message: "failed in updating" });
+    });
+});
+
 module.exports = router;
