@@ -44,6 +44,7 @@ class StartingPageContainer extends Component {
       type: "", // random? fixed? or manual
       time: "",
       timeSettings: "",
+      attemptNum: 0,
     };
   }
 
@@ -78,6 +79,7 @@ class StartingPageContainer extends Component {
 
       const {
         withAuthenticationSelected,
+        attemptNum,
       } = candidateReducer.assessmentStartInfo.access;
 
       const {
@@ -120,6 +122,7 @@ class StartingPageContainer extends Component {
         withAuthenticationSelected: withAuthenticationSelected,
         setLength: totalSetNum,
         time: totalSec.toString(),
+        attemptNum: parseInt(attemptNum),
       });
     }
 
@@ -151,12 +154,20 @@ class StartingPageContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, accessCode, withAuthenticationSelected } = this.state;
+    const {
+      name,
+      email,
+      accessCode,
+      withAuthenticationSelected,
+      attemptNum,
+    } = this.state;
+
     const data = {
       assessmentID: this.props.match.params.assessmentID,
       name: name,
       email: email,
       accessCode: accessCode,
+      attemptNum: attemptNum,
     };
 
     if (withAuthenticationSelected) this.props.candidateRegister(data);
