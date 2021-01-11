@@ -26,7 +26,10 @@ import profile from "../../image/profile/dummyUser.png";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { homeFetchAllAssessment } from "../../actions/home.actions";
+import {
+  homeFetchAllAssessment,
+  createAssessmentObj,
+} from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -42,6 +45,7 @@ class HomeContainer extends Component {
       setupNum: 0,
       totalAssessmentNum: 0,
       activateNum: 0,
+      generatedID: "", //ID return from createAssessmentObj
     };
   }
 
@@ -88,10 +92,16 @@ class HomeContainer extends Component {
         assessments: assessments,
       });
     }
+
+    if (prevProps.homeReducer !== homeReducer && homeReducer.newID !== null) {
+      const { newID } = homeReducer;
+      this.setState({ generatedID: newID.assessmentID });
+    }
   }
 
   componentWillUnmount() {
     this.props.homeReducer.assessments = null;
+    this.props.homeReducer.newID = null;
   }
 
   onChangeSearchText = (e) => {
@@ -99,9 +109,7 @@ class HomeContainer extends Component {
   };
 
   toCreateAssessment = () => {
-    this.props.history.push(
-      "assessment/create/settings/5ff6c687671cd624448ce47b"
-    );
+    this.props.createAssessmentObj();
   };
 
   render() {
@@ -111,6 +119,7 @@ class HomeContainer extends Component {
       setupNum,
       totalAssessmentNum,
       activateNum,
+      generatedID,
     } = this.state;
 
     const tableHeader = [
@@ -203,6 +212,10 @@ class HomeContainer extends Component {
         width: "400px",
       },
     ];
+
+    if (generatedID !== "") {
+      this.props.history.push(`assessment/create/settings/${generatedID}`);
+    }
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -306,6 +319,7 @@ HomeContainer.propTypes = {
   homeFetchAllAssessment: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  createAssessmentObj: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -315,4 +329,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   homeFetchAllAssessment,
   logout,
+  createAssessmentObj,
 })(HomeContainer);

@@ -32,3 +32,22 @@ export const homeFetchAllAssessment = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.HOME_FETCH_ALL_ASSESSMENTS_FAIL });
     });
 };
+
+export const createAssessmentObj = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.CREATE_ASSESSMENT_OBJ_BEGIN });
+
+  axios
+    .post("/api/user/home/assessment/create", data, tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.CREATE_ASSESSMENT_OBJ_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("Create failed", err);
+      dispatch({ type: HOME.CREATE_ASSESSMENT_OBJ_FAIL });
+    });
+};
