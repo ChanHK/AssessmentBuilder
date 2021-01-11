@@ -111,6 +111,10 @@ const AssessmentSchema = new mongoose.Schema({
           default: "",
         },
       },
+      status: {
+        type: String,
+        default: "Setup in progress",
+      },
     },
   ],
 });
