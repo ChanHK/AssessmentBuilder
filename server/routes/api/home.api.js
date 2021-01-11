@@ -76,4 +76,15 @@ router.post("/assessment/create", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/home/profile/fetch/image
+// @desc      GET user profile pic
+// @access    Private
+router.get("/profile/fetch/image", auth, (req, res) => {
+  db.User.findOne({ _id: req.user.id })
+    .then((result) => {
+      return res.json(result.image);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

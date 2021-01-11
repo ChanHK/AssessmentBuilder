@@ -51,3 +51,22 @@ export const createAssessmentObj = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.CREATE_ASSESSMENT_OBJ_FAIL });
     });
 };
+
+export const fetchProfilePic = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.FETCH_USER_PROFILE_PIC_BEGIN });
+
+  axios
+    .get("/api/user/home/profile/fetch/image", tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.FETCH_USER_PROFILE_PIC_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: HOME.FETCH_USER_PROFILE_PIC_FAIL });
+    });
+};

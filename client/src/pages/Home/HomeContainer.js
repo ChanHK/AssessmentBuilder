@@ -29,6 +29,7 @@ import { connect } from "react-redux";
 import {
   homeFetchAllAssessment,
   createAssessmentObj,
+  fetchProfilePic,
 } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -43,6 +44,10 @@ class HomeContainer extends Component {
       totalAssessmentNum: 0,
       activateNum: 0,
       generatedID: "", //ID return from createAssessmentObj
+      url: "", //pic
+      posX: "",
+      posY: "",
+      scale: "",
     };
   }
 
@@ -60,6 +65,7 @@ class HomeContainer extends Component {
     }
 
     this.props.homeFetchAllAssessment();
+    this.props.fetchProfilePic();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -94,6 +100,16 @@ class HomeContainer extends Component {
       const { newID } = homeReducer;
       this.setState({ generatedID: newID.assessmentID });
     }
+
+    if (prevProps.homeReducer !== homeReducer && homeReducer.pic !== null) {
+      const { url, posX, posY, scale } = homeReducer.pic;
+      this.setState({
+        url: url,
+        posX: parseFloat(posX),
+        posY: parseFloat(posY),
+        scale: parseFloat(scale),
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -117,7 +133,15 @@ class HomeContainer extends Component {
       totalAssessmentNum,
       activateNum,
       generatedID,
+      url,
+      posX,
+      posY,
+      scale,
     } = this.state;
+
+    let position = { x: 0.5, y: 0.5 };
+    position.x = posX;
+    position.y = posY;
 
     const tableHeader = [
       {
@@ -238,7 +262,12 @@ class HomeContainer extends Component {
             <CustomColumn>
               <div style={{ paddingTop: "80px", paddingBottom: "20px" }}>
                 <StatusBarWrapper>
-                  <StatusBarImage image={profile} style={[styles.imgPos]} />
+                  <StatusBarImage
+                    image={url}
+                    style={[styles.imgPos]}
+                    position={position}
+                    scale={scale}
+                  />
                   <StatusBox
                     number={totalAssessmentNum}
                     text={"Total Assessments"}
@@ -311,7 +340,8 @@ HomeContainer.propTypes = {
   homeFetchAllAssessment: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  createAssessmentObj: PropTypes.object.isRequired,
+  createAssessmentObj: PropTypes.func.isRequired,
+  fetchProfilePic: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -322,4 +352,5 @@ export default connect(mapStateToProps, {
   homeFetchAllAssessment,
   logout,
   createAssessmentObj,
+  fetchProfilePic,
 })(HomeContainer);
