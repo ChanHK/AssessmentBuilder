@@ -61,10 +61,11 @@ router.post("/assessment/create", auth, (req, res) => {
             {
               $inc: { totalAssessmentsCreated: 1 },
             }
-          );
-          return res.json({
-            assessmentID:
-              assessment.assessments[assessment.assessments.length - 1]._id,
+          ).then(() => {
+            return res.json({
+              assessmentID:
+                assessment.assessments[assessment.assessments.length - 1]._id,
+            });
           });
         })
         .catch((err) => {
