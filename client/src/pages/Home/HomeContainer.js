@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 import { StyleSheet, css } from "aphrodite";
 
 import Header from "../../components/Header";
@@ -9,6 +10,7 @@ import ScrollArrow from "../../components/ScrollArrow";
 import Wrapper from "../../components/Wrapper";
 import SearchBar from "../../components/SearchBar";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -16,42 +18,49 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
-
 import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
 
 import profile from "../../image/profile/dummyUser.png";
 
-import "../../css/general.css";
-
-import * as configStyles from "../../config/styles";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { homeFetchAllAssessment } from "../../actions/home.actions";
 
 // import * as MdIcons from "react-icons/md";
 // import * as BsIcons from "react-icons/bs";
 
-//tempory since this will be obtain from the store
-const data = [
-  { title: "english test 1", status: "Setup in progress" },
-  { title: "mathematics", status: "Active" },
-  { title: "physics", status: "Ended" },
-  { title: "chemistry", status: "Active" },
-  { title: "biology", status: "Ended" },
-  { title: "programming", status: "Setup in progress" },
-  { title: "english test 1", status: "Setup in progress" },
-  { title: "mathematics", status: "Active" },
-  { title: "physics", status: "Ended" },
-  { title: "chemistry", status: "Active" },
-  { title: "biology", status: "Ended" },
-  { title: "programming", status: "Setup in progress" },
-];
-
-export default class HomeContainer extends Component {
+class HomeContainer extends Component {
   constructor() {
     super();
     this.state = {
       searchText: "",
+      assessments: [], //assessments fetched from db
     };
+  }
+
+  componentDidMount() {
+    this.props.homeFetchAllAssessment();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { homeReducer } = this.props;
+
+    if (
+      prevProps.homeReducer !== homeReducer &&
+      homeReducer.assessments !== null
+    ) {
+      const { assessments } = homeReducer;
+
+      this.setState({
+        assessments: assessments,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.homeReducer.assessments = null;
   }
 
   onChangeSearchText = (e) => {
@@ -59,10 +68,14 @@ export default class HomeContainer extends Component {
   };
 
   toCreateAssessment = () => {
-    this.props.history.push("assessment/create/settings/5fea0e991e2c6d35d0336986");
+    this.props.history.push(
+      "assessment/create/settings/5ff6c687671cd624448ce47b"
+    );
   };
 
   render() {
+    const { searchText, assessments } = this.state;
+
     const tableHeader = [
       {
         name: "#",
@@ -78,12 +91,12 @@ export default class HomeContainer extends Component {
       },
       {
         name: "Assessment Title",
-        selector: "title",
+        selector: "settings.testName",
         sortable: true,
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.title}
+              {row.settings.testName}
             </div>
           </div>
         ),
@@ -154,11 +167,12 @@ export default class HomeContainer extends Component {
       },
     ];
 
-    const { searchText } = this.state;
-
-    data.forEach((data, index) => {
+    assessments.forEach((data, index) => {
       data.serial = index + 1;
     });
+
+    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     return (
       <>
@@ -203,7 +217,7 @@ export default class HomeContainer extends Component {
               </Wrapper>
               <div style={{ padding: "50px 0px", marginBottom: "100px" }}>
                 <Table
-                  data={data}
+                  data={assessments}
                   columns={tableHeader}
                   // path={`questionbank/viewQuestion`}
                 />
@@ -231,3 +245,16 @@ const styles = StyleSheet.create({
     float: "left",
   },
 });
+
+HomeContainer.propTypes = {
+  homeFetchAllAssessment: PropTypes.func.isRequired,
+  homeReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+});
+
+export default connect(mapStateToProps, {
+  homeFetchAllAssessment,
+})(HomeContainer);
