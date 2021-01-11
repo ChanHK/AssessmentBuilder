@@ -12,11 +12,13 @@ export default function (state = initialState, action) {
     case HOME.HOME_FETCH_ALL_ASSESSMENTS_BEGIN:
     case HOME.CREATE_ASSESSMENT_OBJ_BEGIN:
     case HOME.FETCH_USER_PROFILE_PIC_BEGIN:
+    case HOME.DELETE_ASSESSMENT_BEGIN:
       return {
         ...state,
         isLoading: true,
       };
     case HOME.HOME_FETCH_ALL_ASSESSMENTS_SUCCESS:
+    case HOME.DELETE_ASSESSMENT_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -25,6 +27,7 @@ export default function (state = initialState, action) {
     case HOME.HOME_FETCH_ALL_ASSESSMENTS_FAIL:
     case HOME.CREATE_ASSESSMENT_OBJ_FAIL:
     case HOME.FETCH_USER_PROFILE_PIC_FAIL:
+    case HOME.DELETE_ASSESSMENT_FAIL:
       return {
         ...state,
         isLoading: false,

@@ -22,14 +22,13 @@ import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
 
-import profile from "../../image/profile/dummyUser.png";
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   homeFetchAllAssessment,
   createAssessmentObj,
   fetchProfilePic,
+  deleteAssessment,
 } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -206,7 +205,16 @@ class HomeContainer extends Component {
             >
               Edit
             </TableButton>
-            <TableButton>Delete</TableButton>
+            <TableButton
+              onClick={() => {
+                const data = {
+                  assessmentID: row._id,
+                };
+                this.props.deleteAssessment(data);
+              }}
+            >
+              Delete
+            </TableButton>
             <TableButton
             // onClick={() => {
             //   this.props.history.push(`questionbank/viewQuestion`);
@@ -354,6 +362,7 @@ HomeContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   createAssessmentObj: PropTypes.func.isRequired,
   fetchProfilePic: PropTypes.func.isRequired,
+  deleteAssessment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -365,4 +374,5 @@ export default connect(mapStateToProps, {
   logout,
   createAssessmentObj,
   fetchProfilePic,
+  deleteAssessment,
 })(HomeContainer);

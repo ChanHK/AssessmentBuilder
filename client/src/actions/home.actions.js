@@ -70,3 +70,26 @@ export const fetchProfilePic = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.FETCH_USER_PROFILE_PIC_FAIL });
     });
 };
+
+export const deleteAssessment = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.DELETE_ASSESSMENT_BEGIN });
+
+  axios
+    .post(
+      `/api/user/home/assessment/delete/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.DELETE_ASSESSMENT_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("delete failed", err);
+      dispatch({ type: HOME.DELETE_ASSESSMENT_FAIL });
+    });
+};
