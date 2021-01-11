@@ -75,23 +75,23 @@ class HomeContainer extends Component {
       homeReducer.assessments !== null
     ) {
       const { assessments } = homeReducer;
-      const { setupNum, activateNum, totalAssessmentNum } = this.state;
 
+      let tempSetupNum = 0;
+      let tempActivateNum = 0;
       assessments.forEach((item, index) => {
         if (item.status === "Setup in progress") {
-          this.setState({ setupNum: setupNum + 1 });
+          tempSetupNum++;
         }
-        if (item.statys === "Activated") {
-          this.setState({ activateNum: activateNum + 1 });
+        if (item.status === "Activated") {
+          tempActivateNum++;
         }
-
-        this.setState({
-          totalAssessmentNum: totalAssessmentNum + 1,
-        });
       });
 
       this.setState({
         assessments: assessments,
+        totalAssessmentNum: assessments.length,
+        setupNum: tempSetupNum,
+        activateNum: tempActivateNum,
       });
     }
 
