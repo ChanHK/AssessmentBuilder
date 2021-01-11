@@ -8,7 +8,7 @@ import Table from "../../components/Table";
 import TableButton from "../../components/TableButton";
 import ScrollArrow from "../../components/ScrollArrow";
 import Wrapper from "../../components/Wrapper";
-import SearchBar from "../../components/SearchBar";
+import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
@@ -204,12 +204,25 @@ class HomeContainer extends Component {
       },
     ];
 
-    assessments.forEach((data, index) => {
-      data.serial = index + 1;
-    });
-
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    const lowerCasedSearchText = searchText.toLowerCase();
+
+    let filteredData = assessments;
+
+    if (searchText !== "") {
+      filteredData = filteredData.filter((item) => {
+        return (
+          item.settings.testName.toLowerCase().indexOf(lowerCasedSearchText) >=
+          0
+        );
+      });
+    }
+
+    filteredData.forEach((data, index) => {
+      data.serial = index + 1;
+    });
 
     return (
       <>
@@ -239,7 +252,7 @@ class HomeContainer extends Component {
                 widthChange={1250}
               >
                 <div className={css(styles.block)}>
-                  <SearchBar
+                  <CustomInput
                     name={"search"}
                     type={"text"}
                     placeholder={"Enter assessment title here to search"}
@@ -260,7 +273,7 @@ class HomeContainer extends Component {
               </Wrapper>
               <div style={{ padding: "50px 0px", marginBottom: "100px" }}>
                 <Table
-                  data={assessments}
+                  data={filteredData}
                   columns={tableHeader}
                   // path={`questionbank/viewQuestion`}
                 />
