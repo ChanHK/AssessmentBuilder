@@ -175,7 +175,19 @@ class HomeContainer extends Component {
         sortable: true,
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
+            <div
+              style={{
+                fontSize: "15px",
+                fontFamily: "Ubuntu-Regular",
+                backgroundColor:
+                  row.status === "Setup in progress"
+                    ? configStyles.colors.yellow
+                    : row.status === "Activated"
+                    ? configStyles.colors.green
+                    : "inherit",
+                padding: "5px",
+              }}
+            >
               {row.status}
             </div>
           </div>

@@ -10,6 +10,8 @@ export const colors = {
   noticeYellow: "#fada82",
   correctGreen: "#83eb75",
   inputErrorRed: "#fc0026",
+  yellow: "#edf250", //setup in progress
+  green: "#2dba2b", //activated
 };
 
 // import * as configStyles from "../../config/styles"
