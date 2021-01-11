@@ -88,4 +88,34 @@ router.get("/profile/fetch/image", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/home/assessment/delete/:assessmentID
+// @desc      POST delete assessment
+// @access    Private
+router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOne({ user_id: req.user.id }).then((result) => {
+    db.User.updateOne(
+      { _id: req.user.id },
+      {
+        $inc: { totalAssessmentsCreated: -1 },
+      }
+    ).then(() => {
+      db.Assessment.findByIdAndUpdate(
+        result._id,
+        {
+          $pull: { assessments: { _id: req.params.assessmentID } },
+        },
+        { safe: true, new: true }
+      )
+        .then((response) => {
+          return res.status(200).json(response.assessments);
+        })
+        .catch(() => {
+          return res.status(400).json({
+            message: "Delete failed",
+          });
+        });
+    });
+  });
+});
+
 module.exports = router;
