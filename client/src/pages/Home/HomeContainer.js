@@ -27,6 +27,8 @@ import profile from "../../image/profile/dummyUser.png";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { homeFetchAllAssessment } from "../../actions/home.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
 
 // import * as MdIcons from "react-icons/md";
 // import * as BsIcons from "react-icons/bs";
@@ -37,10 +39,25 @@ class HomeContainer extends Component {
     this.state = {
       searchText: "",
       assessments: [], //assessments fetched from db
+      setupNum: 0,
+      totalAssessmentNum: 0,
+      activateNum: 0,
     };
   }
 
   componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
     this.props.homeFetchAllAssessment();
   }
 
@@ -52,6 +69,20 @@ class HomeContainer extends Component {
       homeReducer.assessments !== null
     ) {
       const { assessments } = homeReducer;
+      const { setupNum, activateNum, totalAssessmentNum } = this.state;
+
+      assessments.forEach((item, index) => {
+        if (item.status === "Setup in progress") {
+          this.setState({ setupNum: setupNum + 1 });
+        }
+        if (item.statys === "Activated") {
+          this.setState({ activateNum: activateNum + 1 });
+        }
+
+        this.setState({
+          totalAssessmentNum: totalAssessmentNum + 1,
+        });
+      });
 
       this.setState({
         assessments: assessments,
@@ -74,7 +105,13 @@ class HomeContainer extends Component {
   };
 
   render() {
-    const { searchText, assessments } = this.state;
+    const {
+      searchText,
+      assessments,
+      setupNum,
+      totalAssessmentNum,
+      activateNum,
+    } = this.state;
 
     const tableHeader = [
       {
@@ -184,9 +221,15 @@ class HomeContainer extends Component {
               <div style={{ paddingTop: "80px", paddingBottom: "20px" }}>
                 <StatusBarWrapper>
                   <StatusBarImage image={profile} style={[styles.imgPos]} />
-                  <StatusBox number={"67"} text={"Total Assessments"} />
-                  <StatusBox number={"2"} text={"Setup In Progress"} />
-                  <StatusBox number={"200"} text={"Assessments Activated"} />
+                  <StatusBox
+                    number={totalAssessmentNum}
+                    text={"Total Assessments"}
+                  />
+                  <StatusBox number={setupNum} text={"Setup In Progress"} />
+                  <StatusBox
+                    number={activateNum}
+                    text={"Assessments Activated"}
+                  />
                 </StatusBarWrapper>
               </div>
               <FirstLabel>Assessments</FirstLabel>
@@ -249,6 +292,7 @@ const styles = StyleSheet.create({
 HomeContainer.propTypes = {
   homeFetchAllAssessment: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -257,4 +301,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   homeFetchAllAssessment,
+  logout,
 })(HomeContainer);
