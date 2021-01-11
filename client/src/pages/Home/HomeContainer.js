@@ -33,9 +33,6 @@ import {
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
-// import * as MdIcons from "react-icons/md";
-// import * as BsIcons from "react-icons/bs";
-
 class HomeContainer extends Component {
   constructor() {
     super();
@@ -163,27 +160,22 @@ class HomeContainer extends Component {
       },
       {
         name: "Options",
-        selector: "opt",
+        selector: "_id",
         cell: (row) => (
           <CustomRow>
             <TableButton
-            // onClick={() => {
-            //   this.props.history.push(`questionbank/editQuestion`);
-            // }}
+              onClick={() => {
+                this.props.history.push(`assessment/edit/settings/${row._id}`);
+              }}
             >
-              {/* <MdIcons.MdModeEdit /> */}
               Edit
             </TableButton>
-            <TableButton>
-              {/* <MdIcons.MdDelete /> */}
-              Delete
-            </TableButton>
+            <TableButton>Delete</TableButton>
             <TableButton
             // onClick={() => {
             //   this.props.history.push(`questionbank/viewQuestion`);
             // }}
             >
-              {/* <BsIcons.BsFillEyeFill /> */}
               View
             </TableButton>
             <TableButton
