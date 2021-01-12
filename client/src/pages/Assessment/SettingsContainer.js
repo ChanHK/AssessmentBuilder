@@ -47,7 +47,7 @@ class SettingContainer extends Component {
       gradeRange: [], // stores the range like 10,20,30
       gradeValue: [], //stores the value like A+, A, A-
       assessmentID: props.assessmentID,
-      type: props.type,
+      type: props.type, //edit | create | view
     };
   }
 
@@ -114,7 +114,9 @@ class SettingContainer extends Component {
   };
 
   onClickPassorFail = (e) => {
-    this.setState({ passOrFailSelected: e, score: "", unit: "" });
+    if (this.state.type !== "view") {
+      this.setState({ passOrFailSelected: e, score: "", unit: "" });
+    }
   };
 
   deleteRangeRow = (index) => {
@@ -193,6 +195,7 @@ class SettingContainer extends Component {
       gradeUnit,
       gradeRange,
       gradeValue,
+      type,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -208,6 +211,7 @@ class SettingContainer extends Component {
             placeholder={"Enter the title here"}
             onChangeValue={this.onChange}
             value={testName}
+            readOnly={type === "view" ? true : false}
           />
         </div>
         <CustomRow>
@@ -227,6 +231,7 @@ class SettingContainer extends Component {
             placeholder={"Enter the description here"}
             onChange={this.onChange}
             value={testDescription}
+            readOnly={type === "view" ? true : false}
           />
         </div>
         <CustomRow>
@@ -242,6 +247,7 @@ class SettingContainer extends Component {
           <CustomEditor
             onEditorStateChange={(e) => this.setState({ testInstruction: e })}
             editorState={testInstruction}
+            readOnly={type === "view" ? true : false}
           />
         </div>
 
@@ -277,6 +283,7 @@ class SettingContainer extends Component {
                         }
                         onChangeValue={this.onChange}
                         value={score}
+                        readOnly={type === "view" ? true : false}
                       />
                     </div>
                     <div className={css(styles.block)}>
@@ -284,7 +291,11 @@ class SettingContainer extends Component {
                         options={unitOptions}
                         placeholder={"Select unit type"}
                         value={unit}
-                        onChange={(e) => this.setState({ unit: e.value })}
+                        onChange={(e) => {
+                          if (type !== "view") {
+                            this.setState({ unit: e.value });
+                          }
+                        }}
                         padding={"12px"}
                       />
                     </div>
@@ -297,9 +308,11 @@ class SettingContainer extends Component {
           <div style={{ paddingTop: "25px" }}>
             <CustomRow>
               <CustomSwitch
-                onChange={(e) =>
-                  this.setState({ addGradingSelected: e, gradeRange: [] })
-                }
+                onChange={(e) => {
+                  if (type !== "view") {
+                    this.setState({ addGradingSelected: e, gradeRange: [] });
+                  }
+                }}
                 checked={addGradingSelected}
               />
 
@@ -325,31 +338,35 @@ class SettingContainer extends Component {
                           options={unitOptions}
                           placeholder={"Select unit type"}
                           value={gradeUnit}
-                          onChange={(e) =>
-                            this.setState({
-                              gradeUnit: e.value,
-                            })
-                          }
+                          onChange={(e) => {
+                            if (type !== "view") {
+                              this.setState({
+                                gradeUnit: e.value,
+                              });
+                            }
+                          }}
                           padding={"12px"}
                         />
                       </div>
-                      <div className={css(styles.block)}>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          width={"100px"}
-                          onClick={() => {
-                            if (gradeValue.length < 10)
-                              this.setState({
-                                gradeRange: this.state.gradeRange.concat(""),
-                                gradeValue: this.state.gradeValue.concat(""),
-                              });
-                          }}
-                        >
-                          Add range
-                        </Button>
-                      </div>
+                      {type !== "view" && (
+                        <div className={css(styles.block)}>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            width={"100px"}
+                            onClick={() => {
+                              if (gradeValue.length < 10)
+                                this.setState({
+                                  gradeRange: this.state.gradeRange.concat(""),
+                                  gradeValue: this.state.gradeValue.concat(""),
+                                });
+                            }}
+                          >
+                            Add range
+                          </Button>
+                        </div>
+                      )}
                     </Wrapper>
                   </div>
                   {gradeRange.map((item, index) => (
@@ -367,6 +384,7 @@ class SettingContainer extends Component {
                           this.onChangeGradeRange(e.target.value, index)
                         }
                         previous={gradeRange[index - 1]}
+                        readOnly={type === "view" ? true : false}
                       />
                     </div>
                   ))}
@@ -375,17 +393,19 @@ class SettingContainer extends Component {
             </>
           )}
         </div>
-        <div style={{ marginBottom: "100px" }}>
-          <Button
-            backgroundColor={configStyles.colors.darkBlue}
-            color={configStyles.colors.white}
-            padding={"8px"}
-            width={"100px"}
-            type={"submit"}
-          >
-            Save
-          </Button>
-        </div>
+        {type !== "view" && (
+          <div style={{ marginBottom: "100px" }}>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              width={"100px"}
+              type={"submit"}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </form>
     );
   }
