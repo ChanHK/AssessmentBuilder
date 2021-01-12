@@ -148,9 +148,7 @@ class HomeContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.serial}
-            </div>
+            <div className={css(styles.tableRow)}>{row.serial}</div>
           </div>
         ),
         width: "50px",
@@ -160,9 +158,7 @@ class HomeContainer extends Component {
         selector: "settings.testName",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.settings.testName}
-            </div>
+            <div className={css(styles.tableRow)}>{row.settings.testName}</div>
           </div>
         ),
         width: "250px",
@@ -173,9 +169,8 @@ class HomeContainer extends Component {
         cell: (row) => (
           <div>
             <div
+              className={css(styles.tableRow)}
               style={{
-                fontSize: "15px",
-                fontFamily: "Ubuntu-Regular",
                 backgroundColor:
                   row.status === "Setup in progress"
                     ? configStyles.colors.yellow
@@ -351,6 +346,10 @@ const styles = StyleSheet.create({
     height: "auto",
     display: "flex",
     float: "left",
+  },
+  tableRow: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Regular",
   },
 });
 
