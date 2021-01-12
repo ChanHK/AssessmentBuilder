@@ -442,13 +442,8 @@ class AccessContainer extends Component {
                 options={Number}
                 placeholder={"Select number"}
                 value={attemptNum}
-                onChange={(e) => {
-                  if (type !== "view") {
-                    this.setState({
-                      attemptNum: e.value,
-                    });
-                  }
-                }}
+                onChange={(e) => this.setState({ attemptNum: e.value })}
+                disabled={type === "view" ? true : false}
               />
             </div>
           </div>

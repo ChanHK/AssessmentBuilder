@@ -202,13 +202,8 @@ class TimerContainer extends Component {
                       options={Hour}
                       placeholder={"Select hour"}
                       value={hour}
-                      onChange={(e) => {
-                        if (type !== "view") {
-                          this.setState({
-                            hour: e.value,
-                          });
-                        }
-                      }}
+                      onChange={(e) => this.setState({ hour: e.value })}
+                      disabled={type === "view" ? true : false}
                     />
                   </div>
                   <div className={css(styles.block)}>
@@ -216,13 +211,8 @@ class TimerContainer extends Component {
                       options={MinuteSeconds}
                       placeholder={"Select minute"}
                       value={minute}
-                      onChange={(e) => {
-                        if (type !== "view") {
-                          this.setState({
-                            minute: e.value,
-                          });
-                        }
-                      }}
+                      onChange={(e) => this.setState({ minute: e.value })}
+                      disabled={type === "view" ? true : false}
                     />
                   </div>
                 </Wrapper>
@@ -253,13 +243,8 @@ class TimerContainer extends Component {
                       options={MinuteSeconds}
                       placeholder={"Select minutes"}
                       value={minute}
-                      onChange={(e) => {
-                        if (type !== "view") {
-                          this.setState({
-                            minute: e.value,
-                          });
-                        }
-                      }}
+                      onChange={(e) => this.setState({ minute: e.value })}
+                      disabled={type === "view" ? true : false}
                     />
                   </div>
                   <div className={css(styles.block)}>
@@ -267,13 +252,8 @@ class TimerContainer extends Component {
                       options={MinuteSeconds}
                       placeholder={"Select seconds"}
                       value={second}
-                      onChange={(e) => {
-                        if (type !== "view") {
-                          this.setState({
-                            second: e.value,
-                          });
-                        }
-                      }}
+                      onChange={(e) => this.setState({ second: e.value })}
+                      disabled={type === "view" ? true : false}
                     />
                   </div>
                 </Wrapper>

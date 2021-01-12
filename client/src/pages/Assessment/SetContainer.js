@@ -507,11 +507,8 @@ class SetContainer extends Component {
                             options={dropdownData}
                             placeholder={"Select number of sets"}
                             value={setNum}
-                            onChange={(e) =>
-                              this.setState({
-                                setNum: e.value,
-                              })
-                            }
+                            onChange={(e) => this.setState({ setNum: e.value })}
+                            disabled={type === "view" ? true : false}
                           />
                         </CustomColumn>
                       </div>
