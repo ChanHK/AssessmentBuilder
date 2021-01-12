@@ -72,6 +72,7 @@ class SettingContainer extends Component {
         testInstruction,
         testDescription,
         score,
+        unit,
         passOrFailSelected,
         gradeValue,
         gradeUnit,
@@ -86,6 +87,7 @@ class SettingContainer extends Component {
         testInstruction: ins,
         testDescription: testDescription,
         score: score,
+        unit: unit,
         passOrFailSelected: passOrFailSelected,
         gradeValue: gradeValue,
         gradeUnit: gradeUnit,
@@ -202,7 +204,7 @@ class SettingContainer extends Component {
     else document.body.style.overflow = "unset";
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
         <SecondLabel>Title</SecondLabel>
         <div style={{ paddingBottom: "25px" }}>
           <CustomInput
@@ -291,12 +293,9 @@ class SettingContainer extends Component {
                         options={unitOptions}
                         placeholder={"Select unit type"}
                         value={unit}
-                        onChange={(e) => {
-                          if (type !== "view") {
-                            this.setState({ unit: e.value });
-                          }
-                        }}
+                        onChange={(e) => this.setState({ unit: e.value })}
                         padding={"12px"}
+                        disabled={type === "view" ? true : false}
                       />
                     </div>
                   </Wrapper>
@@ -338,14 +337,11 @@ class SettingContainer extends Component {
                           options={unitOptions}
                           placeholder={"Select unit type"}
                           value={gradeUnit}
-                          onChange={(e) => {
-                            if (type !== "view") {
-                              this.setState({
-                                gradeUnit: e.value,
-                              });
-                            }
-                          }}
+                          onChange={(e) =>
+                            this.setState({ gradeUnit: e.value })
+                          }
                           padding={"12px"}
+                          disabled={type === "view" ? true : false}
                         />
                       </div>
                       {type !== "view" && (
@@ -394,7 +390,7 @@ class SettingContainer extends Component {
           )}
         </div>
         {type !== "view" && (
-          <div style={{ marginBottom: "100px" }}>
+          <div>
             <Button
               backgroundColor={configStyles.colors.darkBlue}
               color={configStyles.colors.white}
