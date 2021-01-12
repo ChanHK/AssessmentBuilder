@@ -367,8 +367,6 @@ class SetContainer extends Component {
       },
     ];
 
-    const setData = this.generateSetData();
-
     const {
       assessmentReducer,
       assessmentQuestionReducer,
@@ -382,6 +380,8 @@ class SetContainer extends Component {
     )
       return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    const setData = this.generateSetData();
 
     return (
       <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
