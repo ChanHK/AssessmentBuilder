@@ -63,8 +63,10 @@ class CreateAssessmentContainer extends Component {
               <div style={{ paddingTop: "60px" }}>
                 {type === "create" ? (
                   <FirstLabel>Create Assessment</FirstLabel>
-                ) : (
+                ) : type === "edit" ? (
                   <FirstLabel>Edit Assessment</FirstLabel>
+                ) : (
+                  <FirstLabel>View Assessment</FirstLabel>
                 )}
               </div>
               <div style={{ paddingBottom: "50px" }}>
