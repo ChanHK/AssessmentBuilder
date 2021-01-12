@@ -158,7 +158,6 @@ class HomeContainer extends Component {
       {
         name: "Assessment Title",
         selector: "settings.testName",
-        sortable: true,
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
@@ -171,7 +170,6 @@ class HomeContainer extends Component {
       {
         name: "Status",
         selector: "status",
-        sortable: true,
         cell: (row) => (
           <div>
             <div
