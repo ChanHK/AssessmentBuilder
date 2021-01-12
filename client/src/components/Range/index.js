@@ -20,7 +20,9 @@ const Range = (props) => {
         <CustomRow>
           <div className={css(styles.label)}>
             <ThirdLabel fontSize={"15px"}>
-              From {props.previous === undefined ? 0 : props.previous} {unit} to
+              From{" "}
+              {props.previous === undefined ? 0 : parseInt(props.previous) + 1}{" "}
+              {unit} to
             </ThirdLabel>
           </div>
           <div className={css(styles.inputCon)}>
@@ -30,14 +32,17 @@ const Range = (props) => {
               value={props.value}
               min={"1"}
               maxLength={2}
+              readOnly={props.readOnly}
             />
           </div>
           <div className={css(styles.label)}>
             <ThirdLabel fontSize={"15px"}>{unit}</ThirdLabel>
           </div>
-          <div style={{ width: "10%" }} className={css(styles.button)}>
-            <MdIcons.MdDelete size={35} onClick={props.onClick} />
-          </div>
+          {!props.readOnly && (
+            <div style={{ width: "10%" }} className={css(styles.button)}>
+              <MdIcons.MdDelete size={35} onClick={props.onClick} />
+            </div>
+          )}
         </CustomRow>
         <div style={{ width: "200px", padding: "25px 0px" }}>
           <CustomInput
@@ -46,6 +51,7 @@ const Range = (props) => {
             onChangeValue={props.onChangeValue}
             value={props.gradeValue}
             maxLength={2}
+            readOnly={props.readOnly}
           />
         </div>
       </CustomColumn>
