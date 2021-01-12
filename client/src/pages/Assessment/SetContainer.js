@@ -308,6 +308,7 @@ class SetContainer extends Component {
       manualRandomSelected,
       questions,
       sectionFilterNum,
+      type,
     } = this.state;
 
     const column = [
@@ -350,15 +351,17 @@ class SetContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <CustomRow>
-            <TableButton
-              onClick={() => {
-                let temp = [...this.state.generatedSets];
-                temp.splice(row.serial - 1, 1);
-                this.setState({ generatedSets: temp });
-              }}
-            >
-              Delete
-            </TableButton>
+            {type !== "view" && (
+              <TableButton
+                onClick={() => {
+                  let temp = [...this.state.generatedSets];
+                  temp.splice(row.serial - 1, 1);
+                  this.setState({ generatedSets: temp });
+                }}
+              >
+                Delete
+              </TableButton>
+            )}
           </CustomRow>
         ),
       },
@@ -381,7 +384,7 @@ class SetContainer extends Component {
     else document.body.style.overflow = "unset";
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
         <SecondLabel>Question Order and Assessment Set Generation</SecondLabel>
         <div className={css(styles.bar)}>
           <CustomColumn>
@@ -391,12 +394,14 @@ class SetContainer extends Component {
                   <Radio
                     checked={fixedSelected}
                     onChange={(e) => {
-                      this.setState({
-                        fixedSelected: e.target.checked,
-                        randomSelected: false,
-                        manualSelected: false,
-                        manualRandomSelected: false,
-                      });
+                      if (type !== "view") {
+                        this.setState({
+                          fixedSelected: e.target.checked,
+                          randomSelected: false,
+                          manualSelected: false,
+                          manualRandomSelected: false,
+                        });
+                      }
                     }}
                   />
                 </div>
@@ -408,14 +413,16 @@ class SetContainer extends Component {
                 <div style={{ paddingRight: "20px" }}>
                   <Radio
                     checked={randomSelected}
-                    onChange={(e) =>
-                      this.setState({
-                        randomSelected: e.target.checked,
-                        fixedSelected: false,
-                        manualSelected: false,
-                        manualRandomSelected: false,
-                      })
-                    }
+                    onChange={(e) => {
+                      if (type !== "view") {
+                        this.setState({
+                          randomSelected: e.target.checked,
+                          fixedSelected: false,
+                          manualSelected: false,
+                          manualRandomSelected: false,
+                        });
+                      }
+                    }}
                   />
                 </div>
                 <ThirdLabel>Random order of questions and choices</ThirdLabel>
@@ -426,14 +433,16 @@ class SetContainer extends Component {
                 <div style={{ paddingRight: "20px" }}>
                   <Radio
                     checked={manualSelected}
-                    onChange={(e) =>
-                      this.setState({
-                        manualSelected: e.target.checked,
-                        fixedSelected: false,
-                        randomSelected: false,
-                        manualRandomSelected: true,
-                      })
-                    }
+                    onChange={(e) => {
+                      if (type !== "view") {
+                        this.setState({
+                          manualSelected: e.target.checked,
+                          fixedSelected: false,
+                          randomSelected: false,
+                          manualRandomSelected: true,
+                        });
+                      }
+                    }}
                   />
                 </div>
                 <ThirdLabel>Define sets manually</ThirdLabel>
@@ -451,13 +460,15 @@ class SetContainer extends Component {
                     <div style={{ paddingRight: "20px" }}>
                       <Radio
                         checked={randomTakeFromTotalSelected}
-                        onChange={(e) =>
-                          this.setState({
-                            randomTakeFromTotalSelected: e.target.checked,
-                            definedTakeFromSectionSelected: false,
-                            manualRandomSelected: e.target.checked,
-                          })
-                        }
+                        onChange={(e) => {
+                          if (type !== "view") {
+                            this.setState({
+                              randomTakeFromTotalSelected: e.target.checked,
+                              definedTakeFromSectionSelected: false,
+                              manualRandomSelected: e.target.checked,
+                            });
+                          }
+                        }}
                       />
                     </div>
                     <ThirdLabel>
@@ -513,11 +524,13 @@ class SetContainer extends Component {
                       <Radio
                         checked={definedTakeFromSectionSelected}
                         onChange={(e) => {
-                          this.setState({
-                            definedTakeFromSectionSelected: e.target.checked,
-                            randomTakeFromTotalSelected: false,
-                            manualRandomSelected: e.target.checked,
-                          });
+                          if (type !== "view") {
+                            this.setState({
+                              definedTakeFromSectionSelected: e.target.checked,
+                              randomTakeFromTotalSelected: false,
+                              manualRandomSelected: e.target.checked,
+                            });
+                          }
                         }}
                       />
                     </div>
@@ -559,7 +572,11 @@ class SetContainer extends Component {
               </CustomColumn>
               <CustomRow>
                 <CustomSwitch
-                  onChange={(e) => this.setState({ manualRandomSelected: e })}
+                  onChange={(e) => {
+                    if (type !== "view") {
+                      this.setState({ manualRandomSelected: e });
+                    }
+                  }}
                   checked={manualRandomSelected}
                 />
                 <div style={{ marginLeft: "15px" }}>
@@ -568,15 +585,17 @@ class SetContainer extends Component {
                   </ThirdLabel>
                 </div>
               </CustomRow>
-              <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
-                padding={"8px"}
-                type={"button"}
-                onClick={this.generateSetButtonClick}
-              >
-                Generate
-              </Button>
+              {type !== "view" && (
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  type={"button"}
+                  onClick={this.generateSetButtonClick}
+                >
+                  Generate
+                </Button>
+              )}
             </div>
 
             <div style={{ marginTop: 20 }}>
@@ -585,17 +604,19 @@ class SetContainer extends Component {
             </div>
           </>
         )}
-        <div style={{ marginBottom: "100px" }}>
-          <Button
-            backgroundColor={configStyles.colors.darkBlue}
-            color={configStyles.colors.white}
-            padding={"8px"}
-            width={"100px"}
-            type={"submit"}
-          >
-            Save
-          </Button>
-        </div>
+        {type !== "view" && (
+          <div>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              width={"100px"}
+              type={"submit"}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </form>
     );
   }
