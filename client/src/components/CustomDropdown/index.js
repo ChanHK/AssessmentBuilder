@@ -15,6 +15,7 @@ const CustomDropdown = (props) => {
       controlClassName={css(styles.controlClassName)}
       placeholderClassName={css(styles.placeholderClassName)}
       menuClassName={css(styles.menuClassName)}
+      disabled={props.disabled}
     />
   );
 };
