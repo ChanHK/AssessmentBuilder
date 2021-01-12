@@ -161,28 +161,32 @@ class QuestionsContainer extends Component {
     }
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <div style={{ marginBottom: "15px" }}>
-          <Button
-            backgroundColor={configStyles.colors.darkBlue}
-            color={configStyles.colors.white}
-            padding={"8px"}
-            onClick={this.addSection}
-          >
-            Add Section
-          </Button>
-        </div>
+      <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
+        {type !== "view" && (
+          <div style={{ marginBottom: "15px" }}>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              onClick={this.addSection}
+            >
+              Add Section
+            </Button>
+          </div>
+        )}
         {questions.length > 1 ? (
           <CustomRow>
             <div className={css(styles.label)}>
               <SecondLabel>Section 1</SecondLabel>
             </div>
-            <div
-              className={css(styles.button)}
-              onClick={() => this.deleteSection(0)}
-            >
-              <MdIcons.MdDelete size={25} />
-            </div>
+            {type !== "view" && (
+              <div
+                className={css(styles.button)}
+                onClick={() => this.deleteSection(0)}
+              >
+                <MdIcons.MdDelete size={25} />
+              </div>
+            )}
           </CustomRow>
         ) : (
           <SecondLabel>Questions</SecondLabel>
@@ -201,41 +205,44 @@ class QuestionsContainer extends Component {
             assessmentID={assessmentID}
             onSortEnd={this.onSortEnd.bind(this, 0)}
             onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+            type={type}
           />
         )}
 
-        <div style={{ marginBottom: "25px" }}>
-          <CustomRow>
-            <div style={{ marginRight: 10 }}>
-              <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
-                padding={"8px"}
-                onClick={() =>
-                  this.props.history.push(
-                    `/assessment/update_question/1/${type}/create/${assessmentID}/0`
-                  )
-                }
-              >
-                Create Question
-              </Button>
-            </div>
-            <div>
-              <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
-                padding={"8px"}
-                onClick={() => {
-                  this.props.history.push(
-                    `/assessment/question_bank/1/${type}/${assessmentID}`
-                  );
-                }}
-              >
-                Retrieve from Question Bank
-              </Button>
-            </div>
-          </CustomRow>
-        </div>
+        {type !== "view" && (
+          <div style={{ marginBottom: "25px" }}>
+            <CustomRow>
+              <div style={{ marginRight: 10 }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  onClick={() =>
+                    this.props.history.push(
+                      `/assessment/update_question/1/${type}/create/${assessmentID}/0`
+                    )
+                  }
+                >
+                  Create Question
+                </Button>
+              </div>
+              <div>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  onClick={() => {
+                    this.props.history.push(
+                      `/assessment/question_bank/1/${type}/${assessmentID}`
+                    );
+                  }}
+                >
+                  Retrieve from Question Bank
+                </Button>
+              </div>
+            </CustomRow>
+          </div>
+        )}
 
         {questions.length >= 2 &&
           questions.slice(1).map((item, index) => {
@@ -245,12 +252,14 @@ class QuestionsContainer extends Component {
                   <div className={css(styles.label)}>
                     <SecondLabel>Section {index + 2}</SecondLabel>
                   </div>
-                  <div
-                    className={css(styles.button)}
-                    onClick={() => this.deleteSection(index + 1)}
-                  >
-                    <MdIcons.MdDelete size={25} />
-                  </div>
+                  {type !== "view" && (
+                    <div
+                      className={css(styles.button)}
+                      onClick={() => this.deleteSection(index + 1)}
+                    >
+                      <MdIcons.MdDelete size={25} />
+                    </div>
+                  )}
                 </CustomRow>
                 <hr className={css(styles.hr)} />
                 {item !== null && (
@@ -260,59 +269,64 @@ class QuestionsContainer extends Component {
                     onSortEnd={this.onSortEnd.bind(this, index + 1)}
                     onSectionSortEnd={this.onSectionSortEnd.bind(this)}
                     current={index + 1}
+                    type={type}
                   />
                 )}
-                <div style={{ marginBottom: "25px" }}>
-                  <CustomRow>
-                    <div style={{ marginRight: 10 }}>
-                      <Button
-                        backgroundColor={configStyles.colors.darkBlue}
-                        color={configStyles.colors.white}
-                        padding={"8px"}
-                        onClick={() =>
-                          this.props.history.push(
-                            `/assessment/update_question/${
-                              index + 2
-                            }/${type}/create/${assessmentID}/0`
-                          )
-                        }
-                      >
-                        Create Question
-                      </Button>
-                    </div>
-                    <div>
-                      <Button
-                        backgroundColor={configStyles.colors.darkBlue}
-                        color={configStyles.colors.white}
-                        padding={"8px"}
-                        onClick={() => {
-                          this.props.history.push(
-                            `/assessment/question_bank/${
-                              index + 2
-                            }/${type}/${assessmentID}`
-                          );
-                        }}
-                      >
-                        Retrieve from Question Bank
-                      </Button>
-                    </div>
-                  </CustomRow>
-                </div>
+                {type !== "view" && (
+                  <div style={{ marginBottom: "25px" }}>
+                    <CustomRow>
+                      <div style={{ marginRight: 10 }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          onClick={() =>
+                            this.props.history.push(
+                              `/assessment/update_question/${
+                                index + 2
+                              }/${type}/create/${assessmentID}/0`
+                            )
+                          }
+                        >
+                          Create Question
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          onClick={() => {
+                            this.props.history.push(
+                              `/assessment/question_bank/${
+                                index + 2
+                              }/${type}/${assessmentID}`
+                            );
+                          }}
+                        >
+                          Retrieve from Question Bank
+                        </Button>
+                      </div>
+                    </CustomRow>
+                  </div>
+                )}
               </div>
             );
           })}
 
-        <div style={{ marginBottom: "100px" }}>
-          <Button
-            backgroundColor={configStyles.colors.darkBlue}
-            color={configStyles.colors.white}
-            padding={"8px"}
-            width={"100px"}
-            type={"submit"}
-          >
-            Save
-          </Button>
-        </div>
+        {type !== "view" && (
+          <div>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              width={"100px"}
+              type={"submit"}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </form>
     );
   }
