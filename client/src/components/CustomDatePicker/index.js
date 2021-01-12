@@ -39,6 +39,7 @@ const CustomDatePicker = (props) => (
     // monthsShown={2}
     // withPortal
     popperPlacement="bottom"
+    readOnly={props.readOnly}
   />
 );
 

@@ -86,36 +86,42 @@ class TimerContainer extends Component {
   }
 
   assessmentTimeOnClick = (e) => {
-    this.setState({
-      assessmentTimeSelected: e.target.checked,
-      questionTimeSelected: false,
-      noLimitSelected: false,
-      hour: "",
-      minute: "",
-      second: "",
-    });
+    if (this.state.type !== "view") {
+      this.setState({
+        assessmentTimeSelected: e.target.checked,
+        questionTimeSelected: false,
+        noLimitSelected: false,
+        hour: "",
+        minute: "",
+        second: "",
+      });
+    }
   };
 
   questionTimeOnClick = (e) => {
-    this.setState({
-      questionTimeSelected: e.target.checked,
-      assessmentTimeSelected: false,
-      noLimitSelected: false,
-      hour: "",
-      minute: "",
-      second: "",
-    });
+    if (this.state.type !== "view") {
+      this.setState({
+        questionTimeSelected: e.target.checked,
+        assessmentTimeSelected: false,
+        noLimitSelected: false,
+        hour: "",
+        minute: "",
+        second: "",
+      });
+    }
   };
 
   noLimitOnClicked = (e) => {
-    this.setState({
-      noLimitSelected: e.target.checked,
-      assessmentTimeSelected: false,
-      questionTimeSelected: false,
-      hour: "",
-      minute: "",
-      second: "",
-    });
+    if (this.state.type !== "view") {
+      this.setState({
+        noLimitSelected: e.target.checked,
+        assessmentTimeSelected: false,
+        questionTimeSelected: false,
+        hour: "",
+        minute: "",
+        second: "",
+      });
+    }
   };
 
   onSubmit = (e) => {
@@ -160,13 +166,14 @@ class TimerContainer extends Component {
       noLimitSelected,
       startDate,
       endDate,
+      type,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} style={{ marginBottom: "300px" }}>
         <SecondLabel>Duration</SecondLabel>
         <div className={css(styles.bar)}>
           <CustomColumn>
@@ -195,11 +202,13 @@ class TimerContainer extends Component {
                       options={Hour}
                       placeholder={"Select hour"}
                       value={hour}
-                      onChange={(e) =>
-                        this.setState({
-                          hour: e.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (type !== "view") {
+                          this.setState({
+                            hour: e.value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                   <div className={css(styles.block)}>
@@ -207,11 +216,13 @@ class TimerContainer extends Component {
                       options={MinuteSeconds}
                       placeholder={"Select minute"}
                       value={minute}
-                      onChange={(e) =>
-                        this.setState({
-                          minute: e.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (type !== "view") {
+                          this.setState({
+                            minute: e.value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                 </Wrapper>
@@ -242,11 +253,13 @@ class TimerContainer extends Component {
                       options={MinuteSeconds}
                       placeholder={"Select minutes"}
                       value={minute}
-                      onChange={(e) =>
-                        this.setState({
-                          minute: e.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (type !== "view") {
+                          this.setState({
+                            minute: e.value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                   <div className={css(styles.block)}>
@@ -254,11 +267,13 @@ class TimerContainer extends Component {
                       options={MinuteSeconds}
                       placeholder={"Select seconds"}
                       value={second}
-                      onChange={(e) =>
-                        this.setState({
-                          second: e.value,
-                        })
-                      }
+                      onChange={(e) => {
+                        if (type !== "view") {
+                          this.setState({
+                            second: e.value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                 </Wrapper>
@@ -292,6 +307,7 @@ class TimerContainer extends Component {
                   endDate={endDate}
                   selectsStart={true}
                   selectsEnd={false}
+                  readOnly={type === "view" ? true : false}
                 />
               </div>
             </div>
@@ -307,22 +323,25 @@ class TimerContainer extends Component {
                   endDate={endDate}
                   selectsStart={false}
                   selectsEnd={true}
+                  readOnly={type === "view" ? true : false}
                 />
               </div>
             </div>
           </Wrapper>
         </div>
-        <div style={{ paddingBottom: "300px" }}>
-          <Button
-            backgroundColor={configStyles.colors.darkBlue}
-            color={configStyles.colors.white}
-            padding={"8px"}
-            width={"100px"}
-            type={"submit"}
-          >
-            Save
-          </Button>
-        </div>
+        {type !== "view" && (
+          <div>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              width={"100px"}
+              type={"submit"}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </form>
     );
   }
