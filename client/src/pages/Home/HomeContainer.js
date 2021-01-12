@@ -214,9 +214,9 @@ class HomeContainer extends Component {
               Delete
             </TableButton>
             <TableButton
-            // onClick={() => {
-            //   this.props.history.push(`questionbank/viewQuestion`);
-            // }}
+              onClick={() => {
+                this.props.history.push(`assessment/view/settings/${row._id}`);
+              }}
             >
               View
             </TableButton>
