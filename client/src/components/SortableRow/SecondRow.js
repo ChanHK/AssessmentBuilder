@@ -160,6 +160,7 @@ class SectionContainer extends Component {
     const {
       question,
       assessmentID,
+      type,
       sectionIndex,
       current,
       onSortEnd,
@@ -194,27 +195,31 @@ class SectionContainer extends Component {
               >
                 <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
               </TableButton>
-              <TableButton
-                onClick={() => {
-                  this.props.history.push(
-                    `/assessment/update_question/${question.section}/${this.props.match.params.type}/edit/${assessmentID}/${question._id}`
-                  );
-                }}
-              >
-                <MdIcons.MdModeEdit size={20} className={css(styles.pE)} />
-              </TableButton>
-              <TableButton
-                onClick={() => {
-                  const data = {
-                    assessmentID: assessmentID,
-                    questionID: question._id,
-                  };
+              {type !== "view" && (
+                <>
+                  <TableButton
+                    onClick={() => {
+                      this.props.history.push(
+                        `/assessment/update_question/${question.section}/${this.props.match.params.type}/edit/${assessmentID}/${question._id}`
+                      );
+                    }}
+                  >
+                    <MdIcons.MdModeEdit size={20} className={css(styles.pE)} />
+                  </TableButton>
+                  <TableButton
+                    onClick={() => {
+                      const data = {
+                        assessmentID: assessmentID,
+                        questionID: question._id,
+                      };
 
-                  this.props.deleteAssessmentQuestion(data);
-                }}
-              >
-                <MdIcons.MdDelete size={20} className={css(styles.pE)} />
-              </TableButton>
+                      this.props.deleteAssessmentQuestion(data);
+                    }}
+                  >
+                    <MdIcons.MdDelete size={20} className={css(styles.pE)} />
+                  </TableButton>
+                </>
+              )}
             </div>
           </CustomRow>
         </div>
@@ -246,6 +251,7 @@ const styles = StyleSheet.create({
     borderColor: configStyles.colors.black,
     marginBottom: "20px",
     borderRadius: "5px",
+    zIndex: 100,
   },
   bar: {
     backgroundColor: configStyles.colors.lightGrey,
