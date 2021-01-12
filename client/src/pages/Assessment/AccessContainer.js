@@ -50,6 +50,7 @@ class AccessContainer extends Component {
 
       newEmail: "", //for user to enter new email to the table
       assessmentID: props.assessmentID,
+      type: props.type,
     };
   }
 
@@ -109,17 +110,21 @@ class AccessContainer extends Component {
   };
 
   noAuthenticationOnClick = (e) => {
-    this.setState({
-      noAuthenticationSelected: e.target.checked,
-      withAuthenticationSelected: false,
-    });
+    if (this.state.type !== "view") {
+      this.setState({
+        noAuthenticationSelected: e.target.checked,
+        withAuthenticationSelected: false,
+      });
+    }
   };
 
   withAuthenticationOnClick = (e) => {
-    this.setState({
-      withAuthenticationSelected: e.target.checked,
-      noAuthenticationSelected: false,
-    });
+    if (this.state.type !== "view") {
+      this.setState({
+        withAuthenticationSelected: e.target.checked,
+        noAuthenticationSelected: false,
+      });
+    }
   };
 
   ///////////////Excel part/////////////////
@@ -236,6 +241,7 @@ class AccessContainer extends Component {
       attemptNum,
       rows,
       newEmail,
+      type,
     } = this.state;
 
     const column = [
@@ -288,18 +294,20 @@ class AccessContainer extends Component {
         selector: "id",
         cell: (row) => (
           <CustomRow>
-            <TableButton
-              onClick={() => {
-                rows.forEach((item, index) => {
-                  if (row.id === item.id) {
-                    rows.splice(index, 1);
-                    this.setState({ rows: this.state.rows });
-                  }
-                });
-              }}
-            >
-              Delete
-            </TableButton>
+            {type !== "view" && (
+              <TableButton
+                onClick={() => {
+                  rows.forEach((item, index) => {
+                    if (row.id === item.id) {
+                      rows.splice(index, 1);
+                      this.setState({ rows: this.state.rows });
+                    }
+                  });
+                }}
+              >
+                Delete
+              </TableButton>
+            )}
           </CustomRow>
         ),
       },
@@ -313,7 +321,7 @@ class AccessContainer extends Component {
     else document.body.style.overflow = "unset";
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} style={{ marginBottom: "300px" }}>
         <CustomColumn>
           <SecondLabel>URL</SecondLabel>
           <ClickCopy
@@ -386,38 +394,40 @@ class AccessContainer extends Component {
 
           {withAuthenticationSelected && (
             <>
-              <Wrapper
-                firstHeight={"60px"}
-                secHeight={"120px"}
-                widthChange={1425}
-              >
-                <div className={css(styles.block)}>
-                  <CustomInput
-                    type={"text"}
-                    placeholder={"Enter new email"}
-                    onChangeValue={this.onChangeEmail}
-                    value={newEmail}
-                  />
-                  <div style={{ marginRight: "10px" }}></div>
-                  <Button
-                    backgroundColor={configStyles.colors.darkBlue}
-                    color={configStyles.colors.white}
-                    padding={"8px"}
-                    width={"100px"}
-                    onClick={this.addEmail}
-                  >
-                    Add
-                  </Button>
-                </div>
-                <div className={css(styles.block)}>
-                  <UploadButton
-                    onChange={this.fileUploadHandler}
-                    accept={
-                      ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    }
-                  />
-                </div>
-              </Wrapper>
+              {type !== "view" && (
+                <Wrapper
+                  firstHeight={"60px"}
+                  secHeight={"120px"}
+                  widthChange={1425}
+                >
+                  <div className={css(styles.block)}>
+                    <CustomInput
+                      type={"text"}
+                      placeholder={"Enter new email"}
+                      onChangeValue={this.onChangeEmail}
+                      value={newEmail}
+                    />
+                    <div style={{ marginRight: "10px" }}></div>
+                    <Button
+                      backgroundColor={configStyles.colors.darkBlue}
+                      color={configStyles.colors.white}
+                      padding={"8px"}
+                      width={"100px"}
+                      onClick={this.addEmail}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                  <div className={css(styles.block)}>
+                    <UploadButton
+                      onChange={this.fileUploadHandler}
+                      accept={
+                        ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                      }
+                    />
+                  </div>
+                </Wrapper>
+              )}
 
               <div style={{ marginTop: 20 }}>
                 <Table data={rows} columns={column} />
@@ -432,27 +442,30 @@ class AccessContainer extends Component {
                 options={Number}
                 placeholder={"Select number"}
                 value={attemptNum}
-                onChange={(e) =>
-                  this.setState({
-                    attemptNum: e.value,
-                  })
-                }
-                // padding={"12px"}
+                onChange={(e) => {
+                  if (type !== "view") {
+                    this.setState({
+                      attemptNum: e.value,
+                    });
+                  }
+                }}
               />
             </div>
           </div>
 
-          <div style={{ paddingBottom: "300px", paddingTop: "25px" }}>
-            <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
-              padding={"8px"}
-              width={"100px"}
-              type={"submit"}
-            >
-              Save
-            </Button>
-          </div>
+          {type !== "view" && (
+            <div style={{ paddingTop: "25px" }}>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100px"}
+                type={"submit"}
+              >
+                Save
+              </Button>
+            </div>
+          )}
         </CustomColumn>
       </form>
     );
