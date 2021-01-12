@@ -107,13 +107,25 @@ router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
         { safe: true, new: true }
       )
         .then((response) => {
-          return res.status(200).json(response.assessments);
+          db.AssessmentQuestion.deleteOne({
+            assessments_id: req.params.assessmentID,
+          })
+            .then(() => {
+              db.AssessmentSet.deleteOne({
+                assessments_id: req.params.assessmentID,
+              })
+                .then(() => {
+                  return res.status(200).json(response.assessments);
+                })
+                .catch(() => {
+                  return res.status(400).json({
+                    message: "Delete failed",
+                  });
+                });
+            })
+            .catch((err) => console.log(err));
         })
-        .catch(() => {
-          return res.status(400).json({
-            message: "Delete failed",
-          });
-        });
+        .catch((err) => console.log(err));
     });
   });
 });
