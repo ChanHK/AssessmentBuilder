@@ -31,9 +31,9 @@ class GradeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feedback: null,
       questionID: this.props.match.params.questionID,
       payload: [],
+      score: {},
     };
   }
 
@@ -74,7 +74,15 @@ class GradeContainer extends Component {
         );
       });
 
-      this.setState({ payload: temp });
+      let score = {
+        assessments_id: temp[0].assessments_id,
+        cand_id: temp[0]._id,
+        question_id: temp[0].response.question_id,
+        feedback: "",
+        score: "",
+      };
+
+      this.setState({ payload: temp, score: score });
     }
   }
 
@@ -92,16 +100,12 @@ class GradeContainer extends Component {
     }
   };
 
-  onChangeFeedback = (e) => {
-    this.setState({ feedback: e.target.value });
-  };
-
   onSubmit = (e) => {
     e.preventDefault();
   };
 
   render() {
-    const { feedback, payload } = this.state;
+    const { payload, score } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -145,21 +149,19 @@ class GradeContainer extends Component {
                   <ThirdLabel>{`Score Assigned (Max ${payload[0].response.score} marks): `}</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <CustomInput
-                      name={"username"}
                       type={"text"}
                       placeholder={"Enter score"}
-                      //   onChangeValue={}
-                      //   value={}
+                      // onChangeValue={(e) => {}}
+                      value={score.score}
                     />
                   </div>
 
                   <ThirdLabel>Feedback (Optional):</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
-                      name={"feedback"}
                       type={"text"}
-                      value={feedback}
-                      onChangeValue={this.onChangeFeedback}
+                      value={score.feedback}
+                      // onChangeValue={this.onChangeFeedback}
                       placeholder={"Enter your feedback here"}
                       height={"100px"}
                     />
