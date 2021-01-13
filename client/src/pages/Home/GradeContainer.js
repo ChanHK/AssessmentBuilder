@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import TextArea from "../../components/TextArea";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -30,7 +31,6 @@ class GradeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionDescriptive: EditorState.createEmpty(),
       feedback: null,
       questionID: this.props.match.params.questionID,
       payload: [],
@@ -65,10 +65,16 @@ class GradeContainer extends Component {
       homeReducer.desResponses !== null
     ) {
       const { desResponses } = homeReducer;
-      console.log(desResponses);
-      this.setState({
-        payload: desResponses,
+
+      let temp = desResponses;
+
+      temp.forEach((item, index) => {
+        item.response.questionDescription = this.convertHtml(
+          item.response.questionDescription
+        );
       });
+
+      this.setState({ payload: temp });
     }
   }
 
@@ -90,8 +96,17 @@ class GradeContainer extends Component {
     this.setState({ feedback: e.target.value });
   };
 
+  onSubmit = (e) => {
+    e.preventDefault();
+  };
+
   render() {
-    const { questionDescriptive, feedback, payload } = this.state;
+    const { feedback, payload } = this.state;
+
+    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
+    if (payload.length === 0) return false;
 
     return (
       <>
@@ -105,29 +120,29 @@ class GradeContainer extends Component {
               <SecondLabel>Question Description</SecondLabel>
               <div style={{ paddingBottom: "50px" }}>
                 <Editor
-                  editorState={questionDescriptive}
+                  editorState={payload[0].response.questionDescription}
                   toolbarHidden={true}
                   readOnly
                   editorClassName={css(styles.editorClassName)}
                 />
               </div>
               <SecondLabel>Responses</SecondLabel>
-              <div className={css(styles.bar)}>
+              <form className={css(styles.bar)} onSubmit={this.onSubmit}>
                 <CustomColumn>
-                  <ThirdLabel>Name: Name</ThirdLabel>
-                  <ThirdLabel>Email: Email</ThirdLabel>
+                  <ThirdLabel>{`Name: ${payload[0].name}`}</ThirdLabel>
+                  <ThirdLabel>{`Email: ${payload[0].email}`}</ThirdLabel>
                   <ThirdLabel>Answer:</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <TextArea
                       type={"text"}
-                      // value={answer}
+                      value={payload[0].response.response}
                       minHeight={"100px"}
                       readOnly={true}
                       backgroundColor={configStyles.colors.lightOrange}
                     />
                   </div>
 
-                  <ThirdLabel>Score Assigned (Max 5 marks): </ThirdLabel>
+                  <ThirdLabel>{`Score Assigned (Max ${payload[0].response.score} marks): `}</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <CustomInput
                       name={"username"}
@@ -154,12 +169,12 @@ class GradeContainer extends Component {
                     color={configStyles.colors.white}
                     padding={"8px"}
                     width={"100px"}
-                    onClick={this.handleClick}
+                    type={"submit"}
                   >
                     Confirm
                   </Button>
                 </CustomColumn>
-              </div>
+              </form>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -187,6 +202,7 @@ const styles = StyleSheet.create({
     border: "2px solid",
     width: "100%",
     height: "auto",
+    padding: "10px 20px",
   },
 });
 
