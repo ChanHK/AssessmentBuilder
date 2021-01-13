@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-
 import { StyleSheet } from "aphrodite";
+import "../../css/general.css";
 
 import Header from "../../components/Header";
 import Table from "../../components/Table";
-import SearchBar from "../../components/SearchBar";
+import CustomInput from "../../components/CustomInput";
 import TableButton from "../../components/TableButton";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
@@ -14,8 +14,6 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 // import SecondLabel from "../../components/LabelComponent/SecondLabel";
-
-import "../../css/general.css";
 
 const data = [
   { qd: "aaaaaaaaaaaaaaaaaaaa" },
@@ -73,7 +71,6 @@ class DescriptiveResponsesContainer extends Component {
             </div>
           </div>
         ),
-        sortable: true,
         width: "700px",
       },
       {
@@ -108,7 +105,7 @@ class DescriptiveResponsesContainer extends Component {
                 <FirstLabel>Descriptive Questions</FirstLabel>
               </div>
               <div style={{ marginBottom: "50px" }}>
-                <SearchBar
+                <CustomInput
                   name={"searchText"}
                   type={"text"}
                   placeholder={"Enter question description here to search"}
