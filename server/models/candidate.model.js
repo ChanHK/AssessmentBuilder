@@ -35,6 +35,10 @@ const CandidateSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      graded: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
 });
