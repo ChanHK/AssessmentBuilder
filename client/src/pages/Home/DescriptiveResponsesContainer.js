@@ -76,7 +76,7 @@ class DescriptiveResponsesContainer extends Component {
   };
 
   render() {
-    const { searchText, assessmentID, questions } = this.state;
+    const { searchText, questions } = this.state;
 
     const column = [
       {
