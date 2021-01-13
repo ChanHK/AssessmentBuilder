@@ -102,6 +102,7 @@ class AttemptContainer extends Component {
 
   componentWillUnmount() {
     this.props.candidateReducer.questionSet = null;
+    this.props.candidateReducer.directStart = false;
   }
 
   shuffleArray = (array) => {
