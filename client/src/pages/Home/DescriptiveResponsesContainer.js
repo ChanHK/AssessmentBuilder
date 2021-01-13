@@ -143,7 +143,21 @@ class DescriptiveResponsesContainer extends Component {
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    questions.forEach((data, index) => {
+    const lowerCasedSearchText = searchText.toLowerCase();
+
+    let filteredData = questions;
+
+    if (searchText !== "") {
+      filteredData = filteredData.filter((item) => {
+        return (
+          item.questionDescription
+            .toLowerCase()
+            .indexOf(lowerCasedSearchText) >= 0
+        );
+      });
+    }
+
+    filteredData.forEach((data, index) => {
       data.serial = index + 1;
     });
 
@@ -166,7 +180,7 @@ class DescriptiveResponsesContainer extends Component {
                 />
               </div>
               <Table
-                data={questions}
+                data={filteredData}
                 columns={column}
                 path={`/assessment/gradeResponses`}
               />
