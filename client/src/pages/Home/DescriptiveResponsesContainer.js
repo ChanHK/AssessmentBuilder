@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet } from "aphrodite";
+import { css, StyleSheet } from "aphrodite";
 import "../../css/general.css";
 
 import Header from "../../components/Header";
@@ -15,6 +15,10 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 // import SecondLabel from "../../components/LabelComponent/SecondLabel";
+
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -80,9 +84,7 @@ class DescriptiveResponsesContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.serial}
-            </div>
+            <div className={css(styles.tableRow)}>{row.serial}</div>
           </div>
         ),
         width: "50px",
@@ -90,19 +92,35 @@ class DescriptiveResponsesContainer extends Component {
       {
         name: "Question Description",
         selector: "questionDescription",
-        cell: (row) => (
-          <div>
-            <div
-              style={{
-                fontSize: "15px",
-                fontFamily: "Ubuntu-Regular",
-              }}
-            >
-              {row.questionDescription}
+        cell: (row) => {
+          const contentBlock = htmlToDraft(row.questionDescription);
+          let editorState = "";
+          if (contentBlock) {
+            const contentState = ContentState.createFromBlockArray(
+              contentBlock.contentBlocks
+            );
+            editorState = EditorState.createWithContent(contentState);
+          }
+          return (
+            <div>
+              <div className={css(styles.tableRow)}>
+                <Editor
+                  editorState={editorState}
+                  toolbarHidden={true}
+                  readOnly
+                  editorStyle={{
+                    width: "100%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    height: "50px",
+                    alignItems: "center",
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        ),
-        width: "700px",
+          );
+        },
+        width: "80%",
       },
       {
         name: "Options",
@@ -163,6 +181,10 @@ class DescriptiveResponsesContainer extends Component {
 const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
+  },
+  tableRow: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Regular",
   },
 });
 
