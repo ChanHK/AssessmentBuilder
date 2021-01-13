@@ -130,4 +130,25 @@ router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
   });
 });
 
+// @route     GET api/user/home/assessment/fetch/descriptive_questions/:assessmentID
+// @desc      GET all descriptive question in an assessment
+// @access    Private
+router.get(
+  "/assessment/fetch/descriptive_questions/:assessmentID",
+  auth,
+  (req, res) => {
+    db.AssessmentQuestion.findOne({ assessments_id: req.params.assessmentID })
+      .then((result) => {
+        let temp = [];
+
+        result.questions.forEach((item, index) => {
+          if (item.questionType === "Descriptive") temp.push(item);
+        });
+
+        return res.json(temp);
+      })
+      .catch((err) => console.log(err));
+  }
+);
+
 module.exports = router;
