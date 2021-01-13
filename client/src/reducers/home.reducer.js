@@ -5,6 +5,7 @@ const initialState = {
   assessments: null,
   newID: null,
   pic: null,
+  desQuestions: null,
 };
 
 export default function (state = initialState, action) {
@@ -13,6 +14,7 @@ export default function (state = initialState, action) {
     case HOME.CREATE_ASSESSMENT_OBJ_BEGIN:
     case HOME.FETCH_USER_PROFILE_PIC_BEGIN:
     case HOME.DELETE_ASSESSMENT_BEGIN:
+    case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -28,6 +30,7 @@ export default function (state = initialState, action) {
     case HOME.CREATE_ASSESSMENT_OBJ_FAIL:
     case HOME.FETCH_USER_PROFILE_PIC_FAIL:
     case HOME.DELETE_ASSESSMENT_FAIL:
+    case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -43,6 +46,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         pic: action.payload,
+      };
+    case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        desQuestions: action.payload,
       };
     default:
       return state;
