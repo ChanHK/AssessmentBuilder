@@ -151,7 +151,11 @@ class GradeContainer extends Component {
                     <CustomInput
                       type={"text"}
                       placeholder={"Enter score"}
-                      // onChangeValue={(e) => {}}
+                      onChangeValue={(e) => {
+                        this.setState({
+                          score: { ...score, score: e.target.value },
+                        });
+                      }}
                       value={score.score}
                     />
                   </div>
@@ -161,7 +165,11 @@ class GradeContainer extends Component {
                     <TextArea
                       type={"text"}
                       value={score.feedback}
-                      // onChangeValue={this.onChangeFeedback}
+                      onChange={(e) => {
+                        this.setState({
+                          score: { ...score, feedback: e.target.value },
+                        });
+                      }}
                       placeholder={"Enter your feedback here"}
                       height={"100px"}
                     />
