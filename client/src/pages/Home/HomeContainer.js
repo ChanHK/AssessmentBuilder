@@ -161,7 +161,7 @@ class HomeContainer extends Component {
             <div className={css(styles.tableRow)}>{row.settings.testName}</div>
           </div>
         ),
-        width: "250px",
+        width: "40%",
       },
       {
         name: "Status",
@@ -238,9 +238,10 @@ class HomeContainer extends Component {
             >
               Statistics
             </TableButton>
+            <TableButton>Activate</TableButton>
           </CustomRow>
         ),
-        width: "400px",
+        width: "480px",
       },
     ];
 
