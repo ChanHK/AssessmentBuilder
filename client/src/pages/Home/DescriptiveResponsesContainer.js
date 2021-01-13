@@ -71,6 +71,10 @@ class DescriptiveResponsesContainer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.homeReducer.desQuestions = null;
+  }
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
