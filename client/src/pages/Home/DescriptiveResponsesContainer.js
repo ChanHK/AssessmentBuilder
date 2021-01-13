@@ -124,12 +124,14 @@ class DescriptiveResponsesContainer extends Component {
       },
       {
         name: "Options",
-        selector: "opt",
+        selector: "_id",
         cell: (row) => (
           <CustomRow>
             <TableButton
               onClick={() => {
-                this.props.history.push(`/assessment/gradeResponses`);
+                this.props.history.push(
+                  `/assessment/grade/responses/${row._id}`
+                );
               }}
             >
               Mark
@@ -179,11 +181,7 @@ class DescriptiveResponsesContainer extends Component {
                   value={searchText}
                 />
               </div>
-              <Table
-                data={filteredData}
-                columns={column}
-                path={`/assessment/gradeResponses`}
-              />
+              <Table data={filteredData} columns={column} />
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
