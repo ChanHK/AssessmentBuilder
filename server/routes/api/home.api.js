@@ -151,4 +151,38 @@ router.get(
   }
 );
 
+// @route     GET api/user/home/assessment/fetch/grade_questions/:questionID
+// @desc      GET questions to mark
+// @access    Private
+router.get(
+  "/assessment/fetch/grade_questions/:questionID",
+  auth,
+  (req, res) => {
+    db.Candidate.find({ "response.question_id": req.params.questionID })
+      .select("-__v")
+      .select("-response.questionAnswers")
+      .select("-response.questionChoices")
+      .then((result) => {
+        let temp = [];
+
+        result.forEach((item, index) => {
+          let data = new Object();
+          item.response.forEach((item2, index2) => {
+            if (item2.question_id === req.params.questionID) {
+              data.name = item.name;
+              data.email = item.email;
+              data._id = item._id;
+              data.assessments_id = item.assessments_id;
+              data.response = item2;
+              temp.push(data);
+            }
+          });
+        });
+
+        return res.json(temp);
+      })
+      .catch((err) => console.log(err));
+  }
+);
+
 module.exports = router;
