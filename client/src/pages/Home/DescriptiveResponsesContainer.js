@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 import Table from "../../components/Table";
 import CustomInput from "../../components/CustomInput";
 import TableButton from "../../components/TableButton";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -15,25 +16,55 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 // import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
-const data = [
-  { qd: "aaaaaaaaaaaaaaaaaaaa" },
-  {
-    qd:
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    qt: "Single Choice",
-  },
-  { qd: "aaaaaaaaaaaaaaaaaaaa" },
-  { qd: "aaaaaaaaaaaaaaaaaaaa" },
-  { qd: "aaaaaaaaaaaaaaaaaaaa" },
-  { qd: "aaaaaaaaaaaaaaaaaaaa" },
-];
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchDesQuestions } from "../../actions/home.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
 
 class DescriptiveResponsesContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       searchText: "",
+      assessmentID: this.props.match.params.assessmentID,
+      questions: [],
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchDesQuestions(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { homeReducer } = this.props;
+
+    if (
+      prevProps.homeReducer !== homeReducer &&
+      homeReducer.desQuestions !== null
+    ) {
+      const { desQuestions } = homeReducer;
+
+      this.setState({
+        questions: desQuestions,
+      });
+    }
   }
 
   onChange = (e) => {
@@ -41,7 +72,7 @@ class DescriptiveResponsesContainer extends Component {
   };
 
   render() {
-    const { searchText } = this.state;
+    const { searchText, assessmentID, questions } = this.state;
 
     const column = [
       {
@@ -58,7 +89,7 @@ class DescriptiveResponsesContainer extends Component {
       },
       {
         name: "Question Description",
-        selector: "qd",
+        selector: "questionDescription",
         cell: (row) => (
           <div>
             <div
@@ -67,7 +98,7 @@ class DescriptiveResponsesContainer extends Component {
                 fontFamily: "Ubuntu-Regular",
               }}
             >
-              {row.qd}
+              {row.questionDescription}
             </div>
           </div>
         ),
@@ -91,7 +122,10 @@ class DescriptiveResponsesContainer extends Component {
       },
     ];
 
-    data.forEach((data, index) => {
+    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
+    questions.forEach((data, index) => {
       data.serial = index + 1;
     });
 
@@ -114,7 +148,7 @@ class DescriptiveResponsesContainer extends Component {
                 />
               </div>
               <Table
-                data={data}
+                data={questions}
                 columns={column}
                 path={`/assessment/gradeResponses`}
               />
@@ -132,4 +166,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DescriptiveResponsesContainer;
+DescriptiveResponsesContainer.propTypes = {
+  logout: PropTypes.func.isRequired,
+  fetchDesQuestions: PropTypes.func.isRequired,
+  homeReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+});
+
+export default connect(mapStateToProps, {
+  logout,
+  fetchDesQuestions,
+})(DescriptiveResponsesContainer);
