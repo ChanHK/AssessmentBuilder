@@ -11,7 +11,12 @@ const TextArea = (props) => (
     onChange={props.onChange}
     value={props.value}
     autoComplete="off"
-    style={{ height: props.height ? props.height : "200px" }}
+    style={{
+      height: props.height ? props.height : "200px",
+      backgroundColor: props.backgroundColor
+        ? props.backgroundColor
+        : "inherit",
+    }}
     readOnly={props.readOnly ? props.readOnly : false}
   />
 );
@@ -24,13 +29,13 @@ const styles = StyleSheet.create({
     outline: "none",
     border: "2px solid",
     borderColor: configStyles.colors.black,
-    backgroundColor: configStyles.colors.white,
     fontSize: "15px",
     ":focus": {
       borderColor: configStyles.colors.lightBlue,
     },
     padding: 10,
     borderRadius: "5px",
+    resize: "none",
   },
 });
 
