@@ -20,21 +20,79 @@ import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchDesResponses } from "../../actions/home.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+
 class GradeContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questionDescriptive: EditorState.createEmpty(),
       feedback: null,
+      questionID: this.props.match.params.questionID,
+      payload: [],
     };
   }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    const data = {
+      questionID: this.state.questionID,
+    };
+
+    this.props.fetchDesResponses(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { homeReducer } = this.props;
+
+    if (
+      prevProps.homeReducer !== homeReducer &&
+      homeReducer.desResponses !== null
+    ) {
+      const { desResponses } = homeReducer;
+      console.log(desResponses);
+      this.setState({
+        payload: desResponses,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.homeReducer.desResponses = null;
+  }
+
+  convertHtml = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
 
   onChangeFeedback = (e) => {
     this.setState({ feedback: e.target.value });
   };
 
   render() {
-    const { questionDescriptive, feedback } = this.state;
+    const { questionDescriptive, feedback, payload } = this.state;
+
     return (
       <>
         <Header />
@@ -132,4 +190,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GradeContainer;
+GradeContainer.propTypes = {
+  logout: PropTypes.func.isRequired,
+  fetchDesResponses: PropTypes.func.isRequired,
+  homeReducer: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+});
+
+export default connect(mapStateToProps, {
+  logout,
+  fetchDesResponses,
+})(GradeContainer);
