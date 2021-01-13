@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
 import { StyleSheet, css } from "aphrodite";
+import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import TextArea from "../../components/TextArea";
@@ -12,19 +13,18 @@ import CustomMidContainer from "../../components/GridComponents/CustomMidContain
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
-
-import "../../css/general.css";
-
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import * as configStyles from "../../config/styles";
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 
-export default class GradeContainer extends Component {
+class GradeContainer extends Component {
   constructor() {
     super();
     this.state = {
-      questionDescriptive: null,
+      questionDescriptive: EditorState.createEmpty(),
       feedback: null,
     };
   }
@@ -46,20 +46,29 @@ export default class GradeContainer extends Component {
               </div>
               <SecondLabel>Question Description</SecondLabel>
               <div style={{ paddingBottom: "50px" }}>
-                <TextArea
-                  name={"description"}
-                  type={"text"}
-                  value={questionDescriptive}
-                  readOnly={true}
-                  height={"auto"}
+                <Editor
+                  editorState={questionDescriptive}
+                  toolbarHidden={true}
+                  readOnly
+                  editorClassName={css(styles.editorClassName)}
                 />
               </div>
               <SecondLabel>Responses</SecondLabel>
               <div className={css(styles.bar)}>
                 <CustomColumn>
-                  <ThirdLabel>Respondent: Name</ThirdLabel>
-                  <ThirdLabel>Answer: xxxx</ThirdLabel>
-                  <ThirdLabel>Graded: false</ThirdLabel>
+                  <ThirdLabel>Name: Name</ThirdLabel>
+                  <ThirdLabel>Email: Email</ThirdLabel>
+                  <ThirdLabel>Answer:</ThirdLabel>
+                  <div style={{ paddingBottom: "25px" }}>
+                    <TextArea
+                      type={"text"}
+                      // value={answer}
+                      minHeight={"100px"}
+                      readOnly={true}
+                      backgroundColor={configStyles.colors.lightOrange}
+                    />
+                  </div>
+
                   <ThirdLabel>Score Assigned (Max 5 marks): </ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
                     <CustomInput
@@ -114,4 +123,13 @@ const styles = StyleSheet.create({
     borderRadius: "5px",
     padding: "20px 30px 20px 30px",
   },
+  editorClassName: {
+    borderRadius: "5px",
+    borderColor: configStyles.colors.black,
+    border: "2px solid",
+    width: "100%",
+    height: "auto",
+  },
 });
+
+export default GradeContainer;
