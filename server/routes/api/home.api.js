@@ -168,7 +168,7 @@ router.get(
         result.forEach((item, index) => {
           let data = new Object();
           item.response.forEach((item2, index2) => {
-            if (item2.question_id === req.params.questionID) {
+            if (item2.question_id === req.params.questionID && !item2.graded) {
               data.name = item.name;
               data.email = item.email;
               data._id = item._id;
