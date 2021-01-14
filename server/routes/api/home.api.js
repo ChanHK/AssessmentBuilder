@@ -191,4 +191,61 @@ router.get(
   }
 );
 
+// @route     POST api/user/home/assessment/create/feedback
+// @desc      POST create new feedback
+// @access    Private
+router.post("/assessment/create/feedback", auth, (req, res) => {
+  const data = {
+    assessments_id: req.body.assessments_id,
+    cand_id: req.body.cand_id,
+    feedback: req.body.feedback,
+    question_id: req.body.question_id,
+    score: req.body.score,
+  };
+  db.Feedback.create(data)
+    .then(() => {
+      db.Candidate.updateOne(
+        {
+          _id: req.body.cand_id,
+          assessments_id: req.body.assessments_id,
+          "response.question_id": req.body.question_id,
+        },
+        { $set: { "response.$.graded": true } }
+      )
+        .then(() => {
+          db.Candidate.find({ "response.question_id": req.body.question_id })
+            .select("-__v")
+            .select("-response.questionAnswers")
+            .select("-response.questionChoices")
+            .then((result) => {
+              let temp = [];
+
+              result.forEach((item, index) => {
+                let data = new Object();
+                item.response.forEach((item2, index2) => {
+                  if (
+                    item2.question_id === req.body.question_id &&
+                    !item2.graded
+                  ) {
+                    data.name = item.name;
+                    data.email = item.email;
+                    data._id = item._id;
+                    data.assessments_id = item.assessments_id;
+                    data.response = item2;
+                    temp.push(data);
+                  }
+                });
+              });
+
+              return res.json(temp);
+            })
+            .catch(() => {
+              return res.json({ message: "fail to update" });
+            });
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
