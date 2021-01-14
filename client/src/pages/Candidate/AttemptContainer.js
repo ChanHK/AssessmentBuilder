@@ -435,8 +435,13 @@ class AttemptContainer extends Component {
                                   styles.noSelect
                                 )}
                                 onClick={() => {
-                                  let temp = question[index].response;
-                                  temp[x] = orderCount;
+                                  let temp =
+                                    question[index].response === ""
+                                      ? []
+                                      : question[index].response;
+
+                                  temp[x] = orderCount.toString();
+
                                   if (
                                     orderCount <
                                     question[index].questionChoices.length - 1
