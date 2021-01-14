@@ -162,9 +162,20 @@ class AttemptContainer extends Component {
   submit = () => {
     const { question, assessmentID } = this.state;
 
+    let today = new Date();
+    let date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    let time =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     const data = {
       assessmentID: assessmentID,
       response: question,
+      submissionDate: date + " " + time,
     };
 
     this.props.uploadCandidateResponses(data);
@@ -174,9 +185,22 @@ class AttemptContainer extends Component {
     e.preventDefault();
     const { question, assessmentID } = this.state;
 
+    let today = new Date();
+    let date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    let time =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+    console.log(date + " " + time);
+    console.log(typeof (date + " " + time));
     const data = {
       assessmentID: assessmentID,
       response: question,
+      submissionDate: (date + " " + time).toString(),
     };
 
     this.props.uploadCandidateResponses(data);

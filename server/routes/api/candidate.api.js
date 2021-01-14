@@ -236,14 +236,26 @@ router.post("/attempt/assessment/submit/:assessmentID", auth, (req, res) => {
         response: req.body.response,
       },
     },
-    { upsert: true, new: true }
+    { new: true }
   )
     .then(() => {
-      return res.status(200).json("Update success");
+      db.Candidate.updateOne(
+        { _id: req.cand.id, assessments_id: req.params.assessmentID },
+        {
+          $set: {
+            submissionDate: req.body.submissionDate,
+          },
+        },
+        { new: true }
+      )
+        .then(() => {
+          return res.status(200).json("Update success");
+        })
+        .catch(() => {
+          return res.status(200).json({ message: "failed in updating" });
+        });
     })
-    .catch(() => {
-      return res.status(200).json({ message: "failed in updating" });
-    });
+    .catch((err) => console.log(err));
 });
 
 module.exports = router;
