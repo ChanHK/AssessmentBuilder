@@ -95,6 +95,22 @@ class ResultsContainer extends Component {
               if (currentLength === numOfAns) {
                 totalScore = totalScore + item2.score;
               }
+            } else if (item2.questionType === "Order") {
+              let numOfAns = item2.questionAnswers.length;
+              let correctNum = 0;
+
+              item2.response.forEach((ele, x) => {
+                let resIndex = parseInt(ele);
+                if (
+                  item2.questionChoices[x] === item2.questionAnswers[resIndex]
+                ) {
+                  correctNum++;
+                }
+              });
+
+              if (correctNum === numOfAns) {
+                totalScore = totalScore + item2.score;
+              }
             }
           }
         });
