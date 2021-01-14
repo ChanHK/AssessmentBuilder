@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
+import * as configStyles from "../../config/styles";
 import { StyleSheet, css } from "aphrodite";
+import "../../css/general.css";
 
 import Header from "../../components/Header";
 import TableButton from "../../components/TableButton";
@@ -12,18 +13,12 @@ import CustomFullContainer from "../../components/GridComponents/CustomFullConta
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
-
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
-
-import "../../css/general.css";
 
 import * as MdIcons from "react-icons/md";
 
-import * as configStyles from "../../config/styles";
-
 const data = [
   {
-    title: "english test 1",
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
@@ -31,7 +26,6 @@ const data = [
     submitDate: "2020-09-13 23:07",
   },
   {
-    title: "english test 1",
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
@@ -39,7 +33,6 @@ const data = [
     submitDate: "2020-09-13 23:07",
   },
   {
-    title: "english test 1",
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
@@ -47,7 +40,6 @@ const data = [
     submitDate: "2020-09-13 23:07",
   },
   {
-    title: "english test 1",
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
@@ -55,7 +47,6 @@ const data = [
     submitDate: "2020-09-13 23:07",
   },
   {
-    title: "english test 1",
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
@@ -63,7 +54,6 @@ const data = [
     submitDate: "2020-09-13 23:07",
   },
   {
-    title: "english test 1",
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
@@ -72,7 +62,7 @@ const data = [
   },
 ];
 
-export default class ResultsContainer extends Component {
+class ResultsContainer extends Component {
   constructor() {
     super();
     this.state = {
@@ -87,7 +77,7 @@ export default class ResultsContainer extends Component {
   };
 
   onReset = () => {
-    this.setState({ title: "", email: "", name: "" });
+    this.setState({ email: "", name: "" });
   };
 
   render() {
@@ -105,21 +95,8 @@ export default class ResultsContainer extends Component {
         width: "20px",
       },
       {
-        name: "Assessment Title",
-        selector: "title",
-        sortable: true,
-        cell: (row) => (
-          <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.title}
-            </div>
-          </div>
-        ),
-      },
-      {
         name: "Email",
         selector: "email",
-        sortable: true,
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
@@ -131,7 +108,6 @@ export default class ResultsContainer extends Component {
       {
         name: "Name",
         selector: "name",
-        sortable: true,
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
@@ -167,7 +143,6 @@ export default class ResultsContainer extends Component {
       {
         name: "Submission Date",
         selector: "submitDate",
-        sortable: true,
         cell: (row) => (
           <div>
             <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
@@ -196,7 +171,7 @@ export default class ResultsContainer extends Component {
       data.serial = index + 1;
     });
 
-    const { title, email, name } = this.state;
+    const { email, name } = this.state;
 
     return (
       <>
@@ -206,15 +181,6 @@ export default class ResultsContainer extends Component {
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Results</FirstLabel>
-              </div>
-              <div className={css(styles.con)}>
-                <CustomInput
-                  name={"title"}
-                  type={"text"}
-                  placeholder={"Enter assessment title here"}
-                  onChangeValue={this.onChange}
-                  value={title}
-                />
               </div>
               <div className={css(styles.con)}>
                 <CustomInput
@@ -234,38 +200,23 @@ export default class ResultsContainer extends Component {
                   value={name}
                 />
               </div>
-              <CustomRow>
-                <div className={css(styles.buttonCon)}>
-                  <div style={{ paddingRight: "20px" }}>
-                    <Button
-                      backgroundColor={configStyles.colors.white}
-                      color={configStyles.colors.darkBlue}
-                      padding={"8px"}
-                      width={"100px"}
-                      onClick={this.onReset}
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                  <div>
-                    <Button
-                      backgroundColor={configStyles.colors.darkBlue}
-                      color={configStyles.colors.white}
-                      padding={"8px"}
-                      width={"100px"}
-                      // onClick={this.handleClick}  //call search func
-                    >
-                      Show
-                    </Button>
-                  </div>
+
+              <div className={css(styles.buttonCon)}>
+                <div style={{ paddingRight: "20px" }}>
+                  <Button
+                    backgroundColor={configStyles.colors.white}
+                    color={configStyles.colors.darkBlue}
+                    padding={"8px"}
+                    width={"100px"}
+                    onClick={this.onReset}
+                  >
+                    Reset
+                  </Button>
                 </div>
-              </CustomRow>
+              </div>
+
               <div style={{ margin: "25px 0px" }}>
-                <Table
-                  data={data}
-                  columns={tableHeader}
-                  path={`/assessment/response`}
-                />
+                <Table data={data} columns={tableHeader} />
               </div>
             </CustomColumn>
           </CustomMidContainer>
@@ -292,3 +243,5 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
+
+export default ResultsContainer;
