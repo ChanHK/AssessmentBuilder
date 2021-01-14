@@ -249,4 +249,21 @@ router.post("/assessment/create/feedback", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/home/assessment/fetch/results/:assessmentID
+// @desc      GET all results
+// @access    Private
+router.get("/assessment/fetch/results/:assessmentID", auth, (req, res) => {
+  db.Candidate.find({ assessments_id: req.params.assessmentID })
+    .select("-__v")
+    .select("-assessments_id")
+    .select("-response._id")
+    .select("-response.questionType")
+    .select("-response.questionDescription")
+    .select("-response.question_id")
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
