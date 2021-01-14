@@ -66,13 +66,14 @@ const data = [
 ];
 
 class ResultsContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: "",
       name: "",
       score: "",
       grade: "",
+      assessmentID: this.props.match.params.assessmentID,
     };
   }
 

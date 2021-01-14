@@ -226,7 +226,7 @@ class HomeContainer extends Component {
             </TableButton>
             <TableButton
               onClick={() => {
-                this.props.history.push(`/assessment/results`);
+                this.props.history.push(`/assessment/results/${row._id}`);
               }}
             >
               Results
