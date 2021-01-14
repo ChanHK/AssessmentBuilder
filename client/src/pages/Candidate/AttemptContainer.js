@@ -195,8 +195,6 @@ class AttemptContainer extends Component {
     let time =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-    console.log(date + " " + time);
-    console.log(typeof (date + " " + time));
     const data = {
       assessmentID: assessmentID,
       response: question,
