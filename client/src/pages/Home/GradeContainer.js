@@ -23,7 +23,7 @@ import { Editor } from "react-draft-wysiwyg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchDesResponses } from "../../actions/home.actions";
+import { fetchDesResponses, uploadFeedback } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -34,6 +34,7 @@ class GradeContainer extends Component {
       questionID: this.props.match.params.questionID,
       payload: [],
       score: {},
+      isEmpty: false,
     };
   }
 
@@ -66,23 +67,25 @@ class GradeContainer extends Component {
     ) {
       const { desResponses } = homeReducer;
 
-      let temp = desResponses;
+      if (desResponses.length > 0) {
+        let temp = desResponses;
 
-      temp.forEach((item, index) => {
-        item.response.questionDescription = this.convertHtml(
-          item.response.questionDescription
-        );
-      });
+        if (typeof temp[0].response.questionDescription !== "object") {
+          temp[0].response.questionDescription = this.convertHtml(
+            temp[0].response.questionDescription
+          );
+        }
 
-      let score = {
-        assessments_id: temp[0].assessments_id,
-        cand_id: temp[0]._id,
-        question_id: temp[0].response.question_id,
-        feedback: "",
-        score: "",
-      };
+        let score = {
+          assessments_id: temp[0].assessments_id,
+          cand_id: temp[0]._id,
+          question_id: temp[0].response.question_id,
+          feedback: "",
+          score: "",
+        };
 
-      this.setState({ payload: temp, score: score });
+        this.setState({ payload: temp, score: score });
+      } else this.setState({ isEmpty: true });
     }
   }
 
@@ -102,11 +105,22 @@ class GradeContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    const { score } = this.state;
+
+    const data = {
+      assessments_id: score.assessments_id,
+      cand_id: score.cand_id,
+      question_id: score.question_id,
+      feedback: score.feedback,
+      score: score.score,
+    };
+
+    this.props.uploadFeedback(data);
   };
 
   render() {
-    const { payload, score } = this.state;
-
+    const { payload, score, isEmpty } = this.state;
+    console.log(isEmpty);
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
@@ -185,6 +199,17 @@ class GradeContainer extends Component {
                   </Button>
                 </CustomColumn>
               </form>
+
+              <div style={{ marginBottom: "100px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                >
+                  Back
+                </Button>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -220,6 +245,7 @@ GradeContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   fetchDesResponses: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
+  uploadFeedback: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -229,4 +255,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   logout,
   fetchDesResponses,
+  uploadFeedback,
 })(GradeContainer);
