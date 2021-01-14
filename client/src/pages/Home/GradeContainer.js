@@ -32,6 +32,7 @@ class GradeContainer extends Component {
     super(props);
     this.state = {
       questionID: this.props.match.params.questionID,
+      assessmentID: this.props.match.params.assessmentID,
       payload: [],
       score: {},
       isEmpty: false,
@@ -119,10 +120,16 @@ class GradeContainer extends Component {
   };
 
   render() {
-    const { payload, score, isEmpty } = this.state;
-    console.log(isEmpty);
+    const { payload, score, isEmpty, assessmentID } = this.state;
+
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    if (isEmpty) {
+      this.props.history.push(
+        `/assessment/descriptive/responses/${assessmentID}`
+      );
+    }
 
     if (payload.length === 0) return false;
 
@@ -206,6 +213,11 @@ class GradeContainer extends Component {
                   color={configStyles.colors.white}
                   padding={"8px"}
                   width={"100px"}
+                  onClick={() => {
+                    this.props.history.push(
+                      `/assessment/descriptive/responses/${assessmentID}`
+                    );
+                  }}
                 >
                   Back
                 </Button>
