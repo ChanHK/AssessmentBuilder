@@ -257,9 +257,7 @@ router.get("/assessment/fetch/results/:assessmentID", auth, (req, res) => {
     .select("-__v")
     .select("-assessments_id")
     .select("-response._id")
-    .select("-response.questionType")
     .select("-response.questionDescription")
-    .select("-response.question_id")
     .then((result) => {
       return res.json(result);
     })
