@@ -75,8 +75,24 @@ class ResultsContainer extends Component {
 
         item.response.forEach((item2, index2) => {
           if (!item2.graded) {
-            if (item2.questionType === "True or False") {
+            if (
+              item2.questionType === "True or False" ||
+              item2.questionType === "Single Choice"
+            ) {
               if (item2.response[0] === item2.questionAnswers[0]) {
+                totalScore = totalScore + item2.score;
+              }
+            } else if (item2.questionType === "Multiple Choice") {
+              let numOfAns = item2.questionAnswers.length;
+              let currentLength = 0;
+
+              item2.questionAnswers.forEach((ans, x) => {
+                item2.response.forEach((res, y) => {
+                  if (ans === res) currentLength++;
+                });
+              });
+
+              if (currentLength === numOfAns) {
                 totalScore = totalScore + item2.score;
               }
             }
