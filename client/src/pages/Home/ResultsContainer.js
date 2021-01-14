@@ -22,7 +22,7 @@ import * as MdIcons from "react-icons/md";
 
 const data = [
   {
-    email: "abc@gmail.com",
+    email: "xxx@gmail.com",
     name: "abc",
     score: "not graded",
     grade: "not graded",
@@ -30,7 +30,7 @@ const data = [
   },
   {
     email: "abc@gmail.com",
-    name: "abc",
+    name: "xxx",
     score: "not graded",
     grade: "not graded",
     submitDate: "2020-09-13 23:07",
@@ -38,7 +38,7 @@ const data = [
   {
     email: "abc@gmail.com",
     name: "abc",
-    score: "not graded",
+    score: "100%",
     grade: "not graded",
     submitDate: "2020-09-13 23:07",
   },
@@ -46,7 +46,7 @@ const data = [
     email: "abc@gmail.com",
     name: "abc",
     score: "not graded",
-    grade: "not graded",
+    grade: "B",
     submitDate: "2020-09-13 23:07",
   },
   {
@@ -173,12 +173,122 @@ class ResultsContainer extends Component {
       },
     ];
 
-    data.forEach((data, index) => {
-      data.serial = index + 1;
-    });
-
     // if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     // else document.body.style.overflow = "unset";
+
+    const lowerCaseEmail = email.toLowerCase();
+    const lowerCaseName = name.toLowerCase();
+    const lowerCaseScore = score.toLowerCase();
+    const lowerCaseGrade = grade.toLowerCase();
+
+    let filteredData = data;
+
+    if (email !== "" || name !== "" || score !== "" || grade !== "") {
+      if (email !== "" && name === "" && score === "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return item.email.toLowerCase().indexOf(lowerCaseEmail) >= 0;
+        });
+      } else if (email === "" && name !== "" && score === "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return item.name.toLowerCase().indexOf(lowerCaseName) >= 0;
+        });
+      } else if (email === "" && name === "" && score !== "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return item.score.toLowerCase().indexOf(lowerCaseScore) >= 0;
+        });
+      } else if (email === "" && name === "" && score === "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return item.grade.toLowerCase().indexOf(lowerCaseGrade) >= 0;
+        });
+      } else if (email !== "" && name !== "" && score === "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.name.toLowerCase().includes(lowerCaseName)
+          );
+        });
+      } else if (email !== "" && name === "" && score !== "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.score.toLowerCase().includes(lowerCaseScore)
+          );
+        });
+      } else if (email !== "" && name === "" && score === "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      } else if (email === "" && name !== "" && score !== "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.name.toLowerCase().includes(lowerCaseName) &&
+            item.score.toLowerCase().includes(lowerCaseScore)
+          );
+        });
+      } else if (email === "" && name !== "" && score === "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.name.toLowerCase().includes(lowerCaseName) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      } else if (email === "" && name === "" && score !== "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.score.toLowerCase().includes(lowerCaseScore) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      } else if (email !== "" && name !== "" && score !== "" && grade === "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.name.toLowerCase().includes(lowerCaseName) &&
+            item.score.toLowerCase().includes(lowerCaseScore)
+          );
+        });
+      } else if (email !== "" && name !== "" && score === "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.name.toLowerCase().includes(lowerCaseName) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      } else if (email !== "" && name === "" && score !== "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.score.toLowerCase().includes(lowerCaseScore) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      } else if (email === "" && name !== "" && score !== "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.name.toLowerCase().includes(lowerCaseName) &&
+            item.score.toLowerCase().includes(lowerCaseScore) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      } else if (email !== "" && name !== "" && score !== "" && grade !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.email.toLowerCase().includes(lowerCaseEmail) &&
+            item.name.toLowerCase().includes(lowerCaseName) &&
+            item.score.toLowerCase().includes(lowerCaseScore) &&
+            item.grade.toLowerCase().includes(lowerCaseGrade)
+          );
+        });
+      }
+    }
+
+    filteredData.forEach((data, index) => {
+      data.serial = index + 1;
+    });
 
     return (
       <>
@@ -253,7 +363,7 @@ class ResultsContainer extends Component {
               </div>
 
               <div style={{ margin: "25px 0px 100px 0px" }}>
-                <Table data={data} columns={tableHeader} />
+                <Table data={filteredData} columns={tableHeader} />
               </div>
             </CustomColumn>
           </CustomMidContainer>
