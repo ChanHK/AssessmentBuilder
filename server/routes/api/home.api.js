@@ -210,7 +210,8 @@ router.post("/assessment/create/feedback", auth, (req, res) => {
           assessments_id: req.body.assessments_id,
           "response.question_id": req.body.question_id,
         },
-        { $set: { "response.$.graded": true } }
+        { $set: { "response.$.graded": true } },
+        { new: true }
       )
         .then(() => {
           db.Candidate.find({ "response.question_id": req.body.question_id })
