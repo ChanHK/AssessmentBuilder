@@ -8,6 +8,9 @@ import TableButton from "../../components/TableButton";
 import Table from "../../components/Table";
 import Button from "../../components/Button";
 import CustomInput from "../../components/CustomInput";
+import LoaderSpinner from "../../components/LoaderSpinner";
+import Wrapper from "../../components/Wrapper";
+import ScrollArrow from "../../components/ScrollArrow";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -66,9 +69,10 @@ class ResultsContainer extends Component {
   constructor() {
     super();
     this.state = {
-      title: "",
       email: "",
       name: "",
+      score: "",
+      grade: "",
     };
   }
 
@@ -77,10 +81,12 @@ class ResultsContainer extends Component {
   };
 
   onReset = () => {
-    this.setState({ email: "", name: "" });
+    this.setState({ email: "", name: "", score: "", grade: "" });
   };
 
   render() {
+    const { email, name, score, grade } = this.state;
+
     const tableHeader = [
       {
         name: "#",
@@ -171,41 +177,72 @@ class ResultsContainer extends Component {
       data.serial = index + 1;
     });
 
-    const { email, name } = this.state;
+    // if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    // else document.body.style.overflow = "unset";
 
     return (
       <>
         <Header />
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Results</FirstLabel>
               </div>
-              <div className={css(styles.con)}>
-                <CustomInput
-                  name={"email"}
-                  type={"text"}
-                  placeholder={"Enter candidate email here"}
-                  onChangeValue={this.onChange}
-                  value={email}
-                />
-              </div>
-              <div className={css(styles.con)}>
-                <CustomInput
-                  name={"name"}
-                  type={"text"}
-                  placeholder={"Enter candidate name here"}
-                  onChangeValue={this.onChange}
-                  value={name}
-                />
-              </div>
-
+              <Wrapper
+                firstHeight={"60px"}
+                secHeight={"120px"}
+                widthChange={1600}
+              >
+                <div className={css(styles.block)}>
+                  <CustomInput
+                    name={"email"}
+                    type={"text"}
+                    placeholder={"Search email"}
+                    onChangeValue={this.onChange}
+                    value={email}
+                  />
+                </div>
+                <div className={css(styles.block)}>
+                  <CustomInput
+                    name={"name"}
+                    type={"text"}
+                    placeholder={"Search name"}
+                    onChangeValue={this.onChange}
+                    value={name}
+                  />
+                </div>
+              </Wrapper>
+              <Wrapper
+                firstHeight={"60px"}
+                secHeight={"120px"}
+                widthChange={1600}
+              >
+                <div className={css(styles.block)}>
+                  <CustomInput
+                    name={"score"}
+                    type={"text"}
+                    placeholder={"Search score"}
+                    onChangeValue={this.onChange}
+                    value={score}
+                  />
+                </div>
+                <div className={css(styles.block)}>
+                  <CustomInput
+                    name={"grade"}
+                    type={"text"}
+                    placeholder={"Search grade"}
+                    onChangeValue={this.onChange}
+                    value={grade}
+                  />
+                </div>
+              </Wrapper>
               <div className={css(styles.buttonCon)}>
                 <div style={{ paddingRight: "20px" }}>
                   <Button
-                    backgroundColor={configStyles.colors.white}
-                    color={configStyles.colors.darkBlue}
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
                     padding={"8px"}
                     width={"100px"}
                     onClick={this.onReset}
@@ -215,7 +252,7 @@ class ResultsContainer extends Component {
                 </div>
               </div>
 
-              <div style={{ margin: "25px 0px" }}>
+              <div style={{ margin: "25px 0px 100px 0px" }}>
                 <Table data={data} columns={tableHeader} />
               </div>
             </CustomColumn>
@@ -230,17 +267,19 @@ const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
   },
-  con: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    paddingBottom: "20px",
-  },
   buttonCon: {
     width: "100%",
     display: "flex",
     justifyContent: "flex-end",
+    marginTop: "25px",
+  },
+  block: {
+    flexWrap: "nowrap",
+    backgroundColor: "plum",
+    width: "450px",
+    height: "auto",
+    display: "flex",
+    float: "left",
   },
 });
 
