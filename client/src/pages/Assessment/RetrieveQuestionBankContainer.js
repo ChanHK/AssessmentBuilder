@@ -269,7 +269,7 @@ class RetrieveQuestionBankContainer extends Component {
                 <Wrapper
                   firstHeight={"60px"}
                   secHeight={"120px"}
-                  widthChange={1250}
+                  widthChange={1350}
                 >
                   <div className={css(styles.block)}>
                     <CustomInput
