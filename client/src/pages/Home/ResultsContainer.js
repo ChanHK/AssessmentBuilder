@@ -62,16 +62,31 @@ class ResultsContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { homeReducer } = this.props;
 
+    console.log(homeReducer.results);
+
     if (prevProps.homeReducer !== homeReducer && homeReducer.results !== null) {
       const { homeReducer } = this.props;
 
       let data = [];
 
       homeReducer.results.forEach((item, index) => {
+        let totalScore =
+          item.totalScore === "not graded" ? 0 : parseInt(item.totalScore);
+
+        item.response.forEach((item2, index2) => {
+          if (!item2.graded) {
+            if (item2.questionType === "True or False") {
+              if (item2.response[0] === item2.questionAnswers[0]) {
+                totalScore = totalScore + item2.score;
+              }
+            }
+          }
+        });
+
         let temp = {
           email: item.email,
           name: item.name,
-          score: item.totalScore,
+          score: totalScore,
           grade: item.grade,
           submitDate: item.submissionDate,
           id: item._id,
