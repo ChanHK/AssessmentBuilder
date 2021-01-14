@@ -115,13 +115,19 @@ router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
                 assessments_id: req.params.assessmentID,
               })
                 .then(() => {
-                  return res.status(200).json(response.assessments);
+                  db.Candidate.deleteMany({
+                    assessments_id: req.params.assessmentID,
+                  })
+                    .then(() => {
+                      return res.status(200).json(response.assessments);
+                    })
+                    .catch(() => {
+                      return res.status(400).json({
+                        message: "Delete failed",
+                      });
+                    });
                 })
-                .catch(() => {
-                  return res.status(400).json({
-                    message: "Delete failed",
-                  });
-                });
+                .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
         })
