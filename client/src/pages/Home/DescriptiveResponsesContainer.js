@@ -80,7 +80,7 @@ class DescriptiveResponsesContainer extends Component {
   };
 
   render() {
-    const { searchText, questions } = this.state;
+    const { searchText, questions, assessmentID } = this.state;
 
     const column = [
       {
@@ -134,7 +134,7 @@ class DescriptiveResponsesContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `/assessment/grade/responses/${row._id}`
+                  `/assessment/grade/responses/${row._id}/${assessmentID}`
                 );
               }}
             >

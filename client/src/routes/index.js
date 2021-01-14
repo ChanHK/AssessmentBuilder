@@ -99,7 +99,7 @@ export default function Routes() {
         />
 
         <Route
-          path="/assessment/grade/responses/:questionID"
+          path="/assessment/grade/responses/:questionID/:assessmentID"
           exact
           component={GradeContainer}
           isPrivate
