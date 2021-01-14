@@ -137,3 +137,26 @@ export const fetchDesResponses = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_FAIL });
     });
 };
+
+export const uploadFeedback = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.UPLOAD_FEEBACKS_BEGIN });
+
+  axios
+    .post(
+      `/api/user/home/assessment/create/feedback`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.UPLOAD_FEEBACKS_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("upload failed", err);
+      dispatch({ type: HOME.UPLOAD_FEEBACKS_FAIL });
+    });
+};

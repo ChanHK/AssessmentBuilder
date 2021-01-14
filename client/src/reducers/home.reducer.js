@@ -17,6 +17,7 @@ export default function (state = initialState, action) {
     case HOME.DELETE_ASSESSMENT_BEGIN:
     case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_BEGIN:
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_BEGIN:
+    case HOME.UPLOAD_FEEBACKS_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -34,6 +35,7 @@ export default function (state = initialState, action) {
     case HOME.DELETE_ASSESSMENT_FAIL:
     case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_FAIL:
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_FAIL:
+    case HOME.UPLOAD_FEEBACKS_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -57,6 +59,7 @@ export default function (state = initialState, action) {
         desQuestions: action.payload,
       };
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_SUCCESS:
+    case HOME.UPLOAD_FEEBACKS_SUCCESS:
       return {
         ...state,
         isLoading: false,
