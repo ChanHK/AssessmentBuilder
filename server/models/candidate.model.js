@@ -14,6 +14,18 @@ const CandidateSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  totalScore: {
+    type: String,
+    default: "not graded",
+  },
+  grade: {
+    type: String,
+    default: "not graded",
+  },
+  submissionDate: {
+    type: String,
+    default: "",
+  },
   response: [
     {
       question_id: {
