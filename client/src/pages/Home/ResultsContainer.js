@@ -20,50 +20,11 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 
 import * as MdIcons from "react-icons/md";
 
-const data = [
-  {
-    email: "xxx@gmail.com",
-    name: "abc",
-    score: "not graded",
-    grade: "not graded",
-    submitDate: "2020-09-13 23:07",
-  },
-  {
-    email: "abc@gmail.com",
-    name: "xxx",
-    score: "not graded",
-    grade: "not graded",
-    submitDate: "2020-09-13 23:07",
-  },
-  {
-    email: "abc@gmail.com",
-    name: "abc",
-    score: "100%",
-    grade: "not graded",
-    submitDate: "2020-09-13 23:07",
-  },
-  {
-    email: "abc@gmail.com",
-    name: "abc",
-    score: "not graded",
-    grade: "B",
-    submitDate: "2020-09-13 23:07",
-  },
-  {
-    email: "abc@gmail.com",
-    name: "abc",
-    score: "not graded",
-    grade: "not graded",
-    submitDate: "2020-09-13 23:07",
-  },
-  {
-    email: "abc@gmail.com",
-    name: "abc",
-    score: "not graded",
-    grade: "not graded",
-    submitDate: "2020-09-13 23:07",
-  },
-];
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchResults } from "../../actions/home.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
 
 class ResultsContainer extends Component {
   constructor(props) {
@@ -74,7 +35,56 @@ class ResultsContainer extends Component {
       score: "",
       grade: "",
       assessmentID: this.props.match.params.assessmentID,
+      data: [], //stores results
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchResults(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { homeReducer } = this.props;
+
+    if (prevProps.homeReducer !== homeReducer && homeReducer.results !== null) {
+      const { homeReducer } = this.props;
+
+      let data = [];
+
+      homeReducer.results.forEach((item, index) => {
+        let temp = {
+          email: item.email,
+          name: item.name,
+          score: item.totalScore,
+          grade: item.grade,
+          submitDate: item.submissionDate,
+          id: item._id,
+        };
+        data.push(temp);
+      });
+
+      this.setState({ data: data });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.homeReducer.results = null;
   }
 
   onChange = (e) => {
@@ -86,7 +96,7 @@ class ResultsContainer extends Component {
   };
 
   render() {
-    const { email, name, score, grade } = this.state;
+    const { email, name, score, grade, data } = this.state;
 
     const tableHeader = [
       {
@@ -160,6 +170,7 @@ class ResultsContainer extends Component {
       },
       {
         name: "Option",
+        selector: "id",
         cell: (row) => (
           <CustomRow>
             <TableButton
@@ -174,8 +185,8 @@ class ResultsContainer extends Component {
       },
     ];
 
-    // if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
-    // else document.body.style.overflow = "unset";
+    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     const lowerCaseEmail = email.toLowerCase();
     const lowerCaseName = name.toLowerCase();
@@ -394,4 +405,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResultsContainer;
+ResultsContainer.propTypes = {
+  fetchResults: PropTypes.func.isRequired,
+  homeReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+});
+
+export default connect(mapStateToProps, {
+  fetchResults,
+  logout,
+})(ResultsContainer);
