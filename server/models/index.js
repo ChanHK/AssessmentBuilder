@@ -5,4 +5,5 @@ module.exports = {
   AssessmentQuestion: require("./assessmentQuestion.model"),
   AssessmentSet: require("./assessmentSet.model"),
   Candidate: require("./candidate.model"),
+  Feedback: require("./feedback.model"),
 };
