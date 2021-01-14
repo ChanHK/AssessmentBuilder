@@ -127,7 +127,7 @@ class ResultsContainer extends Component {
   };
 
   render() {
-    const { email, name, score, grade, data } = this.state;
+    const { email, name, score, grade, data, assessmentID } = this.state;
 
     const tableHeader = [
       {
@@ -206,7 +206,9 @@ class ResultsContainer extends Component {
           <CustomRow>
             <TableButton
               onClick={() => {
-                this.props.history.push(`/assessment/response`);
+                this.props.history.push(
+                  `/assessment/response/${row.id}/${assessmentID}`
+                );
               }}
             >
               <MdIcons.MdOpenInNew />
