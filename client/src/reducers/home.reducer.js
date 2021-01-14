@@ -7,6 +7,7 @@ const initialState = {
   pic: null,
   desQuestions: null,
   desResponses: null,
+  results: null,
 };
 
 export default function (state = initialState, action) {
@@ -18,6 +19,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_BEGIN:
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_BEGIN:
     case HOME.UPLOAD_FEEBACKS_BEGIN:
+    case HOME.FETCH_RESULTS_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -36,6 +38,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_ASSESSMENT_DESCRIPTIVE_QUESTIONS_FAIL:
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_FAIL:
     case HOME.UPLOAD_FEEBACKS_FAIL:
+    case HOME.FETCH_RESULTS_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -64,6 +67,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         desResponses: action.payload,
+      };
+    case HOME.FETCH_RESULTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        results: action.payload,
       };
     default:
       return state;

@@ -160,3 +160,25 @@ export const uploadFeedback = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.UPLOAD_FEEBACKS_FAIL });
     });
 };
+
+export const fetchResults = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.FETCH_RESULTS_BEGIN });
+
+  axios
+    .get(
+      `/api/user/home/assessment/fetch/results/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.FETCH_RESULTS_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: HOME.FETCH_RESULTS_FAIL });
+    });
+};
