@@ -197,7 +197,7 @@ class ViewResponseContainer extends Component {
                               backgroundColor:
                                 item.response[0] === item.questionAnswers[0] // true or false have only one ans
                                   ? configStyles.colors.correctGreen
-                                  : configStyles.colors.red,
+                                  : configStyles.colors.falseRed,
                             }}
                           >
                             {item.questionType === "Single Choice" ? (
@@ -211,6 +211,62 @@ class ViewResponseContainer extends Component {
                               item.response[0]
                             )}
                           </div>
+                        </CustomColumn>
+                      </div>
+                    </>
+                  );
+                }
+
+                if (
+                  item.questionType === "Multiple Choice" ||
+                  item.questionType === "Short Answer"
+                ) {
+                  let tempDes = this.convertHtml(item.questionDescription);
+
+                  return (
+                    <>
+                      <SecondLabel>Question {index + 1}</SecondLabel>
+                      <div style={{ marginBottom: "25px" }}>
+                        <CustomColumn>
+                          <div style={{ marginBottom: "15px" }}>
+                            <Editor
+                              editorState={tempDes}
+                              toolbarHidden={true}
+                              readOnly
+                              editorClassName={css(styles.editorClassName)}
+                            />
+                          </div>
+
+                          {item.response.map((item2, index2) => {
+                            let tempRes = this.convertHtml(
+                              item.response[index2]
+                            );
+                            return (
+                              <div
+                                className={css(styles.choiceRow)}
+                                style={{
+                                  backgroundColor:
+                                    item2 === item.questionAnswers[0] ||
+                                    item2 === item.questionAnswers[1] ||
+                                    item2 === item.questionAnswers[2] ||
+                                    item2 === item.questionAnswers[3] ||
+                                    item2 === item.questionAnswers[4] ||
+                                    item2 === item.questionAnswers[5] ||
+                                    item2 === item.questionAnswers[6] ||
+                                    item2 === item.questionAnswers[7]
+                                      ? configStyles.colors.correctGreen
+                                      : configStyles.colors.falseRed,
+                                }}
+                              >
+                                <Editor
+                                  editorState={tempRes}
+                                  toolbarHidden={true}
+                                  readOnly
+                                  editorClassName={css(styles.ansRow)}
+                                />
+                              </div>
+                            );
+                          })}
                         </CustomColumn>
                       </div>
                     </>
