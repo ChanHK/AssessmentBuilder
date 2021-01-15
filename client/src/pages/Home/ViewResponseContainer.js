@@ -243,6 +243,7 @@ class ViewResponseContainer extends Component {
                             );
                             return (
                               <div
+                                key={index}
                                 className={css(styles.choiceRow)}
                                 style={{
                                   backgroundColor:
@@ -264,6 +265,62 @@ class ViewResponseContainer extends Component {
                                   readOnly
                                   editorClassName={css(styles.ansRow)}
                                 />
+                              </div>
+                            );
+                          })}
+                        </CustomColumn>
+                      </div>
+                    </>
+                  );
+                }
+
+                if (item.questionType === "Order") {
+                  let tempDes = this.convertHtml(item.questionDescription);
+
+                  return (
+                    <>
+                      <SecondLabel>Question {index + 1}</SecondLabel>
+                      <div style={{ marginBottom: "25px" }}>
+                        <CustomColumn>
+                          <div style={{ marginBottom: "15px" }}>
+                            <Editor
+                              editorState={tempDes}
+                              toolbarHidden={true}
+                              readOnly
+                              editorClassName={css(styles.editorClassName)}
+                            />
+                          </div>
+
+                          {item.response.map((item2, index2) => {
+                            let tempChoice = this.convertHtml(
+                              item.questionChoices[index2]
+                            );
+                            return (
+                              <div className={css(styles.orderRow)} key={index}>
+                                <CustomRow>
+                                  <div className={css(styles.orderCount)}>
+                                    {parseInt(item2) + 1}
+                                  </div>
+
+                                  <div
+                                    className={css(styles.choiceRow)}
+                                    style={{
+                                      backgroundColor:
+                                        item.questionChoices[index2] ===
+                                        item.questionAnswers[parseInt(item2)]
+                                          ? configStyles.colors.correctGreen
+                                          : configStyles.colors.falseRed,
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <Editor
+                                      editorState={tempChoice}
+                                      toolbarHidden={true}
+                                      readOnly
+                                      editorClassName={css(styles.ansRow)}
+                                    />
+                                  </div>
+                                </CustomRow>
                               </div>
                             );
                           })}
@@ -315,6 +372,23 @@ const styles = StyleSheet.create({
   ansRow: {
     width: "100%",
     height: "auto",
+  },
+  orderCount: {
+    height: "auto",
+    width: "50px",
+    borderColor: configStyles.colors.black,
+    border: "2px solid",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    marginRight: "10px",
+    backgroundColor: configStyles.colors.lightGrey,
+    fontFamily: "Ubuntu-Bold",
+  },
+  orderRow: {
+    marginBottom: "10px",
+    width: "100%",
   },
 });
 
