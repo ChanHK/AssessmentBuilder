@@ -305,7 +305,7 @@ class RetrieveQuestionBankContainer extends Component {
                 data={filteredData}
                 columns={column}
                 key={filteredData._id}
-                paginationRowsPerPageOptions={[20, 25, 30, 35, 40]}
+                // paginationRowsPerPageOptions={[20, 25, 30, 35, 40]}
               />
               <div style={{ marginBottom: "100px" }}>
                 <Button
