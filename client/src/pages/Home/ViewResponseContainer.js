@@ -16,6 +16,10 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchAResult } from "../../actions/home.actions";
@@ -32,6 +36,7 @@ class ViewResponseContainer extends Component {
       grade: "",
       submissionDate: "",
       totalScore: "",
+      response: [],
     };
   }
 
@@ -79,6 +84,7 @@ class ViewResponseContainer extends Component {
         grade: grade,
         submissionDate: submissionDate,
         totalScore: totalScore,
+        response: response,
       });
     }
   }
@@ -87,8 +93,25 @@ class ViewResponseContainer extends Component {
     this.props.homeReducer.aCandResult = null;
   }
 
+  convertHtml = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
+
   render() {
-    const { email, grade, name, submissionDate, totalScore } = this.state;
+    const {
+      email,
+      grade,
+      name,
+      submissionDate,
+      totalScore,
+      response,
+    } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -141,6 +164,59 @@ class ViewResponseContainer extends Component {
                 </div>
               </CustomRow>
               <hr className={css(styles.hr)} />
+
+              {response.map((item, index) => {
+                if (
+                  item.questionType === "True or False" ||
+                  item.questionType === "Single Choice"
+                ) {
+                  let tempDes = this.convertHtml(item.questionDescription);
+                  let tempRes = "";
+
+                  if (item.questionType === "Single Choice") {
+                    tempRes = this.convertHtml(item.response[0]);
+                  }
+
+                  return (
+                    <>
+                      <SecondLabel>Question {index + 1}</SecondLabel>
+                      <div style={{ marginBottom: "25px" }}>
+                        <CustomColumn>
+                          <div style={{ marginBottom: "15px" }}>
+                            <Editor
+                              editorState={tempDes}
+                              toolbarHidden={true}
+                              readOnly
+                              editorClassName={css(styles.editorClassName)}
+                            />
+                          </div>
+
+                          <div
+                            className={css(styles.choiceRow)}
+                            style={{
+                              backgroundColor:
+                                item.response[0] === item.questionAnswers[0] // true or false have only one ans
+                                  ? configStyles.colors.correctGreen
+                                  : configStyles.colors.red,
+                            }}
+                          >
+                            {item.questionType === "Single Choice" ? (
+                              <Editor
+                                editorState={tempRes}
+                                toolbarHidden={true}
+                                readOnly
+                                editorClassName={css(styles.ansRow)}
+                              />
+                            ) : (
+                              item.response[0]
+                            )}
+                          </div>
+                        </CustomColumn>
+                      </div>
+                    </>
+                  );
+                }
+              })}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -163,6 +239,26 @@ const styles = StyleSheet.create({
   hr: {
     backgroundColor: configStyles.colors.black,
     height: "1px",
+  },
+  choiceRow: {
+    padding: "5px",
+    fontFamily: "Ubuntu-Bold",
+    fontSize: "15px",
+    marginBottom: "5px",
+    borderRadius: "5px",
+    border: "2px solid black",
+  },
+  editorClassName: {
+    borderRadius: "5px",
+    borderColor: configStyles.colors.black,
+    border: "2px solid",
+    width: "100%",
+    height: "auto",
+    padding: "10px 20px",
+  },
+  ansRow: {
+    width: "100%",
+    height: "auto",
   },
 });
 
