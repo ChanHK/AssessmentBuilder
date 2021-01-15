@@ -9,6 +9,7 @@ const initialState = {
   desResponses: null,
   results: null,
   grade: null,
+  aCandResult: null,
 };
 
 export default function (state = initialState, action) {
@@ -22,6 +23,7 @@ export default function (state = initialState, action) {
     case HOME.UPLOAD_FEEBACKS_BEGIN:
     case HOME.FETCH_RESULTS_BEGIN:
     case HOME.FETCH_GRADES_BEGIN:
+    case HOME.FETCH_A_CAND_RESULT_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -42,6 +44,7 @@ export default function (state = initialState, action) {
     case HOME.UPLOAD_FEEBACKS_FAIL:
     case HOME.FETCH_RESULTS_FAIL:
     case HOME.FETCH_GRADES_FAIL:
+    case HOME.FETCH_A_CAND_RESULT_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -82,6 +85,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         grade: action.payload,
+      };
+    case HOME.FETCH_A_CAND_RESULT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        aCandResult: action.payload,
       };
     default:
       return state;
