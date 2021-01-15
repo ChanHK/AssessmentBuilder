@@ -244,6 +244,7 @@ router.post("/attempt/assessment/submit/:assessmentID", auth, (req, res) => {
         {
           $set: {
             submissionDate: req.body.submissionDate,
+            totalScore: req.body.totalScore,
           },
         },
         { new: true }
