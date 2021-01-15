@@ -17,9 +17,6 @@ const feedbackSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  score: {
-    type: Number,
-  },
 });
 
 module.exports = mongoose.model("Feedback", feedbackSchema);

@@ -15,8 +15,8 @@ const CandidateSchema = new mongoose.Schema({
     default: "",
   },
   totalScore: {
-    type: String,
-    default: "not graded",
+    type: Number,
+    default: 0,
   },
   grade: {
     type: String,

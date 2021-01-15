@@ -200,7 +200,6 @@ router.post("/assessment/create/feedback", auth, (req, res) => {
     cand_id: req.body.cand_id,
     feedback: req.body.feedback,
     question_id: req.body.question_id,
-    score: req.body.score,
   };
   db.Feedback.create(data)
     .then(() => {
@@ -210,7 +209,10 @@ router.post("/assessment/create/feedback", auth, (req, res) => {
           assessments_id: req.body.assessments_id,
           "response.question_id": req.body.question_id,
         },
-        { $set: { "response.$.graded": true } },
+        {
+          $set: { "response.$.graded": true },
+          $inc: { totalScore: req.body.score },
+        },
         { new: true }
       )
         .then(() => {
