@@ -84,16 +84,38 @@ class ResultsContainer extends Component {
         let grade = item.grade;
         let tempUnit = "";
 
+        //cal grade
         if (item.grade === "not graded") {
           if (passOrFailSelected) {
-            if (item.totalScore > parseInt(score)) {
-              grade = "PASS";
-            } else grade = "FAIL";
-          }
-          if (unit === "points p.") {
-            tempUnit = "p";
-          } else {
-            tempUnit = "%";
+            if (item.totalScore > parseInt(score)) grade = "PASS";
+            else grade = "FAIL";
+
+            if (unit === "points p.") tempUnit = "p";
+            else tempUnit = "%";
+          } else if (addGradingSelected) {
+            let tempRange = gradeRange;
+            if (tempRange[0] !== "0") tempRange.unshift("0");
+
+            for (let i = 0; i < tempRange.length - 1; i++) {
+              if (tempRange[i] === "0") {
+                if (
+                  item.totalScore >= parseInt(tempRange[i]) &&
+                  item.totalScore <= parseInt(tempRange[i + 1])
+                ) {
+                  grade = gradeValue[i];
+                }
+              } else {
+                if (
+                  item.totalScore >= parseInt(tempRange[i]) + 1 &&
+                  item.totalScore <= parseInt(tempRange[i + 1])
+                ) {
+                  grade = gradeValue[i];
+                }
+              }
+            }
+
+            if (gradeUnit === "points p.") tempUnit = "p";
+            else tempUnit = "%";
           }
         }
 
@@ -182,7 +204,7 @@ class ResultsContainer extends Component {
             )}
 
             {row.grade !== "PASS" && row.grade !== "FAIL" && (
-              <div className={css(styles.pass)}>{row.grade}</div>
+              <div className={css(styles.tableRow)}>{row.grade}</div>
             )}
           </div>
         ),
