@@ -117,7 +117,12 @@ class SettingContainer extends Component {
 
   onClickPassorFail = (e) => {
     if (this.state.type !== "view") {
-      this.setState({ passOrFailSelected: e, score: "", unit: "" });
+      this.setState({
+        passOrFailSelected: e,
+        score: "",
+        unit: "",
+        addGradingSelected: false,
+      });
     }
   };
 
@@ -309,7 +314,11 @@ class SettingContainer extends Component {
               <CustomSwitch
                 onChange={(e) => {
                   if (type !== "view") {
-                    this.setState({ addGradingSelected: e, gradeRange: [] });
+                    this.setState({
+                      addGradingSelected: e,
+                      gradeRange: [],
+                      passOrFailSelected: false,
+                    });
                   }
                 }}
                 checked={addGradingSelected}
