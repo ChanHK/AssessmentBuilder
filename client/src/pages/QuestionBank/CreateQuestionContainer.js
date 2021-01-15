@@ -23,6 +23,7 @@ import TrueFalse from "../../components/TrueFalse";
 import CustomEditor from "../../components/CustomEditor";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Order from "../../components/Order";
 
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -524,7 +525,7 @@ class CreateQuestionContainer extends Component {
                       <div style={{ paddingBottom: "25px" }}>
                         {questionAns.map((item, index) => (
                           <div key={index}>
-                            <ShortAns
+                            <Order
                               onClick={() => this.deleteRow(index, "Ans")}
                               onChange={(e) => this.onChangeAnswer(e, index)}
                               height={"50px"}
