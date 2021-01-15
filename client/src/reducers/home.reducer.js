@@ -8,6 +8,7 @@ const initialState = {
   desQuestions: null,
   desResponses: null,
   results: null,
+  grade: null,
 };
 
 export default function (state = initialState, action) {
@@ -20,6 +21,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_BEGIN:
     case HOME.UPLOAD_FEEBACKS_BEGIN:
     case HOME.FETCH_RESULTS_BEGIN:
+    case HOME.FETCH_GRADES_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -39,6 +41,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_FAIL:
     case HOME.UPLOAD_FEEBACKS_FAIL:
     case HOME.FETCH_RESULTS_FAIL:
+    case HOME.FETCH_GRADES_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -73,6 +76,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         results: action.payload,
+      };
+    case HOME.FETCH_GRADES_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        grade: action.payload,
       };
     default:
       return state;
