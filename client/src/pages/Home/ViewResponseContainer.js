@@ -372,6 +372,8 @@ class ViewResponseContainer extends Component {
                     </>
                   );
                 }
+
+                return null;
               })}
 
               <div style={{ marginBottom: "150px" }}>
