@@ -22,7 +22,7 @@ import * as MdIcons from "react-icons/md";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchResults } from "../../actions/home.actions";
+import { fetchResults, fetchGrades } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -57,24 +57,51 @@ class ResultsContainer extends Component {
     };
 
     this.props.fetchResults(data);
+    this.props.fetchGrades(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { homeReducer } = this.props;
 
-    console.log(homeReducer.results);
-
-    if (prevProps.homeReducer !== homeReducer && homeReducer.results !== null) {
-      const { homeReducer } = this.props;
+    if (
+      prevProps.homeReducer !== homeReducer &&
+      homeReducer.results !== null &&
+      homeReducer.grade !== null
+    ) {
+      const {
+        addGradingSelected,
+        gradeRange,
+        gradeUnit,
+        gradeValue,
+        passOrFailSelected,
+        score,
+        unit,
+      } = homeReducer.grade[0];
 
       let data = [];
 
       homeReducer.results.forEach((item, index) => {
+        let grade = item.grade;
+        let tempUnit = "";
+
+        if (item.grade === "not graded") {
+          if (passOrFailSelected) {
+            if (item.totalScore > parseInt(score)) {
+              grade = "PASS";
+            } else grade = "FAIL";
+          }
+          if (unit === "points p.") {
+            tempUnit = "p";
+          } else {
+            tempUnit = "%";
+          }
+        }
+
         let temp = {
           email: item.email,
           name: item.name,
-          score: item.totalScore.toString(),
-          grade: item.grade,
+          score: `${item.totalScore.toString() + " " + tempUnit}`,
+          grade: grade,
           submitDate: item.submissionDate,
           id: item._id,
         };
@@ -87,6 +114,7 @@ class ResultsContainer extends Component {
 
   componentWillUnmount() {
     this.props.homeReducer.results = null;
+    this.props.homeReducer.grade = null;
   }
 
   onChange = (e) => {
@@ -106,9 +134,7 @@ class ResultsContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.serial}
-            </div>
+            <div className={css(styles.tableRow)}>{row.serial}</div>
           </div>
         ),
         width: "20px",
@@ -118,9 +144,7 @@ class ResultsContainer extends Component {
         selector: "email",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.email}
-            </div>
+            <div className={css(styles.tableRow)}>{row.email}</div>
           </div>
         ),
       },
@@ -129,9 +153,7 @@ class ResultsContainer extends Component {
         selector: "name",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.name}
-            </div>
+            <div className={css(styles.tableRow)}>{row.name}</div>
           </div>
         ),
       },
@@ -141,9 +163,7 @@ class ResultsContainer extends Component {
         sortable: true,
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.score}
-            </div>
+            <div className={css(styles.tableRow)}>{row.score}</div>
           </div>
         ),
       },
@@ -153,9 +173,17 @@ class ResultsContainer extends Component {
         sortable: true,
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.grade}
-            </div>
+            {row.grade === "FAIL" && (
+              <div className={css(styles.fail)}>{row.grade}</div>
+            )}
+
+            {row.grade === "PASS" && (
+              <div className={css(styles.pass)}>{row.grade}</div>
+            )}
+
+            {row.grade !== "PASS" && row.grade !== "FAIL" && (
+              <div className={css(styles.pass)}>{row.grade}</div>
+            )}
           </div>
         ),
       },
@@ -164,9 +192,7 @@ class ResultsContainer extends Component {
         selector: "submitDate",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.submitDate}
-            </div>
+            <div className={css(styles.tableRow)}>{row.submitDate}</div>
           </div>
         ),
       },
@@ -407,12 +433,29 @@ const styles = StyleSheet.create({
     display: "flex",
     float: "left",
   },
+  tableRow: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Regular",
+  },
+  pass: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Bold",
+    backgroundColor: configStyles.colors.correctGreen,
+    padding: "0px 10px 0px 10px",
+  },
+  fail: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Bold",
+    backgroundColor: configStyles.colors.inputErrorRed,
+    padding: "0px 10px 0px 10px",
+  },
 });
 
 ResultsContainer.propTypes = {
   fetchResults: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  fetchGrades: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -422,4 +465,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchResults,
   logout,
+  fetchGrades,
 })(ResultsContainer);
