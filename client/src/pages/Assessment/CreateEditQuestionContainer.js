@@ -100,10 +100,13 @@ class CreateEditQuestionContainer extends Component {
       let choices = null;
       let ans = null;
       let arrObj = [];
-      if (questionType === "Order" || questionType === "Short Answer") {
+      if (questionType === "Order") {
         choices = this.convertQuestion(questionChoices);
         ans = this.convertQuestion(questionAnswers);
-      } else if (questionType === "True or False") {
+      } else if (
+        questionType === "True or False" ||
+        questionType === "Short Answer"
+      ) {
         choices = questionChoices;
         ans = questionAnswers;
       } else if (
@@ -290,9 +293,11 @@ class CreateEditQuestionContainer extends Component {
           );
         }
       });
-    } else if (questionType === "Order" || questionType === "Short Answer") {
+    } else if (questionType === "Order") {
       for (let j = 0; j < questionAns.length; j++)
         ans.push(draftToHtml(convertToRaw(questionAns[j].getCurrentContent())));
+    } else if (questionType === "Short Answer") {
+      for (let j = 0; j < questionAns.length; j++) ans.push(questionAns[j]);
     } else {
       ans = questionAns;
       choice = questionChoices;
@@ -497,7 +502,9 @@ class CreateEditQuestionContainer extends Component {
                           <div key={index}>
                             <ShortAns
                               onClick={() => this.deleteRow(index, "Ans")}
-                              onChange={(e) => this.onChangeAnswer(e, index)}
+                              onChange={(e) =>
+                                this.onChangeAnswer(e.target.value, index)
+                              }
                               height={"50px"}
                               value={item}
                               rowNum={index}

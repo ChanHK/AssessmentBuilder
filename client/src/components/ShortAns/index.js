@@ -3,7 +3,7 @@ import { css, StyleSheet } from "aphrodite";
 import CustomRow from "../../components/GridComponents/CustomRow";
 import * as MdIcons from "react-icons/md";
 import * as configStyles from "../../config/styles";
-import CustomEditor from "../../components/CustomEditor";
+import CustomInput from "../../components/CustomInput";
 
 const ShortAns = (props) => (
   <div className={css(styles.con)}>
@@ -15,10 +15,7 @@ const ShortAns = (props) => (
         {props.rowNum + 1}
       </div>
       <div style={{ width: "80%" }}>
-        <CustomEditor
-          onEditorStateChange={props.onChange}
-          editorState={props.value}
-        />
+        <CustomInput onChangeValue={props.onChange} value={props.value} />
       </div>
       <div style={{ width: "10%" }} className={css(styles.button)}>
         <MdIcons.MdDelete size={45} onClick={props.onClick} />
@@ -51,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     fontFamily: "Ubuntu-Bold",
-    height: "50px",
+    height: "46px",
     backgroundColor: configStyles.colors.lightGrey,
   },
   noSelect: {
