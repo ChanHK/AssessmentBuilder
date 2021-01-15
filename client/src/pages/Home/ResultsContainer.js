@@ -111,6 +111,12 @@ class ResultsContainer extends Component {
               if (correctNum === numOfAns) {
                 totalScore = totalScore + item2.score;
               }
+            } else if (item2.questionType === "Short Answer") {
+              item2.questionAnswers.forEach((ans, x) => {
+                if (item2.response[0] === ans) {
+                  totalScore = totalScore + item2.score;
+                }
+              });
             }
           }
         });
