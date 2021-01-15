@@ -266,4 +266,33 @@ router.get("/assessment/fetch/results/:assessmentID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/home/assessment/fetch/grades/:assessmentID
+// @desc      GETfetch passing score and grades
+// @access    Private
+router.get("/assessment/fetch/grades/:assessmentID", auth, (req, res) => {
+  db.Assessment.find({ "assessments._id": req.params.assessmentID })
+    .select("-user_id")
+    .select("-_id")
+    .select("-assessments.access")
+    .select("-assessments.sets")
+    .select("-assessments.timer")
+    .select("-assessments.status")
+    .select("-assessments.settings.testName")
+    .select("-assessments.settings.testDescription")
+    .select("-assessments.settings.testInstruction")
+    .select("-__v")
+    .select("-_id")
+
+    .then((result) => {
+      let temp = [];
+      result[0].assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          temp.push(item.settings);
+        }
+      });
+      return res.json(temp);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
