@@ -9,6 +9,7 @@ export const colors = {
   lightGreen: "#7de881",
   noticeYellow: "#fada82",
   correctGreen: "#83eb75",
+  falseRed: "#ed4545",
   inputErrorRed: "#fc0026",
   yellow: "#edf250", //setup in progress
   green: "#2dba2b", //activated
