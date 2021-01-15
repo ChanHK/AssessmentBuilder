@@ -73,7 +73,7 @@ class ResultsContainer extends Component {
         let temp = {
           email: item.email,
           name: item.name,
-          score: item.totalScore,
+          score: item.totalScore.toString(),
           grade: item.grade,
           submitDate: item.submissionDate,
           id: item._id,
