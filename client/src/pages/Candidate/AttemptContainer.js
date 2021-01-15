@@ -496,7 +496,9 @@ class AttemptContainer extends Component {
                                   });
                                 }}
                               >
-                                {question[index].response[x]}
+                                {question[index].response[x] !== undefined
+                                  ? parseInt(question[index].response[x]) + 1
+                                  : question[index].response[x]}
                               </div>
                               <div style={{ width: "100%" }}>
                                 <CustomEditor
