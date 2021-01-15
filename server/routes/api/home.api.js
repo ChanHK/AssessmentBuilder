@@ -295,4 +295,18 @@ router.get("/assessment/fetch/grades/:assessmentID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/home/assessment/fetch/single_result/:assessmentID/:candID
+// @desc      GET a cand result
+// @access    Private
+router.get("/assessment/fetch/single_result/:candID", auth, (req, res) => {
+  db.Candidate.findOne({
+    _id: req.params.candID,
+  })
+    .select("-__v")
+    .then((result) => {
+      return res.json(result);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
