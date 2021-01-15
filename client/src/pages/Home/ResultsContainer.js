@@ -70,61 +70,10 @@ class ResultsContainer extends Component {
       let data = [];
 
       homeReducer.results.forEach((item, index) => {
-        let totalScore =
-          item.totalScore === "not graded" ? 0 : parseInt(item.totalScore);
-
-        item.response.forEach((item2, index2) => {
-          if (!item2.graded) {
-            if (
-              item2.questionType === "True or False" ||
-              item2.questionType === "Single Choice"
-            ) {
-              if (item2.response[0] === item2.questionAnswers[0]) {
-                totalScore = totalScore + item2.score;
-              }
-            } else if (item2.questionType === "Multiple Choice") {
-              let numOfAns = item2.questionAnswers.length;
-              let currentLength = 0;
-
-              item2.questionAnswers.forEach((ans, x) => {
-                item2.response.forEach((res, y) => {
-                  if (ans === res) currentLength++;
-                });
-              });
-
-              if (currentLength === numOfAns) {
-                totalScore = totalScore + item2.score;
-              }
-            } else if (item2.questionType === "Order") {
-              let numOfAns = item2.questionAnswers.length;
-              let correctNum = 0;
-
-              item2.response.forEach((ele, x) => {
-                let resIndex = parseInt(ele);
-                if (
-                  item2.questionChoices[x] === item2.questionAnswers[resIndex]
-                ) {
-                  correctNum++;
-                }
-              });
-
-              if (correctNum === numOfAns) {
-                totalScore = totalScore + item2.score;
-              }
-            } else if (item2.questionType === "Short Answer") {
-              item2.questionAnswers.forEach((ans, x) => {
-                if (item2.response[0] === ans) {
-                  totalScore = totalScore + item2.score;
-                }
-              });
-            }
-          }
-        });
-
         let temp = {
           email: item.email,
           name: item.name,
-          score: totalScore,
+          score: item.totalScore,
           grade: item.grade,
           submitDate: item.submissionDate,
           id: item._id,
