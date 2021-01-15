@@ -172,10 +172,61 @@ class AttemptContainer extends Component {
     let time =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
+    let totalScore = 0;
+    //cal score
+    question.forEach((item, index) => {
+      if (
+        item.questionType === "True or False" ||
+        item.questionType === "Single Choice"
+      ) {
+        if (item.response === item.questionAnswers[0]) {
+          totalScore = totalScore + item.score;
+        }
+        item.graded = true;
+      } else if (item.questionType === "Multiple Choice") {
+        let numOfAns = item.questionAnswers.length;
+        let currentLength = 0;
+
+        item.questionAnswers.forEach((ans, x) => {
+          item.response.forEach((res, y) => {
+            if (ans === res) currentLength++;
+          });
+        });
+
+        if (currentLength === numOfAns) {
+          totalScore = totalScore + item.score;
+        }
+        item.graded = true;
+      } else if (item.questionType === "Order") {
+        let numOfAns = item.questionAnswers.length;
+        let correctNum = 0;
+
+        item.response.forEach((ele, x) => {
+          let resIndex = parseInt(ele);
+          if (item.questionChoices[x] === item.questionAnswers[resIndex]) {
+            correctNum++;
+          }
+        });
+
+        if (correctNum === numOfAns) {
+          totalScore = totalScore + item.score;
+        }
+        item.graded = true;
+      } else if (item.questionType === "Short Answer") {
+        item.questionAnswers.forEach((ans, x) => {
+          if (item.response === ans) {
+            totalScore = totalScore + item.score;
+          }
+        });
+        item.graded = true;
+      }
+    });
+
     const data = {
       assessmentID: assessmentID,
       response: question,
       submissionDate: date + " " + time,
+      totalScore: totalScore.toString(),
     };
 
     this.props.uploadCandidateResponses(data);
@@ -183,25 +234,7 @@ class AttemptContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { question, assessmentID } = this.state;
-
-    let today = new Date();
-    let date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-    let time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-    const data = {
-      assessmentID: assessmentID,
-      response: question,
-      submissionDate: (date + " " + time).toString(),
-    };
-
-    this.props.uploadCandidateResponses(data);
+    this.submit();
   };
 
   render() {
