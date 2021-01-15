@@ -6,6 +6,7 @@ import * as configStyles from "../../config/styles";
 import Header from "../../components/Header";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Button from "../../components/Button";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -31,6 +32,7 @@ class ViewResponseContainer extends Component {
     super(props);
     this.state = {
       candID: this.props.match.params.candID,
+      assessmentID: this.props.match.params.assessmentID,
       name: "",
       email: "",
       grade: "",
@@ -111,6 +113,7 @@ class ViewResponseContainer extends Component {
       submissionDate,
       totalScore,
       response,
+      assessmentID,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -330,6 +333,22 @@ class ViewResponseContainer extends Component {
                   );
                 }
               })}
+
+              <div style={{ marginBottom: "150px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  onClick={() => {
+                    this.props.history.push(
+                      `/assessment/results/${assessmentID}`
+                    );
+                  }}
+                >
+                  Back
+                </Button>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
