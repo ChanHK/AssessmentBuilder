@@ -27,6 +27,11 @@ class ViewResponseContainer extends Component {
     super(props);
     this.state = {
       candID: this.props.match.params.candID,
+      name: "",
+      email: "",
+      grade: "",
+      submissionDate: "",
+      totalScore: "",
     };
   }
 
@@ -58,6 +63,23 @@ class ViewResponseContainer extends Component {
       homeReducer.aCandResult !== null
     ) {
       console.log(homeReducer.aCandResult);
+      const { aCandResult } = this.props.homeReducer;
+      const {
+        email,
+        grade,
+        name,
+        response,
+        submissionDate,
+        totalScore,
+      } = aCandResult;
+
+      this.setState({
+        name: name,
+        email: email,
+        grade: grade,
+        submissionDate: submissionDate,
+        totalScore: totalScore,
+      });
     }
   }
 
@@ -66,6 +88,8 @@ class ViewResponseContainer extends Component {
   }
 
   render() {
+    const { email, grade, name, submissionDate, totalScore } = this.state;
+
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
@@ -85,7 +109,7 @@ class ViewResponseContainer extends Component {
                   <SecondLabel marginRight={"10px"}>
                     Candidate Name :{" "}
                   </SecondLabel>
-                  <ThirdLabel>Captain Jack Sparrow</ThirdLabel>
+                  <ThirdLabel>{name}</ThirdLabel>
                 </div>
               </CustomRow>
               <CustomRow>
@@ -93,7 +117,7 @@ class ViewResponseContainer extends Component {
                   <SecondLabel marginRight={"10px"}>
                     Candidate Email :{" "}
                   </SecondLabel>
-                  <ThirdLabel>CaptainJack2020@gmail.com</ThirdLabel>
+                  <ThirdLabel>{email}</ThirdLabel>
                 </div>
               </CustomRow>
               <CustomRow>
@@ -101,19 +125,19 @@ class ViewResponseContainer extends Component {
                   <SecondLabel marginRight={"10px"}>
                     Submission Date :{" "}
                   </SecondLabel>
-                  <ThirdLabel>2020-09-13 23:07</ThirdLabel>
+                  <ThirdLabel>{submissionDate}</ThirdLabel>
                 </div>
               </CustomRow>
               <CustomRow>
                 <div className={css(styles.infoCon)}>
                   <SecondLabel marginRight={"10px"}>Score : </SecondLabel>
-                  <ThirdLabel>100</ThirdLabel>
+                  <ThirdLabel>{totalScore}</ThirdLabel>
                 </div>
               </CustomRow>
               <CustomRow>
                 <div className={css(styles.infoCon)}>
                   <SecondLabel marginRight={"10px"}>Grade : </SecondLabel>
-                  <ThirdLabel>A</ThirdLabel>
+                  <ThirdLabel>{grade}</ThirdLabel>
                 </div>
               </CustomRow>
               <hr className={css(styles.hr)} />
