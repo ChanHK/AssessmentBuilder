@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Button from "../../components/Button";
+import TextArea from "../../components/TextArea";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -69,7 +70,6 @@ class ViewResponseContainer extends Component {
       prevProps.homeReducer !== homeReducer &&
       homeReducer.aCandResult !== null
     ) {
-      console.log(homeReducer.aCandResult);
       const { aCandResult } = this.props.homeReducer;
       const {
         email,
@@ -327,6 +327,46 @@ class ViewResponseContainer extends Component {
                               </div>
                             );
                           })}
+                        </CustomColumn>
+                      </div>
+                    </>
+                  );
+                }
+
+                if (item.questionType === "Descriptive") {
+                  let tempDes = this.convertHtml(item.questionDescription);
+
+                  return (
+                    <>
+                      <SecondLabel>Question {index + 1}</SecondLabel>
+                      <div style={{ marginBottom: "25px" }}>
+                        <CustomColumn>
+                          <div style={{ marginBottom: "15px" }}>
+                            <Editor
+                              editorState={tempDes}
+                              toolbarHidden={true}
+                              readOnly
+                              editorClassName={css(styles.editorClassName)}
+                            />
+                          </div>
+                          <div style={{ marginBottom: "15px" }}>
+                            <TextArea
+                              type={"text"}
+                              value={item.response[0]}
+                              height={"auto"}
+                              readOnly={true}
+                              backgroundColor={configStyles.colors.lightOrange}
+                            />
+                          </div>
+                          <ThirdLabel>Feedback</ThirdLabel>
+                          <div style={{ marginBottom: "25px" }}>
+                            <TextArea
+                              type={"text"}
+                              value={item.response[0]}
+                              height={"auto"}
+                              readOnly={true}
+                            />
+                          </div>
                         </CustomColumn>
                       </div>
                     </>
