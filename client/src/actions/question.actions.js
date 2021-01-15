@@ -162,7 +162,7 @@ export const updateAQuestion = (data) => (dispatch, getState) => {
       setTimeout(() => {
         dispatch({
           type: QUESTION.UPDATE_QUESTION_DATA_SUCCESS,
-          payload: res.data,
+          // payload: res.data,
         });
       }, 1500);
     })
