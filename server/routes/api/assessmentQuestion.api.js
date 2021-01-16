@@ -223,11 +223,26 @@ router.post(
           }
         )
           .then((response) => {
-            return res.status(200).json(response.questions);
+            db.Assessment.findOneAndUpdate(
+              {
+                "assessments._id": req.params.assessmentID,
+              },
+              {
+                $inc: {
+                  "assessments.$.totalQuestionNum": -1,
+                },
+              }
+            )
+              .then(() => {
+                return res.status(200).json(response.questions);
+              })
+              .catch((err) => {
+                return res
+                  .status(400)
+                  .json({ message: "Question fail to delete" });
+              });
           })
-          .catch((err) => {
-            return res.status(400).json({ message: "Question fail to delete" });
-          });
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }
