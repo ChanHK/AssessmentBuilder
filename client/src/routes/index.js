@@ -17,6 +17,7 @@ import {
   StatisticsContainer,
   ViewResponseContainer,
   GradeContainer,
+  ActivationContainer,
 } from "../pages/Home";
 
 import { ProfileContainer, EditProfileContainer } from "../pages/Profile";
@@ -116,6 +117,13 @@ export default function Routes() {
           path="/assessment/statistics"
           exact
           component={StatisticsContainer}
+          isPrivate
+          role={"User"}
+        />
+        <Route
+          path="/assessment/activation/:assessmentID"
+          exact
+          component={ActivationContainer}
           isPrivate
           role={"User"}
         />
