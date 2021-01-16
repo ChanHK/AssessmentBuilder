@@ -26,16 +26,29 @@ router.post("/assessment/question/update/:assessmentID", auth, (req, res) => {
       new: true,
     }
   )
-    .then((response) => {
-      return res
-        .status(200)
-        .json(response.questions[response.questions.length - 1]);
+    .then(() => {
+      db.Assessment.findOneAndUpdate(
+        {
+          "assessments._id": req.params.assessmentID,
+        },
+        {
+          $inc: {
+            "assessments.$.totalQuestionNum": 1,
+          },
+        }
+      )
+        .then((response) => {
+          return res
+            .status(200)
+            .json(response.questions[response.questions.length - 1]);
+        })
+        .catch((err) => {
+          return res.status(400).json({
+            message: "Error, failed to add question, please retry agian",
+          });
+        });
     })
-    .catch((err) => {
-      return res.status(400).json({
-        message: "Error, failed to add question, please retry agian",
-      });
-    });
+    .catch((err) => console.log(err));
 });
 
 // @route     GET api/user/assessment/question/:assessmentID
