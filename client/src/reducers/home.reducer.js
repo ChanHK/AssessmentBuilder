@@ -8,7 +8,6 @@ const initialState = {
   desQuestions: null,
   desResponses: null,
   results: null,
-  grade: null,
   aCandResult: null,
 };
 
@@ -22,7 +21,6 @@ export default function (state = initialState, action) {
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_BEGIN:
     case HOME.UPLOAD_FEEBACKS_BEGIN:
     case HOME.FETCH_RESULTS_BEGIN:
-    case HOME.FETCH_GRADES_BEGIN:
     case HOME.FETCH_A_CAND_RESULT_BEGIN:
       return {
         ...state,
@@ -43,7 +41,6 @@ export default function (state = initialState, action) {
     case HOME.FETCH_CANDIDATE_DESCRIPTION_RESPONSES_FAIL:
     case HOME.UPLOAD_FEEBACKS_FAIL:
     case HOME.FETCH_RESULTS_FAIL:
-    case HOME.FETCH_GRADES_FAIL:
     case HOME.FETCH_A_CAND_RESULT_FAIL:
       return {
         ...state,
@@ -79,12 +76,6 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         results: action.payload,
-      };
-    case HOME.FETCH_GRADES_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        grade: action.payload,
       };
     case HOME.FETCH_A_CAND_RESULT_SUCCESS:
       return {

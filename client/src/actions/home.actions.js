@@ -183,28 +183,6 @@ export const fetchResults = (data) => (dispatch, getState) => {
     });
 };
 
-export const fetchGrades = (data) => (dispatch, getState) => {
-  dispatch({ type: HOME.FETCH_GRADES_BEGIN });
-
-  axios
-    .get(
-      `/api/user/home/assessment/fetch/grades/${data.assessmentID}`,
-      tokenConfig(getState)
-    )
-    .then((res) => {
-      setTimeout(() => {
-        dispatch({
-          type: HOME.FETCH_GRADES_SUCCESS,
-          payload: res.data,
-        });
-      }, 1500);
-    })
-    .catch((err) => {
-      console.log("fetch failed", err);
-      dispatch({ type: HOME.FETCH_GRADES_FAIL });
-    });
-};
-
 export const fetchAResult = (data) => (dispatch, getState) => {
   dispatch({ type: HOME.FETCH_A_CAND_RESULT_BEGIN });
 
