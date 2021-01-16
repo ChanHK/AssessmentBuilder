@@ -419,4 +419,33 @@ router.get("/assessment/fetch/feedbacks/:cand_id", auth, (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+
+// @route     GET api/user/home/assessment/fetch/assessment_questions_sets/:assessmentID
+// @desc      GET fetch assessments, questions, sets
+// @access    Private
+router.get(
+  "/assessment/fetch/assessment_questions_sets/:assessmentID",
+  auth,
+  (req, res) => {
+    let temp = [];
+    db.Assessment.find({ "assessments._id": req.params.assessmentID })
+      .select("-user_id")
+      .select("-_id")
+      .select("-__v")
+      .then((result) => {
+        result[0].assessments.forEach((item, index) => {
+          if (
+            JSON.stringify(item._id) ===
+            `"` + req.params.assessmentID + `"`
+          ) {
+            temp.push(item);
+          }
+        });
+
+        return res.json(temp);
+      })
+      .catch((err) => console.log(err));
+  }
+);
+
 module.exports = router;
