@@ -201,6 +201,7 @@ class ViewResponseContainer extends Component {
                                 item.response[0] === item.questionAnswers[0] // true or false have only one ans
                                   ? configStyles.colors.correctGreen
                                   : configStyles.colors.falseRed,
+                              minHeight: "50px",
                             }}
                           >
                             {item.questionType === "Single Choice" ? (
@@ -302,7 +303,7 @@ class ViewResponseContainer extends Component {
                               <div className={css(styles.orderRow)} key={index}>
                                 <CustomRow>
                                   <div className={css(styles.orderCount)}>
-                                    {parseInt(item2) + 1}
+                                    {item2 !== "" ? parseInt(item2) + 1 : ""}
                                   </div>
 
                                   <div
