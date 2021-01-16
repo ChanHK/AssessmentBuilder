@@ -8,6 +8,7 @@ const initialState = {
   directStart: false,
   token: localStorage.getItem("token"),
   role: localStorage.getItem("role"),
+  grade: null,
 };
 
 export default function (state = initialState, action) {
@@ -18,6 +19,7 @@ export default function (state = initialState, action) {
     case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_BEGIN:
     case CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_BEGIN:
     case CANDIDATE.UPLOAD_CANDIDATE_RESPONSE_BEGIN:
+    case CANDIDATE.FETCH_GRADES_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -34,6 +36,7 @@ export default function (state = initialState, action) {
     case CANDIDATE.FETCH_ASSESSMENT_SET_CANDIDATE_FAIL:
     case CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_FAIL:
     case CANDIDATE.UPLOAD_CANDIDATE_RESPONSE_FAIL:
+    case CANDIDATE.FETCH_GRADES_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -63,6 +66,12 @@ export default function (state = initialState, action) {
         isLoading: false,
         directStart: true,
         token: null,
+      };
+    case CANDIDATE.FETCH_GRADES_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        grade: action.payload,
       };
     default:
       return state;

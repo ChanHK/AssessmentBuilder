@@ -162,3 +162,25 @@ export const uploadCandidateResponses = (data) => (dispatch, getState) => {
       });
     });
 };
+
+export const fetchGrades = (data) => (dispatch, getState) => {
+  dispatch({ type: CANDIDATE.FETCH_GRADES_BEGIN });
+
+  axios
+    .get(
+      `/api/candidate/assessment/fetch/grades/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: CANDIDATE.FETCH_GRADES_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: CANDIDATE.FETCH_GRADES_FAIL });
+    });
+};
