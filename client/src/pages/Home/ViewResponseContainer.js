@@ -295,15 +295,19 @@ class ViewResponseContainer extends Component {
                             />
                           </div>
 
-                          {item.response.map((item2, index2) => {
+                          {item.questionChoices.map((item2, index2) => {
                             let tempChoice = this.convertHtml(
                               item.questionChoices[index2]
                             );
+
                             return (
                               <div className={css(styles.orderRow)} key={index}>
                                 <CustomRow>
                                   <div className={css(styles.orderCount)}>
-                                    {item2 !== "" ? parseInt(item2) + 1 : ""}
+                                    {item.response[index2] !== "" &&
+                                    item.response[index2] !== undefined
+                                      ? parseInt(item.response[index2]) + 1
+                                      : "X"}
                                   </div>
 
                                   <div
@@ -311,7 +315,9 @@ class ViewResponseContainer extends Component {
                                     style={{
                                       backgroundColor:
                                         item.questionChoices[index2] ===
-                                        item.questionAnswers[parseInt(item2)]
+                                        item.questionAnswers[
+                                          parseInt(item.response[index2])
+                                        ]
                                           ? configStyles.colors.correctGreen
                                           : configStyles.colors.falseRed,
                                       width: "100%",
