@@ -248,3 +248,25 @@ export const fetchFeedback = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.FETCH_FEEDBACK_FAIL });
     });
 };
+
+export const fetchAllInfo = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.FETCH_FULL_ASSESSMENT_INFO_BEGIN });
+
+  axios
+    .get(
+      `/api/user/home/assessment/fetch/assessment_questions_sets/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.FETCH_FULL_ASSESSMENT_INFO_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: HOME.FETCH_FULL_ASSESSMENT_INFO_FAIL });
+    });
+};

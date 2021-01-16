@@ -11,6 +11,7 @@ const initialState = {
   aCandResult: null,
   grade: null,
   feedback: null,
+  fullInfoData: null,
 };
 
 export default function (state = initialState, action) {
@@ -26,6 +27,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_A_CAND_RESULT_BEGIN:
     case HOME.FETCH_GRADES_IN_GRADINGS_BEGIN:
     case HOME.FETCH_FEEDBACK_BEGIN:
+    case HOME.FETCH_FULL_ASSESSMENT_INFO_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -48,6 +50,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_A_CAND_RESULT_FAIL:
     case HOME.FETCH_GRADES_IN_GRADINGS_FAIL:
     case HOME.FETCH_FEEDBACK_FAIL:
+    case HOME.FETCH_FULL_ASSESSMENT_INFO_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -100,6 +103,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         feedback: action.payload,
+      };
+    case HOME.FETCH_FULL_ASSESSMENT_INFO_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        fullInfoData: action.payload,
       };
     default:
       return state;
