@@ -246,6 +246,7 @@ router.post("/attempt/assessment/submit/:assessmentID", auth, (req, res) => {
             submissionDate: req.body.submissionDate,
             totalScore: req.body.totalScore,
             grade: req.body.grade,
+            maxScore: req.body.maxScore,
           },
         },
         { new: true }
