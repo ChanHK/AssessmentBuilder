@@ -23,6 +23,7 @@ import {
   fetchAssessmentSetForCandidate,
   fetchAllQuestionForCandidate,
   uploadCandidateResponses,
+  fetchGrades,
 } from "../../actions/candidate.actions";
 
 class AttemptContainer extends Component {
@@ -38,6 +39,7 @@ class AttemptContainer extends Component {
       timeSettings: this.props.match.params.timeSettings,
       time: parseInt(this.props.match.params.totalSec),
       completions: 0, //for countdown
+      gradeData: {},
     };
   }
 
@@ -50,6 +52,8 @@ class AttemptContainer extends Component {
     if (this.state.type === "1" || this.state.type === "2") {
       this.props.fetchAllQuestionForCandidate(data);
     } else this.props.fetchAssessmentSetForCandidate(data);
+
+    this.props.fetchGrades(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -57,7 +61,8 @@ class AttemptContainer extends Component {
     const { type } = this.state;
     if (
       prevProps.candidateReducer !== candidateReducer &&
-      candidateReducer.questionSet !== null
+      candidateReducer.questionSet !== null &&
+      candidateReducer.grade !== null
     ) {
       const { questionSet } = this.props.candidateReducer;
       let temp = questionSet;
@@ -96,13 +101,17 @@ class AttemptContainer extends Component {
         });
       }
 
-      this.setState({ question: questionSet });
+      this.setState({
+        question: questionSet,
+        gradeData: candidateReducer.grade[0],
+      });
     }
   }
 
   componentWillUnmount() {
     this.props.candidateReducer.questionSet = null;
     this.props.candidateReducer.directStart = false;
+    this.props.candidateReducer.grade = null;
   }
 
   shuffleArray = (array) => {
@@ -160,7 +169,7 @@ class AttemptContainer extends Component {
   };
 
   submit = () => {
-    const { question, assessmentID } = this.state;
+    const { question, assessmentID, gradeData } = this.state;
 
     let today = new Date();
     let date =
@@ -172,9 +181,15 @@ class AttemptContainer extends Component {
     let time =
       today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-    let totalScore = 0;
+    let totalScore = 0; //total cand score
+    let gradedNum = 0; //number of question marked
+    let grade = "not graded";
+    let tempUnit = "";
+    let maxScore = 0; //total score
+
     //cal score
     question.forEach((item, index) => {
+      maxScore = maxScore + item.score;
       if (
         item.questionType === "True or False" ||
         item.questionType === "Single Choice"
@@ -183,6 +198,7 @@ class AttemptContainer extends Component {
           totalScore = totalScore + item.score;
         }
         item.graded = true;
+        gradedNum++;
       } else if (item.questionType === "Multiple Choice") {
         let numOfAns = item.questionAnswers.length;
         let currentLength = 0;
@@ -197,6 +213,7 @@ class AttemptContainer extends Component {
           totalScore = totalScore + item.score;
         }
         item.graded = true;
+        gradedNum++;
       } else if (item.questionType === "Order") {
         let numOfAns = item.questionAnswers.length;
         let correctNum = 0;
@@ -212,6 +229,7 @@ class AttemptContainer extends Component {
           totalScore = totalScore + item.score;
         }
         item.graded = true;
+        gradedNum++;
       } else if (item.questionType === "Short Answer") {
         item.questionAnswers.forEach((ans, x) => {
           if (item.response === ans) {
@@ -219,14 +237,57 @@ class AttemptContainer extends Component {
           }
         });
         item.graded = true;
+        gradedNum++;
       }
     });
 
+    if (gradedNum === question.length) {
+      if (gradeData.passOrFailSelected) {
+        if (gradeData.unit === "points p.") tempUnit = "p";
+        else tempUnit = "%";
+
+        if (tempUnit === "%") totalScore = (totalScore / maxScore) * 100;
+
+        if (totalScore >= parseInt(gradeData.score)) grade = "PASS";
+        else grade = "FAIL";
+
+        totalScore = totalScore.toString() + " " + tempUnit;
+      } else if (gradeData.addGradingSelected) {
+        if (gradeData.gradeUnit === "points p.") tempUnit = "p";
+        else tempUnit = "%";
+        if (tempUnit === "%") totalScore = (totalScore / maxScore) * 100;
+
+        let tempRange = gradeData.gradeRange;
+        if (tempRange[0] !== "0") tempRange.unshift("0");
+
+        for (let i = 0; i < tempRange.length - 1; i++) {
+          if (tempRange[i] === "0") {
+            if (
+              totalScore >= parseInt(tempRange[i]) &&
+              totalScore <= parseInt(tempRange[i + 1])
+            ) {
+              grade = gradeData.gradeValue[i];
+            }
+          } else {
+            if (
+              totalScore >= parseInt(tempRange[i]) + 1 &&
+              totalScore <= parseInt(tempRange[i + 1])
+            ) {
+              grade = gradeData.gradeValue[i];
+            }
+          }
+        }
+
+        totalScore = totalScore.toString() + " " + tempUnit;
+      }
+    }
     const data = {
       assessmentID: assessmentID,
       response: question,
       submissionDate: date + " " + time,
       totalScore: totalScore.toString(),
+      grade: grade,
+      maxScore: maxScore,
     };
 
     this.props.uploadCandidateResponses(data);
@@ -639,6 +700,7 @@ AttemptContainer.propTypes = {
   fetchAssessmentSetForCandidate: PropTypes.func.isRequired,
   fetchAllQuestionForCandidate: PropTypes.func.isRequired,
   uploadCandidateResponses: PropTypes.func.isRequired,
+  fetchGrades: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -649,4 +711,5 @@ export default connect(mapStateToProps, {
   fetchAssessmentSetForCandidate,
   fetchAllQuestionForCandidate,
   uploadCandidateResponses,
+  fetchGrades,
 })(AttemptContainer);
