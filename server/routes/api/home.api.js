@@ -209,48 +209,57 @@ router.post("/assessment/create/feedback", auth, (req, res) => {
   };
   db.Feedback.create(data)
     .then(() => {
-      db.Candidate.updateOne(
-        {
-          _id: req.body.cand_id,
-          assessments_id: req.body.assessments_id,
-          "response.question_id": req.body.question_id,
-        },
-        {
-          $set: { "response.$.graded": true },
-          $inc: { totalScore: req.body.score },
-        },
-        { new: true }
-      )
-        .then(() => {
-          db.Candidate.find({ "response.question_id": req.body.question_id })
-            .select("-__v")
-            .select("-response.questionAnswers")
-            .select("-response.questionChoices")
-            .then((result) => {
-              let temp = [];
+      db.Candidate.findOne({
+        _id: req.body.cand_id,
+        assessments_id: req.body.assessments_id,
+      })
+        .then((x) => {
+          let score = parseInt(x.totalScore) + parseInt(req.body.score);
+          db.Candidate.updateOne(
+            {
+              _id: req.body.cand_id,
+              assessments_id: req.body.assessments_id,
+              "response.question_id": req.body.question_id,
+            },
+            {
+              $set: { "response.$.graded": true, totalScore: score },
+            },
+            { new: true }
+          )
+            .then(() => {
+              db.Candidate.find({
+                "response.question_id": req.body.question_id,
+              })
+                .select("-__v")
+                .select("-response.questionAnswers")
+                .select("-response.questionChoices")
+                .then((result) => {
+                  let temp = [];
 
-              result.forEach((item, index) => {
-                let data = new Object();
-                item.response.forEach((item2, index2) => {
-                  if (
-                    item2.question_id === req.body.question_id &&
-                    !item2.graded
-                  ) {
-                    data.name = item.name;
-                    data.email = item.email;
-                    data._id = item._id;
-                    data.assessments_id = item.assessments_id;
-                    data.response = item2;
-                    temp.push(data);
-                  }
+                  result.forEach((item, index) => {
+                    let data = new Object();
+                    item.response.forEach((item2, index2) => {
+                      if (
+                        item2.question_id === req.body.question_id &&
+                        !item2.graded
+                      ) {
+                        data.name = item.name;
+                        data.email = item.email;
+                        data._id = item._id;
+                        data.assessments_id = item.assessments_id;
+                        data.response = item2;
+                        temp.push(data);
+                      }
+                    });
+                  });
+
+                  return res.json(temp);
+                })
+                .catch(() => {
+                  return res.json({ message: "fail to update" });
                 });
-              });
-
-              return res.json(temp);
             })
-            .catch(() => {
-              return res.json({ message: "fail to update" });
-            });
+            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     })
@@ -286,4 +295,32 @@ router.get("/assessment/fetch/single_result/:candID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/home/assessment/fetch/grades/:assessmentID
+// @desc      GETfetch passing score and grades
+// @access    Private
+router.get("/assessment/fetch/grades/:assessmentID", auth, (req, res) => {
+  db.Assessment.find({ "assessments._id": req.params.assessmentID })
+    .select("-user_id")
+    .select("-_id")
+    .select("-assessments.access")
+    .select("-assessments.sets")
+    .select("-assessments.timer")
+    .select("-assessments.status")
+    .select("-assessments.settings.testName")
+    .select("-assessments.settings.testDescription")
+    .select("-assessments.settings.testInstruction")
+    .select("-__v")
+    .select("-_id")
+
+    .then((result) => {
+      let temp = [];
+      result[0].assessments.forEach((item, index) => {
+        if (JSON.stringify(item._id) === `"` + req.params.assessmentID + `"`) {
+          temp.push(item.settings);
+        }
+      });
+      return res.json(temp);
+    })
+    .catch((err) => console.log(err));
+});
 module.exports = router;
