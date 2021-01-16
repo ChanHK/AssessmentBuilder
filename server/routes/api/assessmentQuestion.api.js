@@ -84,21 +84,33 @@ router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
         { assessments_id: req.params.assessmentID },
         {
           $push: {
-            questions: req.body,
+            questions: req.body.questions,
           },
         },
         { upsert: true, new: true }
       )
         .then((response) => {
-          return res.status(200).json(response.questions);
+          console.log(req.body.totalQuestionNum);
+          db.Assessment.findOneAndUpdate(
+            {
+              "assessments._id": req.params.assessmentID,
+            },
+            {
+              $set: {
+                "assessments.$.totalQuestionNum": req.body.totalQuestionNum,
+              },
+            }
+          )
+            .then(() => {
+              return res.status(200).json(response.questions);
+            })
+            .catch(() => {
+              return res.status(200).json({ message: "failed in updating" });
+            });
         })
-        .catch(() => {
-          return res.status(200).json({ message: "failed in updating" });
-        });
+        .catch((err) => console.log(err));
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 });
 
 // @route     POST api/user/assessment/questions/edit/:questionID

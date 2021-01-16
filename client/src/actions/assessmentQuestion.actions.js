@@ -90,7 +90,7 @@ export const updateAllAssessmentQuestion = (data) => (dispatch, getState) => {
   axios
     .post(
       `/api/user/assessment/questions/update/${data.assessmentID}`,
-      data.questions,
+      data,
       tokenConfig(getState)
     )
     .then((res) => {

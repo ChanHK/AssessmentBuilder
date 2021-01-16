@@ -115,6 +115,10 @@ const AssessmentSchema = new mongoose.Schema({
         type: String,
         default: "Setup in progress",
       },
+      totalQuestionNum: {
+        type: Number,
+        default: 0,
+      },
     },
   ],
 });

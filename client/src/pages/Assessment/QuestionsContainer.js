@@ -30,6 +30,7 @@ class QuestionsContainer extends Component {
       assessmentID: props.assessmentID,
       type: props.type,
       questions: [],
+      totalQuestionNum: 0,
     };
   }
 
@@ -68,6 +69,8 @@ class QuestionsContainer extends Component {
 
       this.setState({
         questions: tempQuestions,
+        totalQuestionNum:
+          assessmentQuestionReducer.assessmentQuestionLoad.length,
       });
     }
   }
@@ -127,7 +130,7 @@ class QuestionsContainer extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { questions, assessmentID } = this.state;
+    const { questions, assessmentID, totalQuestionNum } = this.state;
 
     let temp = [];
 
@@ -140,6 +143,7 @@ class QuestionsContainer extends Component {
     const data = {
       assessmentID: assessmentID,
       questions: temp,
+      totalQuestionNum: totalQuestionNum,
     };
 
     this.props.updateAllAssessmentQuestion(data);
