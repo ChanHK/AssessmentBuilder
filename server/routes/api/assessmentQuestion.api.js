@@ -90,7 +90,6 @@ router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
         { upsert: true, new: true }
       )
         .then((response) => {
-          console.log(req.body.totalQuestionNum);
           db.Assessment.findOneAndUpdate(
             {
               "assessments._id": req.params.assessmentID,
