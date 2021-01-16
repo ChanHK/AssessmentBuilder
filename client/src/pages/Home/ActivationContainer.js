@@ -27,6 +27,15 @@ class ActivationContainer extends Component {
     };
   }
 
+  onSubmit = (e) => {
+    e.preventDefault();
+    const { settingsCB, questionsCB, setsCB, accessCB, timerCB } = this.state;
+
+    if (!settingsCB && !questionsCB && !setsCB && !accessCB && !timerCB) {
+      return false;
+    }
+  };
+
   render() {
     const { settingsCB, questionsCB, setsCB, accessCB, timerCB } = this.state;
     return (
@@ -47,6 +56,7 @@ class ActivationContainer extends Component {
                       type="checkbox"
                       checked={settingsCB}
                       className={css(styles.checkbox)}
+                      readOnly
                     />
                   </div>
                   <div className={css(styles.textCon)}>
@@ -62,6 +72,7 @@ class ActivationContainer extends Component {
                       type="checkbox"
                       checked={questionsCB}
                       className={css(styles.checkbox)}
+                      readOnly
                     />
                   </div>
                   <div className={css(styles.textCon)}>
@@ -77,6 +88,7 @@ class ActivationContainer extends Component {
                       type="checkbox"
                       checked={setsCB}
                       className={css(styles.checkbox)}
+                      readOnly
                     />
                   </div>
                   <div className={css(styles.textCon)}>
@@ -92,6 +104,7 @@ class ActivationContainer extends Component {
                       type="checkbox"
                       checked={accessCB}
                       className={css(styles.checkbox)}
+                      readOnly
                     />
                   </div>
                   <div className={css(styles.textCon)}>
@@ -107,6 +120,7 @@ class ActivationContainer extends Component {
                       type="checkbox"
                       checked={timerCB}
                       className={css(styles.checkbox)}
+                      readOnly
                     />
                   </div>
                   <div className={css(styles.textCon)}>
@@ -115,33 +129,33 @@ class ActivationContainer extends Component {
                 </CustomRow>
               </div>
 
-              <div className={css(styles.buttonCon)}>
+              <form className={css(styles.buttonCon)} onSubmit={this.onSubmit}>
                 <Button
                   backgroundColor={configStyles.colors.darkBlue}
                   color={configStyles.colors.white}
                   padding={"8px"}
                   // onClick={}
-                  type={"button"}
+                  type={"submit"}
                   width={"100%"}
                   XWidth={"100%"}
                 >
                   Activate
                 </Button>
-              </div>
+              </form>
 
-              <div className={css(styles.buttonCon)}>
+              <form className={css(styles.buttonCon)} onSubmit={this.onSubmit}>
                 <Button
                   backgroundColor={configStyles.colors.red}
                   color={configStyles.colors.white}
                   padding={"8px"}
                   // onClick={}
-                  type={"button"}
+                  type={"submit"}
                   width={"100%"}
                   XWidth={"100%"}
                 >
                   Deactivate
                 </Button>
-              </div>
+              </form>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -156,7 +170,6 @@ const styles = StyleSheet.create({
   },
   rowCon: {
     width: "100%",
-    // backgroundColor: "plum",
     height: "60px",
   },
   checkboxCon: {
