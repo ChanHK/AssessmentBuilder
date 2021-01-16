@@ -238,7 +238,13 @@ class HomeContainer extends Component {
             >
               Statistics
             </TableButton>
-            <TableButton>Activate</TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`/assessment/activation/${row._id}`);
+              }}
+            >
+              Activate
+            </TableButton>
           </CustomRow>
         ),
         width: "480px",
