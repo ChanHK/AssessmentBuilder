@@ -227,37 +227,121 @@ router.post("/assessment/create/feedback", auth, (req, res) => {
             { new: true }
           )
             .then(() => {
-              db.Candidate.find({
-                "response.question_id": req.body.question_id,
+              db.Candidate.findOne({
+                _id: req.body.cand_id,
+                assessments_id: req.body.assessments_id,
               })
-                .select("-__v")
-                .select("-response.questionAnswers")
-                .select("-response.questionChoices")
-                .then((result) => {
-                  let temp = [];
-
-                  result.forEach((item, index) => {
-                    let data = new Object();
-                    item.response.forEach((item2, index2) => {
-                      if (
-                        item2.question_id === req.body.question_id &&
-                        !item2.graded
-                      ) {
-                        data.name = item.name;
-                        data.email = item.email;
-                        data._id = item._id;
-                        data.assessments_id = item.assessments_id;
-                        data.response = item2;
-                        temp.push(data);
-                      }
-                    });
+                .then((y) => {
+                  let gradedCount = 0;
+                  y.response.forEach((item, index) => {
+                    if (item.graded) gradedCount++;
                   });
 
-                  return res.json(temp);
+                  let tempUnit = "";
+                  let grade = "not graded";
+                  let total_score = parseInt(y.totalScore);
+                  const {
+                    passOrFailSelected,
+                    addGradingSelected,
+                    unit,
+                    score,
+                    gradeUnit,
+                    gradeRange,
+                    gradeValue,
+                  } = req.body.gradeData[0];
+
+                  if (gradedCount === y.response.length) {
+                    if (passOrFailSelected) {
+                      if (unit === "points p.") tempUnit = "p";
+                      else tempUnit = "%";
+
+                      if (tempUnit === "%")
+                        total_score = (total_score / y.maxScore) * 100;
+
+                      if (total_score >= parseInt(score)) grade = "PASS";
+                      else grade = "FAIL";
+
+                      total_score =
+                        total_score.toFixed(2).toString() + " " + tempUnit;
+                    } else if (addGradingSelected) {
+                      if (gradeUnit === "points p.") tempUnit = "p";
+                      else tempUnit = "%";
+                      if (tempUnit === "%")
+                        total_score = (total_score / y.maxScore) * 100;
+
+                      let tempRange = gradeRange;
+
+                      if (tempRange[0] !== "0") tempRange.unshift("0");
+
+                      for (let i = 0; i < tempRange.length - 1; i++) {
+                        if (tempRange[i] === "0") {
+                          if (
+                            total_score >= parseInt(tempRange[i]) &&
+                            total_score <= parseInt(tempRange[i + 1])
+                          ) {
+                            grade = gradeValue[i];
+                          }
+                        } else {
+                          if (
+                            total_score >= parseInt(tempRange[i]) + 1 &&
+                            total_score <= parseInt(tempRange[i + 1])
+                          ) {
+                            grade = gradeValue[i];
+                          }
+                        }
+                      }
+
+                      total_score =
+                        total_score.toFixed(2).toString() + " " + tempUnit;
+                    }
+                  }
+
+                  db.Candidate.updateOne(
+                    {
+                      _id: req.body.cand_id,
+                      assessments_id: req.body.assessments_id,
+                    },
+                    {
+                      $set: { grade: grade, totalScore: total_score },
+                    },
+                    { new: true }
+                  )
+                    .then(() => {
+                      db.Candidate.find({
+                        "response.question_id": req.body.question_id,
+                      })
+                        .select("-__v")
+                        .select("-response.questionAnswers")
+                        .select("-response.questionChoices")
+                        .then((result) => {
+                          let temp = [];
+
+                          result.forEach((item, index) => {
+                            let data = new Object();
+                            item.response.forEach((item2, index2) => {
+                              if (
+                                item2.question_id === req.body.question_id &&
+                                !item2.graded
+                              ) {
+                                data.name = item.name;
+                                data.email = item.email;
+                                data._id = item._id;
+                                data.assessments_id = item.assessments_id;
+                                data.response = item2;
+                                temp.push(data);
+                              }
+                            });
+                          });
+
+                          return res.json(temp);
+                        })
+                        .catch(() => {
+                          return res.json({ message: "fail to update" });
+                        });
+                    })
+                    .catch((err) => console.log(err));
                 })
-                .catch(() => {
-                  return res.json({ message: "fail to update" });
-                });
+                .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
         })
