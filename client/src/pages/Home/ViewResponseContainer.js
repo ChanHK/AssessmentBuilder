@@ -24,7 +24,7 @@ import { Editor } from "react-draft-wysiwyg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchAResult } from "../../actions/home.actions";
+import { fetchAResult, fetchFeedback } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -40,6 +40,7 @@ class ViewResponseContainer extends Component {
       submissionDate: "",
       totalScore: "",
       response: [],
+      feedbackData: [],
     };
   }
 
@@ -61,6 +62,7 @@ class ViewResponseContainer extends Component {
     };
 
     this.props.fetchAResult(data);
+    this.props.fetchFeedback(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -68,7 +70,8 @@ class ViewResponseContainer extends Component {
 
     if (
       prevProps.homeReducer !== homeReducer &&
-      homeReducer.aCandResult !== null
+      homeReducer.aCandResult !== null &&
+      homeReducer.feedback !== null
     ) {
       const { aCandResult } = this.props.homeReducer;
       const {
@@ -87,6 +90,7 @@ class ViewResponseContainer extends Component {
         submissionDate: submissionDate,
         totalScore: totalScore,
         response: response,
+        feedbackData: homeReducer.feedback,
       });
     }
   }
@@ -114,6 +118,7 @@ class ViewResponseContainer extends Component {
       totalScore,
       response,
       assessmentID,
+      feedbackData,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -342,6 +347,13 @@ class ViewResponseContainer extends Component {
 
                 if (item.questionType === "Descriptive") {
                   let tempDes = this.convertHtml(item.questionDescription);
+                  let feed_back = "";
+
+                  feedbackData.forEach((items, indexs) => {
+                    if (items.question_id === item._id) {
+                      feed_back = items.feedback;
+                    }
+                  });
 
                   return (
                     <>
@@ -369,7 +381,7 @@ class ViewResponseContainer extends Component {
                           <div style={{ marginBottom: "25px" }}>
                             <TextArea
                               type={"text"}
-                              value={item.response[0]}
+                              value={feed_back}
                               height={"auto"}
                               readOnly={true}
                             />
@@ -464,6 +476,7 @@ ViewResponseContainer.propTypes = {
   fetchAResult: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  fetchFeedback: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -473,4 +486,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchAResult,
   logout,
+  fetchFeedback,
 })(ViewResponseContainer);
