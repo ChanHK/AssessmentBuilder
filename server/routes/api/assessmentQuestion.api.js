@@ -26,7 +26,7 @@ router.post("/assessment/question/update/:assessmentID", auth, (req, res) => {
       new: true,
     }
   )
-    .then(() => {
+    .then((response) => {
       db.Assessment.findOneAndUpdate(
         {
           "assessments._id": req.params.assessmentID,
@@ -37,7 +37,7 @@ router.post("/assessment/question/update/:assessmentID", auth, (req, res) => {
           },
         }
       )
-        .then((response) => {
+        .then(() => {
           return res
             .status(200)
             .json(response.questions[response.questions.length - 1]);
