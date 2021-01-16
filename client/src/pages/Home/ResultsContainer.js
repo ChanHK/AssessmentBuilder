@@ -22,7 +22,7 @@ import * as MdIcons from "react-icons/md";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchResults, fetchGrades } from "../../actions/home.actions";
+import { fetchResults } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -57,73 +57,20 @@ class ResultsContainer extends Component {
     };
 
     this.props.fetchResults(data);
-    this.props.fetchGrades(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { homeReducer } = this.props;
 
-    if (
-      prevProps.homeReducer !== homeReducer &&
-      homeReducer.results !== null &&
-      homeReducer.grade !== null
-    ) {
-      const {
-        addGradingSelected,
-        gradeRange,
-        gradeUnit,
-        gradeValue,
-        passOrFailSelected,
-        score,
-        unit,
-      } = homeReducer.grade[0];
-
+    if (prevProps.homeReducer !== homeReducer && homeReducer.results !== null) {
       let data = [];
 
       homeReducer.results.forEach((item, index) => {
-        let grade = item.grade;
-        let tempUnit = "";
-
-        //cal grade
-        if (item.grade === "not graded") {
-          if (passOrFailSelected) {
-            if (item.totalScore > parseInt(score)) grade = "PASS";
-            else grade = "FAIL";
-
-            if (unit === "points p.") tempUnit = "p";
-            else tempUnit = "%";
-          } else if (addGradingSelected) {
-            let tempRange = gradeRange;
-            if (tempRange[0] !== "0") tempRange.unshift("0");
-
-            for (let i = 0; i < tempRange.length - 1; i++) {
-              if (tempRange[i] === "0") {
-                if (
-                  item.totalScore >= parseInt(tempRange[i]) &&
-                  item.totalScore <= parseInt(tempRange[i + 1])
-                ) {
-                  grade = gradeValue[i];
-                }
-              } else {
-                if (
-                  item.totalScore >= parseInt(tempRange[i]) + 1 &&
-                  item.totalScore <= parseInt(tempRange[i + 1])
-                ) {
-                  grade = gradeValue[i];
-                }
-              }
-            }
-
-            if (gradeUnit === "points p.") tempUnit = "p";
-            else tempUnit = "%";
-          }
-        }
-
         let temp = {
           email: item.email,
           name: item.name,
-          score: `${item.totalScore.toString() + " " + tempUnit}`,
-          grade: grade,
+          score: item.totalScore,
+          grade: item.grade,
           submitDate: item.submissionDate,
           id: item._id,
         };
@@ -136,7 +83,6 @@ class ResultsContainer extends Component {
 
   componentWillUnmount() {
     this.props.homeReducer.results = null;
-    this.props.homeReducer.grade = null;
   }
 
   onChange = (e) => {
@@ -477,7 +423,6 @@ ResultsContainer.propTypes = {
   fetchResults: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  fetchGrades: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -487,5 +432,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchResults,
   logout,
-  fetchGrades,
 })(ResultsContainer);
