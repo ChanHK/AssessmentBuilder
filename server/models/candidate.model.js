@@ -15,12 +15,12 @@ const CandidateSchema = new mongoose.Schema({
     default: "",
   },
   totalScore: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "",
   },
   grade: {
     type: String,
-    default: "not graded",
+    default: "",
   },
   submissionDate: {
     type: String,
