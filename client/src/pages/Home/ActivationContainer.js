@@ -64,9 +64,82 @@ class ActivationContainer extends Component {
       homeReducer.fullInfoData !== null
     ) {
       const { fullInfoData } = homeReducer;
-      console.log(fullInfoData);
+      const {
+        settings,
+        access,
+        sets,
+        timer,
+        totalQuestionNum,
+      } = fullInfoData[0];
+
+      let settingsCB = false;
+      let questionsCB = false;
+      let setsCB = false;
+      let accessCB = false;
+      let timerCB = false;
+
+      //check settings
+      if (settings.testName !== "" && settings.testInstruction !== "") {
+        if (settings.passOrFailSelected) {
+          if (settings.score !== "" && settings.unit !== "") {
+            settingsCB = true;
+          }
+        }
+        if (settings.addGradingSelected) {
+          if (
+            settings.gradeRange.length > 0 &&
+            settings.gradeValue.length > 0 &&
+            settings.gradeUnit !== ""
+          ) {
+            settingsCB = true;
+          }
+        }
+      }
+
+      //check questions
+      if (totalQuestionNum > 0) {
+        questionsCB = true;
+      }
+
+      //check sets
+      if (sets.manualSelected && sets.totalSetNum > 0) setsCB = true;
+      else setsCB = true;
+
+      //check access
+      if (access.link !== "") {
+        if (
+          access.withAuthenticationSelected &&
+          access.accessEmail.length > 0 &&
+          sets.accessCode.length > 0
+        ) {
+          accessCB = true;
+        } else accessCB = true;
+      }
+
+      //check timer
+      if (timer.questionTimeSelected || timer.assessmentTimeSelected) {
+        if (
+          timer.time !== "" &&
+          timer.startDate !== null &&
+          timer.endDate !== null
+        ) {
+          timerCB = true;
+        }
+      } else if (
+        timer.noLimitSelected &&
+        timer.startDate !== null &&
+        timer.endDate !== null
+      ) {
+        timerCB = true;
+      }
+
       this.setState({
         data: fullInfoData[0],
+        settingsCB: settingsCB,
+        questionsCB: questionsCB,
+        setsCB: setsCB,
+        accessCB: accessCB,
+        timerCB: timerCB,
       });
     }
   }
