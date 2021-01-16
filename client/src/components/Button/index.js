@@ -3,7 +3,7 @@ import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 const Button = (props) => (
-  <div className={css(styles.buttonCon)}>
+  <div className={css(styles.buttonCon)} style={{ width: props.XWidth }}>
     <button
       className={css(styles.button, styles.noSelect)}
       style={{
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   buttonCon: {
     justifyContent: "flex-end",
     display: "flex",
+    borderRadius: "5px",
   },
   noSelect: {
     userSelect:
