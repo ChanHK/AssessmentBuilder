@@ -203,11 +203,13 @@ class AttemptContainer extends Component {
         let numOfAns = item.questionAnswers.length;
         let currentLength = 0;
 
-        item.questionAnswers.forEach((ans, x) => {
-          item.response.forEach((res, y) => {
-            if (ans === res) currentLength++;
+        if (item.response.length !== 0) {
+          item.questionAnswers.forEach((ans, x) => {
+            item.response.forEach((res, y) => {
+              if (ans === res) currentLength++;
+            });
           });
-        });
+        }
 
         if (currentLength === numOfAns) {
           totalScore = totalScore + item.score;
@@ -218,12 +220,14 @@ class AttemptContainer extends Component {
         let numOfAns = item.questionAnswers.length;
         let correctNum = 0;
 
-        item.response.forEach((ele, x) => {
-          let resIndex = parseInt(ele);
-          if (item.questionChoices[x] === item.questionAnswers[resIndex]) {
-            correctNum++;
-          }
-        });
+        if (item.response.length !== 0) {
+          item.response.forEach((ele, x) => {
+            let resIndex = parseInt(ele);
+            if (item.questionChoices[x] === item.questionAnswers[resIndex]) {
+              correctNum++;
+            }
+          });
+        }
 
         if (correctNum === numOfAns) {
           totalScore = totalScore + item.score;
