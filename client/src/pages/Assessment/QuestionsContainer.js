@@ -117,9 +117,11 @@ class QuestionsContainer extends Component {
     else array.splice(index, 1);
 
     for (let x = 0; x < array.length; x++) {
-      for (let y = 0; y < array[x].length; y++) {
-        if (array[x][y].section >= index + 1) {
-          array[x][y].section = array[x][y].section - 1;
+      if (array[x] !== null) {
+        for (let y = 0; y < array[x].length; y++) {
+          if (array[x][y].section >= index + 1) {
+            array[x][y].section = array[x][y].section - 1;
+          }
         }
       }
     }
@@ -203,7 +205,7 @@ class QuestionsContainer extends Component {
             </ThirdLabel>
           </div>
         )}
-        {questions.length >= 1 && (
+        {questions.length >= 1 && questions[0] !== null && (
           <SortableRow
             questions={questions[0]}
             assessmentID={assessmentID}
