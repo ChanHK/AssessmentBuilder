@@ -226,3 +226,25 @@ export const fetchAGrade = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.FETCH_GRADES_IN_GRADINGS_FAIL });
     });
 };
+
+export const fetchFeedback = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.FETCH_FEEDBACK_BEGIN });
+
+  axios
+    .get(
+      `/api/user/home/assessment/fetch/feedbacks/${data.candID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.FETCH_FEEDBACK_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: HOME.FETCH_FEEDBACK_FAIL });
+    });
+};
