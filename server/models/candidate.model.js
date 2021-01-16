@@ -18,6 +18,10 @@ const CandidateSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  maxScore: {
+    type: Number,
+    default: 0,
+  },
   grade: {
     type: String,
     default: "",
