@@ -6,6 +6,7 @@ import { StyleSheet, css } from "aphrodite";
 import Header from "../../components/Header";
 import ScrollArrow from "../../components/ScrollArrow";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -14,9 +15,15 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchAllInfo } from "../../actions/home.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+
 class ActivationContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       settingsCB: false,
       questionsCB: false,
@@ -24,7 +31,48 @@ class ActivationContainer extends Component {
       accessCB: false,
       timerCB: false,
       status: "",
+      assessmentID: this.props.match.params.assessmentID,
+      data: {},
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAllInfo(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { homeReducer } = this.props;
+
+    if (
+      prevProps.homeReducer !== homeReducer &&
+      homeReducer.fullInfoData !== null
+    ) {
+      const { fullInfoData } = homeReducer;
+      console.log(fullInfoData);
+      this.setState({
+        data: fullInfoData[0],
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.homeReducer.fullInfoData = null;
   }
 
   onSubmit = (e) => {
@@ -37,7 +85,18 @@ class ActivationContainer extends Component {
   };
 
   render() {
-    const { settingsCB, questionsCB, setsCB, accessCB, timerCB } = this.state;
+    const {
+      settingsCB,
+      questionsCB,
+      setsCB,
+      accessCB,
+      timerCB,
+      data,
+    } = this.state;
+
+    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
     return (
       <>
         <Header />
@@ -128,34 +187,43 @@ class ActivationContainer extends Component {
                   </div>
                 </CustomRow>
               </div>
-
-              <form className={css(styles.buttonCon)} onSubmit={this.onSubmit}>
-                <Button
-                  backgroundColor={configStyles.colors.darkBlue}
-                  color={configStyles.colors.white}
-                  padding={"8px"}
-                  // onClick={}
-                  type={"submit"}
-                  width={"100%"}
-                  XWidth={"100%"}
+              {data.status === "Setup in progress" && (
+                <form
+                  className={css(styles.buttonCon)}
+                  onSubmit={this.onSubmit}
                 >
-                  Activate
-                </Button>
-              </form>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    // onClick={}
+                    type={"submit"}
+                    width={"100%"}
+                    XWidth={"100%"}
+                  >
+                    Activate
+                  </Button>
+                </form>
+              )}
 
-              <form className={css(styles.buttonCon)} onSubmit={this.onSubmit}>
-                <Button
-                  backgroundColor={configStyles.colors.red}
-                  color={configStyles.colors.white}
-                  padding={"8px"}
-                  // onClick={}
-                  type={"submit"}
-                  width={"100%"}
-                  XWidth={"100%"}
+              {data.status === "Activated" && (
+                <form
+                  className={css(styles.buttonCon)}
+                  onSubmit={this.onSubmit}
                 >
-                  Deactivate
-                </Button>
-              </form>
+                  <Button
+                    backgroundColor={configStyles.colors.red}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    // onClick={}
+                    type={"submit"}
+                    width={"100%"}
+                    XWidth={"100%"}
+                  >
+                    Deactivate
+                  </Button>
+                </form>
+              )}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -198,4 +266,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActivationContainer;
+ActivationContainer.propTypes = {
+  homeReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  fetchAllInfo: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+});
+
+export default connect(mapStateToProps, {
+  fetchAllInfo,
+  logout,
+})(ActivationContainer);
