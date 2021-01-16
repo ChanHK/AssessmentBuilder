@@ -380,7 +380,7 @@ router.get("/assessment/fetch/single_result/:candID", auth, (req, res) => {
 });
 
 // @route     GET api/user/home/assessment/fetch/grades/:assessmentID
-// @desc      GETfetch passing score and grades
+// @desc      GET fetch passing score and grades
 // @access    Private
 router.get("/assessment/fetch/grades/:assessmentID", auth, (req, res) => {
   db.Assessment.find({ "assessments._id": req.params.assessmentID })
@@ -404,6 +404,18 @@ router.get("/assessment/fetch/grades/:assessmentID", auth, (req, res) => {
         }
       });
       return res.json(temp);
+    })
+    .catch((err) => console.log(err));
+});
+
+// @route     GET api/user/home/assessment/fetch/feedbacks/:cand_id
+// @desc      GET fetch passing score and grades
+// @access    Private
+router.get("/assessment/fetch/feedbacks/:cand_id", auth, (req, res) => {
+  db.Feedback.find({ cand_id: req.params.cand_id })
+    .select("-__v")
+    .then((result) => {
+      return res.json(result);
     })
     .catch((err) => console.log(err));
 });
