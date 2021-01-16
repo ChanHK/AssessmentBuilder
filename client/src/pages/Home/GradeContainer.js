@@ -23,7 +23,11 @@ import { Editor } from "react-draft-wysiwyg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchDesResponses, uploadFeedback } from "../../actions/home.actions";
+import {
+  fetchDesResponses,
+  uploadFeedback,
+  fetchAGrade,
+} from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -36,6 +40,7 @@ class GradeContainer extends Component {
       payload: [],
       score: {},
       isEmpty: false,
+      gradeData: {},
     };
   }
 
@@ -54,9 +59,11 @@ class GradeContainer extends Component {
 
     const data = {
       questionID: this.state.questionID,
+      assessmentID: this.state.assessmentID,
     };
 
     this.props.fetchDesResponses(data);
+    this.props.fetchAGrade(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -64,9 +71,10 @@ class GradeContainer extends Component {
 
     if (
       prevProps.homeReducer !== homeReducer &&
-      homeReducer.desResponses !== null
+      homeReducer.desResponses !== null &&
+      homeReducer.grade !== null
     ) {
-      const { desResponses } = homeReducer;
+      const { desResponses, grade } = homeReducer;
 
       if (desResponses.length > 0) {
         let temp = desResponses;
@@ -85,13 +93,14 @@ class GradeContainer extends Component {
           score: "",
         };
 
-        this.setState({ payload: temp, score: score });
+        this.setState({ payload: temp, score: score, gradeData: grade });
       } else this.setState({ isEmpty: true });
     }
   }
 
   componentWillUnmount() {
     this.props.homeReducer.desResponses = null;
+    this.props.homeReducer.grade = null;
   }
 
   convertHtml = (data) => {
@@ -106,7 +115,7 @@ class GradeContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { score } = this.state;
+    const { score, gradeData } = this.state;
 
     const data = {
       assessments_id: score.assessments_id,
@@ -114,6 +123,7 @@ class GradeContainer extends Component {
       question_id: score.question_id,
       feedback: score.feedback,
       score: score.score,
+      gradeData: gradeData,
     };
 
     this.props.uploadFeedback(data);
@@ -258,6 +268,7 @@ GradeContainer.propTypes = {
   fetchDesResponses: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   uploadFeedback: PropTypes.func.isRequired,
+  fetchAGrade: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -268,4 +279,5 @@ export default connect(mapStateToProps, {
   logout,
   fetchDesResponses,
   uploadFeedback,
+  fetchAGrade,
 })(GradeContainer);
