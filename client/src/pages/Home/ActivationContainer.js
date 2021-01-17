@@ -17,7 +17,7 @@ import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchAllInfo } from "../../actions/home.actions";
+import { fetchAllInfo, uploadStatus } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -146,14 +146,22 @@ class ActivationContainer extends Component {
 
   componentWillUnmount() {
     this.props.homeReducer.fullInfoData = null;
+    this.props.homeReducer.direct = false;
   }
 
-  onSubmit = (e) => {
+  onSubmit = (e, text) => {
     e.preventDefault();
     const { settingsCB, questionsCB, setsCB, accessCB, timerCB } = this.state;
 
-    if (!settingsCB && !questionsCB && !setsCB && !accessCB && !timerCB) {
+    if (!(settingsCB && questionsCB && setsCB && accessCB && timerCB)) {
       return false;
+    }
+    if (settingsCB && questionsCB && setsCB && accessCB && timerCB) {
+      let data = {
+        assessmentID: this.state.assessmentID,
+        status: text,
+      };
+      this.props.uploadStatus(data);
     }
   };
 
@@ -169,6 +177,10 @@ class ActivationContainer extends Component {
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    if (this.props.homeReducer.direct) {
+      this.props.history.push(`/home`);
+    }
 
     return (
       <>
@@ -263,13 +275,12 @@ class ActivationContainer extends Component {
               {data.status === "Setup in progress" && (
                 <form
                   className={css(styles.buttonCon)}
-                  onSubmit={this.onSubmit}
+                  onSubmit={(e) => this.onSubmit(e, "Activated")}
                 >
                   <Button
                     backgroundColor={configStyles.colors.darkBlue}
                     color={configStyles.colors.white}
                     padding={"8px"}
-                    // onClick={}
                     type={"submit"}
                     width={"100%"}
                     XWidth={"100%"}
@@ -282,7 +293,7 @@ class ActivationContainer extends Component {
               {data.status === "Activated" && (
                 <form
                   className={css(styles.buttonCon)}
-                  onSubmit={this.onSubmit}
+                  onSubmit={(e) => this.onSubmit(e, "Ended")}
                 >
                   <Button
                     backgroundColor={configStyles.colors.red}
@@ -296,6 +307,12 @@ class ActivationContainer extends Component {
                     Deactivate
                   </Button>
                 </form>
+              )}
+
+              {data.status === "Ended" && (
+                <div className={css(styles.buttonCon)}>
+                  <SecondLabel>Assessment Ended</SecondLabel>
+                </div>
               )}
             </CustomColumn>
           </CustomMidContainer>
@@ -343,6 +360,7 @@ ActivationContainer.propTypes = {
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   fetchAllInfo: PropTypes.func.isRequired,
+  uploadStatus: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -352,4 +370,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchAllInfo,
   logout,
+  uploadStatus,
 })(ActivationContainer);
