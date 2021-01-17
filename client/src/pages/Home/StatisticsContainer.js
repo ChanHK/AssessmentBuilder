@@ -15,7 +15,7 @@ import { Pie } from "react-chartjs-2";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchAGrade } from "../../actions/home.actions";
+import { fetchAGrade, fetchResults } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -42,6 +42,7 @@ class StatisticsContainer extends Component {
     this.state = {
       assessmentID: this.props.match.params.assessmentID,
       gradeData: {},
+      candidateData: {},
     };
   }
 
@@ -63,20 +64,28 @@ class StatisticsContainer extends Component {
     };
 
     this.props.fetchAGrade(data);
+    this.props.fetchResults(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { homeReducer } = this.props;
 
-    if (prevProps.homeReducer !== homeReducer && homeReducer.grade !== null) {
-      const { grade } = homeReducer;
+    if (
+      prevProps.homeReducer !== homeReducer &&
+      homeReducer.grade !== null &&
+      homeReducer.results !== null
+    ) {
+      const { grade, results } = homeReducer;
       console.log(grade);
+      console.log(results);
+
       this.setState({ gradeData: grade });
     }
   }
 
   componentWillUnmount() {
     this.props.homeReducer.grade = null;
+    this.props.homeReducer.results = null;
   }
 
   render() {
@@ -120,6 +129,7 @@ StatisticsContainer.propTypes = {
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   fetchAGrade: PropTypes.func.isRequired,
+  fetchResults: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -129,6 +139,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   fetchAGrade,
   logout,
+  fetchResults,
 })(StatisticsContainer);
 
 //https://stackoverflow.com/questions/46420578/it-is-possible-to-change-the-color-of-periphery-of-pie-chart-in-chart-js
