@@ -448,4 +448,21 @@ router.get(
   }
 );
 
+// @route     POST api/user/home/assessment/activate/:assessmentID
+// @desc      POST activate
+// @access    Private
+router.post("/assessment/activate/:assessmentID", auth, (req, res) => {
+  db.Assessment.updateOne(
+    { user_id: req.user.id, "assessments._id": req.params.assessmentID },
+    { $set: { "assessments.$.status": req.body.status } },
+    { new: true }
+  )
+    .then(() => {
+      return res.status(200).json({ message: "update success" });
+    })
+    .catch(() => {
+      return res.status(400).json({ message: "update fail" });
+    });
+});
+
 module.exports = router;
