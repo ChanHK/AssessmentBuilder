@@ -12,6 +12,7 @@ const initialState = {
   grade: null,
   feedback: null,
   fullInfoData: null,
+  direct: false,
 };
 
 export default function (state = initialState, action) {
@@ -28,6 +29,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_GRADES_IN_GRADINGS_BEGIN:
     case HOME.FETCH_FEEDBACK_BEGIN:
     case HOME.FETCH_FULL_ASSESSMENT_INFO_BEGIN:
+    case HOME.UPDATE_ACTIVATION_STATUS_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -51,6 +53,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_GRADES_IN_GRADINGS_FAIL:
     case HOME.FETCH_FEEDBACK_FAIL:
     case HOME.FETCH_FULL_ASSESSMENT_INFO_FAIL:
+    case HOME.UPDATE_ACTIVATION_STATUS_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -109,6 +112,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         fullInfoData: action.payload,
+      };
+    case HOME.UPDATE_ACTIVATION_STATUS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        direct: true,
       };
     default:
       return state;

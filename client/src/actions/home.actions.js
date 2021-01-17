@@ -270,3 +270,25 @@ export const fetchAllInfo = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.FETCH_FULL_ASSESSMENT_INFO_FAIL });
     });
 };
+
+export const uploadStatus = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.UPDATE_ACTIVATION_STATUS_BEGIN });
+
+  axios
+    .post(
+      `/api/user/home/assessment/activate/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.UPDATE_ACTIVATION_STATUS_SUCCESS,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("upload failed", err);
+      dispatch({ type: HOME.UPDATE_ACTIVATION_STATUS_FAIL });
+    });
+};
