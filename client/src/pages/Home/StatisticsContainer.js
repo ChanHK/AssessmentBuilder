@@ -1,18 +1,15 @@
 import React, { Component } from "react";
-
+import "../../css/general.css";
 import { StyleSheet } from "aphrodite";
+// import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 
-import "../../css/general.css";
-
-// import * as configStyles from "../../config/styles";
 import { Pie } from "react-chartjs-2";
 
 const data = {
@@ -32,7 +29,7 @@ const data = {
   ],
 };
 
-export default class StatisticsContainer extends Component {
+class StatisticsContainer extends Component {
   render() {
     return (
       <>
@@ -66,5 +63,7 @@ const styles = StyleSheet.create({
     paddingLeft: "10px",
   },
 });
+
+export default StatisticsContainer;
 
 //https://stackoverflow.com/questions/46420578/it-is-possible-to-change-the-color-of-periphery-of-pie-chart-in-chart-js
