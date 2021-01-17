@@ -4,6 +4,7 @@ import { StyleSheet } from "aphrodite";
 // import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -11,6 +12,12 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 
 import { Pie } from "react-chartjs-2";
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchAGrade } from "../../actions/home.actions";
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
 
 const data = {
   labels: ["Pass", "Fail"],
@@ -30,7 +37,52 @@ const data = {
 };
 
 class StatisticsContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      assessmentID: this.props.match.params.assessmentID,
+      gradeData: {},
+    };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAGrade(data);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { homeReducer } = this.props;
+
+    if (prevProps.homeReducer !== homeReducer && homeReducer.grade !== null) {
+      const { grade } = homeReducer;
+      console.log(grade);
+      this.setState({ gradeData: grade });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.homeReducer.grade = null;
+  }
+
   render() {
+    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
+
     return (
       <>
         <Header />
@@ -64,6 +116,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StatisticsContainer;
+StatisticsContainer.propTypes = {
+  homeReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  fetchAGrade: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+});
+
+export default connect(mapStateToProps, {
+  fetchAGrade,
+  logout,
+})(StatisticsContainer);
 
 //https://stackoverflow.com/questions/46420578/it-is-possible-to-change-the-color-of-periphery-of-pie-chart-in-chart-js
