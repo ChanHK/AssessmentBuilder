@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import "../../css/general.css";
-import { StyleSheet } from "aphrodite";
+import { css, StyleSheet } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import ScrollArrow from "../../components/ScrollArrow";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
 import { Pie } from "react-chartjs-2";
 
@@ -108,7 +110,6 @@ class StatisticsContainer extends Component {
       labels: ["Pass", "Fail"],
       datasets: [
         {
-          label: `Pass and fail rate of ${candNum} candidates`,
           backgroundColor: [
             configStyles.colors.correctGreen,
             configStyles.colors.falseRed,
@@ -124,6 +125,7 @@ class StatisticsContainer extends Component {
     return (
       <>
         <Header />
+        <ScrollArrow />
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
@@ -131,16 +133,23 @@ class StatisticsContainer extends Component {
                 <FirstLabel>Statistics</FirstLabel>
               </div>
               {piePassNFailShow && (
-                <div>
-                  <Pie
-                    data={pieData}
-                    width={300}
-                    height={520}
-                    options={{
-                      maintainAspectRatio: false,
-                    }}
-                  />
-                </div>
+                <CustomColumn>
+                  <div>
+                    <Pie
+                      data={pieData}
+                      width={300}
+                      height={520}
+                      options={{
+                        maintainAspectRatio: false,
+                      }}
+                    />
+                  </div>
+                  <div className={css(styles.chartTitle)}>
+                    <SecondLabel>
+                      Pass and fail rate of {candNum} candidates
+                    </SecondLabel>
+                  </div>
+                </CustomColumn>
               )}
             </CustomColumn>
           </CustomMidContainer>
@@ -153,6 +162,14 @@ class StatisticsContainer extends Component {
 const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
+  },
+  chartTitle: {
+    width: "100%",
+    height: "auto",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "25px 0px",
   },
 });
 
