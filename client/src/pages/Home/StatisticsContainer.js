@@ -142,6 +142,7 @@ class StatisticsContainer extends Component {
       labels: ["Pass", "Fail"],
       datasets: [
         {
+          label: ["number of candidates"],
           backgroundColor: [
             configStyles.colors.correctGreen,
             configStyles.colors.falseRed,
@@ -201,22 +202,27 @@ class StatisticsContainer extends Component {
                   </div>
                   <div className={css(styles.chartTitle)}>
                     <ThirdLabel>
-                      Pass and fail rate of {candNum} candidates
+                      Pass and Fail Rate of {candNum} Candidates
+                    </ThirdLabel>
+                  </div>
+
+                  <div>
+                    <Bar
+                      data={scoreBarData}
+                      width={300}
+                      height={520}
+                      options={{
+                        maintainAspectRatio: false,
+                      }}
+                    />
+                  </div>
+                  <div className={css(styles.chartTitle)}>
+                    <ThirdLabel>
+                      Score Ranges (%) of {candNum} Candidates
                     </ThirdLabel>
                   </div>
                 </CustomColumn>
               )}
-
-              <div>
-                <Bar
-                  data={scoreBarData}
-                  width={300}
-                  height={520}
-                  options={{
-                    maintainAspectRatio: false,
-                  }}
-                />
-              </div>
 
               <div style={{ marginBottom: "500px" }}></div>
             </CustomColumn>
