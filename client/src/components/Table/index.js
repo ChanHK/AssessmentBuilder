@@ -9,9 +9,6 @@ const customStyles = {
     style: {
       fontSize: "15px",
       fontFamily: "Ubuntu-Bold",
-      // backgroundColor: configStyles.colors.darkBlue,
-      // color: configStyles.colors.white,
-      // width: "100%",
     },
   },
 };

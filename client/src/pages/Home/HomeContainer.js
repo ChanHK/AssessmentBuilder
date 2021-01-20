@@ -347,10 +347,7 @@ class HomeContainer extends Component {
                 </div>
               </Wrapper>
               <div style={{ padding: "50px 0px", marginBottom: "100px" }}>
-                <Table
-                  data={filteredData}
-                  columns={tableHeader}
-                />
+                <Table data={filteredData} columns={tableHeader} />
               </div>
             </CustomColumn>
           </CustomMidContainer>
