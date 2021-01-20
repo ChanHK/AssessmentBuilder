@@ -279,6 +279,16 @@ class StatisticsContainer extends Component {
                       height={520}
                       options={{
                         maintainAspectRatio: false,
+                        scales: {
+                          yAxes: [
+                            {
+                              ticks: {
+                                beginAtZero: true,
+                                precision: 0,
+                              },
+                            },
+                          ],
+                        },
                       }}
                     />
                   </div>
