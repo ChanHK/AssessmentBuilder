@@ -13,7 +13,7 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import { Pie, Bar } from "react-chartjs-2";
+import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -34,7 +34,7 @@ class StatisticsContainer extends Component {
       range: [], //stores the number of percentage in 0 - 10%.....
       unit: "",
       barLabel: [],
-      piePassNFailShow: false,
+      passNFailShow: false,
     };
   }
 
@@ -68,7 +68,12 @@ class StatisticsContainer extends Component {
       homeReducer.results !== null
     ) {
       const { grade, results } = homeReducer;
-      const { passOrFailSelected, addGradingSelected, unit } = grade[0];
+      const {
+        passOrFailSelected,
+        addGradingSelected,
+        unit,
+        gradeRange,
+      } = grade[0];
       console.log(grade);
       console.log(results);
 
@@ -76,10 +81,11 @@ class StatisticsContainer extends Component {
         this.passFailDataGenerator(results, unit);
       }
       if (addGradingSelected) {
+        this.gradedGenerator(results, gradeRange);
       }
 
       this.setState({
-        gradeData: grade,
+        gradeData: grade[0],
       });
     }
   }
@@ -193,11 +199,53 @@ class StatisticsContainer extends Component {
     });
 
     this.setState({
-      piePassNFailShow: true,
+      passNFailShow: true,
       passNum: passNum,
       failNum: failNum,
       candNum: candNum,
       range: isPoints ? pointsRange : percentageRange,
+    });
+  };
+
+  gradedGenerator = (results, gradeRange) => {
+    let candNum = 0;
+    let range = [0];
+    let collections = [0];
+
+    gradeRange.forEach((grade, i) => {
+      range.push(parseInt(grade));
+      collections.push(0);
+    });
+
+    results.forEach((item, index) => {
+      candNum++;
+
+      let convertedScore = parseInt(
+        item.totalScore.substring(0, item.totalScore.length - 2)
+      );
+
+      for (let i = 0; i < range.length - 1; i++) {
+        if (range[i] === 0) {
+          if (
+            convertedScore >= parseInt(range[i]) &&
+            convertedScore <= parseInt(range[i + 1])
+          ) {
+            collections[i] = collections[i] + 1;
+          }
+        } else {
+          if (
+            convertedScore >= parseInt(range[i]) + 1 &&
+            convertedScore <= parseInt(range[i + 1])
+          ) {
+            collections[i] = collections[i] + 1;
+          }
+        }
+      }
+    });
+
+    this.setState({
+      candNum: candNum,
+      range: collections,
     });
   };
 
@@ -206,10 +254,11 @@ class StatisticsContainer extends Component {
       candNum,
       passNum,
       failNum,
-      piePassNFailShow,
+      passNFailShow,
       range,
       unit,
       barLabel,
+      gradeData,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -244,6 +293,18 @@ class StatisticsContainer extends Component {
       ],
     };
 
+    const horizonBarData = {
+      labels: gradeData.gradeValue,
+      datasets: [
+        {
+          label: ["number of candidates"],
+          backgroundColor: configStyles.colors.lightBlue,
+          borderWidth: 1,
+          data: range,
+        },
+      ],
+    };
+
     return (
       <>
         <Header />
@@ -254,7 +315,7 @@ class StatisticsContainer extends Component {
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Statistics</FirstLabel>
               </div>
-              {piePassNFailShow && (
+              {passNFailShow && (
                 <CustomColumn>
                   <div>
                     <Pie
@@ -295,6 +356,36 @@ class StatisticsContainer extends Component {
                   <div className={css(styles.chartTitle)}>
                     <ThirdLabel>
                       Score Ranges ({unit}) of {candNum} Candidates
+                    </ThirdLabel>
+                  </div>
+                </CustomColumn>
+              )}
+
+              {!passNFailShow && (
+                <CustomColumn>
+                  <div>
+                    <HorizontalBar
+                      data={horizonBarData}
+                      width={300}
+                      height={520}
+                      options={{
+                        maintainAspectRatio: false,
+                        scales: {
+                          xAxes: [
+                            {
+                              ticks: {
+                                beginAtZero: true,
+                                precision: 0,
+                              },
+                            },
+                          ],
+                        },
+                      }}
+                    />
+                  </div>
+                  <div className={css(styles.chartTitle)}>
+                    <ThirdLabel>
+                      Number of Grades out of {candNum} Candidates
                     </ThirdLabel>
                   </div>
                 </CustomColumn>
