@@ -11,9 +11,9 @@ import CustomFullContainer from "../../components/GridComponents/CustomFullConta
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
-import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import { Pie } from "react-chartjs-2";
+import { Pie, Bar } from "react-chartjs-2";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -31,6 +31,7 @@ class StatisticsContainer extends Component {
       passNum: 0,
       failNum: 0,
       candNum: 0,
+      percentageRange: [], //stores the number of percentage in 0 - 10%.....
 
       piePassNFailShow: false,
     };
@@ -66,23 +67,47 @@ class StatisticsContainer extends Component {
       homeReducer.results !== null
     ) {
       const { grade, results } = homeReducer;
-      const { passOrFailSelected, addGradingSelected } = grade[0];
+      const { passOrFailSelected, addGradingSelected, unit } = grade[0];
       console.log(grade);
       console.log(results);
 
       let passNum = 0;
       let failNum = 0;
       let candNum = 0;
+      let percentageRange = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      let tempRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
       if (passOrFailSelected) {
         results.forEach((item, index) => {
           candNum++;
           if (item.grade === "PASS") passNum++;
           else failNum++;
+
+          if (unit === "percentage %") {
+            let convertedScore = parseInt(
+              item.totalScore.substring(0, item.totalScore.length - 2)
+            );
+            for (let i = 0; i < tempRange.length - 1; i++) {
+              if (tempRange[i] === 0) {
+                if (
+                  convertedScore >= tempRange[i] &&
+                  convertedScore <= tempRange[i + 1]
+                ) {
+                  percentageRange[i] = percentageRange[i] + 1;
+                }
+              } else {
+                if (
+                  convertedScore >= tempRange[i] + 1 &&
+                  convertedScore <= tempRange[i + 1]
+                ) {
+                  percentageRange[i] = percentageRange[i] + 1;
+                }
+              }
+            }
+          }
         });
         this.setState({ piePassNFailShow: true });
       }
-
       if (addGradingSelected) {
       }
 
@@ -91,6 +116,7 @@ class StatisticsContainer extends Component {
         passNum: passNum,
         failNum: failNum,
         candNum: candNum,
+        percentageRange: percentageRange,
       });
     }
   }
@@ -101,12 +127,18 @@ class StatisticsContainer extends Component {
   }
 
   render() {
-    const { candNum, passNum, failNum, piePassNFailShow } = this.state;
+    const {
+      candNum,
+      passNum,
+      failNum,
+      piePassNFailShow,
+      percentageRange,
+    } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    const pieData = {
+    const passFailPieData = {
       labels: ["Pass", "Fail"],
       datasets: [
         {
@@ -118,6 +150,29 @@ class StatisticsContainer extends Component {
           hoverBackgroundColor: "rgba(255,99,132,0.4)",
           hoverBorderColor: "rgba(255,99,132,1)",
           data: [passNum, failNum],
+        },
+      ],
+    };
+
+    const scoreBarData = {
+      labels: [
+        "0 - 10%",
+        "11 - 20%",
+        "21 - 30%",
+        "31 - 40%",
+        "41 - 50%",
+        "51 - 60%",
+        "61 - 70%",
+        "71 - 80%",
+        "81 - 90%",
+        "91 - 100%",
+      ],
+      datasets: [
+        {
+          label: ["number of candidates"],
+          backgroundColor: configStyles.colors.lightBlue,
+          borderWidth: 1,
+          data: percentageRange,
         },
       ],
     };
@@ -136,7 +191,7 @@ class StatisticsContainer extends Component {
                 <CustomColumn>
                   <div>
                     <Pie
-                      data={pieData}
+                      data={passFailPieData}
                       width={300}
                       height={520}
                       options={{
@@ -145,12 +200,25 @@ class StatisticsContainer extends Component {
                     />
                   </div>
                   <div className={css(styles.chartTitle)}>
-                    <SecondLabel>
+                    <ThirdLabel>
                       Pass and fail rate of {candNum} candidates
-                    </SecondLabel>
+                    </ThirdLabel>
                   </div>
                 </CustomColumn>
               )}
+
+              <div>
+                <Bar
+                  data={scoreBarData}
+                  width={300}
+                  height={520}
+                  options={{
+                    maintainAspectRatio: false,
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: "500px" }}></div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -169,7 +237,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    margin: "25px 0px",
+    margin: "50px 0px 100px 0px",
   },
 });
 
