@@ -161,7 +161,7 @@ class HomeContainer extends Component {
             <div className={css(styles.tableRow)}>{row.settings.testName}</div>
           </div>
         ),
-        width: "35%",
+        width: "25%",
       },
       {
         name: "Status",
@@ -184,7 +184,7 @@ class HomeContainer extends Component {
             </div>
           </div>
         ),
-        width: "200px",
+        width: "170px",
       },
       {
         name: "Options",
