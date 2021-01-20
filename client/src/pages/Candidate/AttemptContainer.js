@@ -250,7 +250,9 @@ class AttemptContainer extends Component {
         if (gradeData.unit === "points p.") tempUnit = "p";
         else tempUnit = "%";
 
-        if (tempUnit === "%") totalScore = (totalScore / maxScore) * 100;
+        if (tempUnit === "%") {
+          if (totalScore !== 0) totalScore = (totalScore / maxScore) * 100;
+        }
 
         if (totalScore >= parseInt(gradeData.score)) grade = "PASS";
         else grade = "FAIL";
@@ -259,7 +261,9 @@ class AttemptContainer extends Component {
       } else if (gradeData.addGradingSelected) {
         if (gradeData.gradeUnit === "points p.") tempUnit = "p";
         else tempUnit = "%";
-        if (tempUnit === "%") totalScore = (totalScore / maxScore) * 100;
+        if (tempUnit === "%") {
+          if (totalScore !== 0) totalScore = (totalScore / maxScore) * 100;
+        }
 
         let tempRange = gradeData.gradeRange;
         if (tempRange[0] !== "0") tempRange.unshift("0");
