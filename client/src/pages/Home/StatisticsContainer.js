@@ -390,8 +390,6 @@ class StatisticsContainer extends Component {
                   </div>
                 </CustomColumn>
               )}
-
-              <div style={{ marginBottom: "500px" }}></div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -430,5 +428,3 @@ export default connect(mapStateToProps, {
   logout,
   fetchResults,
 })(StatisticsContainer);
-
-//https://stackoverflow.com/questions/46420578/it-is-possible-to-change-the-color-of-periphery-of-pie-chart-in-chart-js
