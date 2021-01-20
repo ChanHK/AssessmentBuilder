@@ -33,7 +33,7 @@ class StatisticsContainer extends Component {
       candNum: 0,
       percentageRange: [], //stores the number of percentage in 0 - 10%.....
       unit: "",
-
+      barLabel: [],
       piePassNFailShow: false,
     };
   }
@@ -106,10 +106,26 @@ class StatisticsContainer extends Component {
       else failNum++;
 
       if (unit === "percentage %") {
-        this.setState({ unit: "%" });
+        this.setState({
+          unit: "%",
+          barLabel: [
+            "0 - 10%",
+            "11 - 20%",
+            "21 - 30%",
+            "31 - 40%",
+            "41 - 50%",
+            "51 - 60%",
+            "61 - 70%",
+            "71 - 80%",
+            "81 - 90%",
+            "91 - 100%",
+          ],
+        });
+
         let convertedScore = parseInt(
           item.totalScore.substring(0, item.totalScore.length - 2)
         );
+        
         for (let i = 0; i < tempRange_Percentage.length - 1; i++) {
           if (tempRange_Percentage[i] === 0) {
             if (
@@ -149,6 +165,7 @@ class StatisticsContainer extends Component {
       piePassNFailShow,
       percentageRange,
       unit,
+      barLabel,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -172,18 +189,7 @@ class StatisticsContainer extends Component {
     };
 
     const scoreBarData = {
-      labels: [
-        "0 - 10%",
-        "11 - 20%",
-        "21 - 30%",
-        "31 - 40%",
-        "41 - 50%",
-        "51 - 60%",
-        "61 - 70%",
-        "71 - 80%",
-        "81 - 90%",
-        "91 - 100%",
-      ],
+      labels: barLabel,
       datasets: [
         {
           label: ["number of candidates"],
