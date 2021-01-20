@@ -350,7 +350,6 @@ class HomeContainer extends Component {
                 <Table
                   data={filteredData}
                   columns={tableHeader}
-                  // path={`questionbank/viewQuestion`}
                 />
               </div>
             </CustomColumn>
