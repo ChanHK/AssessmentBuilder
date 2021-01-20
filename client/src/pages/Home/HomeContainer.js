@@ -161,7 +161,7 @@ class HomeContainer extends Component {
             <div className={css(styles.tableRow)}>{row.settings.testName}</div>
           </div>
         ),
-        width: "40%",
+        width: "35%",
       },
       {
         name: "Status",
@@ -188,66 +188,85 @@ class HomeContainer extends Component {
       },
       {
         name: "Options",
-        selector: "_id",
+        selector: "_id, status",
         cell: (row) => (
           <CustomRow>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(`assessment/edit/settings/${row._id}`);
-              }}
-            >
-              Edit
-            </TableButton>
-            <TableButton
-              onClick={() => {
-                const data = {
-                  assessmentID: row._id,
-                };
-                this.props.deleteAssessment(data);
-              }}
-            >
-              Delete
-            </TableButton>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(`assessment/view/settings/${row._id}`);
-              }}
-            >
-              View
-            </TableButton>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(
-                  `/assessment/descriptive/responses/${row._id}`
-                );
-              }}
-            >
-              Mark
-            </TableButton>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(`/assessment/results/${row._id}`);
-              }}
-            >
-              Results
-            </TableButton>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(`/assessment/statistics/${row._id}`);
-              }}
-            >
-              Statistics
-            </TableButton>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(`/assessment/activation/${row._id}`);
-              }}
-            >
-              Activate
-            </TableButton>
+            {row.status === "Setup in progress" && (
+              <TableButton
+                onClick={() => {
+                  this.props.history.push(
+                    `assessment/edit/settings/${row._id}`
+                  );
+                }}
+              >
+                Edit
+              </TableButton>
+            )}
+            {row.status !== "Activated" && (
+              <TableButton
+                onClick={() => {
+                  const data = {
+                    assessmentID: row._id,
+                  };
+                  this.props.deleteAssessment(data);
+                }}
+              >
+                Delete
+              </TableButton>
+            )}
+            {row.status !== "Setup in progress" && (
+              <TableButton
+                onClick={() => {
+                  this.props.history.push(
+                    `assessment/view/settings/${row._id}`
+                  );
+                }}
+              >
+                View
+              </TableButton>
+            )}
+            {row.status === "Ended" && (
+              <>
+                <TableButton
+                  onClick={() => {
+                    this.props.history.push(
+                      `/assessment/descriptive/responses/${row._id}`
+                    );
+                  }}
+                >
+                  Mark
+                </TableButton>
+
+                <TableButton
+                  onClick={() => {
+                    this.props.history.push(`/assessment/results/${row._id}`);
+                  }}
+                >
+                  Results
+                </TableButton>
+                <TableButton
+                  onClick={() => {
+                    this.props.history.push(
+                      `/assessment/statistics/${row._id}`
+                    );
+                  }}
+                >
+                  Statistics
+                </TableButton>
+              </>
+            )}
+            {row.status !== "Ended" && (
+              <TableButton
+                onClick={() => {
+                  this.props.history.push(`/assessment/activation/${row._id}`);
+                }}
+              >
+                {row.status === "Activated" ? "Deactivate" : "Activate"}
+              </TableButton>
+            )}
           </CustomRow>
         ),
-        width: "480px",
+        width: "350px",
       },
     ];
 
