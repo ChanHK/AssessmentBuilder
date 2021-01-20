@@ -71,52 +71,14 @@ class StatisticsContainer extends Component {
       console.log(grade);
       console.log(results);
 
-      let passNum = 0;
-      let failNum = 0;
-      let candNum = 0;
-      let percentageRange = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      let tempRange = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-
       if (passOrFailSelected) {
-        results.forEach((item, index) => {
-          candNum++;
-          if (item.grade === "PASS") passNum++;
-          else failNum++;
-
-          if (unit === "percentage %") {
-            let convertedScore = parseInt(
-              item.totalScore.substring(0, item.totalScore.length - 2)
-            );
-            for (let i = 0; i < tempRange.length - 1; i++) {
-              if (tempRange[i] === 0) {
-                if (
-                  convertedScore >= tempRange[i] &&
-                  convertedScore <= tempRange[i + 1]
-                ) {
-                  percentageRange[i] = percentageRange[i] + 1;
-                }
-              } else {
-                if (
-                  convertedScore >= tempRange[i] + 1 &&
-                  convertedScore <= tempRange[i + 1]
-                ) {
-                  percentageRange[i] = percentageRange[i] + 1;
-                }
-              }
-            }
-          }
-        });
-        this.setState({ piePassNFailShow: true });
+        this.passFailDataGenerator(results, unit);
       }
       if (addGradingSelected) {
       }
 
       this.setState({
         gradeData: grade,
-        passNum: passNum,
-        failNum: failNum,
-        candNum: candNum,
-        percentageRange: percentageRange,
       });
     }
   }
@@ -125,6 +87,53 @@ class StatisticsContainer extends Component {
     this.props.homeReducer.grade = null;
     this.props.homeReducer.results = null;
   }
+
+  passFailDataGenerator = (results, unit) => {
+    let passNum = 0;
+    let failNum = 0;
+    let candNum = 0;
+
+    let percentageRange = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //when unit is percentage
+    let tempRange_Percentage = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; //when unit is percentage
+
+    results.forEach((item, index) => {
+      candNum++;
+      if (item.grade === "PASS") passNum++;
+      else failNum++;
+
+      if (unit === "percentage %") {
+        let convertedScore = parseInt(
+          item.totalScore.substring(0, item.totalScore.length - 2)
+        );
+        for (let i = 0; i < tempRange_Percentage.length - 1; i++) {
+          if (tempRange_Percentage[i] === 0) {
+            if (
+              convertedScore >= tempRange_Percentage[i] &&
+              convertedScore <= tempRange_Percentage[i + 1]
+            ) {
+              percentageRange[i] = percentageRange[i] + 1;
+            }
+          } else {
+            if (
+              convertedScore >= tempRange_Percentage[i] + 1 &&
+              convertedScore <= tempRange_Percentage[i + 1]
+            ) {
+              percentageRange[i] = percentageRange[i] + 1;
+            }
+          }
+        }
+      } else {
+      }
+    });
+
+    this.setState({
+      piePassNFailShow: true,
+      passNum: passNum,
+      failNum: failNum,
+      candNum: candNum,
+      percentageRange: percentageRange,
+    });
+  };
 
   render() {
     const {
