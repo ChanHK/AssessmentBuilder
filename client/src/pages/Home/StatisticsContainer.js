@@ -31,7 +31,7 @@ class StatisticsContainer extends Component {
       passNum: 0,
       failNum: 0,
       candNum: 0,
-      percentageRange: [], //stores the number of percentage in 0 - 10%.....
+      range: [], //stores the number of percentage in 0 - 10%.....
       unit: "",
       barLabel: [],
       piePassNFailShow: false,
@@ -98,7 +98,9 @@ class StatisticsContainer extends Component {
     let tempRange_Percentage = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; //unit is percentage
 
     let pointsRange = [0, 0, 0, 0]; // unit is points
-    let tempRange_Points = []; // unit is points
+    let tempRange_Points = [0]; // unit is points
+
+    let isPoints = false;
 
     results.forEach((item, index) => {
       candNum++;
@@ -125,7 +127,7 @@ class StatisticsContainer extends Component {
         let convertedScore = parseInt(
           item.totalScore.substring(0, item.totalScore.length - 2)
         );
-        
+
         for (let i = 0; i < tempRange_Percentage.length - 1; i++) {
           if (tempRange_Percentage[i] === 0) {
             if (
@@ -144,7 +146,49 @@ class StatisticsContainer extends Component {
           }
         }
       } else {
-        this.setState({ unit: "p." });
+        let biggest = results[0].maxScore;
+        isPoints = true;
+        results.forEach((item2, index2) => {
+          if (item2.maxScore > biggest) biggest = item2.maxScore;
+        });
+
+        if (tempRange_Points.length !== 5) {
+          for (let j = 0; j < 4; j++) {
+            tempRange_Points.push(Math.ceil((biggest / 4) * (j + 1)));
+          }
+        }
+
+        this.setState({
+          unit: "p.",
+          barLabel: [
+            `0 - ${tempRange_Points[1]}p.`,
+            `${tempRange_Points[1] + 1} -  ${tempRange_Points[2]}p.`,
+            `${tempRange_Points[2] + 1} -  ${tempRange_Points[3]}p.`,
+            `${tempRange_Points[3] + 1} -  ${tempRange_Points[4]}p.`,
+          ],
+        });
+
+        let convertedScore = parseInt(
+          item.totalScore.substring(0, item.totalScore.length - 2)
+        );
+
+        for (let i = 0; i < tempRange_Points.length - 1; i++) {
+          if (tempRange_Points[i] === 0) {
+            if (
+              convertedScore >= tempRange_Points[i] &&
+              convertedScore <= tempRange_Points[i + 1]
+            ) {
+              pointsRange[i] = pointsRange[i] + 1;
+            }
+          } else {
+            if (
+              convertedScore >= tempRange_Points[i] + 1 &&
+              convertedScore <= tempRange_Points[i + 1]
+            ) {
+              pointsRange[i] = pointsRange[i] + 1;
+            }
+          }
+        }
       }
     });
 
@@ -153,7 +197,7 @@ class StatisticsContainer extends Component {
       passNum: passNum,
       failNum: failNum,
       candNum: candNum,
-      percentageRange: percentageRange,
+      range: isPoints ? pointsRange : percentageRange,
     });
   };
 
@@ -163,7 +207,7 @@ class StatisticsContainer extends Component {
       passNum,
       failNum,
       piePassNFailShow,
-      percentageRange,
+      range,
       unit,
       barLabel,
     } = this.state;
@@ -195,7 +239,7 @@ class StatisticsContainer extends Component {
           label: ["number of candidates"],
           backgroundColor: configStyles.colors.lightBlue,
           borderWidth: 1,
-          data: percentageRange,
+          data: range,
         },
       ],
     };
