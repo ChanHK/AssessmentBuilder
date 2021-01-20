@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../../css/general.css";
 import { StyleSheet } from "aphrodite";
-// import * as configStyles from "../../config/styles";
+import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import LoaderSpinner from "../../components/LoaderSpinner";
@@ -19,23 +19,6 @@ import { fetchAGrade, fetchResults } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
-const data = {
-  labels: ["Pass", "Fail"],
-  datasets: [
-    {
-      //   label: "My First dataset",
-      //   backgroundColor: configStyles.colors.lightBlue,
-      backgroundColor: ["green", "red"],
-
-      //   borderColor: "rgba(255,99,132,1)",
-      borderWidth: 1,
-      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-      hoverBorderColor: "rgba(255,99,132,1)",
-      data: ["40", "60"],
-    },
-  ],
-};
-
 class StatisticsContainer extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +26,11 @@ class StatisticsContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       gradeData: {},
       candidateData: {},
+      passNum: 0,
+      failNum: 0,
+      candNum: 0,
+
+      piePassNFailShow: false,
     };
   }
 
@@ -76,10 +64,32 @@ class StatisticsContainer extends Component {
       homeReducer.results !== null
     ) {
       const { grade, results } = homeReducer;
+      const { passOrFailSelected, addGradingSelected } = grade[0];
       console.log(grade);
       console.log(results);
 
-      this.setState({ gradeData: grade });
+      let passNum = 0;
+      let failNum = 0;
+      let candNum = 0;
+
+      if (passOrFailSelected) {
+        results.forEach((item, index) => {
+          candNum++;
+          if (item.grade === "PASS") passNum++;
+          else failNum++;
+        });
+        this.setState({ piePassNFailShow: true });
+      }
+
+      if (addGradingSelected) {
+      }
+
+      this.setState({
+        gradeData: grade,
+        passNum: passNum,
+        failNum: failNum,
+        candNum: candNum,
+      });
     }
   }
 
@@ -89,8 +99,27 @@ class StatisticsContainer extends Component {
   }
 
   render() {
+    const { candNum, passNum, failNum, piePassNFailShow } = this.state;
+
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    const pieData = {
+      labels: ["Pass", "Fail"],
+      datasets: [
+        {
+          label: `Pass and fail rate of ${candNum} candidates`,
+          backgroundColor: [
+            configStyles.colors.correctGreen,
+            configStyles.colors.falseRed,
+          ],
+          borderWidth: 1,
+          hoverBackgroundColor: "rgba(255,99,132,0.4)",
+          hoverBorderColor: "rgba(255,99,132,1)",
+          data: [passNum, failNum],
+        },
+      ],
+    };
 
     return (
       <>
@@ -101,16 +130,18 @@ class StatisticsContainer extends Component {
               <div style={{ paddingTop: "60px" }}>
                 <FirstLabel>Statistics</FirstLabel>
               </div>
-              <div>
-                <Pie
-                  data={data}
-                  width={300}
-                  height={520}
-                  options={{
-                    maintainAspectRatio: false,
-                  }}
-                />
-              </div>
+              {piePassNFailShow && (
+                <div>
+                  <Pie
+                    data={pieData}
+                    width={300}
+                    height={520}
+                    options={{
+                      maintainAspectRatio: false,
+                    }}
+                  />
+                </div>
+              )}
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
