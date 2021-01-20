@@ -32,6 +32,7 @@ class StatisticsContainer extends Component {
       failNum: 0,
       candNum: 0,
       percentageRange: [], //stores the number of percentage in 0 - 10%.....
+      unit: "",
 
       piePassNFailShow: false,
     };
@@ -93,8 +94,11 @@ class StatisticsContainer extends Component {
     let failNum = 0;
     let candNum = 0;
 
-    let percentageRange = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //when unit is percentage
-    let tempRange_Percentage = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; //when unit is percentage
+    let percentageRange = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //unit is percentage
+    let tempRange_Percentage = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; //unit is percentage
+
+    let pointsRange = [0, 0, 0, 0]; // unit is points
+    let tempRange_Points = []; // unit is points
 
     results.forEach((item, index) => {
       candNum++;
@@ -102,6 +106,7 @@ class StatisticsContainer extends Component {
       else failNum++;
 
       if (unit === "percentage %") {
+        this.setState({ unit: "%" });
         let convertedScore = parseInt(
           item.totalScore.substring(0, item.totalScore.length - 2)
         );
@@ -123,6 +128,7 @@ class StatisticsContainer extends Component {
           }
         }
       } else {
+        this.setState({ unit: "p." });
       }
     });
 
@@ -142,6 +148,7 @@ class StatisticsContainer extends Component {
       failNum,
       piePassNFailShow,
       percentageRange,
+      unit,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -227,7 +234,7 @@ class StatisticsContainer extends Component {
                   </div>
                   <div className={css(styles.chartTitle)}>
                     <ThirdLabel>
-                      Score Ranges (%) of {candNum} Candidates
+                      Score Ranges ({unit}) of {candNum} Candidates
                     </ThirdLabel>
                   </div>
                 </CustomColumn>
