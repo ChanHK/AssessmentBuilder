@@ -32,7 +32,6 @@ import {
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
-import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -48,7 +47,6 @@ class EditProfileContainer extends Component {
       birthYear: "",
       occupation: "",
       fileRejected: false,
-      successMsg: null,
     };
   }
 
@@ -69,14 +67,6 @@ class EditProfileContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props.profile;
-    if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
-      this.props.history.push("/profile");
-    }
-    if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({
-        successMsg: this.props.sucMsg.message.message,
-      });
-    }
 
     if (prevProps.profile !== this.props.profile) {
       if (this.props.profile.profile !== null) {
@@ -95,8 +85,8 @@ class EditProfileContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearSucMsg();
     this.props.profile.profile = null;
+    this.props.profile.direct = false;
   }
 
   onChange = (e) => {
@@ -176,6 +166,10 @@ class EditProfileContainer extends Component {
 
     if (this.props.profile.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    if (this.props.profile.direct) {
+      this.props.history.push("/profile");
+    }
 
     let position = { x: 0.5, y: 0.5 };
     if (this.props.profile.profile === null) return false;
@@ -324,18 +318,14 @@ EditProfileContainer.propTypes = {
   updateUserProfileData: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  sucMsg: PropTypes.object.isRequired,
-  clearSucMsg: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
-  sucMsg: state.sucMsg,
 });
 
 export default connect(mapStateToProps, {
   fetchUserProfileData,
   updateUserProfileData,
   logout,
-  clearSucMsg,
 })(EditProfileContainer);
