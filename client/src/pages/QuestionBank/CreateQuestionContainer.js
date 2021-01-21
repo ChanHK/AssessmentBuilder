@@ -36,7 +36,6 @@ import {
   fetchAQuestion,
   updateAQuestion,
 } from "../../actions/question.actions";
-import { clearSucMsg } from "../../actions/sucMsg.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -49,7 +48,6 @@ class CreateQuestionContainer extends Component {
       questionAns: [],
       questionChoices: [],
       choiceArrObj: [], //stores temporary choices and answer(isChecked)
-      successMsg: null,
     };
   }
 
@@ -74,15 +72,6 @@ class CreateQuestionContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.successMsg !== null && this.state.successMsg !== undefined) {
-      this.props.history.push("/questionBank");
-    }
-    if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({
-        successMsg: this.props.sucMsg.message.message,
-      });
-    }
-
     const { questionReducer } = this.props;
 
     if (
@@ -144,8 +133,8 @@ class CreateQuestionContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearSucMsg();
     this.props.questionReducer.questionLoad = null;
+    this.props.questionReducer.direct = false;
   }
 
   convertQuestionDes = (data) => {
@@ -338,6 +327,10 @@ class CreateQuestionContainer extends Component {
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    if (this.props.questionReducer.direct) {
+      this.props.history.push("/questionBank");
+    }
 
     if (this.props.match.params.type === "edit") {
       if (this.props.questionReducer.questionLoad === null) return false;
@@ -610,13 +603,10 @@ CreateQuestionContainer.propTypes = {
   updateAQuestion: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  sucMsg: PropTypes.object.isRequired,
-  clearSucMsg: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionReducer: state.questionReducer,
-  sucMsg: state.sucMsg,
 });
 
 export default connect(mapStateToProps, {
@@ -624,5 +614,4 @@ export default connect(mapStateToProps, {
   fetchAQuestion,
   updateAQuestion,
   logout,
-  clearSucMsg,
 })(CreateQuestionContainer);

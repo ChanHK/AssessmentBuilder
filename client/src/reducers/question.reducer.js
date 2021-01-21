@@ -3,6 +3,7 @@ import { QUESTION } from "../utils/actionTypes";
 const initialState = {
   isLoading: false,
   questionLoad: null,
+  direct: false,
 };
 
 export default function (state = initialState, action) {
@@ -19,7 +20,6 @@ export default function (state = initialState, action) {
         isLoading: true,
         ...action.payload,
       };
-    case QUESTION.UPDATE_QUESTION_DATA_SUCCESS:
     case QUESTION.FETCH_QUESTION_DATA_SUCCESS:
     case QUESTION.DELETE_QUESTION_DATA_SUCCESS:
       return {
@@ -33,6 +33,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
+      };
+    case QUESTION.UPDATE_QUESTION_DATA_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        direct: true,
       };
     default:
       return state;

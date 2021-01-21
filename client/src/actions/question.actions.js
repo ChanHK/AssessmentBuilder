@@ -24,11 +24,9 @@ export const updateQuestion = (data) => (dispatch, getState) => {
   axios
     .post("/api/user/question", data, tokenConfig(getState))
     .then((res) => {
-      dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
         dispatch({
           type: QUESTION.UPDATE_QUESTION_DATA_SUCCESS,
-          // payload: res.data,
         });
       }, 1500);
     })
