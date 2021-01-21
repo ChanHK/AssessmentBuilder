@@ -531,10 +531,19 @@ class CreateQuestionContainer extends Component {
                       <SecondLabel>Answer</SecondLabel>
                       <ThirdLabel>Select the correct answer</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        <TrueFalse
-                          onClick={this.setTFChoiceAns}
-                          isTrue={questionAns[0]}
-                        />
+                        <CustomColumn>
+                          <TrueFalse
+                            onClick={this.setTFChoiceAns}
+                            isTrue={questionAns[0]}
+                          />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionAnswers")
+                              ? "*" + msg.questionAnswers
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                     </>
                   )}
@@ -547,19 +556,28 @@ class CreateQuestionContainer extends Component {
                         same with yours
                       </ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionAns.map((item, index) => (
-                          <div key={index}>
-                            <ShortAns
-                              onClick={() => this.deleteRow(index, "Ans")}
-                              onChange={(e) =>
-                                this.onChangeAnswer(e.target.value, index)
-                              }
-                              height={"50px"}
-                              value={item}
-                              rowNum={index}
-                            />
-                          </div>
-                        ))}
+                        <CustomColumn>
+                          {questionAns.map((item, index) => (
+                            <div key={index}>
+                              <ShortAns
+                                onClick={() => this.deleteRow(index, "Ans")}
+                                onChange={(e) =>
+                                  this.onChangeAnswer(e.target.value, index)
+                                }
+                                height={"50px"}
+                                value={item}
+                                rowNum={index}
+                              />
+                            </div>
+                          ))}
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionAnswers")
+                              ? "*" + msg.questionAnswers
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         <Button

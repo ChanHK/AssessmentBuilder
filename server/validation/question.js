@@ -30,6 +30,24 @@ module.exports = function validateQuestion(data) {
     }
   }
 
+  if (data.questionType === "True or False") {
+    if (data.questionAnswers.length === 0) {
+      errors.questionAnswers = "Please select one answer";
+    }
+  }
+
+  if (data.questionType === "Short Answer") {
+    if (data.questionAnswers.length === 0) {
+      errors.questionAnswers = "Please create at least one answer";
+    } else {
+      data.questionAnswers.forEach((item, index) => {
+        if (Validator.isEmpty(item)) {
+          errors.questionAnswers = "Please fill up all the choices";
+        }
+      });
+    }
+  }
+
   return {
     errors,
     isValid: isEmpty(errors),
