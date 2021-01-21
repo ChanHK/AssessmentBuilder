@@ -391,7 +391,7 @@ class CreateQuestionContainer extends Component {
                               ? null
                               : msg.hasOwnProperty("questionType")
                               ? "*" + msg.questionType
-                              : null}{" "}
+                              : null}
                           </span>
                         </CustomColumn>
                       </div>
@@ -412,7 +412,7 @@ class CreateQuestionContainer extends Component {
                           ? null
                           : msg.hasOwnProperty("questionDescription")
                           ? "*" + msg.questionDescription
-                          : null}{" "}
+                          : null}
                       </span>
                     </CustomColumn>
                   </div>
