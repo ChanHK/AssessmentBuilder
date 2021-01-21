@@ -9,11 +9,13 @@ module.exports = function validateQuestion(data) {
     ? data.questionDescription
     : "";
 
-  if (Validator.isEmpty(data.questionType))
+  if (Validator.isEmpty(data.questionType)) {
     errors.questionType = "Question type field is required";
+  }
 
-  if (Validator.isEmpty(data.questionDescription))
-    errors.questionDescription = "Question type field is required";
+  if (Validator.isEmpty(data.questionDescription)) {
+    errors.questionDescription = "Question description field is required";
+  }
 
   return {
     errors,

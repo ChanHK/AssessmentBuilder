@@ -1,9 +1,7 @@
 import axios from "axios";
-
 import { QUESTION } from "../utils/actionTypes";
-
 import { returnSucMsg } from "./sucMsg.actions";
-// import { returnErrors } from "./error.actions";
+import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
   const token = getState().auth.token;
@@ -31,8 +29,7 @@ export const updateQuestion = (data) => (dispatch, getState) => {
       }, 1500);
     })
     .catch((err) => {
-      console.log("Update question data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };

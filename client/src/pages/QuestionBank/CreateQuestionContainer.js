@@ -38,6 +38,7 @@ import {
 } from "../../actions/question.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
+import { clearErrors } from "../../actions/error.actions";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -48,6 +49,7 @@ class CreateQuestionContainer extends Component {
       questionAns: [],
       questionChoices: [],
       choiceArrObj: [], //stores temporary choices and answer(isChecked)
+      msg: null,
     };
   }
 
@@ -73,6 +75,10 @@ class CreateQuestionContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { questionReducer } = this.props;
+
+    if (prevProps.errors !== this.props.errors) {
+      this.setState({ msg: this.props.errors.message });
+    }
 
     if (
       prevProps.questionReducer !== questionReducer &&
@@ -135,6 +141,7 @@ class CreateQuestionContainer extends Component {
   componentWillUnmount() {
     this.props.questionReducer.questionLoad = null;
     this.props.questionReducer.direct = false;
+    this.props.clearErrors();
   }
 
   convertQuestionDes = (data) => {
@@ -323,6 +330,7 @@ class CreateQuestionContainer extends Component {
       questionDescription,
       questionAns,
       choiceArrObj,
+      msg,
     } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
@@ -365,24 +373,42 @@ class CreateQuestionContainer extends Component {
                     <>
                       <SecondLabel>Question Type</SecondLabel>
                       <div style={{ paddingBottom: "50px" }}>
-                        <CustomDropdown
-                          options={QuestionType}
-                          placeholder={"Select question type"}
-                          value={questionType}
-                          onChange={this.onChangeType}
-                        />
+                        <CustomColumn>
+                          <CustomDropdown
+                            options={QuestionType}
+                            placeholder={"Select question type"}
+                            value={questionType}
+                            onChange={this.onChangeType}
+                          />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionType")
+                              ? "*" + msg.questionType
+                              : null}{" "}
+                          </span>
+                        </CustomColumn>
                       </div>
                     </>
                   )}
 
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
-                    <CustomEditor
-                      onEditorStateChange={(e) =>
-                        this.setState({ questionDescription: e })
-                      }
-                      editorState={questionDescription}
-                    />
+                    <CustomColumn>
+                      <CustomEditor
+                        onEditorStateChange={(e) =>
+                          this.setState({ questionDescription: e })
+                        }
+                        editorState={questionDescription}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("questionType")
+                          ? "*" + msg.questionType
+                          : null}{" "}
+                      </span>
+                    </CustomColumn>
                   </div>
 
                   {questionType === "Single Choice" && (
@@ -595,6 +621,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: "25px",
   },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
+  },
 });
 
 CreateQuestionContainer.propTypes = {
@@ -603,10 +634,12 @@ CreateQuestionContainer.propTypes = {
   updateAQuestion: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionReducer: state.questionReducer,
+  errors: state.errors,
 });
 
 export default connect(mapStateToProps, {
@@ -614,4 +647,5 @@ export default connect(mapStateToProps, {
   fetchAQuestion,
   updateAQuestion,
   logout,
+  clearErrors,
 })(CreateQuestionContainer);
