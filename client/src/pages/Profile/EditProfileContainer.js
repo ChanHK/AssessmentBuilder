@@ -32,6 +32,7 @@ import {
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
+import { clearErrors } from "../../actions/error.actions";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -47,6 +48,7 @@ class EditProfileContainer extends Component {
       birthYear: "",
       occupation: "",
       fileRejected: false,
+      msg: null,
     };
   }
 
@@ -68,6 +70,10 @@ class EditProfileContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { profile } = this.props.profile;
 
+    if (prevProps.errors !== this.props.errors) {
+      this.setState({ msg: this.props.errors.message });
+    }
+
     if (prevProps.profile !== this.props.profile) {
       if (this.props.profile.profile !== null) {
         this.setState(() => ({
@@ -87,6 +93,7 @@ class EditProfileContainer extends Component {
   componentWillUnmount() {
     this.props.profile.profile = null;
     this.props.profile.direct = false;
+    this.props.clearErrors();
   }
 
   onChange = (e) => {
@@ -162,6 +169,7 @@ class EditProfileContainer extends Component {
       birthYear,
       occupation,
       fileRejected,
+      msg,
     } = this.state;
 
     if (this.props.profile.isLoading) return <LoaderSpinner />;
@@ -233,13 +241,22 @@ class EditProfileContainer extends Component {
                   </div>
                   <SecondLabel>Username</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
-                    <CustomInput
-                      name={"username"}
-                      type={"text"}
-                      placeholder={" Enter your username"}
-                      onChangeValue={this.onChange}
-                      value={username}
-                    />
+                    <CustomColumn>
+                      <CustomInput
+                        name={"username"}
+                        type={"text"}
+                        placeholder={" Enter your username"}
+                        onChangeValue={this.onChange}
+                        value={username}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("username")
+                          ? "*" + msg.username
+                          : null}{" "}
+                      </span>
+                    </CustomColumn>
                   </div>
                   <SecondLabel>Gender</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
@@ -265,14 +282,24 @@ class EditProfileContainer extends Component {
 
                   <SecondLabel>Occupation</SecondLabel>
                   <div style={{ paddingBottom: "75px" }}>
-                    <CustomInput
-                      name={"occupation"}
-                      type={"text"}
-                      placeholder={" Enter your occupation"}
-                      onChangeValue={this.onChange}
-                      value={occupation}
-                    />
+                    <CustomColumn>
+                      <CustomInput
+                        name={"occupation"}
+                        type={"text"}
+                        placeholder={" Enter your occupation"}
+                        onChangeValue={this.onChange}
+                        value={occupation}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("occupation")
+                          ? "*" + msg.occupation
+                          : null}{" "}
+                      </span>
+                    </CustomColumn>
                   </div>
+
                   <Button
                     backgroundColor={configStyles.colors.darkBlue}
                     color={configStyles.colors.white}
@@ -311,6 +338,11 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     color: "red",
   },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
+  },
 });
 
 EditProfileContainer.propTypes = {
@@ -318,14 +350,17 @@ EditProfileContainer.propTypes = {
   updateUserProfileData: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
+  errors: state.errors,
 });
 
 export default connect(mapStateToProps, {
   fetchUserProfileData,
   updateUserProfileData,
   logout,
+  clearErrors,
 })(EditProfileContainer);
