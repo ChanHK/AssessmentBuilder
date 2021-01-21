@@ -15,6 +15,7 @@ import LoaderSpinner from "../../components/LoaderSpinner";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
+import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
@@ -33,7 +34,6 @@ import {
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 import { clearErrors } from "../../actions/error.actions";
-import CustomRow from "../../components/GridComponents/CustomRow";
 
 class EditProfileContainer extends Component {
   constructor() {
