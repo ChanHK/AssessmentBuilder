@@ -195,20 +195,6 @@ class StartingPageContainer extends Component {
       status,
     } = this.state;
 
-    if (status !== "Activated") {
-      return (
-        <>
-          <CustomFullContainer>
-            <CustomMidContainer>
-              <div className={css(styles.whiteCon)}>
-                <FirstLabel>Assessment not available</FirstLabel>
-              </div>
-            </CustomMidContainer>
-          </CustomFullContainer>
-        </>
-      );
-    }
-
     if (this.props.candidateReducer.direct) {
       let temp = [];
 
@@ -225,6 +211,20 @@ class StartingPageContainer extends Component {
 
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
+
+    if (status !== "Activated") {
+      return (
+        <>
+          <CustomFullContainer>
+            <CustomMidContainer>
+              <div className={css(styles.whiteCon)}>
+                <FirstLabel>Assessment not available</FirstLabel>
+              </div>
+            </CustomMidContainer>
+          </CustomFullContainer>
+        </>
+      );
+    }
 
     return (
       <>
