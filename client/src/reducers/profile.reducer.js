@@ -21,7 +21,6 @@ export default function (state = initialState, action) {
         profile: action.payload,
       };
     case PROFILE_DATA.FETCH_FAIL:
-    case PROFILE_DATA.UPDATE_PROFILE_DATA_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -32,6 +31,11 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         direct: true,
+      };
+    case PROFILE_DATA.UPDATE_PROFILE_DATA_FAIL:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;
