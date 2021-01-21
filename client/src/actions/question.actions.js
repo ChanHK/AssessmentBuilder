@@ -1,6 +1,5 @@
 import axios from "axios";
 import { QUESTION } from "../utils/actionTypes";
-import { returnSucMsg } from "./sucMsg.actions";
 import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
@@ -59,7 +58,6 @@ export const deleteQuestionData = (data) => (dispatch, getState) => {
   axios
     .post("/api/user/question/delete", data, tokenConfig(getState))
     .then((res) => {
-      dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
         dispatch({
           type: QUESTION.DELETE_QUESTION_DATA_SUCCESS,
@@ -68,8 +66,6 @@ export const deleteQuestionData = (data) => (dispatch, getState) => {
       }, 500);
     })
     .catch((err) => {
-      console.log("Delete question data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: QUESTION.DELETE_QUESTION_DATA_FAIL });
     });
 };
@@ -103,17 +99,13 @@ export const updateAQuestion = (data) => (dispatch, getState) => {
       tokenConfig(getState)
     )
     .then((res) => {
-      dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
         dispatch({
           type: QUESTION.UPDATE_QUESTION_DATA_SUCCESS,
-          // payload: res.data,
         });
       }, 1500);
     })
     .catch((err) => {
-      console.log("Update question data failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };

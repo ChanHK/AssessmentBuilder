@@ -32,7 +32,6 @@ import {
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
-import { clearSucMsg } from "../../actions/sucMsg.actions";
 
 import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
@@ -45,7 +44,6 @@ class QuestionBankContainer extends Component {
       searchText: "",
       questionType: "",
       questions: [],
-      successMsg: null,
     };
   }
 
@@ -65,12 +63,6 @@ class QuestionBankContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({
-        successMsg: this.props.sucMsg.message.message,
-      });
-    }
-
     const { questionReducer } = this.props;
 
     if (
@@ -83,7 +75,6 @@ class QuestionBankContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearSucMsg();
     this.props.questionReducer.questionLoad = null;
   }
 
@@ -335,18 +326,14 @@ QuestionBankContainer.propTypes = {
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   deleteQuestionData: PropTypes.func.isRequired,
-  clearSucMsg: PropTypes.func.isRequired,
-  sucMsg: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionReducer: state.questionReducer,
-  sucMsg: state.sucMsg,
 });
 
 export default connect(mapStateToProps, {
   fetchAllQuestionData,
   logout,
   deleteQuestionData,
-  clearSucMsg,
 })(QuestionBankContainer);
