@@ -25,7 +25,7 @@ import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Order from "../../components/Order";
 
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { EditorState, convertToRaw, ContentState, Modifier } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
@@ -264,6 +264,39 @@ class CreateQuestionContainer extends Component {
     }
   };
 
+  _handleBeforeInput = (input, length) => {
+    const inputLength = this.state.questionDescription
+      .getCurrentContent()
+      .getPlainText().length;
+    if (input && inputLength >= length) {
+      return "handled";
+    }
+  };
+
+  _handlePastedText = (input, length) => {
+    const inputLength = this.state.questionDescription
+      .getCurrentContent()
+      .getPlainText().length;
+    let remainingLength = length - inputLength;
+    if (input.length + inputLength >= length) {
+      const newContent = Modifier.insertText(
+        this.state.questionDescription.getCurrentContent(),
+        this.state.questionDescription.getSelection(),
+        input.slice(0, remainingLength)
+      );
+
+      EditorState.push(
+        this.state.questionDescription,
+        newContent,
+        "insert-characters"
+      );
+
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   validateForm = (data) => {
     let isValid = false;
     const { questionType, questionChoices, questionAnswers } = data;
@@ -498,14 +531,13 @@ class CreateQuestionContainer extends Component {
                           this.setState({ questionDescription: e })
                         }
                         editorState={questionDescription}
+                        handleBeforeInput={(input) =>
+                          this._handleBeforeInput(input, 500)
+                        }
+                        handlePastedText={(input) =>
+                          this._handlePastedText(input, 500)
+                        }
                       />
-                      <span className={css(styles.redText)}>
-                        {msg === null
-                          ? null
-                          : msg.hasOwnProperty("questionDescription")
-                          ? "*" + msg.questionDescription
-                          : null}
-                      </span>
                     </CustomColumn>
                   </div>
 

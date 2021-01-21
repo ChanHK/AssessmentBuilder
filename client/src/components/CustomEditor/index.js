@@ -41,6 +41,8 @@ const CustomEditor = (props) => (
         ? configStyles.colors.correctGreen
         : configStyles.colors.white,
     }}
+    handleBeforeInput={props.handleBeforeInput}
+    handlePastedText={props.handlePastedText}
   />
 );
 
