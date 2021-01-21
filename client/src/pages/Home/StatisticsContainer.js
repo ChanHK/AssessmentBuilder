@@ -434,7 +434,6 @@ const styles = StyleSheet.create({
     margin: "50px 0px 100px 0px",
   },
   textCon: {
-    marginTop: "25px",
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
