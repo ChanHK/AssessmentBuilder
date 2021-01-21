@@ -251,12 +251,12 @@ LoginContainer.propTypes = {
   login: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
-  clearErrors: PropTypes.func.isRequired,
 });
 
 export default connect(mapStateToProps, { login, clearErrors })(LoginContainer);
