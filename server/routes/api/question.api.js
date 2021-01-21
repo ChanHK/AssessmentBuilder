@@ -121,9 +121,9 @@ router.get("/question/view/:questionID", auth, (req, res) => {
 // @desc      POST question to questionBank
 // @access    Private
 router.post("/question/edit/:questionID", auth, (req, res) => {
-  // const { errors, isValid } = validateQuestion(req.body);
+  const { errors, isValid } = validateQuestion(req.body);
 
-  // if (!isValid) return res.status(400).json(errors);
+  if (!isValid) return res.status(400).json(errors);
 
   db.QuestionBank.updateOne(
     {

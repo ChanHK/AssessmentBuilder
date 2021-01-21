@@ -106,6 +106,7 @@ export const updateAQuestion = (data) => (dispatch, getState) => {
       }, 1500);
     })
     .catch((err) => {
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };
