@@ -11,6 +11,7 @@ import CustomFullContainer from "../../components/GridComponents/CustomFullConta
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
@@ -303,6 +304,30 @@ class StatisticsContainer extends Component {
       ],
     };
 
+    if (candNum === 0) {
+      return (
+        <>
+          <Header />
+          <ScrollArrow />
+          <CustomFullContainer>
+            <CustomMidContainer style={[styles.customMidContainer]}>
+              <CustomColumn>
+                <div style={{ marginTop: "60px" }}>
+                  <FirstLabel>Statistics</FirstLabel>
+                </div>
+
+                <div className={css(styles.textCon)}>
+                  <SecondLabel>
+                    There are no results to be displayed
+                  </SecondLabel>
+                </div>
+              </CustomColumn>
+            </CustomMidContainer>
+          </CustomFullContainer>
+        </>
+      );
+    }
+
     return (
       <>
         <Header />
@@ -310,7 +335,7 @@ class StatisticsContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <div style={{ paddingTop: "60px" }}>
+              <div style={{ marginTop: "60px" }}>
                 <FirstLabel>Statistics</FirstLabel>
               </div>
               {passNFailShow && (
@@ -407,6 +432,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: "50px 0px 100px 0px",
+  },
+  textCon: {
+    marginTop: "25px",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    marginTop: "50px",
   },
 });
 
