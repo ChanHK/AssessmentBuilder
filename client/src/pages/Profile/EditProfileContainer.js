@@ -33,6 +33,7 @@ import {
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 import { clearErrors } from "../../actions/error.actions";
+import CustomRow from "../../components/GridComponents/CustomRow";
 
 class EditProfileContainer extends Component {
   constructor() {
@@ -299,16 +300,35 @@ class EditProfileContainer extends Component {
                       </span>
                     </CustomColumn>
                   </div>
-
-                  <Button
-                    backgroundColor={configStyles.colors.darkBlue}
-                    color={configStyles.colors.white}
-                    padding={"8px"}
-                    width={"100px"}
-                    type={"submit"}
-                  >
-                    Save
-                  </Button>
+                  <CustomRow>
+                    <div className={css(styles.buttonContainer)}>
+                      <div style={{ marginRight: "10px" }}>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          width={"100px"}
+                          type={"submit"}
+                        >
+                          Save
+                        </Button>
+                      </div>
+                      <div>
+                        <Button
+                          backgroundColor={configStyles.colors.white}
+                          color={configStyles.colors.darkBlue}
+                          padding={"8px"}
+                          width={"100px"}
+                          type={"button"}
+                          onClick={() => {
+                            this.props.history.push("/profile");
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </CustomRow>
                 </CustomColumn>
               </form>
             </CustomColumn>
@@ -342,6 +362,12 @@ const styles = StyleSheet.create({
     color: configStyles.colors.inputErrorRed,
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
+  },
+  buttonContainer: {
+    display: "flex",
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });
 
