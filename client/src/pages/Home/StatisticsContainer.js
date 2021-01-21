@@ -74,8 +74,6 @@ class StatisticsContainer extends Component {
         unit,
         gradeRange,
       } = grade[0];
-      console.log(grade);
-      console.log(results);
 
       if (passOrFailSelected) {
         this.passFailDataGenerator(results, unit);
