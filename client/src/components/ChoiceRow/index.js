@@ -38,6 +38,8 @@ const ChoiceRow = (props) => {
             <CustomEditor
               onEditorStateChange={props.onChange}
               editorState={props.editorState}
+              handleBeforeInput={props.handleBeforeInput}
+              handlePastedText={props.handlePastedText}
             />
           </div>
         </div>

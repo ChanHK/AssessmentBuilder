@@ -264,32 +264,24 @@ class CreateQuestionContainer extends Component {
     }
   };
 
-  _handleBeforeInput = (input, length) => {
-    const inputLength = this.state.questionDescription
-      .getCurrentContent()
-      .getPlainText().length;
+  _handleBeforeInput = (input, length, editorObj) => {
+    const inputLength = editorObj.getCurrentContent().getPlainText().length;
     if (input && inputLength >= length) {
       return "handled";
     }
   };
 
-  _handlePastedText = (input, length) => {
-    const inputLength = this.state.questionDescription
-      .getCurrentContent()
-      .getPlainText().length;
+  _handlePastedText = (input, length, editorObj) => {
+    const inputLength = editorObj.getCurrentContent().getPlainText().length;
     let remainingLength = length - inputLength;
     if (input.length + inputLength >= length) {
       const newContent = Modifier.insertText(
-        this.state.questionDescription.getCurrentContent(),
-        this.state.questionDescription.getSelection(),
+        editorObj.getCurrentContent(),
+        editorObj.getSelection(),
         input.slice(0, remainingLength)
       );
 
-      EditorState.push(
-        this.state.questionDescription,
-        newContent,
-        "insert-characters"
-      );
+      EditorState.push(editorObj, newContent, "insert-characters");
 
       return true;
     } else {
@@ -316,6 +308,16 @@ class CreateQuestionContainer extends Component {
       } else if (questionAnswers.length === 0) {
         tempMsg.ans = "Please select one answer";
       }
+
+      if (questionChoices.length > 0) {
+        let tempArray = this.convertQuestion(questionChoices);
+
+        tempArray.forEach((item, index) => {
+          if (!item.getCurrentContent().hasText()) {
+            tempMsg.cho = `Please fill up choice ${index + 1}`;
+          }
+        });
+      }
     }
 
     if (questionType === "Multiple Choice") {
@@ -323,6 +325,16 @@ class CreateQuestionContainer extends Component {
         tempMsg.ans = "Please enter at least two choices";
       } else if (questionAnswers.length === 0) {
         tempMsg.ans = "Please select at least one answer";
+      }
+
+      if (questionChoices.length > 0) {
+        let tempArray = this.convertQuestion(questionChoices);
+
+        tempArray.forEach((item, index) => {
+          if (!item.getCurrentContent().hasText()) {
+            tempMsg.cho = `Please fill up choice ${index + 1}`;
+          }
+        });
       }
     }
 
@@ -359,6 +371,16 @@ class CreateQuestionContainer extends Component {
     if (questionType === "Order") {
       if (questionAnswers.length < 3) {
         tempMsg.ans = "Please create at least 3 answers";
+      }
+
+      if (questionChoices.length > 0) {
+        let tempArray = this.convertQuestion(questionChoices);
+
+        tempArray.forEach((item, index) => {
+          if (!item.getCurrentContent().hasText()) {
+            tempMsg.cho = `Please fill up order number ${index + 1}`;
+          }
+        });
       }
     }
 
@@ -508,10 +530,18 @@ class CreateQuestionContainer extends Component {
                         }
                         editorState={questionDescription}
                         handleBeforeInput={(input) =>
-                          this._handleBeforeInput(input, 500)
+                          this._handleBeforeInput(
+                            input,
+                            500,
+                            questionDescription
+                          )
                         }
                         handlePastedText={(input) =>
-                          this._handlePastedText(input, 500)
+                          this._handlePastedText(
+                            input,
+                            500,
+                            questionDescription
+                          )
                         }
                       />
                       <span className={css(styles.redText)}>
@@ -558,6 +588,20 @@ class CreateQuestionContainer extends Component {
                                 this.setChoiceSingleAns(index)
                               }
                               checked={item.isChecked}
+                              handleBeforeInput={(input) =>
+                                this._handleBeforeInput(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
+                              handlePastedText={(input) =>
+                                this._handlePastedText(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
                             />
                           </div>
                         ))}
@@ -601,6 +645,20 @@ class CreateQuestionContainer extends Component {
                                 this.setChoiceMultiAns(e, index, item)
                               }
                               checked={item.isChecked}
+                              handleBeforeInput={(input) =>
+                                this._handleBeforeInput(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
+                              handlePastedText={(input) =>
+                                this._handlePastedText(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
                             />
                           </div>
                         ))}
@@ -660,6 +718,7 @@ class CreateQuestionContainer extends Component {
                                 height={"50px"}
                                 value={item}
                                 rowNum={index}
+                                maxLength={25}
                               />
                             </div>
                           ))}
@@ -700,6 +759,12 @@ class CreateQuestionContainer extends Component {
                                 height={"50px"}
                                 value={item}
                                 rowNum={index}
+                                handleBeforeInput={(input) =>
+                                  this._handleBeforeInput(input, 150, item)
+                                }
+                                handlePastedText={(input) =>
+                                  this._handlePastedText(input, 150, item)
+                                }
                               />
                             </div>
                           ))}
@@ -726,6 +791,13 @@ class CreateQuestionContainer extends Component {
                     </>
                   )}
 
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("cho")
+                      ? "*" + msg.cho
+                      : null}
+                  </span>
                   <CustomRow>
                     <div
                       style={{

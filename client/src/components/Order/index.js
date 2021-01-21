@@ -18,6 +18,8 @@ const Order = (props) => (
         <CustomEditor
           onEditorStateChange={props.onChange}
           editorState={props.value}
+          handleBeforeInput={props.handleBeforeInput}
+          handlePastedText={props.handlePastedText}
         />
       </div>
       <div style={{ width: "10%" }} className={css(styles.button)}>

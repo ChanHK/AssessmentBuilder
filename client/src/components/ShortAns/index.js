@@ -15,7 +15,11 @@ const ShortAns = (props) => (
         {props.rowNum + 1}
       </div>
       <div style={{ width: "80%" }}>
-        <CustomInput onChangeValue={props.onChange} value={props.value} />
+        <CustomInput
+          onChangeValue={props.onChange}
+          value={props.value}
+          maxLength={props.maxLength}
+        />
       </div>
       <div style={{ width: "10%" }} className={css(styles.button)}>
         <MdIcons.MdDelete size={45} onClick={props.onClick} />
