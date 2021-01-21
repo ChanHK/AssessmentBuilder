@@ -3,6 +3,7 @@ import { PROFILE_DATA } from "../utils/actionTypes";
 const initialState = {
   isLoading: true,
   profile: null,
+  direct: false,
 };
 
 export default function (state = initialState, action) {
@@ -14,7 +15,6 @@ export default function (state = initialState, action) {
         isLoading: true,
       };
     case PROFILE_DATA.FETCH_SUCCESS:
-    case PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -26,6 +26,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         profile: null,
+      };
+    case PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        direct: true,
       };
     default:
       return state;

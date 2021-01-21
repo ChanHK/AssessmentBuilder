@@ -1,9 +1,7 @@
 import axios from "axios";
 
 import { PROFILE_DATA } from "../utils/actionTypes";
-
-// import { returnErrors } from "./error.actions";
-import { returnSucMsg } from "./sucMsg.actions";
+import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
   const token = getState().auth.token;
@@ -40,16 +38,15 @@ export const updateUserProfileData = (data) => (dispatch, getState) => {
   axios
     .post("/api/user/profile", data, tokenConfig(getState))
     .then((res) => {
-      dispatch(returnSucMsg(res.data, res.status));
       setTimeout(() => {
         dispatch({
           type: PROFILE_DATA.UPDATE_PROFILE_DATA_SUCCESS,
-          payload: res.data,
         });
       }, 3000);
     })
     .catch((err) => {
       console.log("Update user profile data failed", err);
+      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: PROFILE_DATA.UPDATE_PROFILE_DATA_FAIL });
     });
 };
