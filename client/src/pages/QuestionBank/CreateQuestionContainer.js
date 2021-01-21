@@ -38,7 +38,6 @@ import {
 } from "../../actions/question.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
-import { clearErrors } from "../../actions/error.actions";
 
 class CreateQuestionContainer extends Component {
   constructor() {
@@ -75,10 +74,6 @@ class CreateQuestionContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { questionReducer } = this.props;
-
-    if (prevProps.errors !== this.props.errors) {
-      this.setState({ msg: this.props.errors.message });
-    }
 
     if (
       prevProps.questionReducer !== questionReducer &&
@@ -141,7 +136,6 @@ class CreateQuestionContainer extends Component {
   componentWillUnmount() {
     this.props.questionReducer.questionLoad = null;
     this.props.questionReducer.direct = false;
-    this.props.clearErrors();
   }
 
   convertQuestionDes = (data) => {
@@ -273,6 +267,12 @@ class CreateQuestionContainer extends Component {
     let isValid = false;
     const { questionType, questionChoices, questionAnswers } = data;
     const { msg } = this.state;
+
+    if (questionType === "") {
+      this.setState({
+        msg: { ...msg, qType: "Question type field is required" },
+      });
+    }
 
     if (questionType === "Single Choice") {
       if (questionChoices.length < 2) {
@@ -468,8 +468,8 @@ class CreateQuestionContainer extends Component {
                           <span className={css(styles.redText)}>
                             {msg === null
                               ? null
-                              : msg.hasOwnProperty("questionType")
-                              ? "*" + msg.questionType
+                              : msg.hasOwnProperty("qType")
+                              ? "*" + msg.qType
                               : null}
                           </span>
                         </CustomColumn>
@@ -755,12 +755,10 @@ CreateQuestionContainer.propTypes = {
   updateAQuestion: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  clearErrors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questionReducer: state.questionReducer,
-  errors: state.errors,
 });
 
 export default connect(mapStateToProps, {
@@ -768,5 +766,4 @@ export default connect(mapStateToProps, {
   fetchAQuestion,
   updateAQuestion,
   logout,
-  clearErrors,
 })(CreateQuestionContainer);

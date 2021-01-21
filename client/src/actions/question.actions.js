@@ -1,6 +1,5 @@
 import axios from "axios";
 import { QUESTION } from "../utils/actionTypes";
-import { returnErrors } from "./error.actions";
 
 const tokenConfig = (getState) => {
   const token = getState().auth.token;
@@ -28,7 +27,6 @@ export const updateQuestion = (data) => (dispatch, getState) => {
       }, 1500);
     })
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };
@@ -106,7 +104,6 @@ export const updateAQuestion = (data) => (dispatch, getState) => {
       }, 1500);
     })
     .catch((err) => {
-      dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };
