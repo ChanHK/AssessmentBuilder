@@ -283,9 +283,7 @@ class CreateQuestionContainer extends Component {
         this.setState({
           msg: { ...msg, ans: "Please select one answer" },
         });
-      } else {
-        isValid = true;
-      }
+      } else isValid = true;
     }
 
     if (questionType === "Multiple Choice") {
@@ -297,9 +295,7 @@ class CreateQuestionContainer extends Component {
         this.setState({
           msg: { ...msg, ans: "Please select at least one answer" },
         });
-      } else {
-        isValid = true;
-      }
+      } else isValid = true;
     }
 
     if (questionType === "True or False") {
@@ -307,8 +303,43 @@ class CreateQuestionContainer extends Component {
         this.setState({
           msg: { ...msg, ans: "Please select one answer" },
         });
-      } else {
-        isValid = true;
+      } else isValid = true;
+    }
+
+    if (questionType === "Short Answer") {
+      let tempArray = [];
+      if (questionAnswers.length === 0) {
+        this.setState({
+          msg: { ...msg, ans: "Please create at least one answer" },
+        });
+      } else if (questionAnswers.length > 0) {
+        questionAnswers.forEach((item, index) => {
+          if (item === "") {
+            this.setState({
+              msg: {
+                ...msg,
+                ans: "Please fill up all the choices",
+              },
+            });
+            isValid = false;
+          } else isValid = true;
+          tempArray.push(item);
+        });
+
+        if (tempArray.length > 1) {
+          tempArray.forEach((item2, index2) => {
+            tempArray.forEach((item3, index3) => {
+              if (item2 === item3 && index2 !== index3) {
+                this.setState({
+                  msg: {
+                    ...msg,
+                    ans: "Please remove similar answers",
+                  },
+                });
+              }
+            });
+          });
+        }
       }
     }
 
@@ -607,8 +638,8 @@ class CreateQuestionContainer extends Component {
                           <span className={css(styles.redText)}>
                             {msg === null
                               ? null
-                              : msg.hasOwnProperty("questionAnswers")
-                              ? "*" + msg.questionAnswers
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
                               : null}
                           </span>
                         </CustomColumn>
