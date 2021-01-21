@@ -25,12 +25,6 @@ router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
     .select("-assessments.access.accessEmail")
     .select("-assessments.access.link")
     .select("-assessments.access.noAuthenticationSelected")
-
-    .select("-assessments.timer.startDate")
-    .select("-assessments.timer.endDate")
-
-    .select("-assessments._id")
-
     .then((array) => {
       let i = 0;
       array.assessments.forEach((item, index) => {
