@@ -269,6 +269,52 @@ class CreateQuestionContainer extends Component {
     }
   };
 
+  validateForm = (data) => {
+    let isValid = false;
+    const { questionType, questionChoices, questionAnswers } = data;
+    const { msg } = this.state;
+
+    if (questionType === "Single Choice") {
+      if (questionChoices.length < 2) {
+        this.setState({
+          msg: { ...msg, ans: "Please enter at least two choices" },
+        });
+      } else if (questionAnswers.length === 0) {
+        this.setState({
+          msg: { ...msg, ans: "Please select one answer" },
+        });
+      } else {
+        isValid = true;
+      }
+    }
+
+    if (questionType === "Multiple Choice") {
+      if (questionChoices.length < 2) {
+        this.setState({
+          msg: { ...msg, ans: "Please enter at least two choices" },
+        });
+      } else if (questionAnswers.length === 0) {
+        this.setState({
+          msg: { ...msg, ans: "Please select at least one answer" },
+        });
+      } else {
+        isValid = true;
+      }
+    }
+
+    if (questionType === "True or False") {
+      if (questionAnswers.length === 0) {
+        this.setState({
+          msg: { ...msg, ans: "Please select one answer" },
+        });
+      } else {
+        isValid = true;
+      }
+    }
+
+    return isValid;
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -324,10 +370,12 @@ class CreateQuestionContainer extends Component {
       data.questionAnswers = null;
     }
 
-    if (this.props.match.params.type === "edit") {
-      data.questionID = this.props.match.params.questionID;
-      this.props.updateAQuestion(data);
-    } else this.props.updateQuestion(data);
+    if (this.validateForm(data)) {
+      if (this.props.match.params.type === "edit") {
+        data.questionID = this.props.match.params.questionID;
+        this.props.updateAQuestion(data);
+      } else this.props.updateQuestion(data);
+    }
   };
 
   render() {
@@ -433,15 +481,8 @@ class CreateQuestionContainer extends Component {
                           <span className={css(styles.redText)}>
                             {msg === null
                               ? null
-                              : msg.hasOwnProperty("questionChoices")
-                              ? "*" + msg.questionChoices
-                              : null}
-                          </span>
-                          <span className={css(styles.redText)}>
-                            {msg === null
-                              ? null
-                              : msg.hasOwnProperty("questionAnswers")
-                              ? "*" + msg.questionAnswers
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
                               : null}
                           </span>
                         </CustomColumn>
@@ -481,15 +522,8 @@ class CreateQuestionContainer extends Component {
                           <span className={css(styles.redText)}>
                             {msg === null
                               ? null
-                              : msg.hasOwnProperty("questionChoices")
-                              ? "*" + msg.questionChoices
-                              : null}
-                          </span>
-                          <span className={css(styles.redText)}>
-                            {msg === null
-                              ? null
-                              : msg.hasOwnProperty("questionAnswers")
-                              ? "*" + msg.questionAnswers
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
                               : null}
                           </span>
                         </CustomColumn>
@@ -539,8 +573,8 @@ class CreateQuestionContainer extends Component {
                           <span className={css(styles.redText)}>
                             {msg === null
                               ? null
-                              : msg.hasOwnProperty("questionAnswers")
-                              ? "*" + msg.questionAnswers
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
                               : null}
                           </span>
                         </CustomColumn>
