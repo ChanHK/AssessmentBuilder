@@ -168,6 +168,7 @@ class CreateQuestionContainer extends Component {
       questionAns: [],
       questionChoices: [],
       choiceArrObj: [],
+      msg: null,
     });
   };
 
@@ -298,6 +299,10 @@ class CreateQuestionContainer extends Component {
       } else isValid = true;
     }
 
+    if (questionType === "Descriptive") {
+      isValid = true;
+    }
+
     if (questionType === "True or False") {
       if (questionAnswers.length === 0) {
         this.setState({
@@ -341,6 +346,14 @@ class CreateQuestionContainer extends Component {
           });
         }
       }
+    }
+
+    if (questionType === "Order") {
+      if (questionAnswers.length < 3) {
+        this.setState({
+          msg: { ...msg, ans: "Please create at least 3 answers" },
+        });
+      } else isValid = true;
     }
 
     return isValid;
@@ -663,17 +676,26 @@ class CreateQuestionContainer extends Component {
                       <SecondLabel>Answers</SecondLabel>
                       <ThirdLabel>Write down the answer in order</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionAns.map((item, index) => (
-                          <div key={index}>
-                            <Order
-                              onClick={() => this.deleteRow(index, "Ans")}
-                              onChange={(e) => this.onChangeAnswer(e, index)}
-                              height={"50px"}
-                              value={item}
-                              rowNum={index}
-                            />
-                          </div>
-                        ))}
+                        <CustomColumn>
+                          {questionAns.map((item, index) => (
+                            <div key={index}>
+                              <Order
+                                onClick={() => this.deleteRow(index, "Ans")}
+                                onChange={(e) => this.onChangeAnswer(e, index)}
+                                height={"50px"}
+                                value={item}
+                                rowNum={index}
+                              />
+                            </div>
+                          ))}
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         <Button
