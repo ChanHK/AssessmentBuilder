@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/cand.auth");
 
 const db = require("../../models");
+const validateCandidate = require("../../validation/candidate");
 
 // @route     GET api/candidate/start/assessment/fetch/:assessmentID
 // @desc      GET assessment settings, set, timer, access
@@ -43,6 +44,10 @@ router.get("/start/assessment/fetch/:assessmentID", (req, res) => {
 router.post(
   "/start/assessment/register/with_auth/:assessmentID",
   (req, res) => {
+    const { errors, isValid } = validateCandidate(req.body);
+
+    if (!isValid) return res.status(400).json(errors);
+
     db.Assessment.findOne({
       assessments: { $elemMatch: { _id: req.params.assessmentID } },
     })
@@ -110,6 +115,10 @@ router.post(
 router.post(
   "/start/assessment/register/without_auth/:assessmentID",
   (req, res) => {
+    const { errors, isValid } = validateCandidate(req.body);
+
+    if (!isValid) return res.status(400).json(errors);
+
     db.Assessment.findOne({
       assessments: { $elemMatch: { _id: req.params.assessmentID } },
     })

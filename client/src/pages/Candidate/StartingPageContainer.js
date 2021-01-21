@@ -258,23 +258,41 @@ class StartingPageContainer extends Component {
 
                 <CustomSubLabel>Candidate Name</CustomSubLabel>
                 <div style={{ marginBottom: "25px" }}>
-                  <CustomInput
-                    name={"name"}
-                    type={"text"}
-                    onChangeValue={this.onChange}
-                    placeholder={"Enter your name"}
-                    value={name}
-                  />
+                  <CustomColumn>
+                    <CustomInput
+                      name={"name"}
+                      type={"text"}
+                      onChangeValue={this.onChange}
+                      placeholder={"Enter your name"}
+                      value={name}
+                    />
+                    <span className={css(styles.redText)}>
+                      {msg === null
+                        ? null
+                        : msg.hasOwnProperty("name")
+                        ? "*" + msg.name
+                        : null}
+                    </span>
+                  </CustomColumn>
                 </div>
                 <CustomSubLabel>Candidate Email</CustomSubLabel>
                 <div style={{ marginBottom: "25px" }}>
-                  <CustomInput
-                    name={"email"}
-                    type={"text"}
-                    onChangeValue={this.onChange}
-                    placeholder={"Enter your email"}
-                    value={email}
-                  />
+                  <CustomColumn>
+                    <CustomInput
+                      name={"email"}
+                      type={"text"}
+                      onChangeValue={this.onChange}
+                      placeholder={"Enter your email"}
+                      value={email}
+                    />
+                    <span className={css(styles.redText)}>
+                      {msg === null
+                        ? null
+                        : msg.hasOwnProperty("email")
+                        ? "*" + msg.email
+                        : null}
+                    </span>
+                  </CustomColumn>
                 </div>
 
                 {withAuthenticationSelected && (
@@ -294,7 +312,11 @@ class StartingPageContainer extends Component {
                 )}
 
                 <div className={css(styles.redText)}>
-                  {msg === null ? null : "*" + msg.message}
+                  {msg === null
+                    ? null
+                    : msg.hasOwnProperty("message")
+                    ? "*" + msg.message
+                    : null}
                 </div>
 
                 <div style={{ marginBottom: "250px" }}>
