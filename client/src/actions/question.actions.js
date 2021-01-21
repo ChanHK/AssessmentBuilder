@@ -5,21 +5,21 @@ import { QUESTION } from "../utils/actionTypes";
 import { returnSucMsg } from "./sucMsg.actions";
 // import { returnErrors } from "./error.actions";
 
+const tokenConfig = (getState) => {
+  const token = getState().auth.token;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  if (token) config.headers["x-auth-token"] = token;
+
+  return config;
+};
+
 export const updateQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .post("/api/user/question", data, tokenConfig(getState))
@@ -42,18 +42,6 @@ export const updateQuestion = (data) => (dispatch, getState) => {
 export const fetchAllQuestionData = () => (dispatch, getState) => {
   dispatch({ type: QUESTION.FETCH_QUESTION_DATA_BEGIN });
 
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
-
   axios
     .get("/api/user/question", tokenConfig(getState))
     .then((res) => {
@@ -72,19 +60,6 @@ export const fetchAllQuestionData = () => (dispatch, getState) => {
 
 export const deleteQuestionData = (data) => (dispatch, getState) => {
   dispatch({ type: QUESTION.DELETE_QUESTION_DATA_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .post("/api/user/question/delete", data, tokenConfig(getState))
@@ -107,18 +82,6 @@ export const deleteQuestionData = (data) => (dispatch, getState) => {
 export const fetchAQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: QUESTION.FETCH_QUESTION_DATA_BEGIN });
 
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
-
   axios
     .get(`/api/user/question/view/${data.questionID}`, tokenConfig(getState))
     .then((res) => {
@@ -137,19 +100,6 @@ export const fetchAQuestion = (data) => (dispatch, getState) => {
 
 export const updateAQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_BEGIN });
-
-  const tokenConfig = (getState) => {
-    const token = getState().auth.token;
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    if (token) config.headers["x-auth-token"] = token;
-
-    return config;
-  };
 
   axios
     .post(
