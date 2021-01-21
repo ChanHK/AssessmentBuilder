@@ -16,6 +16,7 @@ import LoaderSpinner from "../../components/LoaderSpinner";
 
 import { EditorState, ContentState } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
+import moment from "moment";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -46,6 +47,8 @@ class StartingPageContainer extends Component {
       timeSettings: "",
       attemptNum: 0, // number of attempts that a candidate can do
       status: "", // status of the assessment (setup, activated or ended)
+      startDate: "",
+      endDate: "",
     };
   }
 
@@ -96,11 +99,12 @@ class StartingPageContainer extends Component {
         questionTimeSelected,
         noLimitSelected,
         time,
+        startDate,
+        endDate,
       } = candidateReducer.assessmentStartInfo.timer;
 
       const { status } = candidateReducer.assessmentStartInfo;
 
-      console.log(candidateReducer.assessmentStartInfo);
       if (fixedSelected) this.setState({ type: 1 });
       if (randomSelected) this.setState({ type: 2 });
       if (manualSelected) this.setState({ type: 3 });
@@ -128,6 +132,8 @@ class StartingPageContainer extends Component {
         time: totalSec.toString(),
         attemptNum: parseInt(attemptNum),
         status: status,
+        startDate: startDate,
+        endDate: endDate,
       });
     }
 
@@ -193,6 +199,8 @@ class StartingPageContainer extends Component {
       timeSettings,
       time,
       status,
+      startDate,
+      endDate,
     } = this.state;
 
     if (this.props.candidateReducer.direct) {
@@ -212,7 +220,9 @@ class StartingPageContainer extends Component {
     if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    if (status !== "Activated") {
+    const today = new Date();
+    let to_day = moment(today).format("YYYY-MM-DDTHH:mm:ss.sssZ");
+    if (status !== "Activated" && !(to_day >= startDate && to_day <= endDate)) {
       return (
         <>
           <CustomFullContainer>
