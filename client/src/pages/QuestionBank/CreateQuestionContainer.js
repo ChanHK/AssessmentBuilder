@@ -300,65 +300,49 @@ class CreateQuestionContainer extends Component {
   validateForm = (data) => {
     let isValid = false;
     const { questionType, questionChoices, questionAnswers } = data;
-    const { msg } = this.state;
+    const { questionDescription } = this.state;
+    let tempMsg = {};
 
     if (questionType === "") {
-      this.setState({
-        msg: { ...msg, qType: "Question type field is required" },
-      });
+      tempMsg.qType = "Question type field is required";
+    }
+
+    if (!questionDescription.getCurrentContent().hasText()) {
+      tempMsg.des = "Question description field is required";
     }
 
     if (questionType === "Single Choice") {
       if (questionChoices.length < 2) {
-        this.setState({
-          msg: { ...msg, ans: "Please enter at least two choices" },
-        });
+        tempMsg.ans = "Please enter at least two choices";
       } else if (questionAnswers.length === 0) {
-        this.setState({
-          msg: { ...msg, ans: "Please select one answer" },
-        });
+        tempMsg.ans = "Please select one answer";
       } else isValid = true;
     }
 
     if (questionType === "Multiple Choice") {
       if (questionChoices.length < 2) {
-        this.setState({
-          msg: { ...msg, ans: "Please enter at least two choices" },
-        });
+        tempMsg.ans = "Please enter at least two choices";
       } else if (questionAnswers.length === 0) {
-        this.setState({
-          msg: { ...msg, ans: "Please select at least one answer" },
-        });
+        tempMsg.ans = "Please select at least one answer";
       } else isValid = true;
     }
 
-    if (questionType === "Descriptive") {
-      isValid = true;
-    }
+    if (questionType === "Descriptive") isValid = true;
 
     if (questionType === "True or False") {
       if (questionAnswers.length === 0) {
-        this.setState({
-          msg: { ...msg, ans: "Please select one answer" },
-        });
+        tempMsg.ans = "Please select one answer";
       } else isValid = true;
     }
 
     if (questionType === "Short Answer") {
       let tempArray = [];
       if (questionAnswers.length === 0) {
-        this.setState({
-          msg: { ...msg, ans: "Please create at least one answer" },
-        });
+        tempMsg.ans = "Please create at least one answer";
       } else if (questionAnswers.length > 0) {
         questionAnswers.forEach((item, index) => {
           if (item === "") {
-            this.setState({
-              msg: {
-                ...msg,
-                ans: "Please fill up all the choices",
-              },
-            });
+            tempMsg.ans = "Please fill up all the choices";
             isValid = false;
           } else isValid = true;
           tempArray.push(item);
@@ -368,12 +352,7 @@ class CreateQuestionContainer extends Component {
           tempArray.forEach((item2, index2) => {
             tempArray.forEach((item3, index3) => {
               if (item2 === item3 && index2 !== index3) {
-                this.setState({
-                  msg: {
-                    ...msg,
-                    ans: "Please remove similar answers",
-                  },
-                });
+                tempMsg.ans = "Please remove similar answers";
               }
             });
           });
@@ -383,11 +362,11 @@ class CreateQuestionContainer extends Component {
 
     if (questionType === "Order") {
       if (questionAnswers.length < 3) {
-        this.setState({
-          msg: { ...msg, ans: "Please create at least 3 answers" },
-        });
+        tempMsg.ans = "Please create at least 3 answers";
       } else isValid = true;
     }
+
+    this.setState({ msg: tempMsg });
 
     return isValid;
   };
@@ -538,6 +517,13 @@ class CreateQuestionContainer extends Component {
                           this._handlePastedText(input, 500)
                         }
                       />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("des")
+                          ? "*" + msg.des
+                          : null}
+                      </span>
                     </CustomColumn>
                   </div>
 
