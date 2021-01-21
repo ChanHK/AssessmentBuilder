@@ -9,12 +9,25 @@ module.exports = function validateQuestion(data) {
     ? data.questionDescription
     : "";
 
+  console.log(data);
   if (Validator.isEmpty(data.questionType)) {
     errors.questionType = "Question type field is required";
   }
 
-  if (Validator.isEmpty(data.questionDescription)) {
-    errors.questionDescription = "Question description field is required";
+  if (data.questionType === "Single Choice") {
+    if (data.questionChoices.length < 2) {
+      errors.questionChoices = "Please enter at least two choices";
+    } else if (data.questionAnswers.length === 0) {
+      errors.questionAnswers = "Please select one answer";
+    }
+  }
+
+  if (data.questionType === "Multiple Choice") {
+    if (data.questionChoices.length < 2) {
+      errors.questionChoices = "Please enter at least two choices";
+    } else if (data.questionAnswers.length === 0) {
+      errors.questionAnswers = "Please select at least one answer";
+    }
   }
 
   return {

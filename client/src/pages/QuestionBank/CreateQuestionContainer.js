@@ -246,7 +246,7 @@ class CreateQuestionContainer extends Component {
       if (this.state.choiceArrObj.length < 8) {
         this.setState({
           choiceArrObj: this.state.choiceArrObj.concat({
-            editorValue: "",
+            editorValue: EditorState.createEmpty(),
             isChecked: false,
           }),
         });
@@ -258,6 +258,12 @@ class CreateQuestionContainer extends Component {
       if (this.state.questionAns.length < 8) {
         this.setState({
           questionAns: this.state.questionAns.concat(""),
+        });
+      }
+    } else {
+      if (this.state.questionAns.length < 8) {
+        this.setState({
+          questionAns: this.state.questionAns.concat(EditorState.createEmpty()),
         });
       }
     }
@@ -404,8 +410,8 @@ class CreateQuestionContainer extends Component {
                       <span className={css(styles.redText)}>
                         {msg === null
                           ? null
-                          : msg.hasOwnProperty("questionType")
-                          ? "*" + msg.questionType
+                          : msg.hasOwnProperty("questionDescription")
+                          ? "*" + msg.questionDescription
                           : null}{" "}
                       </span>
                     </CustomColumn>
@@ -414,15 +420,31 @@ class CreateQuestionContainer extends Component {
                   {questionType === "Single Choice" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          onClick={() => this.addRow("Choice")}
-                          type={"button"}
-                        >
-                          Add Choice
-                        </Button>
+                        <CustomColumn>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            onClick={() => this.addRow("Choice")}
+                            type={"button"}
+                          >
+                            Add Choice
+                          </Button>
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionChoices")
+                              ? "*" + msg.questionChoices
+                              : null}
+                          </span>
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionAnswers")
+                              ? "*" + msg.questionAnswers
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         {choiceArrObj.map((item, index) => (
@@ -446,15 +468,31 @@ class CreateQuestionContainer extends Component {
                   {questionType === "Multiple Choice" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          onClick={() => this.addRow("Choice")}
-                          type={"button"}
-                        >
-                          Add Choice
-                        </Button>
+                        <CustomColumn>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            onClick={() => this.addRow("Choice")}
+                            type={"button"}
+                          >
+                            Add Choice
+                          </Button>
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionChoices")
+                              ? "*" + msg.questionChoices
+                              : null}
+                          </span>
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("questionAnswers")
+                              ? "*" + msg.questionAnswers
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         {choiceArrObj.map((item, index) => (
@@ -559,7 +597,7 @@ class CreateQuestionContainer extends Component {
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={() => this.addRow("Ans")}
+                          onClick={() => this.addRow("Ans2")}
                           type={"button"}
                         >
                           Add Answers
