@@ -4,16 +4,10 @@ const auth = require("../../middleware/auth");
 
 const db = require("../../models");
 
-const validateQuestion = require("../../validation/question");
-
 // @route     POST api/user/question
 // @desc      POST question to questionBank
 // @access    Private
 router.post("/question", auth, (req, res) => {
-  const { errors, isValid } = validateQuestion(req.body);
-
-  if (!isValid) return res.status(400).json(errors);
-
   db.QuestionBank.findOne({ user_id: req.user.id })
     .then((questionBank) => {
       db.QuestionBank.findByIdAndUpdate(
@@ -121,10 +115,6 @@ router.get("/question/view/:questionID", auth, (req, res) => {
 // @desc      POST question to questionBank
 // @access    Private
 router.post("/question/edit/:questionID", auth, (req, res) => {
-  const { errors, isValid } = validateQuestion(req.body);
-
-  if (!isValid) return res.status(400).json(errors);
-
   db.QuestionBank.updateOne(
     {
       questions: { $elemMatch: { _id: req.params.questionID } },
