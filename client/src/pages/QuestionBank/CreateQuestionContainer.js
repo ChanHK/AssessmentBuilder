@@ -298,7 +298,6 @@ class CreateQuestionContainer extends Component {
   };
 
   validateForm = (data) => {
-    let isValid = false;
     const { questionType, questionChoices, questionAnswers } = data;
     const { questionDescription } = this.state;
     let tempMsg = {};
@@ -316,7 +315,7 @@ class CreateQuestionContainer extends Component {
         tempMsg.ans = "Please enter at least two choices";
       } else if (questionAnswers.length === 0) {
         tempMsg.ans = "Please select one answer";
-      } else isValid = true;
+      }
     }
 
     if (questionType === "Multiple Choice") {
@@ -324,15 +323,13 @@ class CreateQuestionContainer extends Component {
         tempMsg.ans = "Please enter at least two choices";
       } else if (questionAnswers.length === 0) {
         tempMsg.ans = "Please select at least one answer";
-      } else isValid = true;
+      }
     }
-
-    if (questionType === "Descriptive") isValid = true;
 
     if (questionType === "True or False") {
       if (questionAnswers.length === 0) {
         tempMsg.ans = "Please select one answer";
-      } else isValid = true;
+      }
     }
 
     if (questionType === "Short Answer") {
@@ -343,8 +340,7 @@ class CreateQuestionContainer extends Component {
         questionAnswers.forEach((item, index) => {
           if (item === "") {
             tempMsg.ans = "Please fill up all the choices";
-            isValid = false;
-          } else isValid = true;
+          }
           tempArray.push(item);
         });
 
@@ -363,12 +359,13 @@ class CreateQuestionContainer extends Component {
     if (questionType === "Order") {
       if (questionAnswers.length < 3) {
         tempMsg.ans = "Please create at least 3 answers";
-      } else isValid = true;
+      }
     }
 
     this.setState({ msg: tempMsg });
 
-    return isValid;
+    if (Object.keys(tempMsg).length === 0) return true;
+    else return false;
   };
 
   onSubmit = (e) => {
