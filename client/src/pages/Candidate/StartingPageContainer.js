@@ -5,7 +5,7 @@ import * as configStyles from "../../config/styles";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
-
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
 import ScrollArrow from "../../components/ScrollArrow";
@@ -38,13 +38,14 @@ class StartingPageContainer extends Component {
       name: "",
       email: "",
       accessCode: "",
-      msg: null,
-      withAuthenticationSelected: false,
-      setLength: 0,
+      msg: null, // receives error messages from API
+      withAuthenticationSelected: false, //does the user needs authentication ?
+      setLength: 0, // size of the set
       type: "", // random? fixed? or manual
       time: "",
       timeSettings: "",
-      attemptNum: 0,
+      attemptNum: 0, // number of attempts that a candidate can do
+      status: "", // status of the assessment (setup, activated or ended)
     };
   }
 
@@ -97,6 +98,9 @@ class StartingPageContainer extends Component {
         time,
       } = candidateReducer.assessmentStartInfo.timer;
 
+      const { status } = candidateReducer.assessmentStartInfo;
+
+      console.log(candidateReducer.assessmentStartInfo);
       if (fixedSelected) this.setState({ type: 1 });
       if (randomSelected) this.setState({ type: 2 });
       if (manualSelected) this.setState({ type: 3 });
@@ -123,6 +127,7 @@ class StartingPageContainer extends Component {
         setLength: totalSetNum,
         time: totalSec.toString(),
         attemptNum: parseInt(attemptNum),
+        status: status,
       });
     }
 
@@ -187,7 +192,22 @@ class StartingPageContainer extends Component {
       type,
       timeSettings,
       time,
+      status,
     } = this.state;
+
+    if (status !== "Activated") {
+      return (
+        <>
+          <CustomFullContainer>
+            <CustomMidContainer>
+              <div className={css(styles.whiteCon)}>
+                <FirstLabel>Assessment not available</FirstLabel>
+              </div>
+            </CustomMidContainer>
+          </CustomFullContainer>
+        </>
+      );
+    }
 
     if (this.props.candidateReducer.direct) {
       let temp = [];
