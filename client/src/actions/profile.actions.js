@@ -27,7 +27,6 @@ export const fetchUserProfileData = () => (dispatch, getState) => {
       }, 3000);
     })
     .catch((err) => {
-      console.log("Fetch user profile data failed", err);
       dispatch({ type: PROFILE_DATA.FETCH_FAIL });
     });
 };
@@ -45,7 +44,6 @@ export const updateUserProfileData = (data) => (dispatch, getState) => {
       }, 3000);
     })
     .catch((err) => {
-      console.log("Update user profile data failed", err);
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: PROFILE_DATA.UPDATE_PROFILE_DATA_FAIL });
     });
