@@ -489,6 +489,11 @@ class AttemptContainer extends Component {
                           });
                         }}
                         value={question[index].response}
+                        maxLength={
+                          question[index].questionType === "Short Answer"
+                            ? 25
+                            : 255
+                        }
                       />
                     </div>
                   )}

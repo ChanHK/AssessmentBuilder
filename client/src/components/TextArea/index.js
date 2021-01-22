@@ -18,6 +18,7 @@ const TextArea = (props) => (
         : "inherit",
     }}
     readOnly={props.readOnly ? props.readOnly : false}
+    maxLength={props.maxLength}
   />
 );
 
