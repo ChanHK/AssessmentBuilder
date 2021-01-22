@@ -203,7 +203,13 @@ class StartingPageContainer extends Component {
       endDate,
     } = this.state;
 
-    if (this.props.candidateReducer.direct) {
+    const {
+      direct,
+      assessmentStartInfo,
+      isLoading,
+    } = this.props.candidateReducer;
+
+    if (direct) {
       let temp = [];
 
       for (let i = 0; i < setLength; i++) {
@@ -217,12 +223,25 @@ class StartingPageContainer extends Component {
       );
     }
 
-    if (this.props.candidateReducer.isLoading) return <LoaderSpinner />;
+    if (isLoading || assessmentStartInfo === null) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     const today = new Date();
     let to_day = moment(today).format("YYYY-MM-DDTHH:mm:ss.sssZ");
-    if (status !== "Activated" && !(to_day >= startDate && to_day <= endDate)) {
+
+    if (status !== "Activated") {
+      return (
+        <>
+          <CustomFullContainer>
+            <CustomMidContainer>
+              <div className={css(styles.whiteCon)}>
+                <FirstLabel>Assessment not available</FirstLabel>
+              </div>
+            </CustomMidContainer>
+          </CustomFullContainer>
+        </>
+      );
+    } else if (!(to_day >= startDate && to_day <= endDate)) {
       return (
         <>
           <CustomFullContainer>
