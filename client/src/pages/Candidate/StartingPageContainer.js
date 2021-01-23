@@ -326,6 +326,7 @@ class StartingPageContainer extends Component {
                         onChangeValue={this.onChange}
                         placeholder={"Enter your access code"}
                         value={accessCode}
+                        maxLength={10}
                       />
                     </div>
                   </>
