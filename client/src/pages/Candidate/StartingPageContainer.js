@@ -227,7 +227,8 @@ class StartingPageContainer extends Component {
     else document.body.style.overflow = "unset";
 
     const today = new Date();
-    let to_day = moment(today).format("YYYY-MM-DDTHH:mm:ss.sssZ");
+    let SD = moment(startDate).toDate();
+    let ED = moment(endDate).toDate();
 
     if (status !== "Activated") {
       return (
@@ -241,7 +242,7 @@ class StartingPageContainer extends Component {
           </CustomFullContainer>
         </>
       );
-    } else if (!(to_day >= startDate && to_day <= endDate)) {
+    } else if (!(today >= SD && today <= ED)) {
       return (
         <>
           <CustomFullContainer>
