@@ -114,11 +114,61 @@ router.post("/assessment/questions/update/:assessmentID", auth, (req, res) => {
             }
           )
             .then(() => {
-              return res.status(200).json(response.questions);
+              db.AssessmentSet.findOne({
+                assessments_id: req.params.assessmentID,
+              })
+                .then((sets) => {
+                  if (sets.generatedSets.length !== 0) {
+                    db.AssessmentQuestion.findOne({
+                      assessments_id: req.params.assessmentID,
+                    })
+                      .then((AQ) => {
+                        let questionIDArray = [];
+
+                        AQ.questions.forEach((item, index) => {
+                          questionIDArray.push(JSON.stringify(item._id));
+                        });
+
+                        let need_to_throw_index = [];
+                        sets.generatedSets.forEach((item, index) => {
+                          item.forEach((item2, index2) => {
+                            if (!questionIDArray.includes(`"` + item2 + `"`)) {
+                              need_to_throw_index.push(index);
+                            }
+                          });
+                        });
+
+                        let new_set = [];
+                        sets.generatedSets.forEach((item, index) => {
+                          if (!need_to_throw_index.includes(index)) {
+                            new_set.push(item);
+                          }
+                        });
+
+                        db.AssessmentSet.updateOne(
+                          { _id: sets._id },
+                          { generatedSets: new_set },
+                          { new: true }
+                        )
+                          .then(() => {
+                            return res.status(200).json(response.questions);
+                          })
+                          .catch(() => {
+                            return res
+                              .status(200)
+                              .json({ message: "failed in updating" });
+                          });
+                      })
+                      .catch((err) => console.log(err));
+                  } else return res.status(200).json(response.questions);
+                })
+                .catch(() => {
+                  return res
+                    .status(200)
+                    .json({ message: "failed in updating" });
+                });
             })
-            .catch(() => {
-              return res.status(200).json({ message: "failed in updating" });
-            });
+            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     })
@@ -234,13 +284,42 @@ router.post(
               }
             )
               .then(() => {
-                return res.status(200).json(response.questions);
+                db.AssessmentSet.findOne({
+                  assessments_id: req.params.assessmentID,
+                })
+                  .select("-__v")
+                  .select("-assessments_id")
+                  .then((sets) => {
+                    let temp = [];
+                    sets.generatedSets.forEach((item, index) => {
+                      let count = 0;
+                      item.forEach((item2, index2) => {
+                        if (item2 !== req.params.questionID) {
+                          count++;
+                        }
+                      });
+                      if (count === item.length) {
+                        temp.push(item);
+                      }
+                    });
+
+                    db.AssessmentSet.updateOne(
+                      { _id: sets._id },
+                      { generatedSets: temp },
+                      { new: true }
+                    )
+                      .then(() => {
+                        return res.status(200).json(response.questions);
+                      })
+                      .catch((err) => {
+                        return res
+                          .status(400)
+                          .json({ message: "Question fail to delete" });
+                      });
+                  })
+                  .catch((err) => console.log(err));
               })
-              .catch((err) => {
-                return res
-                  .status(400)
-                  .json({ message: "Question fail to delete" });
-              });
+              .catch((err) => console.log(err));
           })
           .catch((err) => console.log(err));
       })
