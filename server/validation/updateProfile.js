@@ -13,6 +13,8 @@ module.exports = function validateProfileInput(data) {
     errors.username = "Username field is required";
   } else if (!Validator.isLength(data.username, 3, 10)) {
     errors.username = "Username field minimum 3 and maximum 10 characters";
+  } else if (!Validator.isAlpha(data.username)) {
+    errors.username = "Please enter alphabets only";
   }
 
   if (
