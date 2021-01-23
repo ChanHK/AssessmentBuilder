@@ -219,6 +219,7 @@ class SettingContainer extends Component {
             onChangeValue={this.onChange}
             value={testName}
             readOnly={type === "view" ? true : false}
+            maxLength={100}
           />
         </div>
         <CustomRow>
@@ -239,6 +240,7 @@ class SettingContainer extends Component {
             onChange={this.onChange}
             value={testDescription}
             readOnly={type === "view" ? true : false}
+            maxLength={250}
           />
         </div>
         <CustomRow>
