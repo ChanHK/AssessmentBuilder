@@ -57,3 +57,24 @@ export const fetchAssessmentSetQuestionID = (data) => (dispatch, getState) => {
       dispatch({ type: ASSESSMENT_SET.FETCH_ASSESSMENT_SET_QUESTION_ID_FAIL });
     });
 };
+
+export const fetchQuestionsSet = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT_SET.FETCH_SET_QUESTIONS_BEGIN });
+
+  axios
+    .get(
+      `/api/user/assessment/sets/fetch/${data.setNum}/${data.assessmentID}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT_SET.FETCH_SET_QUESTIONS_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: ASSESSMENT_SET.FETCH_SET_QUESTIONS_FAIL });
+    });
+};
