@@ -26,7 +26,7 @@ import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Order from "../../components/Order";
 
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { EditorState, convertToRaw, ContentState, Modifier } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
@@ -51,6 +51,7 @@ class CreateEditQuestionContainer extends Component {
       questionChoices: [],
       choiceArrObj: [], //stores temporary choices and answer(isChecked)
       score: "",
+      msg: null, //stores error messages
     };
   }
 
@@ -265,6 +266,58 @@ class CreateEditQuestionContainer extends Component {
     }
   };
 
+  _handleBeforeInput = (input, length, editorObj) => {
+    const inputLength = editorObj.getCurrentContent().getPlainText().length;
+    if (input && inputLength >= length) {
+      return "handled";
+    }
+  };
+
+  _handlePastedText = (input, length, editorObj) => {
+    const inputLength = editorObj.getCurrentContent().getPlainText().length;
+    let remainingLength = length - inputLength;
+    if (input.length + inputLength >= length) {
+      const newContent = Modifier.insertText(
+        editorObj.getCurrentContent(),
+        editorObj.getSelection(),
+        input.slice(0, remainingLength)
+      );
+
+      EditorState.push(editorObj, newContent, "insert-characters");
+
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  validateForm = (data) => {
+    const { questionType, score } = data;
+    const { questionDescription } = this.state;
+    let tempMsg = {};
+
+    if (questionType === "") {
+      tempMsg.qType = "Question type field is required";
+    }
+
+    if (score === "") {
+      tempMsg.sco = "Score field is required";
+    } else if (!/^\d+$/.test(score)) {
+      tempMsg.sco = "Please enter digits only";
+    } else if (!(parseInt(score) >= 0 && parseInt(score) <= 100)) {
+      tempMsg.sco = "Please enter digits between 0 and 100";
+    }
+
+    if (!questionDescription.getCurrentContent().hasText()) {
+      tempMsg.des = "Question description field is required";
+    }
+
+    this.setState({ msg: tempMsg });
+
+    if (Object.keys(tempMsg).length === 0) return true;
+    else return false;
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -323,10 +376,12 @@ class CreateEditQuestionContainer extends Component {
       data.questionAnswers = null;
     }
 
-    if (this.props.match.params.type2 === "edit") {
-      data.questionID = this.props.match.params.questionID;
-      this.props.updateAnAssessmentQuestion(data);
-    } else this.props.addAssessmentQuestion(data);
+    if (this.validateForm(data)) {
+      if (this.props.match.params.type2 === "edit") {
+        data.questionID = this.props.match.params.questionID;
+        this.props.updateAnAssessmentQuestion(data);
+      } else this.props.addAssessmentQuestion(data);
+    }
   };
 
   render() {
@@ -336,6 +391,7 @@ class CreateEditQuestionContainer extends Component {
       questionAns,
       choiceArrObj,
       score,
+      msg,
     } = this.state;
 
     if (this.props.assessmentQuestionReducer.isLoading)
@@ -371,34 +427,75 @@ class CreateEditQuestionContainer extends Component {
                     <>
                       <SecondLabel>Question Type</SecondLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        <CustomDropdown
-                          options={QuestionType}
-                          placeholder={"Select question type"}
-                          value={questionType}
-                          onChange={this.onChangeType}
-                        />
+                        <CustomColumn>
+                          <CustomDropdown
+                            options={QuestionType}
+                            placeholder={"Select question type"}
+                            value={questionType}
+                            onChange={this.onChangeType}
+                          />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("qType")
+                              ? "*" + msg.qType
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                     </>
                   )}
                   <div style={{ marginBottom: "50px" }}>
-                    <SecondLabel>Score</SecondLabel>
-                    <CustomInput
-                      type={"text"}
-                      onChangeValue={(e) =>
-                        this.setState({ score: e.target.value })
-                      }
-                      value={score}
-                    />
+                    <CustomColumn>
+                      <SecondLabel>Score</SecondLabel>
+                      <CustomInput
+                        type={"text"}
+                        onChangeValue={(e) =>
+                          this.setState({ score: e.target.value })
+                        }
+                        value={score}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("sco")
+                          ? "*" + msg.sco
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
 
                   <SecondLabel>Question Description</SecondLabel>
                   <div style={{ paddingBottom: "25px" }}>
-                    <CustomEditor
-                      onEditorStateChange={(e) =>
-                        this.setState({ questionDescription: e })
-                      }
-                      editorState={questionDescription}
-                    />
+                    <CustomColumn>
+                      <CustomEditor
+                        onEditorStateChange={(e) =>
+                          this.setState({ questionDescription: e })
+                        }
+                        editorState={questionDescription}
+                        handleBeforeInput={(input) =>
+                          this._handleBeforeInput(
+                            input,
+                            500,
+                            questionDescription
+                          )
+                        }
+                        handlePastedText={(input) =>
+                          this._handlePastedText(
+                            input,
+                            500,
+                            questionDescription
+                          )
+                        }
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("des")
+                          ? "*" + msg.des
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
 
                   {questionType === "Single Choice" && (
@@ -605,6 +702,11 @@ const styles = StyleSheet.create({
   customMidContainer: {
     paddingLeft: "10px",
     paddingBottom: "75px",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
