@@ -63,9 +63,20 @@ class ViewSetContainer extends Component {
       assessmentSetReducer.questions !== null &&
       assessmentSetReducer.message === undefined
     ) {
-      console.log(assessmentSetReducer.questions);
+      const { questions } = this.props.assessmentSetReducer;
 
-      this.setState({ questions: assessmentSetReducer.questions });
+      console.log(questions);
+
+      let totalScore = 0;
+      questions.forEach((item, index) => {
+        totalScore = totalScore + item.score;
+      });
+
+      this.setState({
+        questions: questions,
+        totalQuestion: questions.length,
+        totalScore: totalScore,
+      });
     }
   }
 
@@ -74,6 +85,8 @@ class ViewSetContainer extends Component {
   }
 
   render() {
+    const { totalQuestion, totalScore } = this.state;
+
     if (this.props.assessmentSetReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
@@ -93,13 +106,13 @@ class ViewSetContainer extends Component {
                   <SecondLabel marginRight={"10px"}>
                     Total questions :{" "}
                   </SecondLabel>
-                  <ThirdLabel>totalScore</ThirdLabel>
+                  <ThirdLabel>{totalQuestion}</ThirdLabel>
                 </div>
               </CustomRow>
               <CustomRow>
                 <div className={css(styles.infoCon)}>
                   <SecondLabel marginRight={"10px"}>Total score : </SecondLabel>
-                  <ThirdLabel>questionNum</ThirdLabel>
+                  <ThirdLabel>{totalScore}</ThirdLabel>
                 </div>
               </CustomRow>
             </CustomColumn>
