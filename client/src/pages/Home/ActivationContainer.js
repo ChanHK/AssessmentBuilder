@@ -99,6 +99,7 @@ class ActivationContainer extends Component {
 
       //check sets
       if (sets.manualSelected && sets.totalSetNum > 0) setsCB = true;
+      else if (sets.fixedSelected || sets.manualRandomSelected) setsCB = true;
       else setsCB = false;
 
       //check access
@@ -109,7 +110,8 @@ class ActivationContainer extends Component {
           sets.accessCode.length > 0
         ) {
           accessCB = true;
-        } else accessCB = false;
+        } else if (access.noAuthenticationSelected) accessCB = true;
+        else accessCB = false;
       }
 
       //check timer
