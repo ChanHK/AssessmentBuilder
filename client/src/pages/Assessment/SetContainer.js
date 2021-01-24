@@ -31,6 +31,8 @@ import {
   updateAssessmentSetQuestionID,
   fetchAssessmentSetQuestionID,
 } from "../../actions/assessmentSet.actions";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 
 const dropdownData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
@@ -393,6 +395,7 @@ class SetContainer extends Component {
       sectionFilterNum,
       type,
       msg,
+      assessmentID,
     } = this.state;
 
     const column = [
@@ -435,6 +438,15 @@ class SetContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <CustomRow>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(
+                  `/assessment/view/set/${row.serial - 1}/${assessmentID}`
+                );
+              }}
+            >
+              View
+            </TableButton>
             {type !== "view" && (
               <TableButton
                 onClick={() => {
@@ -794,10 +806,13 @@ const mapStateToProps = (state) => ({
   assessmentSetReducer: state.assessmentSetReducer,
 });
 
-export default connect(mapStateToProps, {
-  updateAssessmentSet,
-  fetchAssessmentSet,
-  fetchAllAssessmentQuestion,
-  fetchAssessmentSetQuestionID,
-  updateAssessmentSetQuestionID,
-})(SetContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, {
+    updateAssessmentSet,
+    fetchAssessmentSet,
+    fetchAllAssessmentQuestion,
+    fetchAssessmentSetQuestionID,
+    updateAssessmentSetQuestionID,
+  })
+)(SetContainer);
