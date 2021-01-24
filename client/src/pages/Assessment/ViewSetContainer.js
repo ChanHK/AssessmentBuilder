@@ -6,6 +6,7 @@ import * as configStyles from "../../config/styles";
 import Header from "../../components/Header";
 import ScrollArrow from "../../components/ScrollArrow";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Button from "../../components/Button";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -15,6 +16,10 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -31,6 +36,7 @@ class ViewSetContainer extends Component {
       totalScore: 0,
       totalQuestion: 0,
       questions: [],
+      current_type: this.props.match.params.type,
     };
   }
 
@@ -65,8 +71,6 @@ class ViewSetContainer extends Component {
     ) {
       const { questions } = this.props.assessmentSetReducer;
 
-      console.log(questions);
-
       let totalScore = 0;
       questions.forEach((item, index) => {
         totalScore = totalScore + item.score;
@@ -84,8 +88,23 @@ class ViewSetContainer extends Component {
     this.props.assessmentSetReducer.questions = null;
   }
 
+  convertHtml = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
+
+  handleClick = () => {
+    const { assessmentID, current_type } = this.state;
+    this.props.history.push(`/assessment/${current_type}/set/${assessmentID}`);
+  };
+
   render() {
-    const { totalQuestion, totalScore } = this.state;
+    const { totalQuestion, totalScore, questions } = this.state;
 
     if (this.props.assessmentSetReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -115,6 +134,37 @@ class ViewSetContainer extends Component {
                   <ThirdLabel>{totalScore}</ThirdLabel>
                 </div>
               </CustomRow>
+
+              <hr className={css(styles.hr)} />
+
+              {questions.map((item, index) => {
+                let des = this.convertHtml(item.questionDescription);
+                return (
+                  <>
+                    <SecondLabel>Question {index + 1}</SecondLabel>
+                    <div style={{ marginBottom: "25px" }}>
+                      <Editor
+                        editorState={des}
+                        toolbarHidden={true}
+                        readOnly
+                        editorClassName={css(styles.editorClassName)}
+                      />
+                    </div>
+                  </>
+                );
+              })}
+
+              <div style={{ marginBottom: "100px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  onClick={this.handleClick}
+                  width={"100px"}
+                >
+                  Back
+                </Button>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
@@ -133,6 +183,18 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     marginBottom: "10px",
+  },
+  editorClassName: {
+    borderRadius: "5px",
+    borderColor: configStyles.colors.black,
+    border: "2px solid",
+    width: "100%",
+    height: "auto",
+    padding: "10px 20px",
+  },
+  hr: {
+    backgroundColor: configStyles.colors.black,
+    height: "1px",
   },
 });
 

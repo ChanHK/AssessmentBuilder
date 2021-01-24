@@ -164,7 +164,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/view/set/:setNum/:assessmentID"
+          path="/assessment/view/set/:type(edit|view|create)/:setNum/:assessmentID"
           exact
           component={ViewSetContainer}
           isPrivate

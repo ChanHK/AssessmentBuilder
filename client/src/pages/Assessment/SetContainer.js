@@ -441,7 +441,9 @@ class SetContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `/assessment/view/set/${row.serial - 1}/${assessmentID}`
+                  `/assessment/view/set/${type}/${
+                    row.serial - 1
+                  }/${assessmentID}`
                 );
               }}
             >
