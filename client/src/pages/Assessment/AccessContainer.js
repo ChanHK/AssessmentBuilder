@@ -11,6 +11,7 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import QRCode from "qrcode.react";
 import { ExcelRenderer } from "react-excel-renderer";
 import { v4 as uuidv4 } from "uuid";
+import validator from "validator";
 import generator from "generate-password";
 import Number from "./Data/Number";
 
@@ -51,6 +52,7 @@ class AccessContainer extends Component {
       newEmail: "", //for user to enter new email to the table
       assessmentID: props.assessmentID,
       type: props.type,
+      msg: null, //stores error messages
     };
   }
 
@@ -177,6 +179,17 @@ class AccessContainer extends Component {
     e.preventDefault();
   };
 
+  validateEmail = () => {
+    let tempMsg = {};
+
+    if (!validator.isEmail(this.state.newEmail)) {
+      tempMsg.email = "Please enter valid email";
+    }
+
+    this.setState({ msg: tempMsg });
+    if (Object.keys(tempMsg).length === 0) this.addEmail();
+  };
+
   addEmail = () => {
     let newRows = [];
     var password = generator.generate({
@@ -242,6 +255,7 @@ class AccessContainer extends Component {
       rows,
       newEmail,
       type,
+      msg,
     } = this.state;
 
     const column = [
@@ -401,22 +415,34 @@ class AccessContainer extends Component {
                   widthChange={1425}
                 >
                   <div className={css(styles.block)}>
-                    <CustomInput
-                      type={"text"}
-                      placeholder={"Enter new email"}
-                      onChangeValue={this.onChangeEmail}
-                      value={newEmail}
-                    />
-                    <div style={{ marginRight: "10px" }}></div>
-                    <Button
-                      backgroundColor={configStyles.colors.darkBlue}
-                      color={configStyles.colors.white}
-                      padding={"8px"}
-                      width={"100px"}
-                      onClick={this.addEmail}
-                    >
-                      Add
-                    </Button>
+                    <CustomColumn>
+                      <CustomRow>
+                        <CustomInput
+                          type={"text"}
+                          placeholder={"Enter new email"}
+                          onChangeValue={this.onChangeEmail}
+                          value={newEmail}
+                        />
+
+                        <div style={{ marginRight: "10px" }}></div>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          width={"100px"}
+                          onClick={this.validateEmail}
+                        >
+                          Add
+                        </Button>
+                      </CustomRow>
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("email")
+                          ? "*" + msg.email
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                   <div className={css(styles.block)}>
                     <UploadButton
@@ -507,6 +533,11 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
