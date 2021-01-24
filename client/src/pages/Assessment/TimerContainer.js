@@ -26,6 +26,8 @@ import {
   fetchAssessmentTimer,
 } from "../../actions/assessment.actions";
 
+const seconds10 = ["10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+
 class TimerContainer extends Component {
   constructor(props) {
     super(props);
@@ -249,7 +251,7 @@ class TimerContainer extends Component {
                   </div>
                   <div className={css(styles.block)}>
                     <CustomDropdown
-                      options={MinuteSeconds}
+                      options={seconds10}
                       placeholder={"Select seconds"}
                       value={second}
                       onChange={(e) => this.setState({ second: e.value })}
