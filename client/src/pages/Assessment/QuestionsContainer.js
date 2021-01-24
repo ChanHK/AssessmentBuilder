@@ -136,9 +136,11 @@ class QuestionsContainer extends Component {
 
     let temp = [];
 
-    for (let x = 0; x < questions.length; x++) {
-      for (let y = 0; y < questions[x].length; y++) {
-        temp.push(questions[x][y]);
+    if (questions.length > 0) {
+      for (let x = 0; x < questions.length; x++) {
+        for (let y = 0; y < questions[x].length; y++) {
+          temp.push(questions[x][y]);
+        }
       }
     }
 
