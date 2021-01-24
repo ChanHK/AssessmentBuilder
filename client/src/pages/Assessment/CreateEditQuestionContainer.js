@@ -177,6 +177,7 @@ class CreateEditQuestionContainer extends Component {
       questionChoices: [],
       choiceArrObj: [],
       score: "",
+      msg: null,
     });
   };
 
@@ -249,7 +250,7 @@ class CreateEditQuestionContainer extends Component {
       if (this.state.choiceArrObj.length < 8) {
         this.setState({
           choiceArrObj: this.state.choiceArrObj.concat({
-            editorValue: "",
+            editorValue: EditorState.createEmpty(),
             isChecked: false,
           }),
         });
@@ -261,6 +262,12 @@ class CreateEditQuestionContainer extends Component {
       if (this.state.questionAns.length < 8) {
         this.setState({
           questionAns: this.state.questionAns.concat(""),
+        });
+      }
+    } else {
+      if (this.state.questionAns.length < 8) {
+        this.setState({
+          questionAns: this.state.questionAns.concat(EditorState.createEmpty()),
         });
       }
     }
@@ -292,7 +299,7 @@ class CreateEditQuestionContainer extends Component {
   };
 
   validateForm = (data) => {
-    const { questionType, score } = data;
+    const { questionType, score, questionChoices, questionAnswers } = data;
     const { questionDescription } = this.state;
     let tempMsg = {};
 
@@ -310,6 +317,88 @@ class CreateEditQuestionContainer extends Component {
 
     if (!questionDescription.getCurrentContent().hasText()) {
       tempMsg.des = "Question description field is required";
+    }
+
+    if (questionType === "Single Choice") {
+      if (questionChoices.length < 2) {
+        tempMsg.ans = "Please enter at least two choices";
+      } else if (questionAnswers.length === 0) {
+        tempMsg.ans = "Please select one answer";
+      }
+
+      if (questionChoices.length > 0) {
+        let tempArray = this.convertQuestion(questionChoices);
+
+        tempArray.forEach((item, index) => {
+          if (!item.getCurrentContent().hasText()) {
+            tempMsg.cho = `Please fill up choice ${index + 1}`;
+          }
+        });
+      }
+    }
+
+    if (questionType === "Multiple Choice") {
+      if (questionChoices.length < 2) {
+        tempMsg.ans = "Please enter at least two choices";
+      } else if (questionAnswers.length === 0) {
+        tempMsg.ans = "Please select at least one answer";
+      }
+
+      if (questionChoices.length > 0) {
+        let tempArray = this.convertQuestion(questionChoices);
+
+        tempArray.forEach((item, index) => {
+          if (!item.getCurrentContent().hasText()) {
+            tempMsg.cho = `Please fill up choice ${index + 1}`;
+          }
+        });
+      }
+    }
+
+    if (questionType === "True or False") {
+      if (questionAnswers.length === 0) {
+        tempMsg.ans = "Please select one answer";
+      }
+    }
+
+    if (questionType === "Short Answer") {
+      let tempArray = [];
+      if (questionAnswers.length === 0) {
+        tempMsg.ans = "Please create at least one answer";
+      } else if (questionAnswers.length > 0) {
+        questionAnswers.forEach((item, index) => {
+          if (item === "") {
+            tempMsg.ans = "Please fill up all the choices";
+          }
+          tempArray.push(item);
+        });
+
+        if (tempArray.length > 1) {
+          tempArray.forEach((item2, index2) => {
+            tempArray.forEach((item3, index3) => {
+              if (item2 === item3 && index2 !== index3) {
+                tempMsg.ans = "Please remove similar answers";
+              }
+            });
+          });
+        }
+      }
+    }
+
+    if (questionType === "Order") {
+      if (questionAnswers.length < 3) {
+        tempMsg.ans = "Please create at least 3 answers";
+      }
+
+      if (questionChoices.length > 0) {
+        let tempArray = this.convertQuestion(questionChoices);
+
+        tempArray.forEach((item, index) => {
+          if (!item.getCurrentContent().hasText()) {
+            tempMsg.cho = `Please fill up order number ${index + 1}`;
+          }
+        });
+      }
     }
 
     this.setState({ msg: tempMsg });
@@ -501,15 +590,24 @@ class CreateEditQuestionContainer extends Component {
                   {questionType === "Single Choice" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          onClick={() => this.addRow("Choice")}
-                          type={"button"}
-                        >
-                          Add Choice
-                        </Button>
+                        <CustomColumn>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            onClick={() => this.addRow("Choice")}
+                            type={"button"}
+                          >
+                            Add Choice
+                          </Button>
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         {choiceArrObj.map((item, index) => (
@@ -523,6 +621,20 @@ class CreateEditQuestionContainer extends Component {
                                 this.setChoiceSingleAns(index)
                               }
                               checked={item.isChecked}
+                              handleBeforeInput={(input) =>
+                                this._handleBeforeInput(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
+                              handlePastedText={(input) =>
+                                this._handlePastedText(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
                             />
                           </div>
                         ))}
@@ -533,15 +645,24 @@ class CreateEditQuestionContainer extends Component {
                   {questionType === "Multiple Choice" && (
                     <>
                       <div style={{ paddingBottom: "25px" }}>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          onClick={() => this.addRow("Choice")}
-                          type={"button"}
-                        >
-                          Add Choice
-                        </Button>
+                        <CustomColumn>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            onClick={() => this.addRow("Choice")}
+                            type={"button"}
+                          >
+                            Add Choice
+                          </Button>
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         {choiceArrObj.map((item, index) => (
@@ -557,6 +678,20 @@ class CreateEditQuestionContainer extends Component {
                                 this.setChoiceMultiAns(e, index, item)
                               }
                               checked={item.isChecked}
+                              handleBeforeInput={(input) =>
+                                this._handleBeforeInput(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
+                              handlePastedText={(input) =>
+                                this._handlePastedText(
+                                  input,
+                                  150,
+                                  item.editorValue
+                                )
+                              }
                             />
                           </div>
                         ))}
@@ -580,10 +715,19 @@ class CreateEditQuestionContainer extends Component {
                       <SecondLabel>Answer</SecondLabel>
                       <ThirdLabel>Select the correct answer</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        <TrueFalse
-                          onClick={this.setTFChoiceAns}
-                          isTrue={questionAns[0]}
-                        />
+                        <CustomColumn>
+                          <TrueFalse
+                            onClick={this.setTFChoiceAns}
+                            isTrue={questionAns[0]}
+                          />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                     </>
                   )}
@@ -596,19 +740,29 @@ class CreateEditQuestionContainer extends Component {
                         same with yours
                       </ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionAns.map((item, index) => (
-                          <div key={index}>
-                            <ShortAns
-                              onClick={() => this.deleteRow(index, "Ans")}
-                              onChange={(e) =>
-                                this.onChangeAnswer(e.target.value, index)
-                              }
-                              height={"50px"}
-                              value={item}
-                              rowNum={index}
-                            />
-                          </div>
-                        ))}
+                        <CustomColumn>
+                          {questionAns.map((item, index) => (
+                            <div key={index}>
+                              <ShortAns
+                                onClick={() => this.deleteRow(index, "Ans")}
+                                onChange={(e) =>
+                                  this.onChangeAnswer(e.target.value, index)
+                                }
+                                height={"50px"}
+                                value={item}
+                                rowNum={index}
+                                maxLength={25}
+                              />
+                            </div>
+                          ))}
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         <Button
@@ -629,24 +783,33 @@ class CreateEditQuestionContainer extends Component {
                       <SecondLabel>Answers</SecondLabel>
                       <ThirdLabel>Write down the answer in order</ThirdLabel>
                       <div style={{ paddingBottom: "25px" }}>
-                        {questionAns.map((item, index) => (
-                          <div key={index}>
-                            <Order
-                              onClick={() => this.deleteRow(index, "Ans")}
-                              onChange={(e) => this.onChangeAnswer(e, index)}
-                              height={"50px"}
-                              value={item}
-                              rowNum={index}
-                            />
-                          </div>
-                        ))}
+                        <CustomColumn>
+                          {questionAns.map((item, index) => (
+                            <div key={index}>
+                              <Order
+                                onClick={() => this.deleteRow(index, "Ans")}
+                                onChange={(e) => this.onChangeAnswer(e, index)}
+                                height={"50px"}
+                                value={item}
+                                rowNum={index}
+                              />
+                            </div>
+                          ))}
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("ans")
+                              ? "*" + msg.ans
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       <div style={{ paddingBottom: "25px" }}>
                         <Button
                           backgroundColor={configStyles.colors.darkBlue}
                           color={configStyles.colors.white}
                           padding={"8px"}
-                          onClick={() => this.addRow("Ans")}
+                          onClick={() => this.addRow("Ans2")}
                           type={"button"}
                         >
                           Add Answers
@@ -655,6 +818,13 @@ class CreateEditQuestionContainer extends Component {
                     </>
                   )}
 
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("cho")
+                      ? "*" + msg.cho
+                      : null}
+                  </span>
                   <CustomRow>
                     <div
                       style={{
