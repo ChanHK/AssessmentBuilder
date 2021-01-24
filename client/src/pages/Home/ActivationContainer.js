@@ -109,7 +109,7 @@ class ActivationContainer extends Component {
           sets.accessCode.length > 0
         ) {
           accessCB = true;
-        } else accessCB = true;
+        } else accessCB = false;
       }
 
       //check timer
