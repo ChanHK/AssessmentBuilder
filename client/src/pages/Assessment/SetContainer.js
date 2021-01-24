@@ -165,6 +165,7 @@ class SetContainer extends Component {
       definedTakeFromSectionSelected,
       questions,
       sectionFilterNum,
+      generatedSets,
     } = this.state;
     let tempMsg = {};
 
@@ -220,6 +221,10 @@ class SetContainer extends Component {
       }
     }
 
+    if (generatedSets.length === 10) {
+      tempMsg.setLength = "You can only have 10 sets";
+    }
+
     this.setState({ msg: tempMsg });
     if (Object.keys(tempMsg).length === 0) this.generateSetButtonClick();
   };
@@ -254,6 +259,10 @@ class SetContainer extends Component {
         let temp2 = [...this.state.generatedSets];
         temp2.push(temp);
 
+        while (temp2.length > 10) {
+          temp2.pop();
+        }
+
         this.setState({ generatedSets: temp2 });
       }
 
@@ -274,6 +283,10 @@ class SetContainer extends Component {
         array2D.forEach((item, index) => {
           temp4.push(item);
         });
+
+        while (temp4.length > 10) {
+          temp4.pop();
+        }
 
         this.setState({ generatedSets: temp4 });
       }
@@ -677,15 +690,24 @@ class SetContainer extends Component {
                 </div>
               </CustomRow>
               {type !== "view" && (
-                <Button
-                  backgroundColor={configStyles.colors.darkBlue}
-                  color={configStyles.colors.white}
-                  padding={"8px"}
-                  type={"button"}
-                  onClick={this.validateGenerationInput}
-                >
-                  Generate
-                </Button>
+                <CustomColumn>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    type={"button"}
+                    onClick={this.validateGenerationInput}
+                  >
+                    Generate
+                  </Button>
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("setLength")
+                      ? "*" + msg.setLength
+                      : null}
+                  </span>
+                </CustomColumn>
               )}
             </div>
 
