@@ -81,9 +81,7 @@ class ActivationContainer extends Component {
       //check settings
       if (settings.testName !== "" && settings.testInstruction !== "") {
         if (settings.passOrFailSelected) {
-          if (settings.score !== "" && settings.unit !== "") {
-            settingsCB = true;
-          }
+          if (settings.score !== "" && settings.unit !== "") settingsCB = true;
         }
         if (settings.addGradingSelected) {
           if (
@@ -97,13 +95,11 @@ class ActivationContainer extends Component {
       }
 
       //check questions
-      if (totalQuestionNum > 0) {
-        questionsCB = true;
-      }
+      if (totalQuestionNum > 0) questionsCB = true;
 
       //check sets
       if (sets.manualSelected && sets.totalSetNum > 0) setsCB = true;
-      else setsCB = true;
+      else setsCB = false;
 
       //check access
       if (access.link !== "") {
