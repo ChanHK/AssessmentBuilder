@@ -19,7 +19,7 @@ import LoaderSpinner from "../../components/LoaderSpinner";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { EditorState, convertToRaw, ContentState, Modifier } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
@@ -155,6 +155,31 @@ class SettingContainer extends Component {
     });
   };
 
+  _handleBeforeInput = (input, length, editorObj) => {
+    const inputLength = editorObj.getCurrentContent().getPlainText().length;
+    if (input && inputLength >= length) {
+      return "handled";
+    }
+  };
+
+  _handlePastedText = (input, length, editorObj) => {
+    const inputLength = editorObj.getCurrentContent().getPlainText().length;
+    let remainingLength = length - inputLength;
+    if (input.length + inputLength >= length) {
+      const newContent = Modifier.insertText(
+        editorObj.getCurrentContent(),
+        editorObj.getSelection(),
+        input.slice(0, remainingLength)
+      );
+
+      EditorState.push(editorObj, newContent, "insert-characters");
+
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -257,6 +282,12 @@ class SettingContainer extends Component {
             onEditorStateChange={(e) => this.setState({ testInstruction: e })}
             editorState={testInstruction}
             readOnly={type === "view" ? true : false}
+            handleBeforeInput={(input) =>
+              this._handleBeforeInput(input, 500, testDescription)
+            }
+            handlePastedText={(input) =>
+              this._handlePastedText(input, 500, testDescription)
+            }
           />
         </div>
 
