@@ -20,6 +20,7 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
+import validator from "validator";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -41,6 +42,7 @@ class GradeContainer extends Component {
       score: {},
       isEmpty: false,
       gradeData: {},
+      msg: null, //store error messages
     };
   }
 
@@ -113,6 +115,36 @@ class GradeContainer extends Component {
     }
   };
 
+  validateForm = (data) => {
+    const { payload } = this.state;
+    const { score } = data;
+    let tempMsg = {};
+
+    const con_data_sco = parseFloat(score);
+    const payload_sco = payload[0].response.score;
+
+    if (score === "") {
+      tempMsg.sco = "Please enter score field";
+    } else if (validator.isAlpha(score)) {
+      tempMsg.sco = `Please enter numbers only`;
+    } else {
+      if (
+        validator.isDecimal(score, { decimal_digits: "1,2" }) ||
+        validator.isInt(score)
+      ) {
+        if (!(con_data_sco >= 0 && con_data_sco <= payload_sco)) {
+          tempMsg.sco = `Please enter number between 0 and ${payload_sco}`;
+        }
+      } else {
+        tempMsg.sco = `Please enter valid score, eg: 1, 1.5, 2.00`;
+      }
+    }
+    this.setState({ msg: tempMsg });
+
+    if (Object.keys(tempMsg).length === 0) return true;
+    else return false;
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const { score, gradeData } = this.state;
@@ -126,11 +158,13 @@ class GradeContainer extends Component {
       gradeData: gradeData,
     };
 
-    this.props.uploadFeedback(data);
+    if (this.validateForm(data)) {
+      this.props.uploadFeedback(data);
+    }
   };
 
   render() {
-    const { payload, score, isEmpty, assessmentID } = this.state;
+    const { payload, score, isEmpty, assessmentID, msg } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -179,16 +213,25 @@ class GradeContainer extends Component {
 
                   <ThirdLabel>{`Score Assigned (Max ${payload[0].response.score} marks): `}</ThirdLabel>
                   <div style={{ paddingBottom: "25px" }}>
-                    <CustomInput
-                      type={"text"}
-                      placeholder={"Enter score"}
-                      onChangeValue={(e) => {
-                        this.setState({
-                          score: { ...score, score: e.target.value },
-                        });
-                      }}
-                      value={score.score}
-                    />
+                    <CustomColumn>
+                      <CustomInput
+                        type={"text"}
+                        placeholder={"Enter score"}
+                        onChangeValue={(e) => {
+                          this.setState({
+                            score: { ...score, score: e.target.value },
+                          });
+                        }}
+                        value={score.score}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("sco")
+                          ? "*" + msg.sco
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
 
                   <ThirdLabel>Feedback (Optional):</ThirdLabel>
@@ -203,6 +246,7 @@ class GradeContainer extends Component {
                       }}
                       placeholder={"Enter your feedback here"}
                       height={"100px"}
+                      maxLenth={100}
                     />
                   </div>
                   <Button
@@ -260,6 +304,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "auto",
     padding: "10px 20px",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
