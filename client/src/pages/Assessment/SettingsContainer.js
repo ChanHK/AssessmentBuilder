@@ -48,6 +48,7 @@ class SettingContainer extends Component {
       gradeValue: [], //stores the value like A+, A, A-
       assessmentID: props.assessmentID,
       type: props.type, //edit | create | view
+      msg: null, //stores error messages
     };
   }
 
@@ -180,6 +181,25 @@ class SettingContainer extends Component {
     }
   };
 
+  validateForm = (data) => {
+    const { testName } = data;
+    const { testInstruction } = this.state;
+    let tempMsg = {};
+
+    if (testName === "") {
+      tempMsg.TN = "Please enter assessment title";
+    }
+
+    if (!testInstruction.getCurrentContent().hasText()) {
+      tempMsg.INS = "Instruction field is required";
+    }
+
+    this.setState({ msg: tempMsg });
+
+    if (Object.keys(tempMsg).length === 0) return true;
+    else return false;
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -212,7 +232,9 @@ class SettingContainer extends Component {
       assessmentID: assessmentID,
     };
 
-    this.props.updateAssessmentSetting(data);
+    if (this.validateForm(data)) {
+      this.props.updateAssessmentSetting(data);
+    }
   };
 
   render() {
@@ -228,6 +250,7 @@ class SettingContainer extends Component {
       gradeRange,
       gradeValue,
       type,
+      msg,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -237,15 +260,24 @@ class SettingContainer extends Component {
       <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
         <SecondLabel>Title</SecondLabel>
         <div style={{ paddingBottom: "25px" }}>
-          <CustomInput
-            name={"testName"}
-            type={"text"}
-            placeholder={"Enter the title here"}
-            onChangeValue={this.onChange}
-            value={testName}
-            readOnly={type === "view" ? true : false}
-            maxLength={100}
-          />
+          <CustomColumn>
+            <CustomInput
+              name={"testName"}
+              type={"text"}
+              placeholder={"Enter the title here"}
+              onChangeValue={this.onChange}
+              value={testName}
+              readOnly={type === "view" ? true : false}
+              maxLength={100}
+            />
+            <span className={css(styles.redText)}>
+              {msg === null
+                ? null
+                : msg.hasOwnProperty("TN")
+                ? "*" + msg.TN
+                : null}
+            </span>
+          </CustomColumn>
         </div>
         <CustomRow>
           <div className={css(styles.subLabel)}>
@@ -278,17 +310,26 @@ class SettingContainer extends Component {
         </CustomRow>
 
         <div style={{ paddingBottom: "25px" }}>
-          <CustomEditor
-            onEditorStateChange={(e) => this.setState({ testInstruction: e })}
-            editorState={testInstruction}
-            readOnly={type === "view" ? true : false}
-            handleBeforeInput={(input) =>
-              this._handleBeforeInput(input, 500, testDescription)
-            }
-            handlePastedText={(input) =>
-              this._handlePastedText(input, 500, testDescription)
-            }
-          />
+          <CustomColumn>
+            <CustomEditor
+              onEditorStateChange={(e) => this.setState({ testInstruction: e })}
+              editorState={testInstruction}
+              readOnly={type === "view" ? true : false}
+              handleBeforeInput={(input) =>
+                this._handleBeforeInput(input, 500, testDescription)
+              }
+              handlePastedText={(input) =>
+                this._handlePastedText(input, 500, testDescription)
+              }
+            />
+            <span className={css(styles.redText)}>
+              {msg === null
+                ? null
+                : msg.hasOwnProperty("INS")
+                ? "*" + msg.INS
+                : null}
+            </span>
+          </CustomColumn>
         </div>
 
         <SecondLabel>Grading Criteria</SecondLabel>
@@ -470,6 +511,11 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
