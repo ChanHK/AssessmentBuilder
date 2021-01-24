@@ -133,8 +133,15 @@ class SetContainer extends Component {
         questionsAllID.push(x._id);
       });
 
+      let tempArray = [];
+
+      for (let i = 0; i < tempQuestions.length; i++) {
+        tempArray.push("");
+      }
+
       this.setState({
         questions: tempQuestions,
+        sectionFilterNum: tempArray,
         totalQuestionNumber:
           assessmentQuestionReducer.assessmentQuestionLoad.length,
         questionsAllID: questionsAllID,
@@ -150,28 +157,71 @@ class SetContainer extends Component {
   }
 
   validateGenerationInput = () => {
-    const { totalQuestionNumber, setNum, questionNum } = this.state;
+    const {
+      totalQuestionNumber,
+      setNum,
+      questionNum,
+      randomTakeFromTotalSelected,
+      definedTakeFromSectionSelected,
+      questions,
+      sectionFilterNum,
+    } = this.state;
     let tempMsg = {};
 
-    if (questionNum === "") {
-      tempMsg.QN = "Please enter number of questions";
-    } else if (!/^\d+$/.test(questionNum)) {
-      tempMsg.QN = "Please enter digits only";
-    } else if (
-      !(
-        parseInt(questionNum) > 0 &&
-        parseInt(questionNum) <= totalQuestionNumber
-      )
-    ) {
-      tempMsg.QN = `Please enter digits between 1 and ${totalQuestionNumber}`;
+    if (randomTakeFromTotalSelected) {
+      if (questionNum === "") {
+        tempMsg.QN = "Please enter number of questions";
+      } else if (!/^\d+$/.test(questionNum)) {
+        tempMsg.QN = "Please enter digits only";
+      } else if (
+        !(
+          parseInt(questionNum) > 0 &&
+          parseInt(questionNum) <= totalQuestionNumber
+        )
+      ) {
+        tempMsg.QN = `Please enter digits between 1 and ${totalQuestionNumber}`;
+      }
+
+      if (setNum === "") {
+        tempMsg.QS = "Please select number of sets";
+      }
     }
 
-    if (setNum === "") {
-      tempMsg.QS = "Please select number of sets";
+    if (definedTakeFromSectionSelected) {
+      let error = [];
+      sectionFilterNum.forEach((item, index) => {
+        if (item === "") {
+          error.push("Please fill up");
+          tempMsg.section = error;
+        } else if (!/^\d+$/.test(item)) {
+          error.push("Please enter digits only");
+          tempMsg.section = error;
+        } else if (
+          !(parseInt(item) >= 0 && parseInt(item) <= questions[index].length)
+        ) {
+          error.push(
+            `Please enter digits between 0 and ${questions[index].length}`
+          );
+          tempMsg.section = error;
+        } else {
+          error.push("");
+          tempMsg.section = error;
+        }
+      });
+    }
+
+    let count = 0;
+    tempMsg.section.forEach((item, index) => {
+      if (item === "") {
+        count++;
+      }
+    });
+    if (count === tempMsg.section.length) {
+      tempMsg = {};
     }
 
     this.setState({ msg: tempMsg });
-    // if (Object.keys(tempMsg).length === 0) this.generateSetButtonClick();
+    if (Object.keys(tempMsg).length === 0) this.generateSetButtonClick();
   };
 
   generateSetButtonClick = () => {
@@ -245,11 +295,13 @@ class SetContainer extends Component {
   };
 
   onChangeSectionFilterNum = (e, index) => {
+    const { sectionFilterNum } = this.state;
+
     this.setState({
       sectionFilterNum: [
-        ...this.state.sectionFilterNum.slice(0, index),
+        ...sectionFilterNum.slice(0, index),
         e.target.value,
-        ...this.state.sectionFilterNum.slice(index + 1),
+        ...sectionFilterNum.slice(index + 1),
       ],
     });
   };
@@ -573,25 +625,36 @@ class SetContainer extends Component {
                           <ThirdLabel textDecoration={"underline"}>
                             Section {index + 1}
                           </ThirdLabel>
-                          <CustomRow>
-                            <div className={css(styles.text)}>
-                              <ThirdLabel>Select</ThirdLabel>
-                            </div>
-                            <div style={{ width: "100px" }}>
-                              <CustomInput
-                                type={"text"}
-                                onChangeValue={(e) =>
-                                  this.onChangeSectionFilterNum(e, index)
-                                }
-                                value={sectionFilterNum[index]}
-                              />
-                            </div>
-                            <div className={css(styles.text)}>
-                              <ThirdLabel>
-                                out of {value.length} questions
-                              </ThirdLabel>
-                            </div>
-                          </CustomRow>
+                          <CustomColumn>
+                            <CustomRow>
+                              <div className={css(styles.text)}>
+                                <ThirdLabel>Select</ThirdLabel>
+                              </div>
+                              <div style={{ width: "100px" }}>
+                                <CustomInput
+                                  type={"text"}
+                                  onChangeValue={(e) =>
+                                    this.onChangeSectionFilterNum(e, index)
+                                  }
+                                  value={sectionFilterNum[index]}
+                                />
+                              </div>
+                              <div className={css(styles.text)}>
+                                <ThirdLabel>
+                                  out of {value.length} questions
+                                </ThirdLabel>
+                              </div>
+                            </CustomRow>
+                            <span className={css(styles.redText)}>
+                              {msg === null
+                                ? null
+                                : msg.hasOwnProperty("section")
+                                ? msg.section[index] !== ""
+                                  ? "*" + msg.section[index]
+                                  : null
+                                : null}
+                            </span>
+                          </CustomColumn>
                         </div>
                       ))}
                     </CustomColumn>
