@@ -208,16 +208,16 @@ class SetContainer extends Component {
           tempMsg.section = error;
         }
       });
-    }
 
-    let count = 0;
-    tempMsg.section.forEach((item, index) => {
-      if (item === "") {
-        count++;
+      let count = 0;
+      tempMsg.section.forEach((item, index) => {
+        if (item === "") {
+          count++; //check is there any error
+        }
+      });
+      if (count === tempMsg.section.length) {
+        tempMsg = {};
       }
-    });
-    if (count === tempMsg.section.length) {
-      tempMsg = {};
     }
 
     this.setState({ msg: tempMsg });
