@@ -55,6 +55,8 @@ class SetContainer extends Component {
       questionsAllID: [], //questions ID of all questions (array)
       questionsAllIDSection: [], //questions ID of all questions but with section (array of array)
       generatedSets: [], //(array)
+
+      msg: null, //stores error messages
     };
   }
 
@@ -147,6 +149,31 @@ class SetContainer extends Component {
     this.props.assessmentSetReducer.assessmentSetLoad = null;
   }
 
+  validateGenerationInput = () => {
+    const { totalQuestionNumber, setNum, questionNum } = this.state;
+    let tempMsg = {};
+
+    if (questionNum === "") {
+      tempMsg.QN = "Please enter number of questions";
+    } else if (!/^\d+$/.test(questionNum)) {
+      tempMsg.QN = "Please enter digits only";
+    } else if (
+      !(
+        parseInt(questionNum) > 0 &&
+        parseInt(questionNum) <= totalQuestionNumber
+      )
+    ) {
+      tempMsg.QN = `Please enter digits between 1 and ${totalQuestionNumber}`;
+    }
+
+    if (setNum === "") {
+      tempMsg.QS = "Please select number of sets";
+    }
+
+    this.setState({ msg: tempMsg });
+    // if (Object.keys(tempMsg).length === 0) this.generateSetButtonClick();
+  };
+
   generateSetButtonClick = () => {
     const {
       totalQuestionNumber,
@@ -215,15 +242,6 @@ class SetContainer extends Component {
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
-  };
-
-  onChangeQuestionNum = (e) => {
-    const val = e.target.value;
-    const max = 100;
-    const maxLength = max.toString().length - 1;
-    const newVal =
-      val < max ? val : parseInt(val.toString().substring(0, maxLength));
-    this.setState({ questionNum: newVal });
   };
 
   onChangeSectionFilterNum = (e, index) => {
@@ -309,6 +327,7 @@ class SetContainer extends Component {
       questions,
       sectionFilterNum,
       type,
+      msg,
     } = this.state;
 
     const column = [
@@ -489,15 +508,20 @@ class SetContainer extends Component {
                             Number of questions (total {totalQuestionNumber})
                           </ThirdLabel>
                           <CustomInput
-                            type={"number"}
+                            type={"text"}
                             onChangeValue={(e) =>
-                              this.onChangeQuestionNum(e, totalQuestionNumber)
+                              this.setState({ questionNum: e.target.value })
                             }
                             value={questionNum}
-                            min={"1"}
-                            max={totalQuestionNumber}
                             placeholder={"Enter number of questions"}
                           />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("QN")
+                              ? "*" + msg.QN
+                              : null}
+                          </span>
                         </CustomColumn>
                       </div>
                       <div className={css(styles.block)}>
@@ -510,6 +534,13 @@ class SetContainer extends Component {
                             onChange={(e) => this.setState({ setNum: e.value })}
                             disabled={type === "view" ? true : false}
                           />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("QS")
+                              ? "*" + msg.QS
+                              : null}
+                          </span>
                         </CustomColumn>
                       </div>
                     </Wrapper>
@@ -588,7 +619,7 @@ class SetContainer extends Component {
                   color={configStyles.colors.white}
                   padding={"8px"}
                   type={"button"}
-                  onClick={this.generateSetButtonClick}
+                  onClick={this.validateGenerationInput}
                 >
                   Generate
                 </Button>
@@ -653,6 +684,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
