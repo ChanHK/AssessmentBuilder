@@ -140,7 +140,7 @@ class ViewSetContainer extends Component {
               {questions.map((item, index) => {
                 let des = this.convertHtml(item.questionDescription);
                 return (
-                  <>
+                  <div key={index}>
                     <SecondLabel>Question {index + 1}</SecondLabel>
                     <div style={{ marginBottom: "25px" }}>
                       <Editor
@@ -150,7 +150,7 @@ class ViewSetContainer extends Component {
                         editorClassName={css(styles.editorClassName)}
                       />
                     </div>
-                  </>
+                  </div>
                 );
               })}
 

@@ -186,7 +186,7 @@ class ViewResponseContainer extends Component {
                   }
 
                   return (
-                    <>
+                    <div key={index}>
                       <SecondLabel>Question {index + 1}</SecondLabel>
                       <div style={{ marginBottom: "25px" }}>
                         <CustomColumn>
@@ -222,7 +222,7 @@ class ViewResponseContainer extends Component {
                           </div>
                         </CustomColumn>
                       </div>
-                    </>
+                    </div>
                   );
                 }
 
@@ -233,7 +233,7 @@ class ViewResponseContainer extends Component {
                   let tempDes = this.convertHtml(item.questionDescription);
 
                   return (
-                    <>
+                    <div key={index}>
                       <SecondLabel>Question {index + 1}</SecondLabel>
                       <div style={{ marginBottom: "25px" }}>
                         <CustomColumn>
@@ -279,7 +279,7 @@ class ViewResponseContainer extends Component {
                           })}
                         </CustomColumn>
                       </div>
-                    </>
+                    </div>
                   );
                 }
 
@@ -287,7 +287,7 @@ class ViewResponseContainer extends Component {
                   let tempDes = this.convertHtml(item.questionDescription);
 
                   return (
-                    <>
+                    <div key={index}>
                       <SecondLabel>Question {index + 1}</SecondLabel>
                       <div style={{ marginBottom: "25px" }}>
                         <CustomColumn>
@@ -341,7 +341,7 @@ class ViewResponseContainer extends Component {
                           })}
                         </CustomColumn>
                       </div>
-                    </>
+                    </div>
                   );
                 }
 
@@ -356,7 +356,7 @@ class ViewResponseContainer extends Component {
                   });
 
                   return (
-                    <>
+                    <div key={index}>
                       <SecondLabel>Question {index + 1}</SecondLabel>
                       <div style={{ marginBottom: "25px" }}>
                         <CustomColumn>
@@ -388,7 +388,7 @@ class ViewResponseContainer extends Component {
                           </div>
                         </CustomColumn>
                       </div>
-                    </>
+                    </div>
                   );
                 }
 

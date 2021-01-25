@@ -44,9 +44,9 @@ class HomeContainer extends Component {
       activateNum: 0,
       generatedID: "", //ID return from createAssessmentObj
       url: "", //pic
-      posX: "",
-      posY: "",
-      scale: "",
+      posX: 0,
+      posY: 0,
+      scale: 0,
     };
   }
 

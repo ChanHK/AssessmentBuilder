@@ -85,7 +85,7 @@ class EditProfileContainer extends Component {
           image: profile.image.url,
           imagePosX: parseFloat(profile.image.posX),
           imagePosY: parseFloat(profile.image.posY),
-          imageScale: profile.image.scale,
+          imageScale: parseFloat(profile.image.scale),
         }));
       }
     }
@@ -215,7 +215,7 @@ class EditProfileContainer extends Component {
                         image={image}
                         position={position}
                         onPositionChange={this.handlePositionChange}
-                        scale={parseFloat(imageScale)}
+                        scale={imageScale}
                       />
                     </DragDrop>
                     {fileRejected && (
