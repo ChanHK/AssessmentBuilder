@@ -183,7 +183,14 @@ class SettingContainer extends Component {
   };
 
   validateForm = (data) => {
-    const { testName, passOrFailSelected, score, unit } = data;
+    const {
+      testName,
+      passOrFailSelected,
+      score,
+      unit,
+      addGradingSelected,
+      gradeUnit,
+    } = data;
     const { testInstruction } = this.state;
     let tempMsg = {};
 
@@ -221,6 +228,12 @@ class SettingContainer extends Component {
 
       if (unit === "") {
         tempMsg.P_UNIT = "Unit type field is required";
+      }
+    }
+
+    if (addGradingSelected) {
+      if (gradeUnit === "") {
+        tempMsg.G_UNIT = "Grade unit type field is required";
       }
     }
 
@@ -461,16 +474,25 @@ class SettingContainer extends Component {
                       widthChange={1425}
                     >
                       <div className={css(styles.block)}>
-                        <CustomDropdown
-                          options={unitOptions}
-                          placeholder={"Select unit type"}
-                          value={gradeUnit}
-                          onChange={(e) =>
-                            this.setState({ gradeUnit: e.value })
-                          }
-                          padding={"12px"}
-                          disabled={type === "view" ? true : false}
-                        />
+                        <CustomColumn>
+                          <CustomDropdown
+                            options={unitOptions}
+                            placeholder={"Select unit type"}
+                            value={gradeUnit}
+                            onChange={(e) =>
+                              this.setState({ gradeUnit: e.value })
+                            }
+                            padding={"12px"}
+                            disabled={type === "view" ? true : false}
+                          />
+                          <span className={css(styles.redText)}>
+                            {msg === null
+                              ? null
+                              : msg.hasOwnProperty("G_UNIT")
+                              ? "*" + msg.G_UNIT
+                              : null}
+                          </span>
+                        </CustomColumn>
                       </div>
                       {type !== "view" && (
                         <div className={css(styles.block)}>
