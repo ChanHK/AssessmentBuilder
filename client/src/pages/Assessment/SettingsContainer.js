@@ -22,6 +22,7 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import { EditorState, convertToRaw, ContentState, Modifier } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
+import validator from "validator";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -182,16 +183,45 @@ class SettingContainer extends Component {
   };
 
   validateForm = (data) => {
-    const { testName } = data;
+    const { testName, passOrFailSelected, score, unit } = data;
     const { testInstruction } = this.state;
     let tempMsg = {};
 
     if (testName === "") {
-      tempMsg.TN = "Please enter assessment title";
+      tempMsg.TN = "Assessment title field is required";
     }
 
     if (!testInstruction.getCurrentContent().hasText()) {
       tempMsg.INS = "Instruction field is required";
+    }
+
+    let curr_sco = parseFloat(score);
+
+    if (passOrFailSelected) {
+      if (score === "") {
+        tempMsg.P_SCO = "Passing score field is required";
+      } else if (validator.isAlpha(score)) {
+        tempMsg.P_SCO = `Please enter numbers only`;
+      } else {
+        if (
+          validator.isDecimal(score, { decimal_digits: "1,2" }) ||
+          validator.isInt(score)
+        ) {
+          if (unit === "percentage %" && !(curr_sco > 0 && curr_sco <= 100)) {
+            tempMsg.P_SCO = `Please enter number between 1 and 100`;
+          }
+
+          if (unit === "points p." && !(curr_sco > 0 && curr_sco <= 1000)) {
+            tempMsg.P_SCO = `Please enter number between 1 and 1000`;
+          }
+        } else {
+          tempMsg.P_SCO = `Please enter valid score, eg: 1, 1.5, 2.00`;
+        }
+      }
+
+      if (unit === "") {
+        tempMsg.P_UNIT = "Unit type field is required";
+      }
     }
 
     this.setState({ msg: tempMsg });
@@ -355,27 +385,42 @@ class SettingContainer extends Component {
                     widthChange={1425}
                   >
                     <div className={css(styles.block)}>
-                      <CustomInput
-                        name={"score"}
-                        type={"number"}
-                        step={"0.01"}
-                        placeholder={
-                          "Enter the passing score here (two digits)"
-                        }
-                        onChangeValue={this.onChange}
-                        value={score}
-                        readOnly={type === "view" ? true : false}
-                      />
+                      <CustomColumn>
+                        <CustomInput
+                          name={"score"}
+                          type={"text"}
+                          placeholder={"Enter the passing score here"}
+                          onChangeValue={this.onChange}
+                          value={score}
+                          readOnly={type === "view" ? true : false}
+                        />
+                        <span className={css(styles.redText)}>
+                          {msg === null
+                            ? null
+                            : msg.hasOwnProperty("P_SCO")
+                            ? "*" + msg.P_SCO
+                            : null}
+                        </span>
+                      </CustomColumn>
                     </div>
                     <div className={css(styles.block)}>
-                      <CustomDropdown
-                        options={unitOptions}
-                        placeholder={"Select unit type"}
-                        value={unit}
-                        onChange={(e) => this.setState({ unit: e.value })}
-                        padding={"12px"}
-                        disabled={type === "view" ? true : false}
-                      />
+                      <CustomColumn>
+                        <CustomDropdown
+                          options={unitOptions}
+                          placeholder={"Select unit type"}
+                          value={unit}
+                          onChange={(e) => this.setState({ unit: e.value })}
+                          padding={"12px"}
+                          disabled={type === "view" ? true : false}
+                        />
+                        <span className={css(styles.redText)}>
+                          {msg === null
+                            ? null
+                            : msg.hasOwnProperty("P_UNIT")
+                            ? "*" + msg.P_UNIT
+                            : null}
+                        </span>
+                      </CustomColumn>
                     </div>
                   </Wrapper>
                 </div>
