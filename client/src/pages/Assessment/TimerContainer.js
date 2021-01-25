@@ -42,6 +42,7 @@ class TimerContainer extends Component {
       endDate: "",
       assessmentID: props.assessmentID,
       type: props.type,
+      msg: null, //stores error messages
     };
   }
 
@@ -96,6 +97,7 @@ class TimerContainer extends Component {
         hour: "",
         minute: "",
         second: "",
+        msg: null,
       });
     }
   };
@@ -109,6 +111,7 @@ class TimerContainer extends Component {
         hour: "",
         minute: "",
         second: "",
+        msg: null,
       });
     }
   };
@@ -122,8 +125,51 @@ class TimerContainer extends Component {
         hour: "",
         minute: "",
         second: "",
+        msg: null,
       });
     }
+  };
+
+  validateForm = (data) => {
+    const {
+      assessmentTimeSelected,
+      questionTimeSelected,
+      startDate,
+      endDate,
+    } = data;
+    const { hour, minute, second } = this.state;
+    let tempMsg = {};
+
+    if (assessmentTimeSelected) {
+      if (hour === "") {
+        tempMsg.H = "Please select hour";
+      }
+      if (minute === "") {
+        tempMsg.M = "Please select minute";
+      }
+    }
+
+    if (questionTimeSelected) {
+      if (second === "") {
+        tempMsg.S = "Please select second";
+      }
+      if (minute === "") {
+        tempMsg.M = "Please select minute";
+      }
+    }
+
+    if (startDate === "") {
+      tempMsg.SD = "Please select start date";
+    }
+
+    if (endDate === "") {
+      tempMsg.ED = "Please select end date";
+    }
+
+    this.setState({ msg: tempMsg });
+
+    if (Object.keys(tempMsg).length === 0) return true;
+    else return false;
   };
 
   onSubmit = (e) => {
@@ -142,8 +188,11 @@ class TimerContainer extends Component {
     } = this.state;
 
     let time = "";
-    if (assessmentTimeSelected) time = hour + ":" + minute + ":00";
-    if (questionTimeSelected) time = "00:" + minute + ":" + second;
+    if (assessmentTimeSelected && hour !== "" && minute !== "") {
+      time = hour + ":" + minute + ":00";
+    } else if (questionTimeSelected && second !== "" && minute !== "") {
+      time = "00:" + minute + ":" + second;
+    }
 
     let data = {
       assessmentTimeSelected: assessmentTimeSelected,
@@ -155,7 +204,9 @@ class TimerContainer extends Component {
       assessmentID: assessmentID,
     };
 
-    this.props.updateAssessmentTimer(data);
+    if (this.validateForm(data)) {
+      this.props.updateAssessmentTimer(data);
+    }
   };
 
   render() {
@@ -169,6 +220,7 @@ class TimerContainer extends Component {
       startDate,
       endDate,
       type,
+      msg,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -200,22 +252,40 @@ class TimerContainer extends Component {
                   widthChange={1425}
                 >
                   <div className={css(styles.block)}>
-                    <CustomDropdown
-                      options={Hour}
-                      placeholder={"Select hour"}
-                      value={hour}
-                      onChange={(e) => this.setState({ hour: e.value })}
-                      disabled={type === "view" ? true : false}
-                    />
+                    <CustomColumn>
+                      <CustomDropdown
+                        options={Hour}
+                        placeholder={"Select hour"}
+                        value={hour}
+                        onChange={(e) => this.setState({ hour: e.value })}
+                        disabled={type === "view" ? true : false}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("H")
+                          ? "*" + msg.H
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                   <div className={css(styles.block)}>
-                    <CustomDropdown
-                      options={MinuteSeconds}
-                      placeholder={"Select minute"}
-                      value={minute}
-                      onChange={(e) => this.setState({ minute: e.value })}
-                      disabled={type === "view" ? true : false}
-                    />
+                    <CustomColumn>
+                      <CustomDropdown
+                        options={MinuteSeconds}
+                        placeholder={"Select minute"}
+                        value={minute}
+                        onChange={(e) => this.setState({ minute: e.value })}
+                        disabled={type === "view" ? true : false}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("M")
+                          ? "*" + msg.M
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                 </Wrapper>
               </div>
@@ -241,22 +311,40 @@ class TimerContainer extends Component {
                   widthChange={1425}
                 >
                   <div className={css(styles.block)}>
-                    <CustomDropdown
-                      options={MinuteSeconds}
-                      placeholder={"Select minutes"}
-                      value={minute}
-                      onChange={(e) => this.setState({ minute: e.value })}
-                      disabled={type === "view" ? true : false}
-                    />
+                    <CustomColumn>
+                      <CustomDropdown
+                        options={MinuteSeconds}
+                        placeholder={"Select minutes"}
+                        value={minute}
+                        onChange={(e) => this.setState({ minute: e.value })}
+                        disabled={type === "view" ? true : false}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("M")
+                          ? "*" + msg.M
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                   <div className={css(styles.block)}>
-                    <CustomDropdown
-                      options={seconds10}
-                      placeholder={"Select seconds"}
-                      value={second}
-                      onChange={(e) => this.setState({ second: e.value })}
-                      disabled={type === "view" ? true : false}
-                    />
+                    <CustomColumn>
+                      <CustomDropdown
+                        options={seconds10}
+                        placeholder={"Select seconds"}
+                        value={second}
+                        onChange={(e) => this.setState({ second: e.value })}
+                        disabled={type === "view" ? true : false}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("S")
+                          ? "*" + msg.S
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                 </Wrapper>
               </div>
@@ -277,36 +365,54 @@ class TimerContainer extends Component {
 
         <SecondLabel>Availability</SecondLabel>
         <div className={css(styles.bar)}>
-          <Wrapper firstHeight={"80px"} secHeight={"180px"} widthChange={1175}>
+          <Wrapper firstHeight={"100px"} secHeight={"200px"} widthChange={1175}>
             <div className={css(styles.timeBlock)}>
               <div>
-                <ThirdLabel>Start Date</ThirdLabel>
-                <CustomDatePicker
-                  selected={startDate}
-                  onChange={(e) => this.setState({ startDate: e })}
-                  placeholderText={"Select start date"}
-                  startDate={startDate}
-                  endDate={endDate}
-                  selectsStart={true}
-                  selectsEnd={false}
-                  readOnly={type === "view" ? true : false}
-                />
+                <CustomColumn>
+                  <ThirdLabel>Start Date</ThirdLabel>
+                  <CustomDatePicker
+                    selected={startDate}
+                    onChange={(e) => this.setState({ startDate: e })}
+                    placeholderText={"Select start date"}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsStart={true}
+                    selectsEnd={false}
+                    readOnly={type === "view" ? true : false}
+                  />
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("SD")
+                      ? "*" + msg.SD
+                      : null}
+                  </span>
+                </CustomColumn>
               </div>
             </div>
 
             <div className={css(styles.timeBlock)}>
               <div>
-                <ThirdLabel>End Date</ThirdLabel>
-                <CustomDatePicker
-                  selected={endDate}
-                  onChange={(e) => this.setState({ endDate: e })}
-                  placeholderText={"Select end date"}
-                  startDate={startDate}
-                  endDate={endDate}
-                  selectsStart={false}
-                  selectsEnd={true}
-                  readOnly={type === "view" ? true : false}
-                />
+                <CustomColumn>
+                  <ThirdLabel>End Date</ThirdLabel>
+                  <CustomDatePicker
+                    selected={endDate}
+                    onChange={(e) => this.setState({ endDate: e })}
+                    placeholderText={"Select end date"}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsStart={false}
+                    selectsEnd={true}
+                    readOnly={type === "view" ? true : false}
+                  />
+                  <span className={css(styles.redText)}>
+                    {msg === null
+                      ? null
+                      : msg.hasOwnProperty("ED")
+                      ? "*" + msg.ED
+                      : null}
+                  </span>
+                </CustomColumn>
               </div>
             </div>
           </Wrapper>
@@ -361,6 +467,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
