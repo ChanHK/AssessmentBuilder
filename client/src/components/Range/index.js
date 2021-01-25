@@ -27,12 +27,11 @@ const Range = (props) => {
           </div>
           <div className={css(styles.inputCon)}>
             <CustomInput
-              type={"number"}
+              type={"text"}
               onChangeValue={props.onChange}
               value={props.value}
-              min={"1"}
-              maxLength={2}
               readOnly={props.readOnly}
+              maxLength={4}
             />
           </div>
           <div className={css(styles.label)}>
@@ -50,7 +49,7 @@ const Range = (props) => {
             placeholder={"Enter grade here"}
             onChangeValue={props.onChangeValue}
             value={props.gradeValue}
-            maxLength={2}
+            maxLength={10}
             readOnly={props.readOnly}
           />
         </div>

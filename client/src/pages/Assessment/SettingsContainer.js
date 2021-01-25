@@ -190,6 +190,8 @@ class SettingContainer extends Component {
       unit,
       addGradingSelected,
       gradeUnit,
+      gradeRange,
+      gradeValue,
     } = data;
     const { testInstruction } = this.state;
     let tempMsg = {};
@@ -234,6 +236,62 @@ class SettingContainer extends Component {
     if (addGradingSelected) {
       if (gradeUnit === "") {
         tempMsg.G_UNIT = "Grade unit type field is required";
+      }
+
+      let error = [];
+      gradeRange.forEach((item, index) => {
+        if (item === "") {
+          error.push("Range field is required");
+          tempMsg.RAN = error;
+        } else if (!validator.isInt(item)) {
+          error.push("Please enter number only");
+          tempMsg.RAN = error;
+        } else if (
+          gradeUnit === "percentage %" &&
+          !(parseInt(item) > 0 && parseInt(item) <= 100)
+        ) {
+          error.push("Please enter number between 1 and 100");
+          tempMsg.RAN = error;
+        } else if (
+          gradeUnit === "points p." &&
+          !(parseInt(item) > 0 && parseInt(item) <= 1000)
+        ) {
+          error.push("Please enter number between 1 and 1000");
+          tempMsg.RAN = error;
+        } else if (parseInt(item) <= gradeRange[index - 1] && index !== 0) {
+          error.push("Please enter range bigger than the previous range");
+          tempMsg.RAN = error;
+        } else if (parseInt(item) === 0 && index === 0) {
+          error.push("Please enter range bigger 0");
+          tempMsg.RAN = error;
+        } else {
+          error.push("");
+          tempMsg.RAN = error;
+        }
+      });
+
+      let error2 = [];
+      gradeValue.forEach((item, index) => {
+        if (item === "") {
+          error2.push("Grade field is required");
+          tempMsg.VAL = error2;
+        } else {
+          error2.push("");
+          tempMsg.VAL = error2;
+        }
+      });
+
+      let count = 0;
+      let count2 = 0;
+      tempMsg.RAN.forEach((item, index) => {
+        if (item === "") count++; //check is there any error
+      });
+      tempMsg.VAL.forEach((item, index) => {
+        if (item === "") count2++; //check is there any error
+      });
+      if (count === tempMsg.RAN.length && count2 === tempMsg.VAL.length) {
+        delete tempMsg.RAN;
+        delete tempMsg.VAL;
       }
     }
 
@@ -359,10 +417,10 @@ class SettingContainer extends Component {
               editorState={testInstruction}
               readOnly={type === "view" ? true : false}
               handleBeforeInput={(input) =>
-                this._handleBeforeInput(input, 500, testDescription)
+                this._handleBeforeInput(input, 500, testInstruction)
               }
               handlePastedText={(input) =>
-                this._handlePastedText(input, 500, testDescription)
+                this._handlePastedText(input, 500, testInstruction)
               }
             />
             <span className={css(styles.redText)}>
@@ -517,21 +575,43 @@ class SettingContainer extends Component {
                   </div>
                   {gradeRange.map((item, index) => (
                     <div style={{ width: "225px" }} key={index}>
-                      <Range
-                        count={index + 1}
-                        value={item}
-                        unit={gradeUnit}
-                        onClick={() => this.deleteRangeRow(index)}
-                        gradeValue={gradeValue[index]}
-                        onChangeValue={(e) =>
-                          this.onChangeGradeValue(e.target.value, index)
-                        }
-                        onChange={(e) =>
-                          this.onChangeGradeRange(e.target.value, index)
-                        }
-                        previous={gradeRange[index - 1]}
-                        readOnly={type === "view" ? true : false}
-                      />
+                      <CustomColumn>
+                        <Range
+                          count={index + 1}
+                          value={item}
+                          unit={gradeUnit}
+                          onClick={() => this.deleteRangeRow(index)}
+                          gradeValue={gradeValue[index]}
+                          onChangeValue={(e) =>
+                            this.onChangeGradeValue(e.target.value, index)
+                          }
+                          onChange={(e) =>
+                            this.onChangeGradeRange(e.target.value, index)
+                          }
+                          previous={gradeRange[index - 1]}
+                          readOnly={type === "view" ? true : false}
+                        />
+                        <span className={css(styles.redText)}>
+                          {msg === null
+                            ? null
+                            : msg.hasOwnProperty("RAN")
+                            ? msg.RAN[index] !== "" &&
+                              msg.RAN[index] !== undefined
+                              ? "*" + msg.RAN[index]
+                              : null
+                            : null}
+                        </span>
+                        <span className={css(styles.redText)}>
+                          {msg === null
+                            ? null
+                            : msg.hasOwnProperty("VAL")
+                            ? msg.VAL[index] !== "" &&
+                              msg.VAL[index] !== undefined
+                              ? "*" + msg.VAL[index]
+                              : null
+                            : null}
+                        </span>
+                      </CustomColumn>
                     </div>
                   ))}
                 </div>
