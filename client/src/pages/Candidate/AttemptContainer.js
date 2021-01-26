@@ -159,7 +159,7 @@ class AttemptContainer extends Component {
     let totalSec =
       (parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds)) *
       1000;
-    if (this.state.time !== totalSec) this.setState({ time: totalSec });
+    localStorage["time"] = totalSec;
     if (completed) this.submit();
     return (
       <div className={css(styles.countdown)}>
@@ -312,10 +312,11 @@ class AttemptContainer extends Component {
       index,
       orderCount,
       timeSettings,
-      time,
       completions,
       assessmentID,
     } = this.state;
+
+    let time = parseInt(localStorage.getItem("time"));
 
     if (this.props.candidateReducer.directStart) {
       this.props.history.push(`/assessment/start/${assessmentID}`);
