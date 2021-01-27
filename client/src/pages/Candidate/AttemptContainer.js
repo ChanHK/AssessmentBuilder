@@ -13,7 +13,6 @@ import Button from "../../components/Button";
 import TextArea from "../../components/TextArea";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
-import Countdown from "react-countdown";
 import { EditorState, ContentState } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 

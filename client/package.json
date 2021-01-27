@@ -26,7 +26,6 @@
     "react-bootstrap": "^1.4.0",
     "react-chartjs-2": "^2.11.1",
     "react-compose": "^2.0.0",
-    "react-countdown": "^2.3.1",
     "react-data-table-component": "^6.11.5",
     "react-datepicker": "^3.3.0",
     "react-device-detect": "^1.14.0",
