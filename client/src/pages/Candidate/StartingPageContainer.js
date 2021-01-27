@@ -121,8 +121,7 @@ class StartingPageContainer extends Component {
       let second = time.substring(6, 9);
 
       let totalSec =
-        (parseInt(hour) * 3600 + parseInt(minute) * 60 + parseInt(second)) *
-        1000;
+        parseInt(hour) * 3600 + parseInt(minute) * 60 + parseInt(second);
 
       this.setState({
         assessmentTitle: testName,
