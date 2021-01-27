@@ -4,6 +4,35 @@ import React from "react";
 import { StyleSheet, css } from "aphrodite";
 import * as configStyles from "../../config/styles";
 
+function uploadImageCallBack(file) {
+  return new Promise((resolve, reject) => {
+    var formdata = new FormData();
+
+    formdata.append("file", file);
+    formdata.append("cloud_name", "dityuyf5q");
+    formdata.append("resource_type", "image");
+    formdata.append("upload_preset", "assessmentbuilder");
+
+    const xhr = new XMLHttpRequest();
+    xhr.open(
+      "POST",
+      "https://api.cloudinary.com/v1_1/dityuyf5q/image/upload",
+      true
+    );
+    xhr.send(formdata);
+    xhr.onload = function () {
+      const data = JSON.parse(xhr.responseText);
+      const response = { data: { link: data.secure_url } };
+      resolve(response);
+    };
+
+    xhr.onerror = function () {
+      const error = JSON.parse(xhr.responseText);
+      reject(error);
+    };
+  });
+}
+
 const CustomEditor = (props) => (
   <Editor
     editorState={props.editorState}
@@ -28,10 +57,20 @@ const CustomEditor = (props) => (
         // "link",
         // "embedded",
         "emoji",
-        // "image",
+        "image",
         "remove",
         "history",
       ],
+      image: {
+        uploadCallback: uploadImageCallBack,
+        alt: { present: true, mandatory: false },
+        defaultSize: {
+          height: "100px",
+          width: "100px",
+        },
+        inputAccept: "image/jpeg,image/jpg,image/png",
+        previewImage: true,
+      },
     }}
     onEditorStateChange={props.onEditorStateChange}
     toolbarHidden={props.toolbarHidden}
