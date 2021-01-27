@@ -38,7 +38,7 @@ class AttemptContainer extends Component {
       set: this.props.match.params.set,
       timeSettings: this.props.match.params.timeSettings,
       start_time: parseInt(this.props.match.params.totalSec), // time used when reset
-      time: localStorage.getItem("time") + 2, //current time + 2 seconds (loading time)
+      time: parseInt(localStorage.getItem("time")) + 2, //current time + 2 seconds (loading time)
       completions: 0, //for countdown
       gradeData: {},
     };
