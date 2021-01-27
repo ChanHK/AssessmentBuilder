@@ -84,6 +84,13 @@ class QBSubjectsContainer extends Component {
       data.push({ sub: item });
     });
 
+    if (search !== "") {
+      const lowerCasedSearchText = search.toLowerCase();
+      data = data.filter((item) => {
+        return item.sub.toLowerCase().indexOf(lowerCasedSearchText) >= 0;
+      });
+    }
+
     const column = [
       {
         name: "#",
