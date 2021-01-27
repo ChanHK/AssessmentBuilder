@@ -26,6 +26,7 @@ import {
   QuestionBankContainer,
   CreateQuestionContainer,
   ViewQuestionContainer,
+  QBSubjectsContainer,
 } from "../pages/QuestionBank";
 
 import {
@@ -78,6 +79,13 @@ export default function Routes() {
           role={"User"}
         />
 
+        <Route
+          path="/questionbank/main"
+          exact
+          component={QBSubjectsContainer}
+          isPrivate
+          role={"User"}
+        />
         <Route
           path="/questionbank"
           exact
