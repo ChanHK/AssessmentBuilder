@@ -37,8 +37,6 @@ class ProfileContainer extends Component {
       username: "",
       email: "",
       gender: null,
-      yearOfBirth: null,
-      occupation: "",
       totalAssessmentsCreated: 0,
       totalQuestionsCreated: 0,
     };
@@ -74,8 +72,6 @@ class ProfileContainer extends Component {
         username: profile.username,
         email: profile.email,
         gender: profile.gender,
-        yearOfBirth: profile.yearOfBirth,
-        occupation: profile.occupation,
         totalAssessmentsCreated: profile.totalAssessmentsCreated,
         totalQuestionsCreated: profile.totalQuestionsCreated,
       }));
@@ -99,8 +95,6 @@ class ProfileContainer extends Component {
       username,
       email,
       gender,
-      yearOfBirth,
-      occupation,
       totalAssessmentsCreated,
       totalQuestionsCreated,
     } = this.state;
@@ -151,14 +145,6 @@ class ProfileContainer extends Component {
                   <div style={{ paddingBottom: "25px" }}>
                     <SecondLabel>Gender</SecondLabel>
                     <ThirdLabel>{gender}</ThirdLabel>
-                  </div>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <SecondLabel>Year of Birth</SecondLabel>
-                    <ThirdLabel>{yearOfBirth}</ThirdLabel>
-                  </div>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <SecondLabel>Occupation</SecondLabel>
-                    <ThirdLabel>{occupation}</ThirdLabel>
                   </div>
 
                   <Button

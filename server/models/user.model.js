@@ -37,14 +37,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "Empty",
   },
-  yearOfBirth: {
-    type: String,
-    default: "Empty",
-  },
-  occupation: {
-    type: String,
-    default: "Empty",
-  },
   resetPasswordLink: {
     data: String,
     default: "",

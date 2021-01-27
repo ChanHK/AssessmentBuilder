@@ -6,8 +6,6 @@ module.exports = function validateProfileInput(data) {
   // Convert empty fields to an empty string so we can use validator functions
   data.username = !isEmpty(data.username) ? data.username : "";
   data.gender = !isEmpty(data.gender) ? data.gender : "";
-  data.yearOfBirth = !isEmpty(data.yearOfBirth) ? data.yearOfBirth : "";
-  data.occupation = !isEmpty(data.occupation) ? data.occupation : "";
 
   if (Validator.isEmpty(data.username)) {
     errors.username = "Username field is required";
@@ -15,15 +13,6 @@ module.exports = function validateProfileInput(data) {
     errors.username = "Username field minimum 3 and maximum 10 characters";
   } else if (!Validator.isAlpha(data.username)) {
     errors.username = "Please enter alphabets only";
-  }
-
-  if (
-    !Validator.isEmpty(data.occupation) &&
-    !Validator.isLength(data.occupation, 3, 25)
-  ) {
-    errors.occupation = "Occupation field minimum 3 and maximum 25 characters";
-  } else if (!Validator.isAlpha(data.occupation)) {
-    errors.occupation = "Please enter only letters a-zA-Z";
   }
 
   return {

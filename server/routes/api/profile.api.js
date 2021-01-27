@@ -56,8 +56,6 @@ router.post("/profile", auth, parser.single("url"), (req, res) => {
   db.User.findById(req.user.id).then((user) => {
     user.username = req.body.username;
     user.gender = req.body.gender;
-    user.yearOfBirth = req.body.yearOfBirth;
-    user.occupation = req.body.occupation;
     if (req.file === undefined) {
       user.image = {
         url: req.body.url,

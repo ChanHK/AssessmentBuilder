@@ -22,7 +22,6 @@ import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
 import GenderData from "./Data/GenderData";
-import { GenerateYear } from "./Data/GenerateYear";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -46,8 +45,6 @@ class EditProfileContainer extends Component {
       allowZoomOut: false,
       username: "",
       gender: "",
-      birthYear: "",
-      occupation: "",
       fileRejected: false,
       msg: null,
     };
@@ -80,8 +77,6 @@ class EditProfileContainer extends Component {
         this.setState(() => ({
           username: profile.username,
           gender: profile.gender === "Empty" ? "" : profile.gender,
-          birthYear: profile.yearOfBirth === "Empty" ? "" : profile.yearOfBirth,
-          occupation: profile.occupation === "Empty" ? "" : profile.occupation,
           image: profile.image.url,
           imagePosX: parseFloat(profile.image.posX),
           imagePosY: parseFloat(profile.image.posY),
@@ -134,8 +129,6 @@ class EditProfileContainer extends Component {
     const {
       username,
       gender,
-      birthYear,
-      occupation,
       image,
       imagePosX,
       imagePosY,
@@ -146,11 +139,6 @@ class EditProfileContainer extends Component {
     formData.append("url", image);
     formData.append("username", username);
     formData.append("gender", gender === "" ? "Empty" : gender);
-    formData.append(
-      "yearOfBirth",
-      birthYear === "" ? "Empty" : birthYear.toString()
-    );
-    formData.append("occupation", occupation === "" ? "Empty" : occupation);
     formData.append("posX", imagePosX.toString());
     formData.append("posY", imagePosY.toString());
     formData.append("scale", imageScale);
@@ -167,8 +155,6 @@ class EditProfileContainer extends Component {
       allowZoomOut,
       username,
       gender,
-      birthYear,
-      occupation,
       fileRejected,
       msg,
     } = this.state;
@@ -270,36 +256,6 @@ class EditProfileContainer extends Component {
                     />
                   </div>
 
-                  <SecondLabel>Year of Birth</SecondLabel>
-                  <div style={{ paddingBottom: "25px" }}>
-                    <Dropdown
-                      name={"birthYear"}
-                      options={GenerateYear()}
-                      placeholder={"Select your birth year"}
-                      value={birthYear}
-                      onChangeValue={this.onChange}
-                    />
-                  </div>
-
-                  <SecondLabel>Occupation</SecondLabel>
-                  <div style={{ paddingBottom: "75px" }}>
-                    <CustomColumn>
-                      <CustomInput
-                        name={"occupation"}
-                        type={"text"}
-                        placeholder={" Enter your occupation"}
-                        onChangeValue={this.onChange}
-                        value={occupation}
-                      />
-                      <span className={css(styles.redText)}>
-                        {msg === null
-                          ? null
-                          : msg.hasOwnProperty("occupation")
-                          ? "*" + msg.occupation
-                          : null}{" "}
-                      </span>
-                    </CustomColumn>
-                  </div>
                   <CustomRow>
                     <div className={css(styles.buttonContainer)}>
                       <div style={{ marginRight: "10px" }}>
