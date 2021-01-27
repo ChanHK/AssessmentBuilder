@@ -7,7 +7,7 @@ const QuestionBankSchema = new mongoose.Schema({
   },
   totalSubjects: {
     type: Array,
-    default: ["Others"],
+    default: ["others"],
   },
   questions: [
     {

@@ -12,6 +12,7 @@ export default function (state = initialState, action) {
     case QUESTION.UPDATE_QUESTION_DATA_BEGIN:
     case QUESTION.FETCH_QUESTION_DATA_BEGIN:
     case QUESTION.FETCH_ALL_QUESTION_DATA_BEGIN:
+    case QUESTION.UPDATE_QUESTION_BANK_SUB_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -33,6 +34,7 @@ export default function (state = initialState, action) {
     case QUESTION.FETCH_QUESTION_DATA_FAIL:
     case QUESTION.DELETE_QUESTION_DATA_FAIL:
     case QUESTION.FETCH_ALL_QUESTION_DATA_FAIL:
+    case QUESTION.UPDATE_QUESTION_BANK_SUB_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -44,6 +46,7 @@ export default function (state = initialState, action) {
         direct: true,
       };
     case QUESTION.FETCH_ALL_QUESTION_DATA_SUCCESS:
+    case QUESTION.UPDATE_QUESTION_BANK_SUB_SUCCESS:
       return {
         ...state,
         isLoading: false,

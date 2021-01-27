@@ -108,7 +108,7 @@ export const updateAQuestion = (data) => (dispatch, getState) => {
     });
 };
 
-export const fetchQuestionData = () => (dispatch, getState) => {
+export const fetchQuestionBankData = () => (dispatch, getState) => {
   dispatch({ type: QUESTION.FETCH_ALL_QUESTION_DATA_BEGIN });
 
   axios
@@ -123,5 +123,23 @@ export const fetchQuestionData = () => (dispatch, getState) => {
     })
     .catch((err) => {
       dispatch({ type: QUESTION.FETCH_ALL_QUESTION_DATA_FAIL });
+    });
+};
+
+export const updateQuestionBankSub = (data) => (dispatch, getState) => {
+  dispatch({ type: QUESTION.UPDATE_QUESTION_BANK_SUB_BEGIN });
+
+  axios
+    .post("/api/user/question/update/subjects", data, tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.UPDATE_QUESTION_BANK_SUB_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: QUESTION.UPDATE_QUESTION_BANK_SUB_FAIL });
     });
 };

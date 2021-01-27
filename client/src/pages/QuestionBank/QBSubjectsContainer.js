@@ -23,7 +23,10 @@ import * as BsIcons from "react-icons/bs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchQuestionData } from "../../actions/question.actions";
+import {
+  fetchQuestionBankData,
+  updateQuestionBankSub,
+} from "../../actions/question.actions";
 
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -34,7 +37,7 @@ class QBSubjectsContainer extends Component {
     this.state = {
       new_subject: "",
       search: "",
-      totalSubjects: ["Others", "Maths"],
+      totalSubjects: [],
     };
   }
 
@@ -50,7 +53,7 @@ class QBSubjectsContainer extends Component {
         this.props.history.push("/login");
       }
     }
-    this.props.fetchQuestionData();
+    this.props.fetchQuestionBankData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -71,6 +74,24 @@ class QBSubjectsContainer extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+
+  addSub = (e) => {
+    e.preventDefault();
+    const { totalSubjects, new_subject } = this.state;
+    let string = new_subject;
+    string = string.trim();
+
+    if (!totalSubjects.includes(string) && string !== "") {
+      let temp = totalSubjects;
+      temp.push(string);
+
+      let data = {
+        totalSubjects: temp,
+      };
+
+      this.props.updateQuestionBankSub(data);
+    }
   };
 
   render() {
@@ -158,6 +179,7 @@ class QBSubjectsContainer extends Component {
                         placeholder={"Enter new subject here"}
                         onChangeValue={this.onChange}
                         value={new_subject}
+                        maxLength={25}
                       />
                       <div style={{ marginRight: "10px" }}></div>
                       <Button
@@ -166,6 +188,7 @@ class QBSubjectsContainer extends Component {
                         padding={"8px"}
                         width={"100px"}
                         type={"button"}
+                        onClick={this.addSub}
                       >
                         Add
                       </Button>
@@ -178,6 +201,7 @@ class QBSubjectsContainer extends Component {
                       placeholder={"Enter subject here to search"}
                       onChangeValue={this.onChange}
                       value={search}
+                      maxLength={25}
                     />
                   </div>
                 </Wrapper>
@@ -207,9 +231,10 @@ const styles = StyleSheet.create({
 });
 
 QBSubjectsContainer.propTypes = {
-  fetchQuestionData: PropTypes.func.isRequired,
+  fetchQuestionBankData: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  updateQuestionBankSub: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -217,6 +242,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  fetchQuestionData,
+  fetchQuestionBankData,
   logout,
+  updateQuestionBankSub,
 })(QBSubjectsContainer);

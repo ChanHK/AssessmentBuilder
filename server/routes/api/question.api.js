@@ -151,4 +151,26 @@ router.get("/question/subject", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/question/update/subjects
+// @desc      POST question to questionBank
+// @access    Private
+router.post("/question/update/subjects", auth, (req, res) => {
+  db.QuestionBank.findOneAndUpdate(
+    {
+      user_id: req.user.id,
+    },
+    {
+      totalSubjects: req.body.totalSubjects,
+    },
+    { new: true }
+  )
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .then((results) => {
+      return res.json(results);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
