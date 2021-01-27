@@ -369,7 +369,7 @@ class TimerContainer extends Component {
             <div className={css(styles.timeBlock)}>
               <div>
                 <CustomColumn>
-                  <ThirdLabel>Start Date</ThirdLabel>
+                  <ThirdLabel>Start Date and Time</ThirdLabel>
                   <CustomDatePicker
                     selected={startDate}
                     onChange={(e) => this.setState({ startDate: e })}
@@ -394,7 +394,7 @@ class TimerContainer extends Component {
             <div className={css(styles.timeBlock)}>
               <div>
                 <CustomColumn>
-                  <ThirdLabel>End Date</ThirdLabel>
+                  <ThirdLabel>End Date and Time</ThirdLabel>
                   <CustomDatePicker
                     selected={endDate}
                     onChange={(e) => this.setState({ endDate: e })}
