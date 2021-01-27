@@ -37,10 +37,13 @@ class AttemptContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       set: this.props.match.params.set,
       timeSettings: this.props.match.params.timeSettings,
-      time: parseInt(this.props.match.params.totalSec),
+      start_time: parseInt(this.props.match.params.totalSec), // time used when reset
+      time: localStorage.getItem("time") + 2, //current time + 2 seconds (loading time)
       completions: 0, //for countdown
       gradeData: {},
     };
+
+    this.interval_id = 0;
   }
 
   componentDidMount() {
@@ -54,6 +57,11 @@ class AttemptContainer extends Component {
     } else this.props.fetchAssessmentSetForCandidate(data);
 
     this.props.fetchGrades(data);
+
+    this.interval_id = setInterval(() => {
+      localStorage["time"] = this.state.time - 1;
+      this.setState({ time: this.state.time - 1 });
+    }, 1000);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -153,19 +161,6 @@ class AttemptContainer extends Component {
     } else {
       this.submit();
     }
-  };
-
-  countRender = ({ hours, minutes, seconds, completed }) => {
-    let totalSec =
-      (parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds)) *
-      1000;
-    localStorage["time"] = totalSec;
-    if (completed) this.submit();
-    return (
-      <div className={css(styles.countdown)}>
-        {hours}:{minutes}:{seconds}
-      </div>
-    );
   };
 
   submit = () => {
@@ -314,9 +309,14 @@ class AttemptContainer extends Component {
       timeSettings,
       completions,
       assessmentID,
+      time,
     } = this.state;
 
-    let time = parseInt(localStorage.getItem("time"));
+    // if (timeSettings === "1" && time === 0) clearInterval(this.interval_id);
+
+    let hours = Math.floor(time / (60 * 60));
+    let minutes = Math.floor((time % (60 * 60)) / 60);
+    let seconds = Math.ceil((time % (60 * 60)) % 60);
 
     if (this.props.candidateReducer.directStart) {
       this.props.history.push(`/assessment/start/${assessmentID}`);
@@ -348,11 +348,9 @@ class AttemptContainer extends Component {
                   )}
 
                   {timeSettings === "1" && (
-                    <Countdown
-                      date={Date.now() + time}
-                      className={css(styles.countdown)}
-                      renderer={this.countRender}
-                    />
+                    <div className={css(styles.countdown)}>
+                      {hours}:{minutes}:{seconds}
+                    </div>
                   )}
                 </div>
                 <div style={{ marginTop: "25px" }}>
