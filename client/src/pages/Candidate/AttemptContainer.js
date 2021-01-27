@@ -33,10 +33,10 @@ class AttemptContainer extends Component {
       index: 0, //array index
       question: [],
       orderCount: 0,
-      type: this.props.match.params.type, //random, fixed or manual | manual with random ?
+      type: localStorage.getItem("type"), //random, fixed or manual | manual with random ?
       assessmentID: this.props.match.params.assessmentID,
-      set: this.props.match.params.set,
-      timeSettings: this.props.match.params.timeSettings,
+      set: localStorage.getItem("set"),
+      timeSettings: localStorage.getItem("timeSettings"),
       start_time: parseInt(this.props.match.params.totalSec), // time used when reset
       time: parseInt(localStorage.getItem("time")) + 2, //current time + 2 seconds (loading time)
       gradeData: {},
@@ -122,6 +122,7 @@ class AttemptContainer extends Component {
     this.props.candidateReducer.questionSet = null;
     this.props.candidateReducer.directStart = false;
     this.props.candidateReducer.grade = null;
+    localStorage.clear();
   }
 
   shuffleArray = (array) => {
@@ -155,7 +156,10 @@ class AttemptContainer extends Component {
       this.setState({ index: index + 1 });
     }
 
-    if (timeSettings === "2") this.setState({ time: start_time });
+    if (timeSettings === "2") {
+      this.setState({ time: start_time });
+      localStorage["time"] = start_time;
+    }
   };
 
   submit = () => {

@@ -215,9 +215,16 @@ class StartingPageContainer extends Component {
         temp.push(i);
       }
 
-      let set = temp[Math.floor(Math.random() * temp.length)];
+      let set =
+        temp[Math.floor(Math.random() * temp.length)] === undefined
+          ? -1
+          : temp[Math.floor(Math.random() * temp.length)];
 
       localStorage.setItem("time", time);
+      localStorage.setItem("timeSettings", timeSettings);
+      localStorage.setItem("set", set);
+      localStorage.setItem("type", type);
+
       this.props.history.push(
         `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${this.props.match.params.assessmentID}`
       );
