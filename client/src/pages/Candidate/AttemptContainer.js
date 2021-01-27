@@ -41,6 +41,7 @@ class AttemptContainer extends Component {
       time: parseInt(localStorage.getItem("time")) + 2, //current time + 2 seconds (loading time)
       completions: 0, //for countdown
       gradeData: {},
+      submitted: false, //check if it is auto submitted
     };
 
     this.interval_id = 0;
@@ -58,10 +59,12 @@ class AttemptContainer extends Component {
 
     this.props.fetchGrades(data);
 
-    this.interval_id = setInterval(() => {
-      localStorage["time"] = this.state.time - 1;
-      this.setState({ time: this.state.time - 1 });
-    }, 1000);
+    if (this.state.timeSettings !== "3") {
+      this.interval_id = setInterval(() => {
+        localStorage["time"] = this.state.time - 1;
+        this.setState({ time: this.state.time - 1 });
+      }, 1000);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -310,9 +313,14 @@ class AttemptContainer extends Component {
       completions,
       assessmentID,
       time,
+      submitted,
     } = this.state;
 
-    // if (timeSettings === "1" && time === 0) clearInterval(this.interval_id);
+    if (timeSettings === "1" && time === 0 && !submitted) {
+      clearInterval(this.interval_id);
+      this.setState({ submitted: true });
+      this.submit();
+    }
 
     let hours = Math.floor(time / (60 * 60));
     let minutes = Math.floor((time % (60 * 60)) / 60);
