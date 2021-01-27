@@ -39,7 +39,6 @@ class AttemptContainer extends Component {
       timeSettings: this.props.match.params.timeSettings,
       start_time: parseInt(this.props.match.params.totalSec), // time used when reset
       time: parseInt(localStorage.getItem("time")) + 2, //current time + 2 seconds (loading time)
-      completions: 0, //for countdown
       gradeData: {},
       submitted: false, //check if it is auto submitted
     };
@@ -151,19 +150,12 @@ class AttemptContainer extends Component {
   };
 
   next = () => {
-    const { index, question } = this.state;
+    const { index, question, timeSettings, start_time } = this.state;
     if (index < question.length - 1) {
       this.setState({ index: index + 1 });
     }
-  };
 
-  questionTime = () => {
-    const { index, question, completions } = this.state;
-    if (index < question.length - 1) {
-      this.setState({ index: index + 1, completions: completions + 1 });
-    } else {
-      this.submit();
-    }
+    if (timeSettings === "2") this.setState({ time: start_time });
   };
 
   submit = () => {
@@ -310,16 +302,29 @@ class AttemptContainer extends Component {
       index,
       orderCount,
       timeSettings,
-      completions,
       assessmentID,
       time,
       submitted,
+      start_time,
     } = this.state;
 
     if (timeSettings === "1" && time === 0 && !submitted) {
       clearInterval(this.interval_id);
       this.setState({ submitted: true });
       this.submit();
+    }
+
+    if (timeSettings === "2" && time === 0) {
+      if (index === question.length - 1 && !submitted) {
+        clearInterval(this.interval_id);
+        this.setState({ submitted: true });
+        this.submit();
+      }
+
+      if (index < question.length - 1) {
+        this.setState({ time: start_time, index: index + 1 });
+        localStorage["time"] = start_time;
+      }
     }
 
     let hours = Math.floor(time / (60 * 60));
@@ -346,16 +351,7 @@ class AttemptContainer extends Component {
                   style={{ marginTop: "25px" }}
                   className={css(styles.countdownCon)}
                 >
-                  {timeSettings === "2" && (
-                    <Countdown
-                      key={completions}
-                      date={Date.now() + time}
-                      className={css(styles.countdown)}
-                      onComplete={this.questionTime}
-                    />
-                  )}
-
-                  {timeSettings === "1" && (
+                  {timeSettings !== "3" && (
                     <div className={css(styles.countdown)}>
                       {hours}:{minutes}:{seconds}
                     </div>
