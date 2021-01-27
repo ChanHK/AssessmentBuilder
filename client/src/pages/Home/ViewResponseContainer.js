@@ -377,15 +377,19 @@ class ViewResponseContainer extends Component {
                               backgroundColor={configStyles.colors.lightOrange}
                             />
                           </div>
-                          <ThirdLabel>Feedback</ThirdLabel>
-                          <div style={{ marginBottom: "25px" }}>
-                            <TextArea
-                              type={"text"}
-                              value={feed_back}
-                              height={"auto"}
-                              readOnly={true}
-                            />
-                          </div>
+                          {feed_back !== "" && (
+                            <>
+                              <ThirdLabel>Feedback</ThirdLabel>
+                              <div style={{ marginBottom: "25px" }}>
+                                <TextArea
+                                  type={"text"}
+                                  value={feed_back}
+                                  height={"auto"}
+                                  readOnly={true}
+                                />
+                              </div>
+                            </>
+                          )}
                         </CustomColumn>
                       </div>
                     </div>
