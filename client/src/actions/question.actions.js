@@ -107,3 +107,21 @@ export const updateAQuestion = (data) => (dispatch, getState) => {
       dispatch({ type: QUESTION.UPDATE_QUESTION_DATA_FAIL });
     });
 };
+
+export const fetchQuestionData = () => (dispatch, getState) => {
+  dispatch({ type: QUESTION.FETCH_ALL_QUESTION_DATA_BEGIN });
+
+  axios
+    .get("/api/user/question/subject", tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.FETCH_ALL_QUESTION_DATA_SUCCESS,
+          payload: res.data,
+        });
+      }, 2000);
+    })
+    .catch((err) => {
+      dispatch({ type: QUESTION.FETCH_ALL_QUESTION_DATA_FAIL });
+    });
+};

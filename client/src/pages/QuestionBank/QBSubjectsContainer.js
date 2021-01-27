@@ -21,6 +21,13 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchQuestionData } from "../../actions/question.actions";
+
+import jwt_decode from "jwt-decode";
+import { logout } from "../../actions/auth.actions";
+
 class QBSubjectsContainer extends Component {
   constructor() {
     super();
@@ -31,12 +38,46 @@ class QBSubjectsContainer extends Component {
     };
   }
 
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      const token = localStorage.getItem("token");
+      const decoded = jwt_decode(token);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000; // to get in milliseconds
+      if (decoded.exp < currentTime) {
+        this.props.logout();
+        this.props.history.push("/login");
+      }
+    }
+    this.props.fetchQuestionData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { questionReducer } = this.props;
+
+    if (
+      prevProps.questionReducer !== questionReducer &&
+      questionReducer.questionBankData !== null
+    ) {
+      const { totalSubjects } = questionReducer.questionBankData;
+      this.setState({ totalSubjects: totalSubjects });
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.questionReducer.questionBankData = null;
+  }
+
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
     const { new_subject, search, totalSubjects } = this.state;
+
+    if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     let data = [];
     totalSubjects.forEach((item, index) => {
@@ -55,7 +96,7 @@ class QBSubjectsContainer extends Component {
         width: "50px",
       },
       {
-        name: "Subject title",
+        name: "Subject",
         selector: "sub",
         cell: (row) => (
           <div>
@@ -93,7 +134,7 @@ class QBSubjectsContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ marginTop: "60px" }}>
-                <FirstLabel>Question Bank</FirstLabel>
+                <FirstLabel>Question Bank - Subjects</FirstLabel>
               </div>
 
               <div style={{ marginBottom: "25px" }}>
@@ -158,4 +199,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QBSubjectsContainer;
+QBSubjectsContainer.propTypes = {
+  fetchQuestionData: PropTypes.func.isRequired,
+  questionReducer: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  questionReducer: state.questionReducer,
+});
+
+export default connect(mapStateToProps, {
+  fetchQuestionData,
+  logout,
+})(QBSubjectsContainer);
