@@ -20,7 +20,7 @@ const AssessmentButtonGroup = (props) => (
         }
       >
         <MdIcons.MdSettings size={30} className={css(styles.pE)} />
-        Settings
+        Start
       </button>
     </div>
     <div>
