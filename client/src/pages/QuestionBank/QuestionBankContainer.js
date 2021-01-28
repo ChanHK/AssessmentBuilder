@@ -22,6 +22,7 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import QuestionType from "./Data/QuestionType";
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
+import * as GiIcons from "react-icons/gi";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -189,7 +190,8 @@ class QuestionBankContainer extends Component {
             </div>
           );
         },
-        width: "500px",
+        minWidth: "500px",
+        width: "60%",
       },
       {
         name: "Question Type",
@@ -201,7 +203,8 @@ class QuestionBankContainer extends Component {
             </div>
           </div>
         ),
-        width: "200px",
+        width: "15%",
+        minWidth: "200px",
       },
       {
         name: "Options",
@@ -236,9 +239,13 @@ class QuestionBankContainer extends Component {
             >
               <BsIcons.BsFillEyeFill />
             </TableButton>
+            <TableButton>
+              <GiIcons.GiJumpAcross />
+            </TableButton>
           </CustomRow>
         ),
-        width: "180px",
+        width: "15%",
+        minWidth: "200px",
       },
     ];
 
