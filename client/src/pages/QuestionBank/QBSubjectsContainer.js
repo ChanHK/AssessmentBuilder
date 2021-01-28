@@ -138,7 +138,11 @@ class QBSubjectsContainer extends Component {
         selector: "sub",
         cell: (row) => (
           <CustomRow>
-            <TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`/questionbank/${row.sub}`);
+              }}
+            >
               <BsIcons.BsFillEyeFill />
             </TableButton>
             <TableButton>

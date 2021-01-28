@@ -87,7 +87,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/questionbank"
+          path="/questionbank/:subject"
           exact
           component={QuestionBankContainer}
           isPrivate

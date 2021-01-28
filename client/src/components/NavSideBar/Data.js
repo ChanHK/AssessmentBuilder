@@ -16,7 +16,7 @@ export const Data = [
   },
   {
     title: "Question Bank",
-    path: "/questionBank",
+    path: "/questionBank/main",
     icon: <RiIcons.RiBankFill />,
   },
 ];
