@@ -182,6 +182,7 @@ router.post("/question/delete/subjects", auth, (req, res) => {
     },
     {
       $pullAll: { totalSubjects: [req.body.subject] },
+      $pull: { questions: { subject: req.body.subject } },
     },
     { new: true }
   )
