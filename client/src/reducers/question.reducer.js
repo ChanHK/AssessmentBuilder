@@ -27,7 +27,6 @@ export default function (state = initialState, action) {
         ...action.payload,
       };
     case QUESTION.FETCH_QUESTION_DATA_SUCCESS:
-    case QUESTION.DELETE_QUESTION_DATA_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -59,6 +58,7 @@ export default function (state = initialState, action) {
         questionBankData: action.payload,
       };
     case QUESTION.FETCH_QUESTION_BASED_ON_SUB_SUCCESS:
+    case QUESTION.DELETE_QUESTION_DATA_SUCCESS:
       return {
         ...state,
         isLoading: false,
