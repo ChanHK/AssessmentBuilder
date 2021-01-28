@@ -107,6 +107,7 @@ class QBSubjectsContainer extends Component {
       };
 
       if (Object.keys(tempMsg).length === 0) {
+        this.setState({ new_subject: "" });
         this.props.updateQuestionBankSub(data);
       }
     }

@@ -12,6 +12,7 @@ import TableButton from "../../components/TableButton";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import CustomInput from "../../components/CustomInput";
 import ScrollArrow from "../../components/ScrollArrow";
+import Modal from "../../components/Modal";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -19,6 +20,8 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+
 import QuestionType from "./Data/QuestionType";
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
@@ -31,6 +34,7 @@ import {
   deleteQuestionData,
   fetchQuestionDataOnSub,
   moveQuestion,
+  fetchQuestionBankData,
 } from "../../actions/question.actions";
 
 import jwt_decode from "jwt-decode";
@@ -48,6 +52,10 @@ class QuestionBankContainer extends Component {
       questionType: "",
       questions: [],
       subject: this.props.match.params.subject,
+      deleteQuestionID: "", //stores the ID of the question that will be deleted
+      showModal: false,
+      all_subjects: [],
+      move_subject: "", // subject which the question move to
     };
   }
 
@@ -67,6 +75,7 @@ class QuestionBankContainer extends Component {
       subject: this.state.subject,
     };
     this.props.fetchQuestionDataOnSub(data);
+    this.props.fetchQuestionBankData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -74,14 +83,20 @@ class QuestionBankContainer extends Component {
 
     if (
       prevProps.questionReducer !== questionReducer &&
-      questionReducer.questionData !== null
+      questionReducer.questionData !== null &&
+      questionReducer.questionBankData !== null
     ) {
-      this.setState({ questions: questionReducer.questionData });
+      const { totalSubjects } = questionReducer.questionBankData;
+      this.setState({
+        questions: questionReducer.questionData,
+        all_subjects: totalSubjects,
+      });
     }
   }
 
   componentWillUnmount() {
     this.props.questionReducer.questionData = null;
+    this.props.questionReducer.questionBankData = null;
   }
 
   onChangeSearchText = (e) => {
@@ -102,7 +117,16 @@ class QuestionBankContainer extends Component {
   };
 
   render() {
-    const { searchText, questionType, questions, subject } = this.state;
+    const {
+      searchText,
+      questionType,
+      questions,
+      subject,
+      deleteQuestionID,
+      showModal,
+      all_subjects,
+      move_subject,
+    } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -169,12 +193,7 @@ class QuestionBankContainer extends Component {
           }
           return (
             <div>
-              <div
-                style={{
-                  fontSize: "15px",
-                  fontFamily: "Ubuntu-Regular",
-                }}
-              >
+              <div className={css(styles.tableRow)}>
                 <Editor
                   editorState={editorState}
                   toolbarHidden={true}
@@ -199,9 +218,7 @@ class QuestionBankContainer extends Component {
         selector: "questionType",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.questionType}
-            </div>
+            <div className={css(styles.tableRow)}>{row.questionType}</div>
           </div>
         ),
         width: "15%",
@@ -242,11 +259,10 @@ class QuestionBankContainer extends Component {
             </TableButton>
             <TableButton
               onClick={() => {
-                const data = {
-                  questionID: row._id,
-                  // subject?
-                };
-                // this.props.moveQuestion(data);
+                this.setState({
+                  deleteQuestionID: row._id,
+                  showModal: true,
+                });
               }}
             >
               <GiIcons.GiJumpAcross />
@@ -324,6 +340,64 @@ class QuestionBankContainer extends Component {
                 </Button>
               </div>
             </CustomColumn>
+
+            <Modal show={showModal}>
+              <div className={css(styles.modal)}>
+                <CustomColumn>
+                  <SecondLabel>Select subject</SecondLabel>
+                  <CustomDropdown
+                    options={all_subjects}
+                    onChange={(e) => {
+                      this.setState({ move_subject: e.value });
+                    }}
+                    value={move_subject}
+                    placeholder="Select question type"
+                  />
+                  <div style={{ marginTop: "25px" }}>
+                    <CustomRow>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          const data = {
+                            questionID: deleteQuestionID,
+                            subject: move_subject,
+                            main_sub: subject,
+                          };
+                          this.props.moveQuestion(data);
+                          this.setState({
+                            showModal: false,
+                            deleteQuestionID: "",
+                          });
+                        }}
+                      >
+                        Confirm
+                      </Button>
+                      <Button
+                        backgroundColor={configStyles.colors.white}
+                        color={configStyles.colors.darkBlue}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          this.setState({
+                            showModal: false,
+                            deleteQuestionID: "",
+                          });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </CustomRow>
+                  </div>
+                </CustomColumn>
+              </div>
+            </Modal>
           </CustomMidContainer>
         </CustomFullContainer>
       </>
@@ -340,6 +414,21 @@ const styles = StyleSheet.create({
     width: "400px",
     height: "auto",
   },
+  tableRow: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Regular",
+  },
+  modal: {
+    width: "100%",
+    height: "auto",
+    border: "none",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    backgroundColor: configStyles.colors.white,
+    padding: "20px",
+  },
 });
 
 QuestionBankContainer.propTypes = {
@@ -349,6 +438,7 @@ QuestionBankContainer.propTypes = {
   deleteQuestionData: PropTypes.func.isRequired,
   fetchQuestionDataOnSub: PropTypes.func.isRequired,
   moveQuestion: PropTypes.func.isRequired,
+  fetchQuestionBankData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -361,4 +451,5 @@ export default connect(mapStateToProps, {
   deleteQuestionData,
   fetchQuestionDataOnSub,
   moveQuestion,
+  fetchQuestionBankData,
 })(QuestionBankContainer);

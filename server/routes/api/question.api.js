@@ -238,7 +238,13 @@ router.post("/question/change/subjects", auth, (req, res) => {
     .select("-__v")
     .select("-totalSubjects")
     .then((results) => {
-      return res.json(results);
+      let temp = [];
+      results.questions.forEach((item, index) => {
+        if (item.subject === req.body.main_sub) {
+          temp.push(item);
+        }
+      });
+      return res.json(temp);
     })
     .catch((err) => console.log(err));
 });
