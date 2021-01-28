@@ -2,10 +2,10 @@ import { QUESTION } from "../utils/actionTypes";
 
 const initialState = {
   isLoading: false,
-  questionLoad: null,
+  questionLoad: null, //stores single question data which displays in page
   direct: false,
-  questionBankData: null,
-  questionData: null,
+  questionBankData: null, //stores totalsubjects only
+  questionData: null, //stores all question data which displays in table
 };
 
 export default function (state = initialState, action) {

@@ -101,7 +101,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/questionbank/question_view/:questionID"
+          path="/questionbank/question_view/:questionID/:subject"
           exact
           component={ViewQuestionContainer}
           isPrivate

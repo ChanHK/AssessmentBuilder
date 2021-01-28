@@ -28,8 +28,8 @@ import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
 
 class ViewQuestionContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questionType: "",
       questionDescription: "",
@@ -37,6 +37,7 @@ class ViewQuestionContainer extends Component {
       questionAnswers: [],
       unConvertedChoices: [],
       unConvertedAns: [],
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -132,6 +133,7 @@ class ViewQuestionContainer extends Component {
       questionAnswers,
       unConvertedChoices,
       unConvertedAns,
+      subject,
     } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
@@ -238,7 +240,7 @@ class ViewQuestionContainer extends Component {
                       padding={"8px"}
                       width={"100px"}
                       onClick={() => {
-                        this.props.history.push(`/questionbank`);
+                        this.props.history.push(`/questionbank/${subject}`);
                       }}
                     >
                       Back
