@@ -143,3 +143,21 @@ export const updateQuestionBankSub = (data) => (dispatch, getState) => {
       dispatch({ type: QUESTION.UPDATE_QUESTION_BANK_SUB_FAIL });
     });
 };
+
+export const deleteQuestionBank = (data) => (dispatch, getState) => {
+  dispatch({ type: QUESTION.DELETE_QUESTION_BANK_BEGIN });
+
+  axios
+    .post("/api/user/question/delete/subjects", data, tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.DELETE_QUESTION_BANK_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: QUESTION.DELETE_QUESTION_BANK_FAIL });
+    });
+};

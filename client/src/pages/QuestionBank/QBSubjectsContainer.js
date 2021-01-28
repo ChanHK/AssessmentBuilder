@@ -26,6 +26,7 @@ import { connect } from "react-redux";
 import {
   fetchQuestionBankData,
   updateQuestionBankSub,
+  deleteQuestionBank,
 } from "../../actions/question.actions";
 
 import jwt_decode from "jwt-decode";
@@ -156,7 +157,14 @@ class QBSubjectsContainer extends Component {
             >
               <BsIcons.BsFillEyeFill />
             </TableButton>
-            <TableButton>
+            <TableButton
+              onClick={() => {
+                const data = {
+                  subject: row.sub,
+                };
+                this.props.deleteQuestionBank(data);
+              }}
+            >
               <MdIcons.MdDelete />
             </TableButton>
           </CustomRow>
@@ -264,6 +272,7 @@ QBSubjectsContainer.propTypes = {
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   updateQuestionBankSub: PropTypes.func.isRequired,
+  deleteQuestionBank: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -274,4 +283,5 @@ export default connect(mapStateToProps, {
   fetchQuestionBankData,
   logout,
   updateQuestionBankSub,
+  deleteQuestionBank,
 })(QBSubjectsContainer);

@@ -152,7 +152,7 @@ router.get("/question/subject", auth, (req, res) => {
 });
 
 // @route     POST api/user/question/update/subjects
-// @desc      POST question to questionBank
+// @desc      POST create new question bank
 // @access    Private
 router.post("/question/update/subjects", auth, (req, res) => {
   db.QuestionBank.findOneAndUpdate(
@@ -161,6 +161,28 @@ router.post("/question/update/subjects", auth, (req, res) => {
     },
     {
       totalSubjects: req.body.totalSubjects,
+    },
+    { new: true }
+  )
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .then((results) => {
+      return res.json(results);
+    })
+    .catch((err) => console.log(err));
+});
+
+// @route     POST api/user/question/delete/subjects
+// @desc      POST (delete) remove a question bank
+// @access    Private
+router.post("/question/delete/subjects", auth, (req, res) => {
+  db.QuestionBank.findOneAndUpdate(
+    {
+      user_id: req.user.id,
+    },
+    {
+      $pullAll: { totalSubjects: [req.body.subject] },
     },
     { new: true }
   )
