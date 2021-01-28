@@ -40,8 +40,8 @@ import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
 class CreateQuestionContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questionType: "",
       questionDescription: EditorState.createEmpty(),
@@ -49,6 +49,7 @@ class CreateQuestionContainer extends Component {
       questionChoices: [],
       choiceArrObj: [], //stores temporary choices and answer(isChecked)
       msg: null,
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -460,13 +461,14 @@ class CreateQuestionContainer extends Component {
       questionAns,
       choiceArrObj,
       msg,
+      subject,
     } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     if (this.props.questionReducer.direct) {
-      this.props.history.push("/questionBank");
+      this.props.history.push(`/questionBank/${subject}`);
     }
 
     if (this.props.match.params.type === "edit") {
@@ -822,7 +824,7 @@ class CreateQuestionContainer extends Component {
                         padding={"8px"}
                         width={"100px"}
                         onClick={() => {
-                          this.props.history.push(`/questionbank`);
+                          this.props.history.push(`/questionbank/${subject}`);
                         }}
                       >
                         Cancel

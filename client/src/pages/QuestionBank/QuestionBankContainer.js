@@ -210,7 +210,7 @@ class QuestionBankContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `questionbank/question/edit/${row._id}`
+                  `/questionbank/question/edit/${row._id}/${subject}`
                 );
               }}
             >
