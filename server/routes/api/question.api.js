@@ -217,4 +217,29 @@ router.get("/question/subject/fetch/:subject", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/question/change/subjects
+// @desc      POST change question subject
+// @access    Private
+router.post("/question/change/subjects", auth, (req, res) => {
+  db.QuestionBank.findOneAndUpdate(
+    {
+      "questions._id": req.body.questionID,
+    },
+    {
+      $set: {
+        "questions.$.subject": req.body.subject,
+      },
+    },
+    { new: true }
+  )
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .select("-totalSubjects")
+    .then((results) => {
+      return res.json(results);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

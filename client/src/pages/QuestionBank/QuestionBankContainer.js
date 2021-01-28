@@ -30,6 +30,7 @@ import {
   fetchAllQuestionData,
   deleteQuestionData,
   fetchQuestionDataOnSub,
+  moveQuestion,
 } from "../../actions/question.actions";
 
 import jwt_decode from "jwt-decode";
@@ -239,7 +240,15 @@ class QuestionBankContainer extends Component {
             >
               <BsIcons.BsFillEyeFill />
             </TableButton>
-            <TableButton>
+            <TableButton
+              onClick={() => {
+                const data = {
+                  questionID: row._id,
+                  // subject?
+                };
+                // this.props.moveQuestion(data);
+              }}
+            >
               <GiIcons.GiJumpAcross />
             </TableButton>
           </CustomRow>
@@ -339,6 +348,7 @@ QuestionBankContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   deleteQuestionData: PropTypes.func.isRequired,
   fetchQuestionDataOnSub: PropTypes.func.isRequired,
+  moveQuestion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -350,4 +360,5 @@ export default connect(mapStateToProps, {
   logout,
   deleteQuestionData,
   fetchQuestionDataOnSub,
+  moveQuestion,
 })(QuestionBankContainer);

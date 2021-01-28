@@ -182,3 +182,21 @@ export const fetchQuestionDataOnSub = (data) => (dispatch, getState) => {
       dispatch({ type: QUESTION.FETCH_QUESTION_BASED_ON_SUB_FAIL });
     });
 };
+
+export const moveQuestion = (data) => (dispatch, getState) => {
+  dispatch({ type: QUESTION.MOVE_QUESTION_BEGIN });
+
+  axios
+    .post("/api/user/question/change/subjects", data, tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.MOVE_QUESTION_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: QUESTION.MOVE_QUESTION_FAIL });
+    });
+};

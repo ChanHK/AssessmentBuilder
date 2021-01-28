@@ -16,6 +16,7 @@ export default function (state = initialState, action) {
     case QUESTION.UPDATE_QUESTION_BANK_SUB_BEGIN:
     case QUESTION.DELETE_QUESTION_BANK_BEGIN:
     case QUESTION.FETCH_QUESTION_BASED_ON_SUB_BEGIN:
+    case QUESTION.MOVE_QUESTION_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -39,6 +40,7 @@ export default function (state = initialState, action) {
     case QUESTION.UPDATE_QUESTION_BANK_SUB_FAIL:
     case QUESTION.DELETE_QUESTION_BANK_FAIL:
     case QUESTION.FETCH_QUESTION_BASED_ON_SUB_FAIL:
+    case QUESTION.MOVE_QUESTION_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -59,6 +61,7 @@ export default function (state = initialState, action) {
       };
     case QUESTION.FETCH_QUESTION_BASED_ON_SUB_SUCCESS:
     case QUESTION.DELETE_QUESTION_DATA_SUCCESS:
+    case QUESTION.MOVE_QUESTION_SUCCESS:
       return {
         ...state,
         isLoading: false,
