@@ -38,12 +38,13 @@ import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 
 class QuestionBankContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       searchText: "",
       questionType: "",
       questions: [],
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -95,7 +96,7 @@ class QuestionBankContainer extends Component {
   };
 
   render() {
-    const { searchText, questionType, questions } = this.state;
+    const { searchText, questionType, questions, subject } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -249,7 +250,7 @@ class QuestionBankContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ paddingTop: "60px" }}>
-                <FirstLabel>Question Bank</FirstLabel>
+                <FirstLabel>Question Bank - {subject}</FirstLabel>
               </div>
               <div style={{ paddingBottom: "25px" }}>
                 <Wrapper
