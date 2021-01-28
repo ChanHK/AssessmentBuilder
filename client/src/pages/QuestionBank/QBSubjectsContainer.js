@@ -38,6 +38,7 @@ class QBSubjectsContainer extends Component {
       new_subject: "",
       search: "",
       totalSubjects: [],
+      msg: null, //stores error messages
     };
   }
 
@@ -79,8 +80,16 @@ class QBSubjectsContainer extends Component {
   addSub = (e) => {
     e.preventDefault();
     const { totalSubjects, new_subject } = this.state;
+    let tempMsg = {};
     let string = new_subject;
     string = string.trim();
+
+    totalSubjects.forEach((item, index) => {
+      if (item === string) {
+        tempMsg.SUB = "Subject is created before";
+      }
+    });
+    this.setState({ msg: tempMsg });
 
     if (!totalSubjects.includes(string) && string !== "") {
       let temp = totalSubjects;
@@ -90,12 +99,14 @@ class QBSubjectsContainer extends Component {
         totalSubjects: temp,
       };
 
-      this.props.updateQuestionBankSub(data);
+      if (Object.keys(tempMsg).length === 0) {
+        this.props.updateQuestionBankSub(data);
+      }
     }
   };
 
   render() {
-    const { new_subject, search, totalSubjects } = this.state;
+    const { new_subject, search, totalSubjects, msg } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -176,27 +187,36 @@ class QBSubjectsContainer extends Component {
                   widthChange={1250}
                 >
                   <div className={css(styles.block)}>
-                    <CustomRow>
-                      <CustomInput
-                        name={"new_subject"}
-                        type={"text"}
-                        placeholder={"Enter new subject here"}
-                        onChangeValue={this.onChange}
-                        value={new_subject}
-                        maxLength={25}
-                      />
-                      <div style={{ marginRight: "10px" }}></div>
-                      <Button
-                        backgroundColor={configStyles.colors.darkBlue}
-                        color={configStyles.colors.white}
-                        padding={"8px"}
-                        width={"100px"}
-                        type={"button"}
-                        onClick={this.addSub}
-                      >
-                        Add
-                      </Button>
-                    </CustomRow>
+                    <CustomColumn>
+                      <CustomRow>
+                        <CustomInput
+                          name={"new_subject"}
+                          type={"text"}
+                          placeholder={"Enter new subject here"}
+                          onChangeValue={this.onChange}
+                          value={new_subject}
+                          maxLength={25}
+                        />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          width={"100px"}
+                          type={"button"}
+                          onClick={this.addSub}
+                        >
+                          Add
+                        </Button>
+                      </CustomRow>
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("SUB")
+                          ? "*" + msg.SUB
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                   <div className={css(styles.block)}>
                     <CustomInput
@@ -231,6 +251,11 @@ const styles = StyleSheet.create({
   tableRow: {
     fontSize: "15px",
     fontFamily: "Ubuntu-Regular",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
   },
 });
 
