@@ -145,6 +145,7 @@ router.get("/question/subject", auth, (req, res) => {
     .select("-_id")
     .select("-user_id")
     .select("-__v")
+    .select("-questions")
     .then((results) => {
       return res.json(results);
     })
@@ -167,6 +168,7 @@ router.post("/question/update/subjects", auth, (req, res) => {
     .select("-_id")
     .select("-user_id")
     .select("-__v")
+    .select("-questions")
     .then((results) => {
       return res.json(results);
     })
@@ -189,6 +191,7 @@ router.post("/question/delete/subjects", auth, (req, res) => {
     .select("-_id")
     .select("-user_id")
     .select("-__v")
+    .select("-questions")
     .then((results) => {
       return res.json(results);
     })
