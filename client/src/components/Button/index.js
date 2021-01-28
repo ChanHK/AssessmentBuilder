@@ -11,6 +11,7 @@ const Button = (props) => (
         color: props.color,
         padding: props.padding,
         width: props.width,
+        marginLeft: props.marginLeft,
       }}
       onClick={props.onClick}
       type={props.type ? props.type : "button"}

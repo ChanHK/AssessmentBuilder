@@ -11,6 +11,7 @@ import TableButton from "../../components/TableButton";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import CustomInput from "../../components/CustomInput";
 import ScrollArrow from "../../components/ScrollArrow";
+import Modal from "../../components/Modal";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -18,6 +19,9 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
 
@@ -40,6 +44,8 @@ class QBSubjectsContainer extends Component {
       search: "",
       totalSubjects: [],
       msg: null, //stores error messages
+      showModal: false,
+      deleteSubject: "", //subject that the user wants to delete
     };
   }
 
@@ -107,7 +113,14 @@ class QBSubjectsContainer extends Component {
   };
 
   render() {
-    const { new_subject, search, totalSubjects, msg } = this.state;
+    const {
+      new_subject,
+      search,
+      totalSubjects,
+      msg,
+      showModal,
+      deleteSubject,
+    } = this.state;
 
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -159,10 +172,7 @@ class QBSubjectsContainer extends Component {
             </TableButton>
             <TableButton
               onClick={() => {
-                const data = {
-                  subject: row.sub,
-                };
-                this.props.deleteQuestionBank(data);
+                this.setState({ deleteSubject: row.sub, showModal: true });
               }}
             >
               <MdIcons.MdDelete />
@@ -240,6 +250,57 @@ class QBSubjectsContainer extends Component {
               </div>
               <Table data={data} columns={column} />
             </CustomColumn>
+
+            <Modal show={showModal}>
+              <div className={css(styles.modal)}>
+                <CustomColumn>
+                  <SecondLabel>Are you sure?</SecondLabel>
+                  <ThirdLabel>
+                    All the questions in {deleteSubject} will be deleted
+                  </ThirdLabel>
+                  <div style={{ marginTop: "25px" }}>
+                    <CustomRow>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          const data = {
+                            subject: deleteSubject,
+                          };
+                          this.props.deleteQuestionBank(data);
+                          this.setState({
+                            showModal: false,
+                            deleteSubject: "",
+                          });
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        backgroundColor={configStyles.colors.white}
+                        color={configStyles.colors.darkBlue}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          this.setState({
+                            showModal: false,
+                            deleteSubject: "",
+                          });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </CustomRow>
+                  </div>
+                </CustomColumn>
+              </div>
+            </Modal>
           </CustomMidContainer>
         </CustomFullContainer>
       </>
@@ -264,6 +325,17 @@ const styles = StyleSheet.create({
     color: configStyles.colors.inputErrorRed,
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
+  },
+  modal: {
+    width: "100%",
+    height: "auto",
+    border: "none",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    backgroundColor: configStyles.colors.white,
+    padding: "20px",
   },
 });
 
