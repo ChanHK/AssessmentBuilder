@@ -198,4 +198,26 @@ router.post("/question/delete/subjects", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/question/subject/fetch
+// @desc      GET question from question bank based on subjects
+// @access    Private
+router.get("/question/subject/fetch/:subject", auth, (req, res) => {
+  db.QuestionBank.findOne({ user_id: req.user.id })
+    .select("-_id")
+    .select("-user_id")
+    .select("-__v")
+    .select("-totalSubjects")
+    .then((results) => {
+      let temp = [];
+      results.questions.forEach((item, index) => {
+        if (item.subject === req.params.subject) {
+          temp.push(item);
+        }
+      });
+
+      return res.json(temp);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

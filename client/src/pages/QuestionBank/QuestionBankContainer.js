@@ -28,6 +28,7 @@ import { connect } from "react-redux";
 import {
   fetchAllQuestionData,
   deleteQuestionData,
+  fetchQuestionDataOnSub,
 } from "../../actions/question.actions";
 
 import jwt_decode from "jwt-decode";
@@ -60,7 +61,10 @@ class QuestionBankContainer extends Component {
         this.props.history.push("/login");
       }
     }
-    this.props.fetchAllQuestionData();
+    const data = {
+      subject: this.state.subject,
+    };
+    this.props.fetchQuestionDataOnSub(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -68,15 +72,14 @@ class QuestionBankContainer extends Component {
 
     if (
       prevProps.questionReducer !== questionReducer &&
-      questionReducer.questionLoad !== null &&
-      questionReducer.message === undefined
+      questionReducer.questionData !== null
     ) {
-      this.setState({ questions: questionReducer.questionLoad });
+      this.setState({ questions: questionReducer.questionData });
     }
   }
 
   componentWillUnmount() {
-    this.props.questionReducer.questionLoad = null;
+    this.props.questionReducer.questionData = null;
   }
 
   onChangeSearchText = (e) => {
@@ -88,7 +91,7 @@ class QuestionBankContainer extends Component {
   };
 
   handleClick = () => {
-    this.props.history.push(`questionbank/question/create/null`);
+    this.props.history.push(`/questionbank/question/create/null`);
   };
 
   clearSearch = () => {
@@ -101,7 +104,7 @@ class QuestionBankContainer extends Component {
     if (this.props.questionReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    if (this.props.questionReducer.questionLoad === null) return false;
+    if (this.props.questionReducer.questionData === null) return false;
     if (questions === undefined) return <LoaderSpinner />;
     const lowerCasedSearchText = searchText.toLowerCase();
     const lowerCaseQuestionType = questionType.toLowerCase();
@@ -327,6 +330,7 @@ QuestionBankContainer.propTypes = {
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   deleteQuestionData: PropTypes.func.isRequired,
+  fetchQuestionDataOnSub: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -337,4 +341,5 @@ export default connect(mapStateToProps, {
   fetchAllQuestionData,
   logout,
   deleteQuestionData,
+  fetchQuestionDataOnSub,
 })(QuestionBankContainer);

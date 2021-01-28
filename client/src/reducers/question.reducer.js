@@ -5,6 +5,7 @@ const initialState = {
   questionLoad: null,
   direct: false,
   questionBankData: null,
+  questionData: null,
 };
 
 export default function (state = initialState, action) {
@@ -14,6 +15,7 @@ export default function (state = initialState, action) {
     case QUESTION.FETCH_ALL_QUESTION_DATA_BEGIN:
     case QUESTION.UPDATE_QUESTION_BANK_SUB_BEGIN:
     case QUESTION.DELETE_QUESTION_BANK_BEGIN:
+    case QUESTION.FETCH_QUESTION_BASED_ON_SUB_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -37,6 +39,7 @@ export default function (state = initialState, action) {
     case QUESTION.FETCH_ALL_QUESTION_DATA_FAIL:
     case QUESTION.UPDATE_QUESTION_BANK_SUB_FAIL:
     case QUESTION.DELETE_QUESTION_BANK_FAIL:
+    case QUESTION.FETCH_QUESTION_BASED_ON_SUB_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -54,6 +57,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         questionBankData: action.payload,
+      };
+    case QUESTION.FETCH_QUESTION_BASED_ON_SUB_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        questionData: action.payload,
       };
     default:
       return state;

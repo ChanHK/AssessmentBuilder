@@ -161,3 +161,24 @@ export const deleteQuestionBank = (data) => (dispatch, getState) => {
       dispatch({ type: QUESTION.DELETE_QUESTION_BANK_FAIL });
     });
 };
+
+export const fetchQuestionDataOnSub = (data) => (dispatch, getState) => {
+  dispatch({ type: QUESTION.FETCH_QUESTION_BASED_ON_SUB_BEGIN });
+
+  axios
+    .get(
+      `/api/user/question/subject/fetch/${data.subject}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: QUESTION.FETCH_QUESTION_BASED_ON_SUB_SUCCESS,
+          payload: res.data,
+        });
+      }, 2000);
+    })
+    .catch((err) => {
+      dispatch({ type: QUESTION.FETCH_QUESTION_BASED_ON_SUB_FAIL });
+    });
+};
