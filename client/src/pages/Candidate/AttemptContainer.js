@@ -63,6 +63,12 @@ class AttemptContainer extends Component {
         this.setState({ time: this.state.time - 1 });
       }, 1000);
     }
+
+    // document.addEventListener("visibilitychange", () => {
+    //   if (document.visibilityState !== "visible") {
+    //     console.log("tab is inactive");
+    //   }
+    // });
   }
 
   componentDidUpdate(prevProps, prevState) {
