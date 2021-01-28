@@ -19,6 +19,7 @@ router.post("/question", auth, (req, res) => {
               questionDescription: req.body.questionDescription,
               questionChoices: req.body.questionChoices,
               questionAnswers: req.body.questionAnswers,
+              subject: req.body.subject,
             },
           },
         },
@@ -42,11 +43,7 @@ router.post("/question", auth, (req, res) => {
                 .json({ message: "Update question count fail" });
             });
         })
-        .catch((err) => {
-          return res.status(400).json({
-            message: "Error, failed to update question, please retry agian",
-          });
-        });
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 });

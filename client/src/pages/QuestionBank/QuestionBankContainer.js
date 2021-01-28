@@ -91,7 +91,8 @@ class QuestionBankContainer extends Component {
   };
 
   handleClick = () => {
-    this.props.history.push(`/questionbank/question/create/null`);
+    const { subject } = this.state;
+    this.props.history.push(`/questionbank/question/create/null/${subject}`);
   };
 
   clearSearch = () => {
@@ -229,7 +230,7 @@ class QuestionBankContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `questionbank/question_view/${row._id}`
+                  `/questionbank/question_view/${row._id}`
                 );
               }}
             >

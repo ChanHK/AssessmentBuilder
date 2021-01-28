@@ -399,6 +399,7 @@ class CreateQuestionContainer extends Component {
       questionAns,
       questionChoices,
       choiceArrObj,
+      subject,
     } = this.state;
 
     let ans = [];
@@ -437,6 +438,7 @@ class CreateQuestionContainer extends Component {
       questionChoices: choice,
       questionAnswers: ans,
       questionID: "",
+      subject: subject,
     };
 
     if (questionType === "Order") data.questionChoices = ans;
