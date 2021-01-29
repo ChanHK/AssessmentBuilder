@@ -5,6 +5,7 @@ const AssessmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  all_subjects: [String],
   assessments: [
     {
       settings: {
@@ -118,6 +119,10 @@ const AssessmentSchema = new mongoose.Schema({
       totalQuestionNum: {
         type: Number,
         default: 0,
+      },
+      subject: {
+        type: String,
+        default: "",
       },
     },
   ],
