@@ -89,7 +89,7 @@ class QBSubjectsContainer extends Component {
     const { totalSubjects, new_subject } = this.state;
     let tempMsg = {};
     let string = new_subject;
-    string = string.trim();
+    string = string.trim().toLowerCase();
 
     totalSubjects.forEach((item, index) => {
       if (item === string) {

@@ -5,10 +5,7 @@ const QuestionBankSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  totalSubjects: {
-    type: Array,
-    default: ["others"],
-  },
+  totalSubjects: [String],
   questions: [
     {
       questionType: {
