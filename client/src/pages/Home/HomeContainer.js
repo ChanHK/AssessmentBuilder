@@ -26,9 +26,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   homeFetchAllAssessment,
-  createAssessmentObj,
   fetchProfilePic,
-  deleteAssessment,
 } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -42,7 +40,6 @@ class HomeContainer extends Component {
       setupNum: 0,
       totalAssessmentNum: 0,
       activateNum: 0,
-      generatedID: "", //ID return from createAssessmentObj
       url: "", //pic
       posX: 0,
       posY: 0,
@@ -95,11 +92,6 @@ class HomeContainer extends Component {
       });
     }
 
-    if (prevProps.homeReducer !== homeReducer && homeReducer.newID !== null) {
-      const { newID } = homeReducer;
-      this.setState({ generatedID: newID.assessmentID });
-    }
-
     if (prevProps.homeReducer !== homeReducer && homeReducer.pic !== null) {
       const { url, posX, posY, scale } = homeReducer.pic;
       this.setState({
@@ -113,15 +105,10 @@ class HomeContainer extends Component {
 
   componentWillUnmount() {
     this.props.homeReducer.assessments = null;
-    this.props.homeReducer.newID = null;
   }
 
   onChangeSearchText = (e) => {
     this.setState({ searchText: e.target.value });
-  };
-
-  toCreateAssessment = () => {
-    this.props.createAssessmentObj();
   };
 
   render() {
@@ -131,7 +118,6 @@ class HomeContainer extends Component {
       setupNum,
       totalAssessmentNum,
       activateNum,
-      generatedID,
       url,
       posX,
       posY,
@@ -153,126 +139,7 @@ class HomeContainer extends Component {
         ),
         width: "50px",
       },
-      {
-        name: "Assessment Title",
-        selector: "settings.testName",
-        cell: (row) => (
-          <div>
-            <div className={css(styles.tableRow)}>{row.settings.testName}</div>
-          </div>
-        ),
-        width: "40%",
-      },
-      {
-        name: "Status",
-        selector: "status",
-        cell: (row) => (
-          <div>
-            <div
-              className={css(styles.tableRow)}
-              style={{
-                backgroundColor:
-                  row.status === "Setup in progress"
-                    ? configStyles.colors.yellow
-                    : row.status === "Activated"
-                    ? configStyles.colors.green
-                    : "inherit",
-                padding: "5px",
-              }}
-            >
-              {row.status}
-            </div>
-          </div>
-        ),
-        width: "170px",
-      },
-      {
-        name: "Options",
-        selector: "_id, status",
-        cell: (row) => (
-          <CustomRow>
-            {row.status === "Setup in progress" && (
-              <TableButton
-                onClick={() => {
-                  this.props.history.push(
-                    `assessment/edit/settings/${row._id}`
-                  );
-                }}
-              >
-                Edit
-              </TableButton>
-            )}
-            {row.status !== "Activated" && (
-              <TableButton
-                onClick={() => {
-                  const data = {
-                    assessmentID: row._id,
-                  };
-                  this.props.deleteAssessment(data);
-                }}
-              >
-                Delete
-              </TableButton>
-            )}
-            {row.status !== "Setup in progress" && (
-              <TableButton
-                onClick={() => {
-                  this.props.history.push(
-                    `assessment/view/settings/${row._id}`
-                  );
-                }}
-              >
-                View
-              </TableButton>
-            )}
-            {row.status === "Ended" && (
-              <>
-                <TableButton
-                  onClick={() => {
-                    this.props.history.push(
-                      `/assessment/descriptive/responses/${row._id}`
-                    );
-                  }}
-                >
-                  Mark
-                </TableButton>
-
-                <TableButton
-                  onClick={() => {
-                    this.props.history.push(`/assessment/results/${row._id}`);
-                  }}
-                >
-                  Results
-                </TableButton>
-                <TableButton
-                  onClick={() => {
-                    this.props.history.push(
-                      `/assessment/statistics/${row._id}`
-                    );
-                  }}
-                >
-                  Statistics
-                </TableButton>
-              </>
-            )}
-            {row.status !== "Ended" && (
-              <TableButton
-                onClick={() => {
-                  this.props.history.push(`/assessment/activation/${row._id}`);
-                }}
-              >
-                {row.status === "Activated" ? "Deactivate" : "Activate"}
-              </TableButton>
-            )}
-          </CustomRow>
-        ),
-        width: "350px",
-      },
     ];
-
-    if (generatedID !== "") {
-      this.props.history.push(`assessment/create/settings/${generatedID}`);
-    }
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
@@ -381,9 +248,7 @@ HomeContainer.propTypes = {
   homeFetchAllAssessment: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
-  createAssessmentObj: PropTypes.func.isRequired,
   fetchProfilePic: PropTypes.func.isRequired,
-  deleteAssessment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -393,7 +258,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   homeFetchAllAssessment,
   logout,
-  createAssessmentObj,
   fetchProfilePic,
-  deleteAssessment,
 })(HomeContainer);
