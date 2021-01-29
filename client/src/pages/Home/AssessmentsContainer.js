@@ -30,13 +30,13 @@ import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
 class AssessmentsContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       searchText: "",
       assessments: [], //assessments fetched from db
       generatedID: "", //ID return from createAssessmentObj
-      subject: "bla bla bla",
+      subject: this.props.match.params.subject,
     };
   }
 

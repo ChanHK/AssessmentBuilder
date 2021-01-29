@@ -165,7 +165,11 @@ class HomeContainer extends Component {
         selector: "sub",
         cell: (row) => (
           <CustomRow>
-            <TableButton>
+            <TableButton
+              onClick={() => {
+                this.props.history.push(`/assessment/${row.sub}`);
+              }}
+            >
               <BsIcons.BsFillEyeFill />
             </TableButton>
             <TableButton
