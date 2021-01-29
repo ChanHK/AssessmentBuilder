@@ -23,8 +23,11 @@ router.get("/assessment/fetch", auth, (req, res) => {
     .select("-assessments.settings.gradeRange")
     .select("-assessments.settings.gradeValue")
 
+    .select("-__v")
+    .select("-_id")
+    .select("-user_id")
     .then((result) => {
-      return res.json(result.assessments);
+      return res.json(result);
     })
     .catch((err) => console.log(err));
 });

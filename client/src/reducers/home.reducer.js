@@ -2,7 +2,8 @@ import { HOME } from "../utils/actionTypes";
 
 const initialState = {
   isLoading: false,
-  assessments: null,
+  assessments: null, //stores assessments data only
+  assessmentData: null, //stores all type of assessment data
   newID: null,
   pic: null,
   desQuestions: null,
@@ -35,6 +36,11 @@ export default function (state = initialState, action) {
         isLoading: true,
       };
     case HOME.HOME_FETCH_ALL_ASSESSMENTS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        assessmentData: action.payload,
+      };
     case HOME.DELETE_ASSESSMENT_SUCCESS:
       return {
         ...state,

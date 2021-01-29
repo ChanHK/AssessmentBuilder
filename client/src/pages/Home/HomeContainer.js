@@ -51,6 +51,7 @@ class HomeContainer extends Component {
       new_subject: "", //new created subject in input
       msg: null, //stores error msg
       search: "", //filter search text
+      all_subjects: [],
     };
   }
 
@@ -76,10 +77,10 @@ class HomeContainer extends Component {
 
     if (
       prevProps.homeReducer !== homeReducer &&
-      homeReducer.assessments !== null
+      homeReducer.assessmentData !== null
     ) {
-      const { assessments } = homeReducer;
-
+      const { assessments, all_subjects } = homeReducer.assessmentData;
+      console.log(homeReducer.assessmentData);
       let tempSetupNum = 0;
       let tempActivateNum = 0;
       assessments.forEach((item, index) => {
@@ -96,6 +97,7 @@ class HomeContainer extends Component {
         totalAssessmentNum: assessments.length,
         setupNum: tempSetupNum,
         activateNum: tempActivateNum,
+        all_subjects: all_subjects,
       });
     }
 
@@ -111,7 +113,7 @@ class HomeContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.homeReducer.assessments = null;
+    this.props.homeReducer.assessmentData = null;
     this.props.homeReducer.pic = null;
   }
 
@@ -122,7 +124,6 @@ class HomeContainer extends Component {
   render() {
     const {
       searchText,
-      assessments,
       setupNum,
       totalAssessmentNum,
       activateNum,
@@ -133,6 +134,7 @@ class HomeContainer extends Component {
       new_subject,
       msg,
       search,
+      all_subjects,
     } = this.state;
 
     let position = { x: 0.5, y: 0.5 };
@@ -186,7 +188,10 @@ class HomeContainer extends Component {
 
     const lowerCasedSearchText = searchText.toLowerCase();
 
-    let filteredData = assessments;
+    let filteredData = [];
+    all_subjects.forEach((item, index) => {
+      filteredData.push({ sub: item });
+    });
 
     if (searchText !== "") {
       filteredData = filteredData.filter((item) => {
