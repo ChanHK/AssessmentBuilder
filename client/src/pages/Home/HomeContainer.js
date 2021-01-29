@@ -45,7 +45,6 @@ class HomeContainer extends Component {
     super();
     this.state = {
       assessments: [], //assessments fetched from db
-      setupNum: 0,
       totalAssessmentNum: 0,
       activateNum: 0,
       url: "", //pic
@@ -86,13 +85,8 @@ class HomeContainer extends Component {
       homeReducer.assessmentData !== null
     ) {
       const { assessments, all_subjects } = homeReducer.assessmentData;
-      // console.log(homeReducer.assessmentData);
-      let tempSetupNum = 0;
       let tempActivateNum = 0;
       assessments.forEach((item, index) => {
-        if (item.status === "Setup in progress") {
-          tempSetupNum++;
-        }
         if (item.status === "Activated") {
           tempActivateNum++;
         }
@@ -101,7 +95,6 @@ class HomeContainer extends Component {
       this.setState({
         assessments: assessments,
         totalAssessmentNum: assessments.length,
-        setupNum: tempSetupNum,
         activateNum: tempActivateNum,
         all_subjects: all_subjects,
       });
@@ -249,7 +242,7 @@ class HomeContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <div style={{ paddingTop: "80px", paddingBottom: "20px" }}>
+              <div style={{ marginTop: "80px", marginBottom: "20px" }}>
                 <StatusBarWrapper>
                   <StatusBarImage
                     image={url}

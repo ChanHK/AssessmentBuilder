@@ -17,6 +17,9 @@ import CustomMidContainer from "../../components/GridComponents/CustomMidContain
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
+import StatusBox from "../../components/StatusBarComponents/StatusBox";
+import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
+
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
 
 import PropTypes from "prop-types";
@@ -37,6 +40,7 @@ class AssessmentsContainer extends Component {
       assessments: [], //assessments fetched from db
       generatedID: "", //ID return from createAssessmentObj
       subject: this.props.match.params.subject,
+      totalAssessmentNum: 0,
     };
   }
 
@@ -66,8 +70,22 @@ class AssessmentsContainer extends Component {
       homeReducer.assessments !== null
     ) {
       const { assessments } = homeReducer;
-
-      this.setState({ assessments: assessments });
+      let tempSetupNum = 0;
+      let tempActivateNum = 0;
+      assessments.forEach((item, index) => {
+        if (item.status === "Setup in progress") {
+          tempSetupNum++;
+        }
+        if (item.status === "Activated") {
+          tempActivateNum++;
+        }
+      });
+      this.setState({
+        assessments: assessments,
+        totalAssessmentNum: assessments.length,
+        setupNum: tempSetupNum,
+        activateNum: tempActivateNum,
+      });
     }
 
     if (prevProps.homeReducer !== homeReducer && homeReducer.newID !== null) {
@@ -93,7 +111,15 @@ class AssessmentsContainer extends Component {
   };
 
   render() {
-    const { searchText, assessments, generatedID, subject } = this.state;
+    const {
+      searchText,
+      assessments,
+      generatedID,
+      subject,
+      totalAssessmentNum,
+      setupNum,
+      activateNum,
+    } = this.state;
 
     const tableHeader = [
       {
@@ -255,9 +281,20 @@ class AssessmentsContainer extends Component {
         <CustomFullContainer>
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
-              <div style={{ marginTop: "60px" }}>
-                <FirstLabel>Assessments - {subject}</FirstLabel>
+              <div style={{ marginTop: "80px", marginBottom: "20px" }}>
+                <StatusBarWrapper>
+                  <StatusBox
+                    number={totalAssessmentNum}
+                    text={"Total Assessments"}
+                  />
+                  <StatusBox number={setupNum} text={"Setup In Progress"} />
+                  <StatusBox
+                    number={activateNum}
+                    text={"Assessments Activated"}
+                  />
+                </StatusBarWrapper>
               </div>
+              <FirstLabel>Assessments - {subject}</FirstLabel>
               <Wrapper
                 firstHeight={"60px"}
                 secHeight={"120px"}
