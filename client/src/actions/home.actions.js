@@ -292,3 +292,21 @@ export const uploadStatus = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.UPDATE_ACTIVATION_STATUS_FAIL });
     });
 };
+
+export const addAssSub = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.ADD_NEW_SUBJECT_BEGIN });
+
+  axios
+    .post(`/api/user/home/assessment/add/subjects`, data, tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.ADD_NEW_SUBJECT_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: HOME.ADD_NEW_SUBJECT_FAIL });
+    });
+};

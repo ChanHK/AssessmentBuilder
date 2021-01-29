@@ -468,4 +468,40 @@ router.post("/assessment/activate/:assessmentID", auth, (req, res) => {
     });
 });
 
+// @route     POST api/user/home/assessment/add/subjects
+// @desc      POST create new assessment sub
+// @access    Private
+router.post("/assessment/add/subjects", auth, (req, res) => {
+  db.Assessment.findOneAndUpdate(
+    {
+      user_id: req.user.id,
+    },
+    {
+      all_subjects: req.body.all_subjects,
+    },
+    { new: true }
+  )
+    .select("-assessments.access")
+    .select("-assessments.sets")
+    .select("-assessments.timer")
+
+    .select("-assessments.settings.testDescription")
+    .select("-assessments.settings.testInstruction")
+    .select("-assessments.settings.passOrFailSelected")
+    .select("-assessments.settings.score")
+    .select("-assessments.settings.unit")
+    .select("-assessments.settings.addGradingSelected")
+    .select("-assessments.settings.gradeUnit")
+    .select("-assessments.settings.gradeRange")
+    .select("-assessments.settings.gradeValue")
+
+    .select("-__v")
+    .select("-_id")
+    .select("-user_id")
+    .then((results) => {
+      return res.json(results);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

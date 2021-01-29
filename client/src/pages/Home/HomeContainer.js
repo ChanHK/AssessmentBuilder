@@ -31,6 +31,7 @@ import { connect } from "react-redux";
 import {
   homeFetchAllAssessment,
   fetchProfilePic,
+  addAssSub,
 } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -118,6 +119,35 @@ class HomeContainer extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+
+  addSub = (e) => {
+    e.preventDefault();
+    const { all_subjects, new_subject } = this.state;
+    let tempMsg = {};
+    let string = new_subject;
+    string = string.trim().toLowerCase();
+
+    all_subjects.forEach((item, index) => {
+      if (item === string) {
+        tempMsg.SUB = "Subject is created before";
+      }
+    });
+    this.setState({ msg: tempMsg });
+
+    if (!all_subjects.includes(string) && string !== "") {
+      let temp = all_subjects;
+      temp.push(string);
+
+      let data = {
+        all_subjects: temp,
+      };
+
+      if (Object.keys(tempMsg).length === 0) {
+        this.setState({ new_subject: "" });
+        this.props.addAssSub(data);
+      }
+    }
   };
 
   render() {
@@ -221,10 +251,13 @@ class HomeContainer extends Component {
                     scale={scale}
                   />
                   <StatusBox
+                    number={all_subjects.length}
+                    text={"Total Subjects"}
+                  />
+                  <StatusBox
                     number={totalAssessmentNum}
                     text={"Total Assessments"}
                   />
-                  <StatusBox number={setupNum} text={"Setup In Progress"} />
                   <StatusBox
                     number={activateNum}
                     text={"Assessments Activated"}
@@ -334,6 +367,7 @@ HomeContainer.propTypes = {
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   fetchProfilePic: PropTypes.func.isRequired,
+  addAssSub: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -344,4 +378,5 @@ export default connect(mapStateToProps, {
   homeFetchAllAssessment,
   logout,
   fetchProfilePic,
+  addAssSub,
 })(HomeContainer);

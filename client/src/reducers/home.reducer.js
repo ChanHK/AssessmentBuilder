@@ -31,11 +31,13 @@ export default function (state = initialState, action) {
     case HOME.FETCH_FEEDBACK_BEGIN:
     case HOME.FETCH_FULL_ASSESSMENT_INFO_BEGIN:
     case HOME.UPDATE_ACTIVATION_STATUS_BEGIN:
+    case HOME.ADD_NEW_SUBJECT_BEGIN:
       return {
         ...state,
         isLoading: true,
       };
     case HOME.HOME_FETCH_ALL_ASSESSMENTS_SUCCESS:
+    case HOME.ADD_NEW_SUBJECT_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -60,6 +62,7 @@ export default function (state = initialState, action) {
     case HOME.FETCH_FEEDBACK_FAIL:
     case HOME.FETCH_FULL_ASSESSMENT_INFO_FAIL:
     case HOME.UPDATE_ACTIVATION_STATUS_FAIL:
+    case HOME.ADD_NEW_SUBJECT_FAIL:
       return {
         ...state,
         isLoading: false,
