@@ -310,3 +310,25 @@ export const addAssSub = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.ADD_NEW_SUBJECT_FAIL });
     });
 };
+
+export const deleteAssSub = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.DELETE_ASS_SUB_BEGIN });
+
+  axios
+    .post(
+      "/api/user/home2/assessment/delete/subject",
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.DELETE_ASS_SUB_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: HOME.DELETE_ASS_SUB_FAIL });
+    });
+};

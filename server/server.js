@@ -16,6 +16,7 @@ const assessmentQuestion = require("./routes/api/assessmentQuestion.api");
 const assessmentSet = require("./routes/api/assessmentSet.api");
 const candidate = require("./routes/api/candidate.api");
 const home = require("./routes/api/home.api");
+const home2 = require("./routes/api/home2.api");
 
 const app = express();
 app.use(cors());
@@ -43,6 +44,7 @@ app.use("/api/user", assessmentQuestion);
 app.use("/api/user", assessmentSet);
 app.use("/api/candidate", candidate);
 app.use("/api/user/home", home);
+app.use("/api/user/home2", home2);
 
 const port = process.env.PORT || 5000;
 

@@ -19,6 +19,9 @@ import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
@@ -32,6 +35,7 @@ import {
   homeFetchAllAssessment,
   fetchProfilePic,
   addAssSub,
+  deleteAssSub,
 } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -52,6 +56,8 @@ class HomeContainer extends Component {
       msg: null, //stores error msg
       search: "", //filter search text
       all_subjects: [],
+      deleteSubject: "",
+      showModal: false,
     };
   }
 
@@ -80,7 +86,7 @@ class HomeContainer extends Component {
       homeReducer.assessmentData !== null
     ) {
       const { assessments, all_subjects } = homeReducer.assessmentData;
-      console.log(homeReducer.assessmentData);
+      // console.log(homeReducer.assessmentData);
       let tempSetupNum = 0;
       let tempActivateNum = 0;
       assessments.forEach((item, index) => {
@@ -152,7 +158,6 @@ class HomeContainer extends Component {
 
   render() {
     const {
-      setupNum,
       totalAssessmentNum,
       activateNum,
       url,
@@ -163,6 +168,8 @@ class HomeContainer extends Component {
       msg,
       search,
       all_subjects,
+      deleteSubject,
+      showModal,
     } = this.state;
 
     let position = { x: 0.5, y: 0.5 };
@@ -203,9 +210,9 @@ class HomeContainer extends Component {
               <BsIcons.BsFillEyeFill />
             </TableButton>
             <TableButton
-            // onClick={() => {
-            //   this.setState({ deleteSubject: row.sub, showModal: true });
-            // }}
+              onClick={() => {
+                this.setState({ deleteSubject: row.sub, showModal: true });
+              }}
             >
               <MdIcons.MdDelete />
             </TableButton>
@@ -319,6 +326,57 @@ class HomeContainer extends Component {
                 <Table data={filteredData} columns={tableHeader} />
               </div>
             </CustomColumn>
+
+            <Modal show={showModal}>
+              <div className={css(styles.modal)}>
+                <CustomColumn>
+                  <SecondLabel>Are you sure?</SecondLabel>
+                  <ThirdLabel>
+                    All the assessments in {deleteSubject} will be deleted
+                  </ThirdLabel>
+                  <div style={{ marginTop: "25px" }}>
+                    <CustomRow>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          const data = {
+                            subject: deleteSubject,
+                          };
+                          this.props.deleteAssSub(data);
+                          this.setState({
+                            showModal: false,
+                            deleteSubject: "",
+                          });
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        backgroundColor={configStyles.colors.white}
+                        color={configStyles.colors.darkBlue}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          this.setState({
+                            showModal: false,
+                            deleteSubject: "",
+                          });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </CustomRow>
+                  </div>
+                </CustomColumn>
+              </div>
+            </Modal>
           </CustomMidContainer>
         </CustomFullContainer>
       </>
@@ -368,6 +426,7 @@ HomeContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   fetchProfilePic: PropTypes.func.isRequired,
   addAssSub: PropTypes.func.isRequired,
+  deleteAssSub: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -379,4 +438,5 @@ export default connect(mapStateToProps, {
   logout,
   fetchProfilePic,
   addAssSub,
+  deleteAssSub,
 })(HomeContainer);
