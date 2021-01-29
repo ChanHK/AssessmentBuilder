@@ -191,7 +191,19 @@ router.post("/question/delete/subjects", auth, (req, res) => {
     .select("-__v")
     .select("-questions")
     .then((results) => {
-      return res.json(results);
+      db.QuestionBank.findOne({ user_id: req.user.id })
+        .then((data) => {
+          let length = data.questions.length;
+          db.User.findByIdAndUpdate(
+            { _id: req.user.id },
+            { totalQuestionsCreated: length }
+          )
+            .then(() => {
+              return res.json(results);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 });
