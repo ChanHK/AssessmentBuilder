@@ -36,6 +36,7 @@ class AssessmentsContainer extends Component {
       searchText: "",
       assessments: [], //assessments fetched from db
       generatedID: "", //ID return from createAssessmentObj
+      subject: "bla bla bla",
     };
   }
 
