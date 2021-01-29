@@ -39,7 +39,6 @@ class HomeContainer extends Component {
   constructor() {
     super();
     this.state = {
-      searchText: "",
       assessments: [], //assessments fetched from db
       setupNum: 0,
       totalAssessmentNum: 0,
@@ -123,7 +122,6 @@ class HomeContainer extends Component {
 
   render() {
     const {
-      searchText,
       setupNum,
       totalAssessmentNum,
       activateNum,
@@ -186,19 +184,16 @@ class HomeContainer extends Component {
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    const lowerCasedSearchText = searchText.toLowerCase();
+    const lowerCasedSearchText = search.toLowerCase();
 
     let filteredData = [];
     all_subjects.forEach((item, index) => {
       filteredData.push({ sub: item });
     });
 
-    if (searchText !== "") {
+    if (search !== "") {
       filteredData = filteredData.filter((item) => {
-        return (
-          item.settings.testName.toLowerCase().indexOf(lowerCasedSearchText) >=
-          0
-        );
+        return item.sub.toLowerCase().indexOf(lowerCasedSearchText) >= 0;
       });
     }
 
