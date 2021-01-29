@@ -41,4 +41,33 @@ router.post("/assessment/delete/subject", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     GET api/user/home2/assessment/fetch/assessment/:subject
+// @desc      GET fetch assessments, questions, sets
+// @access    Private
+router.get("/assessment/fetch/assessment/:subject", auth, (req, res) => {
+  db.Assessment.findOne({ user_id: req.user.id })
+    .select("-assessments.access")
+    .select("-assessments.sets")
+    .select("-assessments.timer")
+
+    .select("-assessments.settings.testDescription")
+    .select("-assessments.settings.testInstruction")
+    .select("-assessments.settings.passOrFailSelected")
+    .select("-assessments.settings.score")
+    .select("-assessments.settings.unit")
+    .select("-assessments.settings.addGradingSelected")
+    .select("-assessments.settings.gradeUnit")
+    .select("-assessments.settings.gradeRange")
+    .select("-assessments.settings.gradeValue")
+    .then((result) => {
+      let temp = [];
+      result.assessments.forEach((item, index) => {
+        if (item.subject === req.params.subject) temp.push(item);
+      });
+
+      return res.json(temp);
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;

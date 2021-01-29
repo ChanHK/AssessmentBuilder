@@ -46,6 +46,7 @@ router.post("/assessment/create", auth, (req, res) => {
               settings: {
                 testName: "New assessment",
               },
+              subject: req.body.subject,
             },
           },
         },
@@ -126,7 +127,12 @@ router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
                         assessments_id: req.params.assessmentID,
                       })
                         .then(() => {
-                          return res.status(200).json(response.assessments);
+                          let temp = [];
+                          response.assessments.forEach((item, index) => {
+                            if (item.subject === req.body.subject)
+                              temp.push(item);
+                          });
+                          return res.status(200).json(temp);
                         })
                         .catch(() => {
                           return res.status(400).json({

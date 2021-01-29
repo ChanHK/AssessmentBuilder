@@ -33,6 +33,7 @@ export default function (state = initialState, action) {
     case HOME.UPDATE_ACTIVATION_STATUS_BEGIN:
     case HOME.ADD_NEW_SUBJECT_BEGIN:
     case HOME.DELETE_ASS_SUB_BEGIN:
+    case HOME.FETCH_ASS_BASED_SUB_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -45,6 +46,7 @@ export default function (state = initialState, action) {
         isLoading: false,
         assessmentData: action.payload,
       };
+    case HOME.FETCH_ASS_BASED_SUB_SUCCESS:
     case HOME.DELETE_ASSESSMENT_SUCCESS:
       return {
         ...state,
@@ -66,6 +68,7 @@ export default function (state = initialState, action) {
     case HOME.UPDATE_ACTIVATION_STATUS_FAIL:
     case HOME.ADD_NEW_SUBJECT_FAIL:
     case HOME.DELETE_ASS_SUB_FAIL:
+    case HOME.FETCH_ASS_BASED_SUB_FAIL:
       return {
         ...state,
         isLoading: false,

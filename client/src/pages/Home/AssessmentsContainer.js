@@ -22,7 +22,7 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  homeFetchAllAssessment,
+  fetchAssSub,
   createAssessmentObj,
   deleteAssessment,
 } from "../../actions/home.actions";
@@ -52,8 +52,10 @@ class AssessmentsContainer extends Component {
         this.props.history.push("/login");
       }
     }
-
-    this.props.homeFetchAllAssessment();
+    const data = {
+      subject: this.state.subject,
+    };
+    this.props.fetchAssSub(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -84,7 +86,10 @@ class AssessmentsContainer extends Component {
   };
 
   toCreateAssessment = () => {
-    this.props.createAssessmentObj();
+    const data = {
+      subject: this.state.subject,
+    };
+    this.props.createAssessmentObj(data);
   };
 
   render() {
@@ -143,7 +148,7 @@ class AssessmentsContainer extends Component {
               <TableButton
                 onClick={() => {
                   this.props.history.push(
-                    `assessment/edit/settings/${row._id}`
+                    `/assessment/edit/settings/${row._id}`
                   );
                 }}
               >
@@ -155,6 +160,7 @@ class AssessmentsContainer extends Component {
                 onClick={() => {
                   const data = {
                     assessmentID: row._id,
+                    subject: subject,
                   };
                   this.props.deleteAssessment(data);
                 }}
@@ -166,7 +172,7 @@ class AssessmentsContainer extends Component {
               <TableButton
                 onClick={() => {
                   this.props.history.push(
-                    `assessment/view/settings/${row._id}`
+                    `/assessment/view/settings/${row._id}`
                   );
                 }}
               >
@@ -219,7 +225,7 @@ class AssessmentsContainer extends Component {
     ];
 
     if (generatedID !== "") {
-      this.props.history.push(`assessment/create/settings/${generatedID}`);
+      this.props.history.push(`/assessment/create/settings/${generatedID}`);
     }
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -306,7 +312,7 @@ const styles = StyleSheet.create({
 });
 
 AssessmentsContainer.propTypes = {
-  homeFetchAllAssessment: PropTypes.func.isRequired,
+  fetchAssSub: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   createAssessmentObj: PropTypes.func.isRequired,
@@ -318,7 +324,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  homeFetchAllAssessment,
+  fetchAssSub,
   logout,
   createAssessmentObj,
   deleteAssessment,

@@ -332,3 +332,25 @@ export const deleteAssSub = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.DELETE_ASS_SUB_FAIL });
     });
 };
+
+export const fetchAssSub = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.FETCH_ASS_BASED_SUB_BEGIN });
+
+  axios
+    .get(
+      `/api/user/home2/assessment/fetch/assessment/${data.subject}`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.FETCH_ASS_BASED_SUB_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      console.log("fetch failed", err);
+      dispatch({ type: HOME.FETCH_ASS_BASED_SUB_FAIL });
+    });
+};
