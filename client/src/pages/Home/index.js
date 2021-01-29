@@ -5,6 +5,7 @@ import StatisticsContainer from "./StatisticsContainer";
 import ViewResponseContainer from "./ViewResponseContainer";
 import GradeContainer from "./GradeContainer";
 import ActivationContainer from "./ActivationContainer";
+import AssessmentsContainer from "./AssessmentsContainer";
 
 export {
   HomeContainer,
@@ -14,4 +15,5 @@ export {
   ViewResponseContainer,
   GradeContainer,
   ActivationContainer,
+  AssessmentsContainer,
 };
