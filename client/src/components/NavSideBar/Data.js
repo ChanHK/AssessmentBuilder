@@ -15,7 +15,7 @@ export const Data = [
     icon: <MdIcons.MdAssessment />,
   },
   {
-    title: "Question Bank",
+    title: "Question Banks",
     path: "/questionBank/main",
     icon: <RiIcons.RiBankFill />,
   },

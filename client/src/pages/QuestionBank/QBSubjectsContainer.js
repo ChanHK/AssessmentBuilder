@@ -196,7 +196,7 @@ class QBSubjectsContainer extends Component {
           <CustomMidContainer style={[styles.customMidContainer]}>
             <CustomColumn>
               <div style={{ marginTop: "60px" }}>
-                <FirstLabel>Question Bank - Subjects</FirstLabel>
+                <FirstLabel>Question Banks - Subjects</FirstLabel>
               </div>
 
               <div style={{ marginBottom: "25px" }}>
