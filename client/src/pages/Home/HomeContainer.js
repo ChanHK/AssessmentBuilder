@@ -11,6 +11,7 @@ import Wrapper from "../../components/Wrapper";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Modal from "../../components/Modal";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -21,6 +22,9 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 import StatusBarImage from "../../components/StatusBarComponents/StatusBarImage";
+
+import * as MdIcons from "react-icons/md";
+import * as BsIcons from "react-icons/bs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -44,6 +48,9 @@ class HomeContainer extends Component {
       posX: 0,
       posY: 0,
       scale: 0,
+      new_subject: "", //new created subject in input
+      msg: null, //stores error msg
+      search: "", //filter search text
     };
   }
 
@@ -105,10 +112,11 @@ class HomeContainer extends Component {
 
   componentWillUnmount() {
     this.props.homeReducer.assessments = null;
+    this.props.homeReducer.pic = null;
   }
 
-  onChangeSearchText = (e) => {
-    this.setState({ searchText: e.target.value });
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
@@ -122,6 +130,9 @@ class HomeContainer extends Component {
       posX,
       posY,
       scale,
+      new_subject,
+      msg,
+      search,
     } = this.state;
 
     let position = { x: 0.5, y: 0.5 };
@@ -138,6 +149,35 @@ class HomeContainer extends Component {
           </div>
         ),
         width: "50px",
+      },
+      {
+        name: "Subject",
+        selector: "sub",
+        cell: (row) => (
+          <div>
+            <div className={css(styles.tableRow)}>{row.sub}</div>
+          </div>
+        ),
+        width: "80%",
+      },
+      {
+        name: "Options",
+        selector: "sub",
+        cell: (row) => (
+          <CustomRow>
+            <TableButton>
+              <BsIcons.BsFillEyeFill />
+            </TableButton>
+            <TableButton
+            // onClick={() => {
+            //   this.setState({ deleteSubject: row.sub, showModal: true });
+            // }}
+            >
+              <MdIcons.MdDelete />
+            </TableButton>
+          </CustomRow>
+        ),
+        width: "15%",
       },
     ];
 
@@ -188,31 +228,56 @@ class HomeContainer extends Component {
                 </StatusBarWrapper>
               </div>
               <FirstLabel>Assessments</FirstLabel>
-              <Wrapper
-                firstHeight={"60px"}
-                secHeight={"120px"}
-                widthChange={1250}
-              >
-                <div className={css(styles.block)}>
-                  <CustomInput
-                    name={"search"}
-                    type={"text"}
-                    placeholder={"Enter assessment title here to search"}
-                    onChangeValue={this.onChangeSearchText}
-                    value={searchText}
-                  />
-                </div>
-                <div className={css(styles.block)}>
-                  <Button
-                    backgroundColor={configStyles.colors.darkBlue}
-                    color={configStyles.colors.white}
-                    padding={"8px"}
-                    onClick={this.toCreateAssessment}
-                  >
-                    Create Assessments
-                  </Button>
-                </div>
-              </Wrapper>
+              <div style={{ marginBottom: "25px" }}>
+                <Wrapper
+                  firstHeight={"60px"}
+                  secHeight={"120px"}
+                  widthChange={1250}
+                >
+                  <div className={css(styles.block)}>
+                    <CustomColumn>
+                      <CustomRow>
+                        <CustomInput
+                          name={"new_subject"}
+                          type={"text"}
+                          placeholder={"Enter new subject here"}
+                          onChangeValue={this.onChange}
+                          value={new_subject}
+                          maxLength={25}
+                        />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <Button
+                          backgroundColor={configStyles.colors.darkBlue}
+                          color={configStyles.colors.white}
+                          padding={"8px"}
+                          width={"100px"}
+                          type={"button"}
+                          onClick={this.addSub}
+                        >
+                          Add
+                        </Button>
+                      </CustomRow>
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("SUB")
+                          ? "*" + msg.SUB
+                          : null}
+                      </span>
+                    </CustomColumn>
+                  </div>
+                  <div className={css(styles.block)}>
+                    <CustomInput
+                      name={"search"}
+                      type={"text"}
+                      placeholder={"Enter subject here to search"}
+                      onChangeValue={this.onChange}
+                      value={search}
+                      maxLength={25}
+                    />
+                  </div>
+                </Wrapper>
+              </div>
               <div style={{ padding: "50px 0px", marginBottom: "100px" }}>
                 <Table data={filteredData} columns={tableHeader} />
               </div>
@@ -241,6 +306,22 @@ const styles = StyleSheet.create({
   tableRow: {
     fontSize: "15px",
     fontFamily: "Ubuntu-Regular",
+  },
+  redText: {
+    color: configStyles.colors.inputErrorRed,
+    fontFamily: "Ubuntu-Regular",
+    fontSize: "15px",
+  },
+  modal: {
+    width: "100%",
+    height: "auto",
+    border: "none",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    backgroundColor: configStyles.colors.white,
+    padding: "20px",
   },
 });
 
