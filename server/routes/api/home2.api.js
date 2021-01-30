@@ -36,7 +36,19 @@ router.post("/assessment/delete/subject", auth, (req, res) => {
     .select("-_id")
     .select("-user_id")
     .then((results) => {
-      return res.json(results);
+      db.Assessment.findOne({ user_id: req.user.id })
+        .then((data) => {
+          let length = data.assessments.length;
+          db.User.findByIdAndUpdate(
+            { _id: req.user.id },
+            { totalAssessmentsCreated: length }
+          )
+            .then(() => {
+              return res.json(results);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 });
