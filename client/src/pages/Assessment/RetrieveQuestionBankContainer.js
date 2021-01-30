@@ -8,7 +8,6 @@ import Wrapper from "../../components/Wrapper";
 import CustomDropdown from "../../components/CustomDropdown";
 import Button from "../../components/Button";
 import Table from "../../components/Table";
-import TableButton from "../../components/TableButton";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import CustomInput from "../../components/CustomInput";
 import ScrollArrow from "../../components/ScrollArrow";
@@ -22,7 +21,6 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 
 import QuestionType from "./Data/QuestionType";
-import * as MdIcons from "react-icons/md";
 
 import htmlToDraft from "html-to-draftjs";
 import { EditorState, ContentState } from "draft-js";
@@ -79,8 +77,19 @@ class RetrieveQuestionBankContainer extends Component {
       questionReducer.questionBankData !== null
     ) {
       const { totalSubjects } = questionReducer.questionBankData;
+      let temp = [];
+      questionReducer.questionData.forEach((item, index) => {
+        temp.push({
+          questionDescription: item.questionDescription,
+          subject: item.subject,
+          questionType: item.questionType,
+          checked: false,
+          id: item._id,
+        });
+      });
+
       this.setState({
-        questions: questionReducer.questionData,
+        questions: temp,
         totalSubjects: totalSubjects,
       });
     }
@@ -102,14 +111,17 @@ class RetrieveQuestionBankContainer extends Component {
     this.props.history.push(`/assessment/${type}/questions/${assessmentID}`);
   };
 
+  _add_selected = () => {
+    const { questions, assessmentID, section } = this.state;
+    console.log(questions);
+  };
+
   render() {
     const {
       searchText,
       questionType,
       selectedSub,
       questions,
-      assessmentID,
-      section,
       totalSubjects,
     } = this.state;
 
@@ -126,7 +138,7 @@ class RetrieveQuestionBankContainer extends Component {
     const lowerCaseSelectedSub = selectedSub.toLowerCase();
     let filteredData = questions;
 
-    if (searchText !== "" || questionType !== "" || selectedSub != "") {
+    if (searchText !== "" || questionType !== "" || selectedSub !== "") {
       if (searchText !== "" && questionType === "" && selectedSub === "") {
         filteredData = filteredData.filter((item) => {
           return (
@@ -257,31 +269,32 @@ class RetrieveQuestionBankContainer extends Component {
       },
       {
         name: "Options",
-        selector: "_id",
+        selector: "checked, id",
         cell: (row) => (
           <CustomRow>
-            <TableButton
-              onClick={() => {
-                let data = {
-                  assessmentID: assessmentID,
-                  section: section,
-                };
-
+            <input
+              type="checkbox"
+              checked={row.checked}
+              className={css(styles.checkbox)}
+              onChange={(e) => {
+                let i = 0;
                 questions.forEach((item, index) => {
-                  if (item._id === row._id) {
-                    data.questionType = item.questionType;
-                    data.questionDescription = item.questionDescription;
-                    data.score = 0;
-                    data.questionChoices = item.questionChoices;
-                    data.questionAnswers = item.questionAnswers;
+                  if (item.id === row.id) {
+                    i = index;
                   }
                 });
-
-                this.props.addAssessmentQuestion(data);
+                this.setState({
+                  questions: [
+                    ...questions.slice(0, i),
+                    {
+                      ...questions[i],
+                      checked: e.target.checked,
+                    },
+                    ...questions.slice(i + 1),
+                  ],
+                });
               }}
-            >
-              <MdIcons.MdAdd strokeWidth={"3"} />
-            </TableButton>
+            />
           </CustomRow>
         ),
         width: "10%",
@@ -359,18 +372,28 @@ class RetrieveQuestionBankContainer extends Component {
                 data={filteredData}
                 columns={column}
                 key={filteredData._id}
-                // paginationRowsPerPageOptions={[20, 25, 30, 35, 40]}
               />
-              <div style={{ marginBottom: "100px" }}>
-                <Button
-                  backgroundColor={configStyles.colors.darkBlue}
-                  color={configStyles.colors.white}
-                  padding={"8px"}
-                  onClick={this.handleClick}
-                  width={"100px"}
-                >
-                  Back
-                </Button>
+              <div className={css(styles.buttonRowCon)}>
+                <CustomRow>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    onClick={this._add_selected}
+                  >
+                    Add Selected
+                  </Button>
+                  <div style={{ marginRight: "15px" }}></div>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    onClick={this.handleClick}
+                    width={"100px"}
+                  >
+                    Back
+                  </Button>
+                </CustomRow>
               </div>
             </CustomColumn>
           </CustomMidContainer>
@@ -392,6 +415,14 @@ const styles = StyleSheet.create({
   tableRow: {
     fontSize: "15px",
     fontFamily: "Ubuntu-Regular",
+  },
+  checkbox: {
+    width: "20px",
+    height: "20px",
+  },
+  buttonRowCon: {
+    marginBottom: "100px",
+    display: "flex",
   },
 });
 
