@@ -188,7 +188,7 @@ class HomeContainer extends Component {
             <div className={css(styles.tableRow)}>{row.sub}</div>
           </div>
         ),
-        width: "80%",
+        width: "70%",
       },
       {
         name: "Options",
