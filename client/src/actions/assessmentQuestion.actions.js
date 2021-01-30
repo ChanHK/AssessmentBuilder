@@ -33,8 +33,6 @@ export const addAssessmentQuestion = (data) => (dispatch, getState) => {
       }, 500);
     })
     .catch((err) => {
-      console.log("Add question to assessment failed", err);
-      //   dispatch(returnErrors(res.data, res.status));
       dispatch({ type: ASSESSMENT_QUESTION.ADD_ASSESSMENT_QUESTION_FAIL });
     });
 };
@@ -181,5 +179,26 @@ export const updateAnAssessmentQuestion = (data) => (dispatch, getState) => {
       dispatch({
         type: ASSESSMENT_QUESTION.UPDATE_AN_ASSESSMENT_QUESTION_FAIL,
       });
+    });
+};
+
+export const addAssQuesFromQB = (data) => (dispatch, getState) => {
+  dispatch({ type: ASSESSMENT_QUESTION.ADD_MULTI_QUES_FROM_QB_BEGIN });
+
+  axios
+    .post(
+      `/api/user/assessment/questions/add_many/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: ASSESSMENT_QUESTION.ADD_MULTI_QUES_FROM_QB_SUCCESS,
+        });
+      }, 500);
+    })
+    .catch((err) => {
+      dispatch({ type: ASSESSMENT_QUESTION.ADD_MULTI_QUES_FROM_QB_FAIL });
     });
 };

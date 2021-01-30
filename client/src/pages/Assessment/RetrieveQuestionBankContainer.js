@@ -35,7 +35,7 @@ import {
   fetchAllQuestionData,
   fetchQuestionBankData,
 } from "../../actions/question.actions";
-import { addAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
+import { addAssQuesFromQB } from "../../actions/assessmentQuestion.actions";
 
 class RetrieveQuestionBankContainer extends Component {
   constructor(props) {
@@ -85,6 +85,8 @@ class RetrieveQuestionBankContainer extends Component {
           questionType: item.questionType,
           checked: false,
           id: item._id,
+          questionAnswers: item.questionAnswers,
+          questionChoices: item.questionChoices,
         });
       });
 
@@ -113,7 +115,27 @@ class RetrieveQuestionBankContainer extends Component {
 
   _add_selected = () => {
     const { questions, assessmentID, section } = this.state;
-    console.log(questions);
+    let temp = [];
+    questions.forEach((item, index) => {
+      if (item.checked) {
+        temp.push({
+          section: section,
+          questionAnswers: item.questionAnswers,
+          questionChoices: item.questionChoices,
+          questionDescription: item.questionDescription,
+          questionType: item.questionType,
+          score: 1,
+        });
+      }
+    });
+
+    if (temp.length !== 0) {
+      let data = {
+        assessmentID: assessmentID,
+        array: temp,
+      };
+      this.props.addAssQuesFromQB(data);
+    }
   };
 
   render() {
@@ -428,7 +450,7 @@ const styles = StyleSheet.create({
 
 RetrieveQuestionBankContainer.propTypes = {
   fetchAllQuestionData: PropTypes.func.isRequired,
-  addAssessmentQuestion: PropTypes.func.isRequired,
+  addAssQuesFromQB: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
@@ -442,7 +464,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   fetchAllQuestionData,
-  addAssessmentQuestion,
+  addAssQuesFromQB,
   logout,
   fetchQuestionBankData,
 })(RetrieveQuestionBankContainer);

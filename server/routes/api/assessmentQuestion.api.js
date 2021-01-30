@@ -5,7 +5,7 @@ const auth = require("../../middleware/auth");
 const db = require("../../models");
 
 // @route     POST api/user/assessment/question/update/:assessmentID
-// @desc      POST question from question bank to assessment collection/ from newly created question
+// @desc      POST question from newly created question
 // @access    Private
 router.post("/assessment/question/update/:assessmentID", auth, (req, res) => {
   db.AssessmentQuestion.findOneAndUpdate(
@@ -324,6 +324,39 @@ router.post(
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
+  }
+);
+
+// @route     POST api/user/assessment/questions/add_many/:assessmentID
+// @desc      POST from QB to assessment question
+// @access    Private
+router.post(
+  "/assessment/questions/add_many/:assessmentID",
+  auth,
+  (req, res) => {
+    db.AssessmentQuestion.updateOne(
+      {
+        assessments_id: req.params.assessmentID,
+      },
+      {
+        $push: {
+          questions: {
+            $each: req.body.array,
+          },
+        },
+      }
+    )
+      .then(() => {
+        return res
+          .status(200)
+          .json({ message: "Question updated successfully" });
+      })
+      .catch(() => {
+        console.log(req.body.array);
+        return res.status(400).json({
+          message: "Question update fail",
+        });
+      });
   }
 );
 
