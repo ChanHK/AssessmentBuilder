@@ -25,6 +25,10 @@ const AssessmentQuestionSchema = new mongoose.Schema({
       },
       questionChoices: [String],
       questionAnswers: [String],
+      retrievedID: {
+        type: String,
+        default: "",
+      },
     },
   ],
 });

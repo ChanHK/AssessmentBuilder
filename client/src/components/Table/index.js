@@ -28,6 +28,7 @@ class Table extends Component {
         pagination
         customStyles={customStyles}
         paginationRowsPerPageOptions={this.props.paginationRowsPerPageOptions}
+        conditionalRowStyles={this.props.conditionalRowStyles}
       />
     );
   }

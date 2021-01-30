@@ -35,7 +35,10 @@ import {
   fetchAllQuestionData,
   fetchQuestionBankData,
 } from "../../actions/question.actions";
-import { addAssQuesFromQB } from "../../actions/assessmentQuestion.actions";
+import {
+  addAssQuesFromQB,
+  fetchAllAssessmentQuestion,
+} from "../../actions/assessmentQuestion.actions";
 
 class RetrieveQuestionBankContainer extends Component {
   constructor(props) {
@@ -64,13 +67,18 @@ class RetrieveQuestionBankContainer extends Component {
         this.props.history.push("/login");
       }
     }
+    const data = {
+      assessmentID: this.state.assessmentID,
+    };
+
+    this.props.fetchAllAssessmentQuestion(data);
     this.props.fetchAllQuestionData();
     this.props.fetchQuestionBankData();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { questionReducer } = this.props;
-
+    const { questionReducer, assessmentQuestionReducer } = this.props;
+    const { questions } = this.state;
     if (
       prevProps.questionReducer !== questionReducer &&
       questionReducer.questionData !== null &&
@@ -87,6 +95,7 @@ class RetrieveQuestionBankContainer extends Component {
           id: item._id,
           questionAnswers: item.questionAnswers,
           questionChoices: item.questionChoices,
+          selected: false,
         });
       });
 
@@ -94,6 +103,23 @@ class RetrieveQuestionBankContainer extends Component {
         questions: temp,
         totalSubjects: totalSubjects,
       });
+    }
+
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.assessmentQuestionLoad !== null &&
+      questions.length !== 0
+    ) {
+      const { assessmentQuestionLoad } = assessmentQuestionReducer;
+      let temp = questions;
+      assessmentQuestionLoad.forEach((item, index) => {
+        temp.forEach((item2, index2) => {
+          if (item2.id === item.retrievedID) {
+            temp[index2].selected = true;
+          }
+        });
+      });
+      this.setState({ questions: temp });
     }
   }
 
@@ -125,6 +151,7 @@ class RetrieveQuestionBankContainer extends Component {
           questionDescription: item.questionDescription,
           questionType: item.questionType,
           score: 1,
+          retrievedID: item.id,
         });
       }
     });
@@ -135,6 +162,21 @@ class RetrieveQuestionBankContainer extends Component {
         array: temp,
       };
       this.props.addAssQuesFromQB(data);
+
+      let temp2 = questions;
+      temp2.forEach((item, index) => {
+        if (item.checked) temp2[index].checked = false;
+      });
+
+      this.setState({ questions: temp2 });
+
+      setTimeout(() => {
+        const data2 = {
+          assessmentID: assessmentID,
+        };
+
+        this.props.fetchAllAssessmentQuestion(data2);
+      }, 500);
     }
   };
 
@@ -150,9 +192,9 @@ class RetrieveQuestionBankContainer extends Component {
     if (
       this.props.questionReducer.isLoading ||
       this.props.assessmentQuestionReducer.isLoading
-    )
+    ) {
       return <LoaderSpinner />;
-    else document.body.style.overflow = "unset";
+    } else document.body.style.overflow = "unset";
 
     if (questions === undefined) return <LoaderSpinner />;
     const lowerCasedSearchText = searchText.toLowerCase();
@@ -323,6 +365,15 @@ class RetrieveQuestionBankContainer extends Component {
       },
     ];
 
+    const conditionalRowStyles = [
+      {
+        when: (row) => row.selected,
+        style: {
+          backgroundColor: configStyles.colors.noticeYellow,
+        },
+      },
+    ];
+
     filteredData.forEach((x, index) => {
       x.serial = index + 1;
     });
@@ -394,6 +445,7 @@ class RetrieveQuestionBankContainer extends Component {
                 data={filteredData}
                 columns={column}
                 key={filteredData._id}
+                conditionalRowStyles={conditionalRowStyles}
               />
               <div className={css(styles.buttonRowCon)}>
                 <CustomRow>
@@ -455,6 +507,7 @@ RetrieveQuestionBankContainer.propTypes = {
   assessmentQuestionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   fetchQuestionBankData: PropTypes.func.isRequired,
+  fetchAllAssessmentQuestion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -467,4 +520,5 @@ export default connect(mapStateToProps, {
   addAssQuesFromQB,
   logout,
   fetchQuestionBankData,
+  fetchAllAssessmentQuestion,
 })(RetrieveQuestionBankContainer);
