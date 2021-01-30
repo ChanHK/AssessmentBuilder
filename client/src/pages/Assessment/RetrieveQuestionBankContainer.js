@@ -45,6 +45,7 @@ class RetrieveQuestionBankContainer extends Component {
     this.state = {
       searchText: "",
       questionType: "",
+      selectedSub: "",
       questions: [],
       assessmentID: this.props.match.params.assessmentID,
       section: this.props.match.params.section,
@@ -93,16 +94,8 @@ class RetrieveQuestionBankContainer extends Component {
     this.props.questionReducer.questionBankData = null;
   }
 
-  onChangeSearchText = (e) => {
-    this.setState({ searchText: e.target.value });
-  };
-
-  onChangeQuestionType = (e) => {
-    this.setState({ questionType: e.value });
-  };
-
   clearSearch = () => {
-    this.setState({ searchText: "", questionType: "" });
+    this.setState({ searchText: "", questionType: "", selectedSub: "" });
   };
 
   handleClick = () => {
@@ -114,6 +107,7 @@ class RetrieveQuestionBankContainer extends Component {
     const {
       searchText,
       questionType,
+      selectedSub,
       questions,
       assessmentID,
       section,
@@ -285,17 +279,21 @@ class RetrieveQuestionBankContainer extends Component {
                 >
                   <div className={css(styles.block)}>
                     <CustomInput
-                      name={"search"}
+                      name={"searchText"}
                       type={"text"}
                       placeholder={"Enter question description here to search"}
-                      onChangeValue={this.onChangeSearchText}
+                      onChangeValue={(e) => {
+                        this.setState({ searchText: e.target.value });
+                      }}
                       value={searchText}
                     />
                   </div>
                   <div className={css(styles.block)}>
                     <CustomDropdown
                       options={QuestionType}
-                      onChange={this.onChangeQuestionType}
+                      onChange={(e) => {
+                        this.setState({ questionType: e.value });
+                      }}
                       value={questionType}
                       placeholder="Select question type"
                     />
@@ -303,8 +301,10 @@ class RetrieveQuestionBankContainer extends Component {
                   <div className={css(styles.block)}>
                     <CustomDropdown
                       options={totalSubjects}
-                      // onChange={this.onChangeQuestionType}
-                      // value={questionType}
+                      onChange={(e) => {
+                        this.setState({ selectedSub: e.value });
+                      }}
+                      value={selectedSub}
                       placeholder="Select subject"
                     />
                   </div>
