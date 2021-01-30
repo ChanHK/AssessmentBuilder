@@ -78,7 +78,6 @@ class RetrieveQuestionBankContainer extends Component {
       questionReducer.questionData !== null &&
       questionReducer.questionBankData !== null
     ) {
-      console.log(questionReducer);
       const { totalSubjects } = questionReducer.questionBankData;
       this.setState({
         questions: questionReducer.questionData,
@@ -124,10 +123,11 @@ class RetrieveQuestionBankContainer extends Component {
     if (questions === undefined) return <LoaderSpinner />;
     const lowerCasedSearchText = searchText.toLowerCase();
     const lowerCaseQuestionType = questionType.toLowerCase();
+    const lowerCaseSelectedSub = selectedSub.toLowerCase();
     let filteredData = questions;
 
-    if (searchText !== "" || questionType !== "") {
-      if (searchText !== "" && questionType === "") {
+    if (searchText !== "" || questionType !== "" || selectedSub != "") {
+      if (searchText !== "" && questionType === "" && selectedSub === "") {
         filteredData = filteredData.filter((item) => {
           return (
             item.questionDescription
@@ -136,20 +136,56 @@ class RetrieveQuestionBankContainer extends Component {
           );
         });
       }
-      if (searchText === "" && questionType !== "") {
+      if (searchText === "" && questionType !== "" && selectedSub === "") {
         filteredData = filteredData.filter((item) => {
           return (
             item.questionType.toLowerCase().indexOf(lowerCaseQuestionType) >= 0
           );
         });
       }
-      if (searchText !== "" && questionType !== "") {
+      if (searchText === "" && questionType === "" && selectedSub !== "") {
+        filteredData = filteredData.filter((item) => {
+          return item.subject.toLowerCase().indexOf(lowerCaseSelectedSub) >= 0;
+        });
+      }
+
+      if (searchText !== "" && questionType !== "" && selectedSub === "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.questionDescription
+              .toLowerCase()
+              .indexOf(lowerCasedSearchText) >= 0 &&
+            item.questionType.toLowerCase().indexOf(lowerCaseQuestionType) >= 0
+          );
+        });
+      }
+      if (searchText !== "" && questionType === "" && selectedSub !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.questionDescription
+              .toLowerCase()
+              .indexOf(lowerCasedSearchText) >= 0 &&
+            item.subject.toLowerCase().indexOf(lowerCaseSelectedSub) >= 0
+          );
+        });
+      }
+      if (searchText === "" && questionType !== "" && selectedSub !== "") {
+        filteredData = filteredData.filter((item) => {
+          return (
+            item.subject.toLowerCase().indexOf(lowerCaseSelectedSub) >= 0 &&
+            item.questionType.toLowerCase().indexOf(lowerCaseQuestionType) >= 0
+          );
+        });
+      }
+
+      if (searchText !== "" && questionType !== "" && selectedSub !== "") {
         filteredData = filteredData.filter((item) => {
           return (
             item.questionType.toLowerCase().includes(lowerCaseQuestionType) &&
             item.questionDescription
               .toLowerCase()
-              .includes(lowerCasedSearchText)
+              .includes(lowerCasedSearchText) &&
+            item.subject.toLowerCase().includes(lowerCaseSelectedSub)
           );
         });
       }
