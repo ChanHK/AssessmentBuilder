@@ -30,7 +30,6 @@ import * as GiIcons from "react-icons/gi";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  fetchAllQuestionData,
   deleteQuestionData,
   fetchQuestionDataOnSub,
   moveQuestion,
@@ -432,7 +431,6 @@ const styles = StyleSheet.create({
 });
 
 QuestionBankContainer.propTypes = {
-  fetchAllQuestionData: PropTypes.func.isRequired,
   questionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   deleteQuestionData: PropTypes.func.isRequired,
@@ -446,7 +444,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  fetchAllQuestionData,
   logout,
   deleteQuestionData,
   fetchQuestionDataOnSub,
