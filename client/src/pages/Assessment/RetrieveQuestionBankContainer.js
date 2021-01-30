@@ -33,7 +33,10 @@ import { logout } from "../../actions/auth.actions";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchAllQuestionData } from "../../actions/question.actions";
+import {
+  fetchAllQuestionData,
+  fetchQuestionBankData,
+} from "../../actions/question.actions";
 import { addAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
 
 class RetrieveQuestionBankContainer extends Component {
@@ -46,6 +49,7 @@ class RetrieveQuestionBankContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       section: this.props.match.params.section,
       type: this.props.match.params.type,
+      totalSubjects: [],
     };
   }
 
@@ -62,6 +66,7 @@ class RetrieveQuestionBankContainer extends Component {
       }
     }
     this.props.fetchAllQuestionData();
+    this.props.fetchQuestionBankData();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -70,9 +75,14 @@ class RetrieveQuestionBankContainer extends Component {
     if (
       prevProps.questionReducer !== questionReducer &&
       questionReducer.questionLoad !== null &&
-      questionReducer.message === undefined
+      questionReducer.questionBankData !== null
     ) {
-      this.setState({ questions: questionReducer.questionLoad });
+      console.log(questionReducer);
+      const { totalSubjects } = questionReducer.questionBankData;
+      this.setState({
+        questions: questionReducer.questionLoad,
+        totalSubjects: totalSubjects,
+      });
     }
   }
 
@@ -80,6 +90,7 @@ class RetrieveQuestionBankContainer extends Component {
     this.props.questionReducer.questionLoad = null;
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
     this.props.assessmentQuestionReducer.direct = false;
+    this.props.questionReducer.questionBankData = null;
   }
 
   onChangeSearchText = (e) => {
@@ -106,6 +117,7 @@ class RetrieveQuestionBankContainer extends Component {
       questions,
       assessmentID,
       section,
+      totalSubjects,
     } = this.state;
 
     if (
@@ -267,8 +279,8 @@ class RetrieveQuestionBankContainer extends Component {
               </div>
               <div style={{ paddingBottom: "25px" }}>
                 <Wrapper
-                  firstHeight={"60px"}
-                  secHeight={"120px"}
+                  firstHeight={"90px"}
+                  secHeight={"180px"}
                   widthChange={1350}
                 >
                   <div className={css(styles.block)}>
@@ -286,6 +298,14 @@ class RetrieveQuestionBankContainer extends Component {
                       onChange={this.onChangeQuestionType}
                       value={questionType}
                       placeholder="Select question type"
+                    />
+                  </div>
+                  <div className={css(styles.block)}>
+                    <CustomDropdown
+                      options={totalSubjects}
+                      // onChange={this.onChangeQuestionType}
+                      // value={questionType}
+                      placeholder="Select subject"
                     />
                   </div>
                 </Wrapper>
@@ -343,6 +363,7 @@ RetrieveQuestionBankContainer.propTypes = {
   questionReducer: PropTypes.object.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  fetchQuestionBankData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -354,4 +375,5 @@ export default connect(mapStateToProps, {
   fetchAllQuestionData,
   addAssessmentQuestion,
   logout,
+  fetchQuestionBankData,
 })(RetrieveQuestionBankContainer);
