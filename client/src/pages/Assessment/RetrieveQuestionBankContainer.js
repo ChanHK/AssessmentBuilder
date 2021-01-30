@@ -75,23 +75,23 @@ class RetrieveQuestionBankContainer extends Component {
 
     if (
       prevProps.questionReducer !== questionReducer &&
-      questionReducer.questionLoad !== null &&
+      questionReducer.questionData !== null &&
       questionReducer.questionBankData !== null
     ) {
       console.log(questionReducer);
       const { totalSubjects } = questionReducer.questionBankData;
       this.setState({
-        questions: questionReducer.questionLoad,
+        questions: questionReducer.questionData,
         totalSubjects: totalSubjects,
       });
     }
   }
 
   componentWillUnmount() {
-    this.props.questionReducer.questionLoad = null;
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
     this.props.assessmentQuestionReducer.direct = false;
     this.props.questionReducer.questionBankData = null;
+    this.props.questionReducer.questionData = null;
   }
 
   clearSearch = () => {
@@ -121,7 +121,6 @@ class RetrieveQuestionBankContainer extends Component {
       return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
-    if (this.props.questionReducer.questionLoad === null) return false;
     if (questions === undefined) return <LoaderSpinner />;
     const lowerCasedSearchText = searchText.toLowerCase();
     const lowerCaseQuestionType = questionType.toLowerCase();
@@ -162,9 +161,7 @@ class RetrieveQuestionBankContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.serial}
-            </div>
+            <div className={css(styles.tableRow)}>{row.serial}</div>
           </div>
         ),
         width: "50px",
@@ -183,12 +180,7 @@ class RetrieveQuestionBankContainer extends Component {
           }
           return (
             <div>
-              <div
-                style={{
-                  fontSize: "15px",
-                  fontFamily: "Ubuntu-Regular",
-                }}
-              >
+              <div className={css(styles.tableRow)}>
                 <Editor
                   editorState={editorState}
                   toolbarHidden={true}
@@ -205,19 +197,27 @@ class RetrieveQuestionBankContainer extends Component {
             </div>
           );
         },
-        width: "500px",
+        width: "40%",
+      },
+      {
+        name: "Subject",
+        selector: "subject",
+        cell: (row) => (
+          <div>
+            <div className={css(styles.tableRow)}>{row.subject}</div>
+          </div>
+        ),
+        width: "15%",
       },
       {
         name: "Question Type",
         selector: "questionType",
         cell: (row) => (
           <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.questionType}
-            </div>
+            <div className={css(styles.tableRow)}>{row.questionType}</div>
           </div>
         ),
-        width: "200px",
+        width: "20%",
       },
       {
         name: "Options",
@@ -231,17 +231,15 @@ class RetrieveQuestionBankContainer extends Component {
                   section: section,
                 };
 
-                this.props.questionReducer.questionLoad.forEach(
-                  (item, index) => {
-                    if (item._id === row._id) {
-                      data.questionType = item.questionType;
-                      data.questionDescription = item.questionDescription;
-                      data.score = 0;
-                      data.questionChoices = item.questionChoices;
-                      data.questionAnswers = item.questionAnswers;
-                    }
+                questions.forEach((item, index) => {
+                  if (item._id === row._id) {
+                    data.questionType = item.questionType;
+                    data.questionDescription = item.questionDescription;
+                    data.score = 0;
+                    data.questionChoices = item.questionChoices;
+                    data.questionAnswers = item.questionAnswers;
                   }
-                );
+                });
 
                 this.props.addAssessmentQuestion(data);
               }}
@@ -250,7 +248,7 @@ class RetrieveQuestionBankContainer extends Component {
             </TableButton>
           </CustomRow>
         ),
-        width: "180px",
+        width: "10%",
       },
     ];
 
@@ -354,6 +352,10 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     width: "400px",
     height: "auto",
+  },
+  tableRow: {
+    fontSize: "15px",
+    fontFamily: "Ubuntu-Regular",
   },
 });
 

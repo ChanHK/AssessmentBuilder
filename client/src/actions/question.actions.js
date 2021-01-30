@@ -32,21 +32,20 @@ export const updateQuestion = (data) => (dispatch, getState) => {
 };
 
 export const fetchAllQuestionData = () => (dispatch, getState) => {
-  dispatch({ type: QUESTION.FETCH_QUESTION_DATA_BEGIN });
+  dispatch({ type: QUESTION.FETCH_ALL_QUESTIONS_IN_ASS_BEGIN });
 
   axios
     .get("/api/user/question", tokenConfig(getState))
     .then((res) => {
       setTimeout(() => {
         dispatch({
-          type: QUESTION.FETCH_QUESTION_DATA_SUCCESS,
+          type: QUESTION.FETCH_ALL_QUESTIONS_IN_ASS_SUCCESS,
           payload: res.data,
         });
       }, 2000);
     })
     .catch((err) => {
-      console.log("Fetch question data failed", err);
-      dispatch({ type: QUESTION.FETCH_QUESTION_DATA_FAIL });
+      dispatch({ type: QUESTION.FETCH_ALL_QUESTIONS_IN_ASS_FAIL });
     });
 };
 
