@@ -31,7 +31,7 @@ class SetContainer extends Component {
       randomSelected: false,
       manualSelected: true,
       randomTakeFromTotalSelected: false,
-      questionNum: 0, // question number in a set
+      randomQuestionNum: "", // question number in a set
       totalQuestionNumber: 0, // total questions in Question section
       definedTakeFromSectionSelected: false, //take questions from diff sections
       manualRandomSelected: false, // does the set questions choices need to randomize?
@@ -81,7 +81,7 @@ class SetContainer extends Component {
         manualRandomSelected: manualRandomSelected,
         randomTakeFromTotalSelected: randomTakeFromTotalSelected,
         definedTakeFromSectionSelected: definedTakeFromSectionSelected,
-        randomQuestionNum: randomQuestionNum,
+        randomQuestionNum: randomQuestionNum.toString(),
         sectionFilterNum: sectionFilterNum,
       });
     }
@@ -90,14 +90,15 @@ class SetContainer extends Component {
       prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
       assessmentQuestionReducer.assessmentQuestionLoad !== null
     ) {
+      // find biggest section number
       let biggest = 0;
-
       assessmentQuestionReducer.assessmentQuestionLoad.forEach(
         (item, index) => {
           if (item.section > biggest) biggest = item.section;
         }
       );
 
+      //create 2d array container
       let tempQuestions = [];
       let questionsAllIDSection = [];
       for (let i = 0; i < biggest; i++) {
@@ -118,9 +119,18 @@ class SetContainer extends Component {
         tempArray.push("");
       }
 
+      const { sectionFilterNum } = this.state;
+      if (tempQuestions.length !== sectionFilterNum.length) {
+        this.setState({ sectionFilterNum: tempArray });
+      } else {
+        this.setState({
+          sectionFilterNum:
+            sectionFilterNum.length === 0 ? tempArray : sectionFilterNum,
+        });
+      }
+
       this.setState({
         questions: tempQuestions,
-        sectionFilterNum: tempArray,
         totalQuestionNumber:
           assessmentQuestionReducer.assessmentQuestionLoad.length,
         questionsAllID: questionsAllID,
@@ -134,10 +144,10 @@ class SetContainer extends Component {
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
   }
 
-  validateGenerationInput = () => {
+  validateForm = () => {
     const {
       totalQuestionNumber,
-      questionNum,
+      randomQuestionNum,
       randomTakeFromTotalSelected,
       definedTakeFromSectionSelected,
       questions,
@@ -146,17 +156,21 @@ class SetContainer extends Component {
     let tempMsg = {};
 
     if (randomTakeFromTotalSelected) {
-      if (questionNum === "") {
+      if (randomQuestionNum === "") {
         tempMsg.QN = "Please enter number of questions";
-      } else if (!/^\d+$/.test(questionNum)) {
+      } else if (!/^\d+$/.test(randomQuestionNum)) {
         tempMsg.QN = "Please enter digits only";
       } else if (
         !(
-          parseInt(questionNum) > 0 &&
-          parseInt(questionNum) <= totalQuestionNumber
+          parseInt(randomQuestionNum) > 0 &&
+          parseInt(randomQuestionNum) <= totalQuestionNumber
         )
       ) {
-        tempMsg.QN = `Please enter digits between 1 and ${totalQuestionNumber}`;
+        if (totalQuestionNumber === 0) {
+          tempMsg.QN = "Please create questions first in the question section";
+        } else {
+          tempMsg.QN = `Please enter digits between 1 and ${totalQuestionNumber}`;
+        }
       }
     }
 
@@ -194,84 +208,8 @@ class SetContainer extends Component {
     }
 
     this.setState({ msg: tempMsg });
-    if (Object.keys(tempMsg).length === 0) this.generateSetButtonClick();
-  };
-
-  generateSetButtonClick = () => {
-    const {
-      totalQuestionNumber,
-      sectionFilterNum,
-      definedTakeFromSectionSelected,
-      randomTakeFromTotalSelected,
-      questionNum,
-      questionsAllID,
-      questionsAllIDSection,
-    } = this.state;
-
-    if (totalQuestionNumber > 0) {
-      if (definedTakeFromSectionSelected) {
-        let generated = [];
-
-        questionsAllIDSection.forEach((item, index) => {
-          generated.push(
-            this.getRandom(item, parseInt(sectionFilterNum[index]))
-          );
-        });
-
-        let temp = [];
-        generated.forEach((item, index) => {
-          temp = temp.concat(item);
-        });
-
-        let temp2 = [...this.state.generatedSets];
-        temp2.push(temp);
-
-        while (temp2.length > 10) {
-          temp2.pop();
-        }
-
-        this.setState({ generatedSets: temp2 });
-      }
-
-      if (randomTakeFromTotalSelected) {
-        let array2D = [];
-        for (let i = 0; i < 100000; i++) {
-          let generated = [];
-          generated.push(this.getRandom(questionsAllID, questionNum));
-
-          let temp3 = [];
-          generated.forEach((item, index) => {
-            temp3 = temp3.concat(item);
-          });
-          array2D.push(temp3);
-        }
-
-        let temp4 = [...this.state.generatedSets];
-        array2D.forEach((item, index) => {
-          temp4.push(item);
-        });
-
-        while (temp4.length > 10) {
-          temp4.pop();
-        }
-
-        this.setState({ generatedSets: temp4 });
-      }
-    }
-  };
-
-  getRandom = (arr, n) => {
-    let result = new Array(n),
-      len = arr.length,
-      taken = new Array(len);
-    if (n > len)
-      throw new RangeError("getRandom: more elements taken than available");
-    while (n--) {
-      let x = Math.floor(Math.random() * len);
-      result[n] = arr[x in taken ? taken[x] : x];
-      taken[x] = --len in taken ? taken[len] : len;
-    }
-    return result;
+    if (Object.keys(tempMsg).length === 0) return true;
+    else return false;
   };
 
   onSubmit = (e) => {
@@ -288,19 +226,20 @@ class SetContainer extends Component {
       sectionFilterNum,
     } = this.state;
 
-    const set = {
-      fixedSelected: fixedSelected,
-      randomSelected: randomSelected,
-      manualSelected: manualSelected,
-      manualRandomSelected: manualRandomSelected,
-      assessmentID: assessmentID,
-      randomTakeFromTotalSelected: randomTakeFromTotalSelected,
-      definedTakeFromSectionSelected: definedTakeFromSectionSelected,
-      randomQuestionNum: randomQuestionNum,
-      sectionFilterNum: sectionFilterNum,
-    };
-
-    this.props.updateAssessmentSet(set);
+    if (this.validateForm()) {
+      const set = {
+        fixedSelected: fixedSelected,
+        randomSelected: randomSelected,
+        manualSelected: manualSelected,
+        manualRandomSelected: manualRandomSelected,
+        assessmentID: assessmentID,
+        randomTakeFromTotalSelected: randomTakeFromTotalSelected,
+        definedTakeFromSectionSelected: definedTakeFromSectionSelected,
+        randomQuestionNum: parseInt(randomQuestionNum),
+        sectionFilterNum: sectionFilterNum,
+      };
+      this.props.updateAssessmentSet(set);
+    }
   };
 
   render() {
@@ -309,7 +248,7 @@ class SetContainer extends Component {
       randomSelected,
       manualSelected,
       randomTakeFromTotalSelected,
-      questionNum,
+      randomQuestionNum,
       totalQuestionNumber,
       definedTakeFromSectionSelected,
       manualRandomSelected,
@@ -408,6 +347,7 @@ class SetContainer extends Component {
                               randomTakeFromTotalSelected: e.target.checked,
                               definedTakeFromSectionSelected: false,
                               manualRandomSelected: e.target.checked,
+                              randomQuestionNum: "",
                             });
                           }
                         }}
@@ -427,9 +367,9 @@ class SetContainer extends Component {
                       <CustomInput
                         type={"text"}
                         onChangeValue={(e) =>
-                          this.setState({ questionNum: e.target.value })
+                          this.setState({ randomQuestionNum: e.target.value })
                         }
-                        value={questionNum}
+                        value={randomQuestionNum}
                         placeholder={"Enter number of questions"}
                       />
                       <span className={css(styles.redText)}>
@@ -463,51 +403,57 @@ class SetContainer extends Component {
                 </CustomRow>
                 {definedTakeFromSectionSelected && (
                   <div className={css(styles.sectionCon)}>
-                    <CustomColumn>
-                      {questions.map((value, index) => (
-                        <div style={{ marginBottom: "15px" }} key={index}>
-                          <ThirdLabel textDecoration={"underline"}>
-                            Section {index + 1}
-                          </ThirdLabel>
-                          <CustomColumn>
-                            <CustomRow>
-                              <div className={css(styles.text)}>
-                                <ThirdLabel>Select</ThirdLabel>
-                              </div>
-                              <div style={{ width: "100px" }}>
-                                <CustomInput
-                                  type={"text"}
-                                  onChangeValue={(e) => {
-                                    this.setState({
-                                      sectionFilterNum: [
-                                        ...sectionFilterNum.slice(0, index),
-                                        e.target.value,
-                                        ...sectionFilterNum.slice(index + 1),
-                                      ],
-                                    });
-                                  }}
-                                  value={sectionFilterNum[index]}
-                                />
-                              </div>
-                              <div className={css(styles.text)}>
-                                <ThirdLabel>
-                                  out of {value.length} questions
-                                </ThirdLabel>
-                              </div>
-                            </CustomRow>
-                            <span className={css(styles.redText)}>
-                              {msg === null
-                                ? null
-                                : msg.hasOwnProperty("section")
-                                ? msg.section[index] !== ""
-                                  ? "*" + msg.section[index]
-                                  : null
-                                : null}
-                            </span>
-                          </CustomColumn>
-                        </div>
-                      ))}
-                    </CustomColumn>
+                    {questions.length === 0 ? (
+                      <span className={css(styles.redText)}>
+                        Please create questions in the question section
+                      </span>
+                    ) : (
+                      <CustomColumn>
+                        {questions.map((value, index) => (
+                          <div style={{ marginBottom: "15px" }} key={index}>
+                            <ThirdLabel textDecoration={"underline"}>
+                              Section {index + 1}
+                            </ThirdLabel>
+                            <CustomColumn>
+                              <CustomRow>
+                                <div className={css(styles.text)}>
+                                  <ThirdLabel>Select</ThirdLabel>
+                                </div>
+                                <div style={{ width: "100px" }}>
+                                  <CustomInput
+                                    type={"text"}
+                                    onChangeValue={(e) => {
+                                      this.setState({
+                                        sectionFilterNum: [
+                                          ...sectionFilterNum.slice(0, index),
+                                          e.target.value,
+                                          ...sectionFilterNum.slice(index + 1),
+                                        ],
+                                      });
+                                    }}
+                                    value={sectionFilterNum[index]}
+                                  />
+                                </div>
+                                <div className={css(styles.text)}>
+                                  <ThirdLabel>
+                                    out of {value.length} questions
+                                  </ThirdLabel>
+                                </div>
+                              </CustomRow>
+                              <span className={css(styles.redText)}>
+                                {msg === null
+                                  ? null
+                                  : msg.hasOwnProperty("section")
+                                  ? msg.section[index] !== ""
+                                    ? "*" + msg.section[index]
+                                    : null
+                                  : null}
+                              </span>
+                            </CustomColumn>
+                          </div>
+                        ))}
+                      </CustomColumn>
+                    )}
                   </div>
                 )}
               </CustomColumn>
@@ -531,24 +477,15 @@ class SetContainer extends Component {
         )}
         {type !== "view" && (
           <div>
-            <CustomColumn>
-              <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
-                padding={"8px"}
-                width={"100px"}
-                type={"submit"}
-              >
-                Save
-              </Button>
-              <span className={css(styles.redText)}>
-                {msg === null
-                  ? null
-                  : msg.hasOwnProperty("setLength")
-                  ? "*" + msg.setLength
-                  : null}
-              </span>
-            </CustomColumn>
+            <Button
+              backgroundColor={configStyles.colors.darkBlue}
+              color={configStyles.colors.white}
+              padding={"8px"}
+              width={"100px"}
+              type={"submit"}
+            >
+              Save
+            </Button>
           </div>
         )}
       </form>

@@ -92,7 +92,7 @@ const AssessmentSchema = new mongoose.Schema({
           type: Number,
           default: 0,
         },
-        sectionFilterNum: [Number],
+        sectionFilterNum: [String],
       },
       timer: {
         assessmentTimeSelected: {
