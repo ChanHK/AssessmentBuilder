@@ -61,8 +61,7 @@ class SetContainer extends Component {
 
     if (
       prevProps.assessmentReducer !== assessmentReducer &&
-      assessmentReducer.assessmentLoad !== null &&
-      assessmentReducer.message === undefined
+      assessmentReducer.assessmentLoad !== null
     ) {
       const {
         fixedSelected,
@@ -81,8 +80,7 @@ class SetContainer extends Component {
 
     if (
       prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
-      assessmentQuestionReducer.assessmentQuestionLoad !== null &&
-      assessmentQuestionReducer.message === undefined
+      assessmentQuestionReducer.assessmentQuestionLoad !== null
     ) {
       let biggest = 0;
 
@@ -266,18 +264,6 @@ class SetContainer extends Component {
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
-  };
-
-  onChangeSectionFilterNum = (e, index) => {
-    const { sectionFilterNum } = this.state;
-
-    this.setState({
-      sectionFilterNum: [
-        ...sectionFilterNum.slice(0, index),
-        e.target.value,
-        ...sectionFilterNum.slice(index + 1),
-      ],
-    });
   };
 
   onSubmit = (e) => {
@@ -476,9 +462,15 @@ class SetContainer extends Component {
                               <div style={{ width: "100px" }}>
                                 <CustomInput
                                   type={"text"}
-                                  onChangeValue={(e) =>
-                                    this.onChangeSectionFilterNum(e, index)
-                                  }
+                                  onChangeValue={(e) => {
+                                    this.setState({
+                                      sectionFilterNum: [
+                                        ...sectionFilterNum.slice(0, index),
+                                        e.target.value,
+                                        ...sectionFilterNum.slice(index + 1),
+                                      ],
+                                    });
+                                  }}
                                   value={sectionFilterNum[index]}
                                 />
                               </div>
