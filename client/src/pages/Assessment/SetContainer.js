@@ -4,9 +4,7 @@ import "../../css/general.css";
 import * as configStyles from "../../config/styles";
 
 import Radio from "../../components/Radio";
-import Wrapper from "../../components/Wrapper";
 import CustomInput from "../../components/CustomInput";
-import CustomDropdown from "../../components/CustomDropdown";
 import CustomSwitch from "../../components/CustomSwitch";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
@@ -25,8 +23,6 @@ import {
 } from "../../actions/assessment.actions";
 import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
 
-const dropdownData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-
 class SetContainer extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +32,6 @@ class SetContainer extends Component {
       manualSelected: true,
       randomTakeFromTotalSelected: false,
       questionNum: "", // question number in a set
-      setNum: "", // number of set that will be generated
       totalQuestionNumber: 0, // total questions in Question section
       definedTakeFromSectionSelected: false, //take questions from diff sections
       manualRandomSelected: false, // does the set questions choices need to randomize?
@@ -136,7 +131,6 @@ class SetContainer extends Component {
   validateGenerationInput = () => {
     const {
       totalQuestionNumber,
-      setNum,
       questionNum,
       randomTakeFromTotalSelected,
       definedTakeFromSectionSelected,
@@ -157,10 +151,6 @@ class SetContainer extends Component {
         )
       ) {
         tempMsg.QN = `Please enter digits between 1 and ${totalQuestionNumber}`;
-      }
-
-      if (setNum === "") {
-        tempMsg.QS = "Please select number of sets";
       }
     }
 
@@ -207,7 +197,6 @@ class SetContainer extends Component {
       sectionFilterNum,
       definedTakeFromSectionSelected,
       randomTakeFromTotalSelected,
-      setNum,
       questionNum,
       questionsAllID,
       questionsAllIDSection,
@@ -240,7 +229,7 @@ class SetContainer extends Component {
 
       if (randomTakeFromTotalSelected) {
         let array2D = [];
-        for (let i = 0; i < setNum; i++) {
+        for (let i = 0; i < 100000; i++) {
           let generated = [];
           generated.push(this.getRandom(questionsAllID, questionNum));
 
@@ -321,7 +310,6 @@ class SetContainer extends Component {
       randomTakeFromTotalSelected,
       questionNum,
       totalQuestionNumber,
-      setNum,
       definedTakeFromSectionSelected,
       manualRandomSelected,
       questions,
@@ -430,54 +418,27 @@ class SetContainer extends Component {
                   </div>
                 </CustomRow>
                 {randomTakeFromTotalSelected && (
-                  <div style={{ marginLeft: "45px", marginBottom: "25px" }}>
-                    <Wrapper
-                      firstHeight={"100px"}
-                      secHeight={"200px"}
-                      widthChange={1400}
-                    >
-                      <div className={css(styles.block)}>
-                        <CustomColumn>
-                          <ThirdLabel>
-                            Number of questions (total {totalQuestionNumber})
-                          </ThirdLabel>
-                          <CustomInput
-                            type={"text"}
-                            onChangeValue={(e) =>
-                              this.setState({ questionNum: e.target.value })
-                            }
-                            value={questionNum}
-                            placeholder={"Enter number of questions"}
-                          />
-                          <span className={css(styles.redText)}>
-                            {msg === null
-                              ? null
-                              : msg.hasOwnProperty("QN")
-                              ? "*" + msg.QN
-                              : null}
-                          </span>
-                        </CustomColumn>
-                      </div>
-                      <div className={css(styles.block)}>
-                        <CustomColumn>
-                          <ThirdLabel>Number of sets</ThirdLabel>
-                          <CustomDropdown
-                            options={dropdownData}
-                            placeholder={"Select number of sets"}
-                            value={setNum}
-                            onChange={(e) => this.setState({ setNum: e.value })}
-                            disabled={type === "view" ? true : false}
-                          />
-                          <span className={css(styles.redText)}>
-                            {msg === null
-                              ? null
-                              : msg.hasOwnProperty("QS")
-                              ? "*" + msg.QS
-                              : null}
-                          </span>
-                        </CustomColumn>
-                      </div>
-                    </Wrapper>
+                  <div className={css(styles.block)}>
+                    <CustomColumn>
+                      <ThirdLabel>
+                        Number of questions (total {totalQuestionNumber})
+                      </ThirdLabel>
+                      <CustomInput
+                        type={"text"}
+                        onChangeValue={(e) =>
+                          this.setState({ questionNum: e.target.value })
+                        }
+                        value={questionNum}
+                        placeholder={"Enter number of questions"}
+                      />
+                      <span className={css(styles.redText)}>
+                        {msg === null
+                          ? null
+                          : msg.hasOwnProperty("QN")
+                          ? "*" + msg.QN
+                          : null}
+                      </span>
+                    </CustomColumn>
                   </div>
                 )}
                 <CustomRow>
@@ -611,6 +572,8 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: "45px",
+    marginBottom: "25px",
   },
   text: {
     justifyContent: "center",
