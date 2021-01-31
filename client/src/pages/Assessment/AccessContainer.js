@@ -12,7 +12,6 @@ import QRCode from "qrcode.react";
 import { ExcelRenderer } from "react-excel-renderer";
 import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
-import generator from "generate-password";
 import Number from "./Data/Number";
 
 import Modal from "../../components/Modal";
@@ -77,15 +76,13 @@ class AccessContainer extends Component {
         noAuthenticationSelected,
         withAuthenticationSelected,
         attemptNum,
-        accessCode,
         accessEmail,
       } = assessmentReducer.assessmentLoad;
 
       let rows = [];
 
-      for (let i = 0; i < accessCode.length; i++) {
+      for (let i = 0; i < accessEmail.length; i++) {
         rows.push({
-          accessCode: accessCode[i],
           email: accessEmail[i],
           id: uuidv4(),
         });
@@ -129,8 +126,6 @@ class AccessContainer extends Component {
     }
   };
 
-  ///////////////Excel part/////////////////
-
   fileUploadHandler = (e) => {
     let fileObj = e.target.files[0];
     ExcelRenderer(fileObj, (err, resp) => {
@@ -141,17 +136,8 @@ class AccessContainer extends Component {
 
         resp.rows.slice(1).forEach((item, index) => {
           if (item && item !== "undefined") {
-            var password = generator.generate({
-              length: 10,
-              numbers: true,
-              uppercase: true,
-              lowercase: true,
-              excludeSimilarCharacters: true,
-              symbols: false,
-            });
             newRows.push({
               email: item[0],
-              accessCode: password,
               id: uuidv4(),
             });
           }
@@ -172,8 +158,6 @@ class AccessContainer extends Component {
     });
   };
 
-  /////////////////////////////////////////
-
   onChangeEmail = (e) => {
     this.setState({ newEmail: e.target.value });
     e.preventDefault();
@@ -192,18 +176,9 @@ class AccessContainer extends Component {
 
   addEmail = () => {
     let newRows = [];
-    var password = generator.generate({
-      length: 10,
-      numbers: true,
-      uppercase: true,
-      lowercase: true,
-      excludeSimilarCharacters: true,
-      symbols: false,
-    });
     if (this.state.newEmail !== "") {
       newRows.push({
         email: this.state.newEmail,
-        accessCode: password,
         id: uuidv4(),
       });
       this.setState({
@@ -224,11 +199,9 @@ class AccessContainer extends Component {
       assessmentID,
     } = this.state;
 
-    let accessCode = [];
     let accessEmail = [];
 
     rows.forEach((item, index) => {
-      accessCode.push(item.accessCode);
       accessEmail.push(item.email);
     });
 
@@ -237,7 +210,6 @@ class AccessContainer extends Component {
       noAuthenticationSelected: noAuthenticationSelected,
       withAuthenticationSelected: withAuthenticationSelected,
       attemptNum: attemptNum,
-      accessCode: accessCode,
       accessEmail: accessEmail,
       assessmentID: assessmentID,
     };
@@ -272,22 +244,6 @@ class AccessContainer extends Component {
         width: "50px",
       },
       {
-        name: "Access Code",
-        selector: "accessCode",
-        cell: (row) => (
-          <div>
-            <div
-              style={{
-                fontSize: "15px",
-                fontFamily: "Ubuntu-Regular",
-              }}
-            >
-              {row.accessCode}
-            </div>
-          </div>
-        ),
-      },
-      {
         name: "Email",
         selector: "email",
         cell: (row) => (
@@ -302,6 +258,7 @@ class AccessContainer extends Component {
             </div>
           </div>
         ),
+        width: "80%",
       },
       {
         name: "Action",
@@ -400,8 +357,8 @@ class AccessContainer extends Component {
             </CustomRow>
             {withAuthenticationSelected && (
               <Notice>
-                Each candidates have to enter their own access code in order to
-                access to the assessment
+                The system will check the candidates' email is eligible for the
+                assessment or not
               </Notice>
             )}
           </div>
