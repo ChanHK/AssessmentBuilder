@@ -173,6 +173,7 @@ router.post(
                   questionDescription: item.questionDescription,
                   questionChoices: item.questionChoices,
                   questionAnswers: item.questionAnswers,
+                  subject: req.body.subject,
                 },
               },
             },
