@@ -241,6 +241,7 @@ class QuestionBankContainer extends Component {
               onClick={() => {
                 const data = {
                   questionID: row._id,
+                  subject: subject,
                 };
                 this.props.deleteQuestionData(data);
               }}

@@ -62,7 +62,7 @@ router.get("/question", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
-// @route     POST api/user/question
+// @route     POST api/user/question/delete
 // @desc      POST ($pull) delete question from question bank based on id
 // @access    Private
 router.post("/question/delete", auth, (req, res) => {
@@ -81,7 +81,11 @@ router.post("/question/delete", auth, (req, res) => {
         { safe: true, new: true }
       )
         .then((response) => {
-          return res.status(200).json(response.questions);
+          let temp = [];
+          response.questions.forEach((item, index) => {
+            if (item.subject === req.body.subject) temp.push(item);
+          });
+          return res.status(200).json(temp);
         })
         .catch(() => {
           return res.status(400).json({
