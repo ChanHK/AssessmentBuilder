@@ -106,8 +106,7 @@ class ActivationContainer extends Component {
       if (access.link !== "") {
         if (
           access.withAuthenticationSelected &&
-          access.accessEmail.length > 0 &&
-          sets.accessCode.length > 0
+          access.accessEmail.length > 0
         ) {
           accessCB = true;
         } else if (access.noAuthenticationSelected) accessCB = true;

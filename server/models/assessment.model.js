@@ -61,7 +61,6 @@ const AssessmentSchema = new mongoose.Schema({
           type: String,
           default: "1",
         },
-        accessCode: [String],
         accessEmail: [String],
       },
       sets: {
