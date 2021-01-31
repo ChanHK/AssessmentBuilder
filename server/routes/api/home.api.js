@@ -59,7 +59,6 @@ router.post("/assessment/create", auth, (req, res) => {
           };
 
           db.AssessmentQuestion.create(data);
-          db.AssessmentSet.create(data);
           db.User.updateOne(
             { _id: req.user.id },
             {
@@ -115,32 +114,25 @@ router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
             assessments_id: req.params.assessmentID,
           })
             .then(() => {
-              db.AssessmentSet.deleteOne({
+              db.Candidate.deleteMany({
                 assessments_id: req.params.assessmentID,
               })
                 .then(() => {
-                  db.Candidate.deleteMany({
+                  db.Feedback.deleteMany({
                     assessments_id: req.params.assessmentID,
                   })
                     .then(() => {
-                      db.Feedback.deleteMany({
-                        assessments_id: req.params.assessmentID,
-                      })
-                        .then(() => {
-                          let temp = [];
-                          response.assessments.forEach((item, index) => {
-                            if (item.subject === req.body.subject)
-                              temp.push(item);
-                          });
-                          return res.status(200).json(temp);
-                        })
-                        .catch(() => {
-                          return res.status(400).json({
-                            message: "Delete failed",
-                          });
-                        });
+                      let temp = [];
+                      response.assessments.forEach((item, index) => {
+                        if (item.subject === req.body.subject) temp.push(item);
+                      });
+                      return res.status(200).json(temp);
                     })
-                    .catch((err) => console.log(err));
+                    .catch(() => {
+                      return res.status(400).json({
+                        message: "Delete failed",
+                      });
+                    });
                 })
                 .catch((err) => console.log(err));
             })
