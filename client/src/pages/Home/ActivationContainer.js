@@ -98,9 +98,20 @@ class ActivationContainer extends Component {
       if (totalQuestionNum > 0) questionsCB = true;
 
       //check sets
-      if (sets.manualSelected && sets.totalSetNum > 0) setsCB = true;
-      else if (sets.fixedSelected || sets.manualRandomSelected) setsCB = true;
-      else setsCB = false;
+      if (sets.fixedSelected || sets.randomSelected) setsCB = true;
+      else if (
+        sets.manualSelected &&
+        sets.randomTakeFromTotalSelected &&
+        sets.randomQuestionNum > 0
+      ) {
+        setsCB = true;
+      } else if (
+        sets.manualSelected &&
+        sets.definedTakeFromSectionSelected &&
+        sets.sectionFilterNum.length > 0
+      ) {
+        setsCB = true;
+      } else setsCB = false;
 
       //check access
       if (access.link !== "") {
