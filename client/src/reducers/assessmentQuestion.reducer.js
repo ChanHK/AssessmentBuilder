@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   assessmentQuestionLoad: null,
   direct: false,
+  goingToStoreData: null,
 };
 
 export default function (state = initialState, action) {
@@ -49,6 +50,11 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         direct: true,
+      };
+    case ASSESSMENT_QUESTION.PASS_TO_STORE_DATA:
+      return {
+        ...state,
+        goingToStoreData: action.payload,
       };
     default:
       return state;

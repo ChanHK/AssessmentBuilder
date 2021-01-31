@@ -5,6 +5,7 @@ import * as configStyles from "../../config/styles";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomRow from "../../components/GridComponents/CustomRow";
+import CustomColumn from "../../components/GridComponents/CustomColumn";
 
 import arrayMove from "array-move";
 import { withRouter } from "react-router-dom";
@@ -12,6 +13,8 @@ import { withRouter } from "react-router-dom";
 import SortableRow from "../../components/SortableRow/FirstRow";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import CustomDropdown from "../../components/CustomDropdown";
+import Modal from "../../components/Modal";
 
 import * as MdIcons from "react-icons/md";
 
@@ -20,7 +23,10 @@ import { connect } from "react-redux";
 import {
   fetchAllAssessmentQuestion,
   updateAllAssessmentQuestion,
+  addToQuestionBank,
+  passStoreData,
 } from "../../actions/assessmentQuestion.actions";
+import { fetchQuestionBankData } from "../../actions/question.actions";
 import { compose } from "redux";
 
 class QuestionsContainer extends Component {
@@ -31,6 +37,10 @@ class QuestionsContainer extends Component {
       type: props.type,
       questions: [],
       totalQuestionNum: 0,
+      all_subjects: [],
+      store_subject: "",
+      showModal: "",
+      questionID: "",
     };
   }
 
@@ -40,10 +50,11 @@ class QuestionsContainer extends Component {
     };
 
     this.props.fetchAllAssessmentQuestion(data);
+    this.props.fetchQuestionBankData();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { assessmentQuestionReducer } = this.props;
+    const { assessmentQuestionReducer, questionReducer } = this.props;
 
     if (
       prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
@@ -73,10 +84,32 @@ class QuestionsContainer extends Component {
           assessmentQuestionReducer.assessmentQuestionLoad.length,
       });
     }
+
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.goingToStoreData !== null
+    ) {
+      const {
+        showModal,
+        questionID,
+      } = assessmentQuestionReducer.goingToStoreData;
+
+      this.setState({ showModal: showModal, questionID: questionID });
+    }
+
+    if (
+      prevProps.questionReducer !== questionReducer &&
+      questionReducer.questionBankData !== null
+    ) {
+      const { totalSubjects } = questionReducer.questionBankData;
+      this.setState({ all_subjects: totalSubjects });
+    }
   }
 
   componentWillUnmount() {
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
+    this.props.questionReducer.questionBankData = null;
+    this.props.assessmentQuestionReducer.goingToStoreData = null;
   }
 
   onSortEnd(arrayNum, { oldIndex, newIndex }) {
@@ -154,7 +187,15 @@ class QuestionsContainer extends Component {
   };
 
   render() {
-    const { questions, assessmentID, type } = this.state;
+    const {
+      questions,
+      assessmentID,
+      type,
+      store_subject,
+      all_subjects,
+      showModal,
+      questionID,
+    } = this.state;
 
     if (this.props.assessmentQuestionReducer.isLoading)
       return <LoaderSpinner />;
@@ -169,173 +210,237 @@ class QuestionsContainer extends Component {
     }
 
     return (
-      <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
-        {type !== "view" && (
-          <div style={{ marginBottom: "15px" }}>
-            <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
-              padding={"8px"}
-              onClick={this.addSection}
-            >
-              Add Section
-            </Button>
-          </div>
-        )}
-        {questions.length > 1 ? (
-          <CustomRow>
-            <div className={css(styles.label)}>
-              <SecondLabel>Section 1</SecondLabel>
-            </div>
-            {type !== "view" && (
-              <div
-                className={css(styles.button)}
-                onClick={() => this.deleteSection(0)}
+      <>
+        <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
+          {type !== "view" && (
+            <div style={{ marginBottom: "15px" }}>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                onClick={this.addSection}
               >
-                <MdIcons.MdDelete size={25} />
-              </div>
-            )}
-          </CustomRow>
-        ) : (
-          <SecondLabel>Questions</SecondLabel>
-        )}
-        <hr className={css(styles.hr)} />
-        {questions.length === 0 && (
-          <div style={{ marginBottom: "15px" }}>
-            <ThirdLabel>
-              Create your own questions or retrieve them from question bank
-            </ThirdLabel>
-          </div>
-        )}
-        {questions.length >= 1 && questions[0] !== null && (
-          <SortableRow
-            questions={questions[0]}
-            assessmentID={assessmentID}
-            onSortEnd={this.onSortEnd.bind(this, 0)}
-            onSectionSortEnd={this.onSectionSortEnd.bind(this)}
-            type={type}
-          />
-        )}
-
-        {type !== "view" && (
-          <div style={{ marginBottom: "25px" }}>
+                Add Section
+              </Button>
+            </div>
+          )}
+          {questions.length > 1 ? (
             <CustomRow>
-              <div style={{ marginRight: 10 }}>
-                <Button
-                  backgroundColor={configStyles.colors.darkBlue}
-                  color={configStyles.colors.white}
-                  padding={"8px"}
-                  onClick={() =>
-                    this.props.history.push(
-                      `/assessment/update_question/1/${type}/create/${assessmentID}/0`
-                    )
-                  }
-                >
-                  Create Question
-                </Button>
+              <div className={css(styles.label)}>
+                <SecondLabel>Section 1</SecondLabel>
               </div>
-              <div>
-                <Button
-                  backgroundColor={configStyles.colors.darkBlue}
-                  color={configStyles.colors.white}
-                  padding={"8px"}
-                  onClick={() => {
-                    this.props.history.push(
-                      `/assessment/question_bank/1/${type}/${assessmentID}`
-                    );
-                  }}
+              {type !== "view" && (
+                <div
+                  className={css(styles.button)}
+                  onClick={() => this.deleteSection(0)}
                 >
-                  Retrieve from Question Bank
-                </Button>
-              </div>
+                  <MdIcons.MdDelete size={25} />
+                </div>
+              )}
             </CustomRow>
-          </div>
-        )}
+          ) : (
+            <SecondLabel>Questions</SecondLabel>
+          )}
+          <hr className={css(styles.hr)} />
+          {questions.length === 0 && (
+            <div style={{ marginBottom: "15px" }}>
+              <ThirdLabel>
+                Create your own questions or retrieve them from question bank
+              </ThirdLabel>
+            </div>
+          )}
+          {questions.length >= 1 && questions[0] !== null && (
+            <SortableRow
+              questions={questions[0]}
+              assessmentID={assessmentID}
+              onSortEnd={this.onSortEnd.bind(this, 0)}
+              onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+              type={type}
+            />
+          )}
 
-        {questions.length >= 2 &&
-          questions.slice(1).map((item, index) => {
-            return (
-              <div key={index}>
-                <CustomRow>
-                  <div className={css(styles.label)}>
-                    <SecondLabel>Section {index + 2}</SecondLabel>
-                  </div>
+          {type !== "view" && (
+            <div style={{ marginBottom: "25px" }}>
+              <CustomRow>
+                <div style={{ marginRight: 10 }}>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    onClick={() =>
+                      this.props.history.push(
+                        `/assessment/update_question/1/${type}/create/${assessmentID}/0`
+                      )
+                    }
+                  >
+                    Create Question
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    onClick={() => {
+                      this.props.history.push(
+                        `/assessment/question_bank/1/${type}/${assessmentID}`
+                      );
+                    }}
+                  >
+                    Retrieve from Question Bank
+                  </Button>
+                </div>
+              </CustomRow>
+            </div>
+          )}
+
+          {questions.length >= 2 &&
+            questions.slice(1).map((item, index) => {
+              return (
+                <div key={index}>
+                  <CustomRow>
+                    <div className={css(styles.label)}>
+                      <SecondLabel>Section {index + 2}</SecondLabel>
+                    </div>
+                    {type !== "view" && (
+                      <div
+                        className={css(styles.button)}
+                        onClick={() => this.deleteSection(index + 1)}
+                      >
+                        <MdIcons.MdDelete size={25} />
+                      </div>
+                    )}
+                  </CustomRow>
+                  <hr className={css(styles.hr)} />
+                  {item !== null && (
+                    <SortableRow
+                      questions={questions[index + 1]}
+                      assessmentID={assessmentID}
+                      onSortEnd={this.onSortEnd.bind(this, index + 1)}
+                      onSectionSortEnd={this.onSectionSortEnd.bind(this)}
+                      current={index + 1}
+                      type={type}
+                    />
+                  )}
                   {type !== "view" && (
-                    <div
-                      className={css(styles.button)}
-                      onClick={() => this.deleteSection(index + 1)}
-                    >
-                      <MdIcons.MdDelete size={25} />
+                    <div style={{ marginBottom: "25px" }}>
+                      <CustomRow>
+                        <div style={{ marginRight: 10 }}>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            onClick={() =>
+                              this.props.history.push(
+                                `/assessment/update_question/${
+                                  index + 2
+                                }/${type}/create/${assessmentID}/0`
+                              )
+                            }
+                          >
+                            Create Question
+                          </Button>
+                        </div>
+                        <div>
+                          <Button
+                            backgroundColor={configStyles.colors.darkBlue}
+                            color={configStyles.colors.white}
+                            padding={"8px"}
+                            onClick={() => {
+                              this.props.history.push(
+                                `/assessment/question_bank/${
+                                  index + 2
+                                }/${type}/${assessmentID}`
+                              );
+                            }}
+                          >
+                            Retrieve from Question Bank
+                          </Button>
+                        </div>
+                      </CustomRow>
                     </div>
                   )}
-                </CustomRow>
-                <hr className={css(styles.hr)} />
-                {item !== null && (
-                  <SortableRow
-                    questions={questions[index + 1]}
-                    assessmentID={assessmentID}
-                    onSortEnd={this.onSortEnd.bind(this, index + 1)}
-                    onSectionSortEnd={this.onSectionSortEnd.bind(this)}
-                    current={index + 1}
-                    type={type}
-                  />
-                )}
-                {type !== "view" && (
-                  <div style={{ marginBottom: "25px" }}>
-                    <CustomRow>
-                      <div style={{ marginRight: 10 }}>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          onClick={() =>
-                            this.props.history.push(
-                              `/assessment/update_question/${
-                                index + 2
-                              }/${type}/create/${assessmentID}/0`
-                            )
-                          }
-                        >
-                          Create Question
-                        </Button>
-                      </div>
-                      <div>
-                        <Button
-                          backgroundColor={configStyles.colors.darkBlue}
-                          color={configStyles.colors.white}
-                          padding={"8px"}
-                          onClick={() => {
-                            this.props.history.push(
-                              `/assessment/question_bank/${
-                                index + 2
-                              }/${type}/${assessmentID}`
-                            );
-                          }}
-                        >
-                          Retrieve from Question Bank
-                        </Button>
-                      </div>
-                    </CustomRow>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                </div>
+              );
+            })}
 
-        {type !== "view" && (
-          <div>
-            <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
-              padding={"8px"}
-              width={"100px"}
-              type={"submit"}
-            >
-              Save
-            </Button>
+          {type !== "view" && (
+            <div>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100px"}
+                type={"submit"}
+              >
+                Save
+              </Button>
+            </div>
+          )}
+        </form>
+
+        <Modal show={showModal}>
+          <div className={css(styles.modal)}>
+            <CustomColumn>
+              <SecondLabel>Select subject</SecondLabel>
+              <CustomDropdown
+                options={all_subjects}
+                onChange={(e) => {
+                  this.setState({ store_subject: e.value });
+                }}
+                value={store_subject}
+                placeholder="Select question type"
+              />
+              <div style={{ marginTop: "25px" }}>
+                <CustomRow>
+                  <Button
+                    backgroundColor={configStyles.colors.darkBlue}
+                    color={configStyles.colors.white}
+                    padding={"8px"}
+                    width={"100px"}
+                    type={"button"}
+                    marginLeft={"20px"}
+                    onClick={() => {
+                      const data = {
+                        assessmentID: assessmentID,
+                        questionID: questionID,
+                        subject: store_subject,
+                      };
+                      this.props.addToQuestionBank(data);
+                      const data2 = {
+                        questionID: "",
+                        showModal: false,
+                      };
+                      this.props.passStoreData(data2);
+                      this.setState({ store_subject: "" });
+                    }}
+                  >
+                    Confirm
+                  </Button>
+                  <Button
+                    backgroundColor={configStyles.colors.white}
+                    color={configStyles.colors.darkBlue}
+                    padding={"8px"}
+                    width={"100px"}
+                    type={"button"}
+                    marginLeft={"20px"}
+                    onClick={() => {
+                      const data = {
+                        questionID: "",
+                        showModal: false,
+                      };
+                      this.props.passStoreData(data);
+                      this.setState({ store_subject: "" });
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </CustomRow>
+              </div>
+            </CustomColumn>
           </div>
-        )}
-      </form>
+        </Modal>
+      </>
     );
   }
 }
@@ -365,16 +470,32 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
   },
+  modal: {
+    width: "100%",
+    height: "auto",
+    border: "none",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    backgroundColor: configStyles.colors.white,
+    padding: "20px",
+  },
 });
 
 QuestionsContainer.propTypes = {
   fetchAllAssessmentQuestion: PropTypes.func.isRequired,
   updateAllAssessmentQuestion: PropTypes.func.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
+  fetchQuestionBankData: PropTypes.func.isRequired,
+  questionReducer: PropTypes.object.isRequired,
+  addToQuestionBank: PropTypes.func.isRequired,
+  passStoreData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assessmentQuestionReducer: state.assessmentQuestionReducer,
+  questionReducer: state.questionReducer,
 });
 
 export default compose(
@@ -382,5 +503,8 @@ export default compose(
   connect(mapStateToProps, {
     fetchAllAssessmentQuestion,
     updateAllAssessmentQuestion,
+    fetchQuestionBankData,
+    addToQuestionBank,
+    passStoreData,
   })
 )(QuestionsContainer);

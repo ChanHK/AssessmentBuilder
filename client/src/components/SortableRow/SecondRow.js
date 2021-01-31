@@ -17,8 +17,8 @@ import { Editor } from "react-draft-wysiwyg";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  addToQuestionBank,
   deleteAssessmentQuestion,
+  passStoreData,
 } from "../../actions/assessmentQuestion.actions";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
@@ -186,11 +186,10 @@ class SectionContainer extends Component {
               <TableButton
                 onClick={() => {
                   const data = {
-                    assessmentID: assessmentID,
                     questionID: question._id,
+                    showModal: true,
                   };
-
-                  this.props.addToQuestionBank(data);
+                  this.props.passStoreData(data);
                 }}
               >
                 <RiIcons.RiBankFill size={20} className={css(styles.pE)} />
@@ -303,9 +302,9 @@ const styles = StyleSheet.create({
 });
 
 SectionContainer.propTypes = {
-  addToQuestionBank: PropTypes.func.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
   deleteAssessmentQuestion: PropTypes.func.isRequired,
+  passStoreData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -315,7 +314,7 @@ const mapStateToProps = (state) => ({
 export default compose(
   withRouter,
   connect(mapStateToProps, {
-    addToQuestionBank,
     deleteAssessmentQuestion,
+    passStoreData,
   })
 )(SectionContainer);

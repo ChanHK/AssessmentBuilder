@@ -202,3 +202,10 @@ export const addAssQuesFromQB = (data) => (dispatch, getState) => {
       dispatch({ type: ASSESSMENT_QUESTION.ADD_MULTI_QUES_FROM_QB_FAIL });
     });
 };
+
+export const passStoreData = (data) => (dispatch, getState) => {
+  dispatch({
+    type: ASSESSMENT_QUESTION.PASS_TO_STORE_DATA,
+    payload: data,
+  });
+};
