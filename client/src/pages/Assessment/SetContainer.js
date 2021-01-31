@@ -8,8 +8,6 @@ import Wrapper from "../../components/Wrapper";
 import CustomInput from "../../components/CustomInput";
 import CustomDropdown from "../../components/CustomDropdown";
 import CustomSwitch from "../../components/CustomSwitch";
-import Table from "../../components/Table";
-import TableButton from "../../components/TableButton";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
@@ -19,7 +17,6 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
-import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -27,12 +24,6 @@ import {
   fetchAssessmentSet,
 } from "../../actions/assessment.actions";
 import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
-import {
-  updateAssessmentSetQuestionID,
-  fetchAssessmentSetQuestionID,
-} from "../../actions/assessmentSet.actions";
-import { compose } from "redux";
-import { withRouter } from "react-router-dom";
 
 const dropdownData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
 
@@ -56,7 +47,6 @@ class SetContainer extends Component {
       questions: [], //separated based on sections (array of array of obj)
       questionsAllID: [], //questions ID of all questions (array)
       questionsAllIDSection: [], //questions ID of all questions but with section (array of array)
-      generatedSets: [], //(array)
 
       msg: null, //stores error messages
     };
@@ -69,15 +59,10 @@ class SetContainer extends Component {
 
     this.props.fetchAssessmentSet(data);
     this.props.fetchAllAssessmentQuestion(data);
-    this.props.fetchAssessmentSetQuestionID(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {
-      assessmentReducer,
-      assessmentQuestionReducer,
-      assessmentSetReducer,
-    } = this.props;
+    const { assessmentReducer, assessmentQuestionReducer } = this.props;
 
     if (
       prevProps.assessmentReducer !== assessmentReducer &&
@@ -97,15 +82,6 @@ class SetContainer extends Component {
         manualSelected: manualSelected,
         manualRandomSelected: manualRandomSelected,
       });
-    }
-
-    if (
-      prevProps.assessmentSetReducer !== assessmentSetReducer &&
-      assessmentSetReducer.assessmentSetLoad !== null &&
-      assessmentSetReducer.message === undefined
-    ) {
-      const { assessmentSetLoad } = assessmentSetReducer;
-      this.setState({ generatedSets: assessmentSetLoad });
     }
 
     if (
@@ -155,7 +131,6 @@ class SetContainer extends Component {
   componentWillUnmount() {
     this.props.assessmentReducer.assessmentLoad = null;
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
-    this.props.assessmentSetReducer.assessmentSetLoad = null;
   }
 
   validateGenerationInput = () => {
@@ -167,7 +142,6 @@ class SetContainer extends Component {
       definedTakeFromSectionSelected,
       questions,
       sectionFilterNum,
-      generatedSets,
     } = this.state;
     let tempMsg = {};
 
@@ -221,10 +195,6 @@ class SetContainer extends Component {
       if (count === tempMsg.section.length) {
         tempMsg = {};
       }
-    }
-
-    if (generatedSets.length === 10) {
-      tempMsg.setLength = "You can only have 10 sets";
     }
 
     this.setState({ msg: tempMsg });
@@ -321,36 +291,6 @@ class SetContainer extends Component {
     });
   };
 
-  generateSetData = () => {
-    const { generatedSets } = this.state;
-    const { assessmentQuestionLoad } = this.props.assessmentQuestionReducer;
-
-    let temp = [];
-    if (generatedSets.length > 0) {
-      generatedSets.forEach((item, index) => {
-        let score = 0;
-        let count = 0;
-        item.forEach((item12, index12) => {
-          assessmentQuestionLoad.forEach((item2, index2) => {
-            if (item12 === item2._id) {
-              score = score + item2.score;
-              count++;
-            }
-          });
-        });
-        temp.push({
-          totalQuestions: count,
-          maxScore: score,
-          id: uuidv4(),
-        });
-      });
-      temp.forEach((x, index) => {
-        x.serial = index + 1;
-      });
-      return temp;
-    } else return [];
-  };
-
   onSubmit = (e) => {
     e.preventDefault();
     const {
@@ -359,7 +299,6 @@ class SetContainer extends Component {
       manualSelected,
       manualRandomSelected,
       assessmentID,
-      generatedSets,
     } = this.state;
 
     const set = {
@@ -368,16 +307,10 @@ class SetContainer extends Component {
       manualSelected: manualSelected,
       manualRandomSelected: manualRandomSelected,
       assessmentID: assessmentID,
-      totalSetNum: generatedSets.length,
-    };
-
-    const setQuestionID = {
-      assessmentID: assessmentID,
-      generatedSets: generatedSets,
+      totalSetNum: 0, //####
     };
 
     this.props.updateAssessmentSet(set);
-    this.props.updateAssessmentSetQuestionID(setQuestionID);
   };
 
   render() {
@@ -395,80 +328,13 @@ class SetContainer extends Component {
       sectionFilterNum,
       type,
       msg,
-      assessmentID,
     } = this.state;
 
-    const column = [
-      {
-        name: "Set",
-        selector: "serial",
-        cell: (row) => (
-          <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.serial}
-            </div>
-          </div>
-        ),
-        width: "50px",
-      },
-      {
-        name: "Total questions",
-        selector: "totalQuestions",
-        cell: (row) => (
-          <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.totalQuestions}
-            </div>
-          </div>
-        ),
-      },
-      {
-        name: "Max Score",
-        selector: "maxScore",
-        cell: (row) => (
-          <div>
-            <div style={{ fontSize: "15px", fontFamily: "Ubuntu-Regular" }}>
-              {row.maxScore}
-            </div>
-          </div>
-        ),
-      },
-      {
-        name: "Action",
-        selector: "serial",
-        cell: (row) => (
-          <CustomRow>
-            {type !== "view" && (
-              <TableButton
-                onClick={() => {
-                  let temp = [...this.state.generatedSets];
-                  temp.splice(row.serial - 1, 1);
-                  this.setState({ generatedSets: temp });
-                }}
-              >
-                Delete
-              </TableButton>
-            )}
-          </CustomRow>
-        ),
-      },
-    ];
+    const { assessmentReducer, assessmentQuestionReducer } = this.props;
 
-    const {
-      assessmentReducer,
-      assessmentQuestionReducer,
-      assessmentSetReducer,
-    } = this.props;
-
-    if (
-      assessmentReducer.isLoading ||
-      assessmentQuestionReducer.isLoading ||
-      assessmentSetReducer.isLoading
-    )
+    if (assessmentReducer.isLoading || assessmentQuestionReducer.isLoading) {
       return <LoaderSpinner />;
-    else document.body.style.overflow = "unset";
-
-    const setData = this.generateSetData();
+    } else document.body.style.overflow = "unset";
 
     return (
       <form onSubmit={this.onSubmit} style={{ marginBottom: "100px" }}>
@@ -692,45 +558,29 @@ class SetContainer extends Component {
                   </ThirdLabel>
                 </div>
               </CustomRow>
-              {type !== "view" && (
-                <CustomColumn>
-                  <Button
-                    backgroundColor={configStyles.colors.darkBlue}
-                    color={configStyles.colors.white}
-                    padding={"8px"}
-                    type={"button"}
-                    onClick={this.validateGenerationInput}
-                  >
-                    Generate
-                  </Button>
-                  <span className={css(styles.redText)}>
-                    {msg === null
-                      ? null
-                      : msg.hasOwnProperty("setLength")
-                      ? "*" + msg.setLength
-                      : null}
-                  </span>
-                </CustomColumn>
-              )}
-            </div>
-
-            <div style={{ marginTop: 20 }}>
-              <SecondLabel>Sets</SecondLabel>
-              <Table data={setData} columns={column} />
             </div>
           </>
         )}
         {type !== "view" && (
           <div>
-            <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
-              padding={"8px"}
-              width={"100px"}
-              type={"submit"}
-            >
-              Save
-            </Button>
+            <CustomColumn>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100px"}
+                type={"submit"}
+              >
+                Save
+              </Button>
+              <span className={css(styles.redText)}>
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("setLength")
+                  ? "*" + msg.setLength
+                  : null}
+              </span>
+            </CustomColumn>
           </div>
         )}
       </form>
@@ -783,27 +633,18 @@ const styles = StyleSheet.create({
 SetContainer.propTypes = {
   updateAssessmentSet: PropTypes.func.isRequired,
   fetchAssessmentSet: PropTypes.func.isRequired,
-  updateAssessmentSetQuestionID: PropTypes.func.isRequired,
   fetchAllAssessmentQuestion: PropTypes.func.isRequired,
-  fetchAssessmentSetQuestionID: PropTypes.func.isRequired,
   assessmentReducer: PropTypes.object.isRequired,
   assessmentQuestionReducer: PropTypes.object.isRequired,
-  assessmentSetReducer: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
   assessmentQuestionReducer: state.assessmentQuestionReducer,
-  assessmentSetReducer: state.assessmentSetReducer,
 });
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, {
-    updateAssessmentSet,
-    fetchAssessmentSet,
-    fetchAllAssessmentQuestion,
-    fetchAssessmentSetQuestionID,
-    updateAssessmentSetQuestionID,
-  })
-)(SetContainer);
+export default connect(mapStateToProps, {
+  updateAssessmentSet,
+  fetchAssessmentSet,
+  fetchAllAssessmentQuestion,
+})(SetContainer);
