@@ -80,10 +80,19 @@ const AssessmentSchema = new mongoose.Schema({
           type: Boolean,
           default: false,
         },
-        totalSetNum: {
+        randomTakeFromTotalSelected: {
+          type: Boolean,
+          default: false,
+        },
+        definedTakeFromSectionSelected: {
+          type: Boolean,
+          default: false,
+        },
+        randomQuestionNum: {
           type: Number,
           default: 0,
         },
+        sectionFilterNum: [Number],
       },
       timer: {
         assessmentTimeSelected: {
