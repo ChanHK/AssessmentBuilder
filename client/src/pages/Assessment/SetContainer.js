@@ -438,17 +438,6 @@ class SetContainer extends Component {
         selector: "serial",
         cell: (row) => (
           <CustomRow>
-            <TableButton
-              onClick={() => {
-                this.props.history.push(
-                  `/assessment/view/set/${type}/${
-                    row.serial - 1
-                  }/${assessmentID}`
-                );
-              }}
-            >
-              View
-            </TableButton>
             {type !== "view" && (
               <TableButton
                 onClick={() => {

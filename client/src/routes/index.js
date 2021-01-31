@@ -34,7 +34,6 @@ import {
   CreateAssessmentContainer,
   RetrieveQuestionBankContainer,
   CreateEditQuestionContainer,
-  ViewSetContainer,
 } from "../pages/Assessment";
 
 import { StartingPageContainer, AttemptContainer } from "../pages/Candidate";
@@ -177,13 +176,6 @@ export default function Routes() {
           path="/assessment/update_question/:section/:type(edit|create)/:type2(edit|create)/:assessmentID/:questionID"
           exact
           component={CreateEditQuestionContainer}
-          isPrivate
-          role={"User"}
-        />
-        <Route
-          path="/assessment/view/set/:type(edit|view|create)/:setNum/:assessmentID"
-          exact
-          component={ViewSetContainer}
           isPrivate
           role={"User"}
         />
