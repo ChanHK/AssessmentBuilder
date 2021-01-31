@@ -31,7 +31,7 @@ class SetContainer extends Component {
       randomSelected: false,
       manualSelected: true,
       randomTakeFromTotalSelected: false,
-      questionNum: "", // question number in a set
+      questionNum: 0, // question number in a set
       totalQuestionNumber: 0, // total questions in Question section
       definedTakeFromSectionSelected: false, //take questions from diff sections
       manualRandomSelected: false, // does the set questions choices need to randomize?
@@ -573,8 +573,7 @@ const styles = StyleSheet.create({
     marginBottom: "20px",
   },
   block: {
-    flexWrap: "nowrap",
-    width: "400px",
+    maxWidth: "400px",
     height: "auto",
     display: "flex",
     justifyContent: "center",
