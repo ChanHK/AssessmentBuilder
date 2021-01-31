@@ -68,6 +68,10 @@ class SetContainer extends Component {
         randomSelected,
         manualSelected,
         manualRandomSelected,
+        randomTakeFromTotalSelected,
+        definedTakeFromSectionSelected,
+        randomQuestionNum,
+        sectionFilterNum,
       } = assessmentReducer.assessmentLoad;
 
       this.setState({
@@ -75,6 +79,10 @@ class SetContainer extends Component {
         randomSelected: randomSelected,
         manualSelected: manualSelected,
         manualRandomSelected: manualRandomSelected,
+        randomTakeFromTotalSelected: randomTakeFromTotalSelected,
+        definedTakeFromSectionSelected: definedTakeFromSectionSelected,
+        randomQuestionNum: randomQuestionNum,
+        sectionFilterNum: sectionFilterNum,
       });
     }
 
@@ -274,6 +282,10 @@ class SetContainer extends Component {
       manualSelected,
       manualRandomSelected,
       assessmentID,
+      randomTakeFromTotalSelected,
+      definedTakeFromSectionSelected,
+      randomQuestionNum,
+      sectionFilterNum,
     } = this.state;
 
     const set = {
@@ -282,7 +294,10 @@ class SetContainer extends Component {
       manualSelected: manualSelected,
       manualRandomSelected: manualRandomSelected,
       assessmentID: assessmentID,
-      totalSetNum: 0, //####
+      randomTakeFromTotalSelected: randomTakeFromTotalSelected,
+      definedTakeFromSectionSelected: definedTakeFromSectionSelected,
+      randomQuestionNum: randomQuestionNum,
+      sectionFilterNum: sectionFilterNum,
     };
 
     this.props.updateAssessmentSet(set);
