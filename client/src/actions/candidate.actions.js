@@ -95,11 +95,17 @@ export const candidateRegister2 = (data) => (dispatch) => {
 
 export const fetchAllQuestionForCandidate = (data) => (dispatch, getState) => {
   dispatch({ type: CANDIDATE.FETCH_ASSESSMENT_ALL_QUESTIONS_CANDIDATE_BEGIN });
-  console.log(data);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
   axios
     .get(
       `/api/candidate/attempt/assessment/fetch/all_questions/${data.assessmentID}`,
-      tokenConfig(getState)
+      config
     )
     .then((res) => {
       setTimeout(() => {

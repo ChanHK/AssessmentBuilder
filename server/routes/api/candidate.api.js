@@ -165,7 +165,6 @@ router.post(
 // @access    Private (candidate)
 router.get(
   "/attempt/assessment/fetch/all_questions/:assessmentID",
-  auth,
   (req, res) => {
     db.AssessmentQuestion.findOne({
       assessments_id: req.params.assessmentID,

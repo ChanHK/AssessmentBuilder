@@ -4,7 +4,7 @@ const initialState = {
   isLoading: false,
   assessmentStartInfo: null,
   direct: false,
-  questionSet: null,
+  all_question_data: null,
   directStart: false,
   token: localStorage.getItem("token"),
   role: localStorage.getItem("role"),
@@ -53,7 +53,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        questionSet: action.payload,
+        all_question_data: action.payload,
       };
     case CANDIDATE.UPLOAD_CANDIDATE_RESPONSE_SUCCESS:
       localStorage.removeItem("token");

@@ -24,13 +24,14 @@ import {
   fetchAssessmentInfo,
   candidateRegister,
   candidateRegister2,
+  fetchAllQuestionForCandidate,
 } from "../../actions/candidate.actions";
 
 import { clearErrors } from "../../actions/error.actions";
 
 class StartingPageContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       assessmentTitle: "",
       instruction: EditorState.createEmpty(),
@@ -38,7 +39,6 @@ class StartingPageContainer extends Component {
       email: "",
       msg: null, // receives error messages from API
       withAuthenticationSelected: false, //does the user needs authentication ?
-      setLength: 0, // size of the set
       type: "", // random? fixed? or manual
       time: "",
       timeSettings: "",
@@ -46,15 +46,17 @@ class StartingPageContainer extends Component {
       status: "", // status of the assessment (setup, activated or ended)
       startDate: "",
       endDate: "",
+      assessmentID: this.props.match.params.assessmentID,
     };
   }
 
   componentDidMount() {
     const data = {
-      assessmentID: this.props.match.params.assessmentID,
+      assessmentID: this.state.assessmentID,
     };
 
     this.props.fetchAssessmentInfo(data);
+    this.props.fetchAllQuestionForCandidate(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -62,25 +64,24 @@ class StartingPageContainer extends Component {
 
     if (
       prevProps.candidateReducer !== candidateReducer &&
-      candidateReducer.assessmentStartInfo !== null
+      candidateReducer.assessmentStartInfo !== null &&
+      candidateReducer.all_question_data !== null
     ) {
-      const {
-        testName,
-        testInstruction,
-      } = candidateReducer.assessmentStartInfo.settings;
+      const { assessmentStartInfo, all_question_data } = candidateReducer;
+
+      const { testName, testInstruction } = assessmentStartInfo.settings;
 
       const {
         withAuthenticationSelected,
         attemptNum,
-      } = candidateReducer.assessmentStartInfo.access;
+      } = assessmentStartInfo.access;
 
       const {
-        totalSetNum,
         fixedSelected,
         randomSelected,
         manualSelected,
         manualRandomSelected,
-      } = candidateReducer.assessmentStartInfo.sets;
+      } = assessmentStartInfo.sets;
 
       const {
         assessmentTimeSelected,
@@ -89,9 +90,11 @@ class StartingPageContainer extends Component {
         time,
         startDate,
         endDate,
-      } = candidateReducer.assessmentStartInfo.timer;
+      } = assessmentStartInfo.timer;
 
-      const { status } = candidateReducer.assessmentStartInfo;
+      const { status } = assessmentStartInfo;
+
+      console.log(all_question_data);
 
       if (fixedSelected) this.setState({ type: 1 });
       if (randomSelected) this.setState({ type: 2 });
@@ -104,18 +107,15 @@ class StartingPageContainer extends Component {
 
       let temp = this.convert(testInstruction);
 
-      let hour = time.substring(0, 2);
-      let minute = time.substring(3, 5);
-      let second = time.substring(6, 9);
-
-      let totalSec =
-        parseInt(hour) * 3600 + parseInt(minute) * 60 + parseInt(second);
+      let hour = parseInt(time.substring(0, 2));
+      let minute = parseInt(time.substring(3, 5));
+      let second = parseInt(time.substring(6, 9));
+      let totalSec = hour * 3600 + minute * 60 + second;
 
       this.setState({
         assessmentTitle: testName,
         instruction: temp,
         withAuthenticationSelected: withAuthenticationSelected,
-        setLength: totalSetNum,
         time: totalSec.toString(),
         attemptNum: parseInt(attemptNum),
         status: status,
@@ -133,6 +133,7 @@ class StartingPageContainer extends Component {
   componentWillUnmount() {
     this.props.candidateReducer.assessmentStartInfo = null;
     this.props.candidateReducer.direct = false;
+    this.props.candidateReducer.all_question_data = null;
     this.props.clearErrors();
   }
 
@@ -152,10 +153,16 @@ class StartingPageContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { name, email, withAuthenticationSelected, attemptNum } = this.state;
+    const {
+      name,
+      email,
+      withAuthenticationSelected,
+      attemptNum,
+      assessmentID,
+    } = this.state;
 
     const data = {
-      assessmentID: this.props.match.params.assessmentID,
+      assessmentID: assessmentID,
       name: name,
       email: email,
       attemptNum: attemptNum,
@@ -172,13 +179,13 @@ class StartingPageContainer extends Component {
       name,
       email,
       msg,
-      setLength,
       type,
       timeSettings,
       time,
       status,
       startDate,
       endDate,
+      assessmentID,
     } = this.state;
 
     const {
@@ -188,24 +195,12 @@ class StartingPageContainer extends Component {
     } = this.props.candidateReducer;
 
     if (direct) {
-      let temp = [];
-
-      for (let i = 0; i < setLength; i++) {
-        temp.push(i);
-      }
-
-      let set =
-        temp[Math.floor(Math.random() * temp.length)] === undefined
-          ? -1
-          : temp[Math.floor(Math.random() * temp.length)];
-
       localStorage.setItem("time", time);
       localStorage.setItem("timeSettings", timeSettings);
-      localStorage.setItem("set", set);//
-      localStorage.setItem("type", type);//
+      localStorage.setItem("type", type); //
 
       // this.props.history.push(
-      //   `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${this.props.match.params.assessmentID}`
+      //   `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${assessmentID}`
       // );
     }
 
@@ -363,6 +358,7 @@ StartingPageContainer.propTypes = {
   errors: PropTypes.object.isRequired,
   clearErrors: PropTypes.func.isRequired,
   candidateRegister2: PropTypes.func.isRequired,
+  fetchAllQuestionForCandidate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -375,4 +371,5 @@ export default connect(mapStateToProps, {
   candidateRegister,
   clearErrors,
   candidateRegister2,
+  fetchAllQuestionForCandidate,
 })(StartingPageContainer);
