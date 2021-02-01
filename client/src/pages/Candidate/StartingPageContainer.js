@@ -46,8 +46,6 @@ class StartingPageContainer extends Component {
       startDate: "",
       endDate: "",
       assessmentID: this.props.match.params.assessmentID,
-      questions_sec_based: [], //set of questions based on sections, 2d array of obj
-      questions_normal: [], //normal question retrieve from DB, array of obj
       final_questions: [], //set of questions to be submitted, array of obj
     };
   }
@@ -102,10 +100,37 @@ class StartingPageContainer extends Component {
 
       const { status } = assessmentStartInfo;
 
-      console.log(all_question_data);
-
       if (fixedSelected) this.setState({ final_questions: all_question_data });
       if (randomSelected) this._randomSelected(all_question_data);
+      if (manualSelected) {
+        let temp = all_question_data;
+        if (manualRandomSelected) temp = this._shuffle_QC(temp);
+
+        if (randomTakeFromTotalSelected) {
+          const temp2 = this.getRandom(temp, randomQuestionNum);
+          this.setState({ final_questions: temp2 });
+        }
+
+        if (definedTakeFromSectionSelected) {
+          const questions_sec_based = this._convert_to_section(
+            temp,
+            sectionFilterNum.length
+          );
+          const result = this._sort_from_sections(
+            questions_sec_based,
+            sectionFilterNum
+          );
+
+          let final = [];
+          result.forEach((item, index) => {
+            item.forEach((item2, index2) => {
+              final.push(item2);
+            });
+          });
+
+          this.setState({ final_questions: final });
+        }
+      }
 
       if (assessmentTimeSelected) this.setState({ timeSettings: 1 });
       if (questionTimeSelected) this.setState({ timeSettings: 2 });
@@ -150,16 +175,20 @@ class StartingPageContainer extends Component {
     }
   };
 
-  _randomSelected = (array) => {
-    let temp = array;
-    temp.forEach((item, index) => {
+  _shuffle_QC = (array) => {
+    array.forEach((item, index) => {
       if (
         item.questionType !== "Descriptive" &&
         item.questionType !== "Short Answer"
       ) {
-        temp[index].questionChoices = this.shuffleArray(item.questionChoices);
+        array[index].questionChoices = this.shuffleArray(item.questionChoices);
       }
     });
+    return array;
+  };
+
+  _randomSelected = (array) => {
+    let temp = this._shuffle_QC(array);
 
     let num_array = [];
     temp.forEach((item, index) => {
@@ -175,6 +204,14 @@ class StartingPageContainer extends Component {
     this.setState({ final_questions: new_array });
   };
 
+  _sort_from_sections = (array, num) => {
+    let temp = [];
+    array.forEach((item, index) => {
+      temp.push(this.getRandom(item, parseInt(num[index])));
+    });
+    return temp;
+  };
+
   getRandom = (arr, n) => {
     let result = new Array(n),
       len = arr.length,
@@ -187,6 +224,17 @@ class StartingPageContainer extends Component {
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
+  };
+
+  _convert_to_section = (array, size) => {
+    let temp = [];
+    for (let i = 0; i < size; i++) temp.push([]);
+
+    array.forEach((item, index) => {
+      console.log(item);
+      temp[item.section - 1].push(item);
+    });
+    return temp;
   };
 
   shuffleArray = (array) => {
