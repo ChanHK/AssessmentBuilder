@@ -39,7 +39,6 @@ class StartingPageContainer extends Component {
       email: "",
       msg: null, // receives error messages from API
       withAuthenticationSelected: false, //does the user needs authentication ?
-      type: "", // random? fixed? or manual
       time: "",
       timeSettings: "",
       attemptNum: 0, // number of attempts that a candidate can do
@@ -95,11 +94,6 @@ class StartingPageContainer extends Component {
       const { status } = assessmentStartInfo;
 
       console.log(all_question_data);
-
-      if (fixedSelected) this.setState({ type: 1 });
-      if (randomSelected) this.setState({ type: 2 });
-      if (manualSelected) this.setState({ type: 3 });
-      if (manualRandomSelected) this.setState({ type: 4 });
 
       if (assessmentTimeSelected) this.setState({ timeSettings: 1 });
       if (questionTimeSelected) this.setState({ timeSettings: 2 });
@@ -179,7 +173,6 @@ class StartingPageContainer extends Component {
       name,
       email,
       msg,
-      type,
       timeSettings,
       time,
       status,
@@ -197,7 +190,6 @@ class StartingPageContainer extends Component {
     if (direct) {
       localStorage.setItem("time", time);
       localStorage.setItem("timeSettings", timeSettings);
-      localStorage.setItem("type", type); //
 
       // this.props.history.push(
       //   `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${assessmentID}`
