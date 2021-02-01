@@ -75,6 +75,7 @@ router.post(
                 assessments_id: req.params.assessmentID,
                 name: req.body.name,
                 email: req.body.email,
+                response: req.body.response,
               };
               db.Candidate.create(newCand)
                 .then((Cand) => {
@@ -131,6 +132,7 @@ router.post(
               assessments_id: req.params.assessmentID,
               name: req.body.name,
               email: req.body.email,
+              response: req.body.response,
             };
 
             db.Candidate.create(newCand)

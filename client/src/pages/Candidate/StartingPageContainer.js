@@ -245,6 +245,7 @@ class StartingPageContainer extends Component {
       withAuthenticationSelected,
       attemptNum,
       assessmentID,
+      final_questions,
     } = this.state;
 
     const data = {
@@ -252,6 +253,7 @@ class StartingPageContainer extends Component {
       name: name,
       email: email,
       attemptNum: attemptNum,
+      response: final_questions,
     };
 
     if (withAuthenticationSelected) this.props.candidateRegister(data);
