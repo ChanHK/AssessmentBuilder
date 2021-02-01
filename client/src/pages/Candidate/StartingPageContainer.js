@@ -51,9 +51,7 @@ class StartingPageContainer extends Component {
   }
 
   componentDidMount() {
-    const data = {
-      assessmentID: this.state.assessmentID,
-    };
+    const data = { assessmentID: this.state.assessmentID };
 
     this.props.fetchAssessmentInfo(data);
     this.props.fetchAllQuestionForCandidate(data);
@@ -68,9 +66,8 @@ class StartingPageContainer extends Component {
       candidateReducer.all_question_data !== null
     ) {
       const { assessmentStartInfo, all_question_data } = candidateReducer;
-
       const { testName, testInstruction } = assessmentStartInfo.settings;
-
+      const { status } = assessmentStartInfo;
       const {
         withAuthenticationSelected,
         attemptNum,
@@ -97,8 +94,6 @@ class StartingPageContainer extends Component {
         startDate,
         endDate,
       } = assessmentStartInfo.timer;
-
-      const { status } = assessmentStartInfo;
 
       if (fixedSelected) this.setState({ final_questions: all_question_data });
       if (randomSelected) this._randomSelected(all_question_data);
@@ -191,15 +186,11 @@ class StartingPageContainer extends Component {
     let temp = this._shuffle_QC(array);
 
     let num_array = [];
-    temp.forEach((item, index) => {
-      num_array.push(index);
-    });
+    temp.forEach((item, index) => num_array.push(index));
     const final_num = this.shuffleArray(num_array);
 
     let new_array = [];
-    final_num.forEach((item, index) => {
-      new_array.push(temp[item]);
-    });
+    final_num.forEach((item, index) => new_array.push(temp[item]));
 
     this.setState({ final_questions: new_array });
   };
@@ -230,10 +221,7 @@ class StartingPageContainer extends Component {
     let temp = [];
     for (let i = 0; i < size; i++) temp.push([]);
 
-    array.forEach((item, index) => {
-      console.log(item);
-      temp[item.section - 1].push(item);
-    });
+    array.forEach((item, index) => temp[item.section - 1].push(item));
     return temp;
   };
 
