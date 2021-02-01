@@ -176,6 +176,9 @@ class SetContainer extends Component {
 
     if (definedTakeFromSectionSelected) {
       let error = [];
+      if (questions.length === 0) {
+        tempMsg.M = "Please create questions in question section";
+      }
       sectionFilterNum.forEach((item, index) => {
         if (item === "") {
           error.push("Please fill up");
@@ -197,13 +200,15 @@ class SetContainer extends Component {
       });
 
       let count = 0;
-      tempMsg.section.forEach((item, index) => {
-        if (item === "") {
-          count++; //check is there any error
+      if (tempMsg.section !== undefined) {
+        tempMsg.section.forEach((item, index) => {
+          if (item === "") {
+            count++; //check is there any error
+          }
+        });
+        if (count === tempMsg.section.length) {
+          tempMsg = {};
         }
-      });
-      if (count === tempMsg.section.length) {
-        tempMsg = {};
       }
     }
 
@@ -235,7 +240,8 @@ class SetContainer extends Component {
         assessmentID: assessmentID,
         randomTakeFromTotalSelected: randomTakeFromTotalSelected,
         definedTakeFromSectionSelected: definedTakeFromSectionSelected,
-        randomQuestionNum: parseInt(randomQuestionNum),
+        randomQuestionNum:
+          randomQuestionNum !== "" ? parseInt(randomQuestionNum) : 0,
         sectionFilterNum: sectionFilterNum,
       };
       this.props.updateAssessmentSet(set);
@@ -281,6 +287,10 @@ class SetContainer extends Component {
                           randomSelected: false,
                           manualSelected: false,
                           manualRandomSelected: false,
+                          randomTakeFromTotalSelected: false,
+                          randomQuestionNum: 0,
+                          definedTakeFromSectionSelected: false,
+                          sectionFilterNum: [],
                         });
                       }
                     }}
@@ -301,6 +311,10 @@ class SetContainer extends Component {
                           fixedSelected: false,
                           manualSelected: false,
                           manualRandomSelected: false,
+                          randomTakeFromTotalSelected: false,
+                          randomQuestionNum: 0,
+                          definedTakeFromSectionSelected: false,
+                          sectionFilterNum: [],
                         });
                       }
                     }}
@@ -477,18 +491,28 @@ class SetContainer extends Component {
             </div>
           </>
         )}
+
         {type !== "view" && (
-          <div>
-            <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
-              padding={"8px"}
-              width={"100px"}
-              type={"submit"}
-            >
-              Save
-            </Button>
-          </div>
+          <>
+            <span className={css(styles.redText)}>
+              {msg === null
+                ? null
+                : msg.hasOwnProperty("M")
+                ? "*" + msg.M
+                : null}
+            </span>
+            <div>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100px"}
+                type={"submit"}
+              >
+                Save
+              </Button>
+            </div>
+          </>
         )}
       </form>
     );
