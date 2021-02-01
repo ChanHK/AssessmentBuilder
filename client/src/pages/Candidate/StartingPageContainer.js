@@ -152,12 +152,7 @@ class StartingPageContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const {
-      name,
-      email,
-      withAuthenticationSelected,
-      attemptNum,
-    } = this.state;
+    const { name, email, withAuthenticationSelected, attemptNum } = this.state;
 
     const data = {
       assessmentID: this.props.match.params.assessmentID,
@@ -177,7 +172,6 @@ class StartingPageContainer extends Component {
       name,
       email,
       msg,
-      withAuthenticationSelected,
       setLength,
       type,
       timeSettings,
@@ -210,9 +204,9 @@ class StartingPageContainer extends Component {
       localStorage.setItem("set", set);
       localStorage.setItem("type", type);
 
-      this.props.history.push(
-        `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${this.props.match.params.assessmentID}`
-      );
+      // this.props.history.push(
+      //   `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${this.props.match.params.assessmentID}`
+      // );
     }
 
     if (isLoading || assessmentStartInfo === null) return <LoaderSpinner />;
