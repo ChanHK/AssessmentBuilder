@@ -371,6 +371,7 @@ class SetContainer extends Component {
                         }
                         value={randomQuestionNum}
                         placeholder={"Enter number of questions"}
+                        readOnly={type === "view" ? true : false}
                       />
                       <span className={css(styles.redText)}>
                         {msg === null
@@ -432,6 +433,7 @@ class SetContainer extends Component {
                                       });
                                     }}
                                     value={sectionFilterNum[index]}
+                                    readOnly={type === "view" ? true : false}
                                   />
                                 </div>
                                 <div className={css(styles.text)}>
