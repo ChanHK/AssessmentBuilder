@@ -88,17 +88,16 @@ class SetContainer extends Component {
     ) {
       // find biggest section number
       let biggest = 0;
-      assessmentQuestionReducer.assessmentQuestionLoad.forEach(
-        (item, index) => {
-          if (item.section > biggest) biggest = item.section;
-        }
-      );
+      const { assessmentQuestionLoad } = assessmentQuestionReducer;
+      assessmentQuestionLoad.forEach((item, index) => {
+        if (item.section > biggest) biggest = item.section;
+      });
 
       //create 2d array container
       let tempQuestions = [];
       for (let i = 0; i < biggest; i++) tempQuestions.push([]);
 
-      assessmentQuestionReducer.assessmentQuestionLoad.forEach((x, index) => {
+      assessmentQuestionLoad.forEach((x, index) => {
         tempQuestions[x.section - 1].push(x);
       });
 
@@ -117,8 +116,7 @@ class SetContainer extends Component {
 
       this.setState({
         questions: tempQuestions,
-        totalQuestionNumber:
-          assessmentQuestionReducer.assessmentQuestionLoad.length,
+        totalQuestionNumber: assessmentQuestionLoad.length,
       });
     }
   }
