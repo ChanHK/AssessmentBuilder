@@ -233,9 +233,7 @@ class StartingPageContainer extends Component {
     return array;
   };
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onSubmit = (e) => {
     e.preventDefault();
@@ -272,7 +270,7 @@ class StartingPageContainer extends Component {
       status,
       startDate,
       endDate,
-      // assessmentID,
+      assessmentID,
     } = this.state;
 
     const {
@@ -285,9 +283,9 @@ class StartingPageContainer extends Component {
       localStorage.setItem("time", time);
       localStorage.setItem("timeSettings", timeSettings);
 
-      // this.props.history.push(
-      //   `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${assessmentID}`
-      // );
+      this.props.history.push(
+        `/assessment/attempt/${timeSettings}/${time}/${assessmentID}`
+      );
     }
 
     if (isLoading || assessmentStartInfo === null) return <LoaderSpinner />;
