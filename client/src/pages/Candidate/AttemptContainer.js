@@ -19,7 +19,6 @@ import htmlToDraft from "html-to-draftjs";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  fetchAllQuestionForCandidate,
   uploadCandidateResponses,
   fetchGrades,
 } from "../../actions/candidate.actions";
@@ -31,9 +30,7 @@ class AttemptContainer extends Component {
       index: 0, //array index
       question: [],
       orderCount: 0,
-      type: localStorage.getItem("type"), //random, fixed or manual | manual with random ?
       assessmentID: this.props.match.params.assessmentID,
-      set: localStorage.getItem("set"),
       timeSettings: localStorage.getItem("timeSettings"),
       start_time: parseInt(this.props.match.params.totalSec), // time used when reset
       time: parseInt(localStorage.getItem("time")) + 2, //current time + 2 seconds (loading time)
@@ -45,14 +42,7 @@ class AttemptContainer extends Component {
   }
 
   componentDidMount() {
-    const data = {
-      set: this.state.set,
-      assessmentID: this.state.assessmentID,
-    };
-
-    if (this.state.type === "1" || this.state.type === "2") {
-      this.props.fetchAllQuestionForCandidate(data);
-    }
+    const data = { assessmentID: this.state.assessmentID };
 
     this.props.fetchGrades(data);
 
@@ -72,70 +62,21 @@ class AttemptContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { candidateReducer } = this.props;
-    const { type } = this.state;
     if (
       prevProps.candidateReducer !== candidateReducer &&
-      candidateReducer.questionSet !== null &&
       candidateReducer.grade !== null
     ) {
-      const { questionSet } = this.props.candidateReducer;
-      let temp = questionSet;
-
-      temp.forEach((item, index) => {
-        if (
-          item.questionType === "Single Choice" ||
-          item.questionType === "Multiple Choice"
-        ) {
-          let checked = [];
-          for (let i = 0; i < item.questionChoices.length; i++) {
-            checked.push(false);
-          }
-          temp[index].checked = checked;
-        }
-        temp[index].response = "";
-        temp[index].question_id = temp[index]._id;
-      });
-
-      if (type === "2") {
-        //randomize questions
-        temp = this.shuffleArray(temp);
-      }
-
-      if (type === "4" || type === "2") {
-        //randomize choices
-        temp.forEach((item, index) => {
-          if (
-            item.questionType !== "Descriptive" &&
-            item.questionType !== "Short Answer"
-          ) {
-            temp[index].questionChoices = this.shuffleArray(
-              item.questionChoices
-            );
-          }
-        });
-      }
-
       this.setState({
-        question: questionSet,
         gradeData: candidateReducer.grade[0],
       });
     }
   }
 
   componentWillUnmount() {
-    this.props.candidateReducer.questionSet = null;
     this.props.candidateReducer.directStart = false;
     this.props.candidateReducer.grade = null;
     localStorage.clear();
   }
-
-  shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
 
   convertHtml = (data) => {
     const contentBlock = htmlToDraft(data);
@@ -721,7 +662,6 @@ const styles = StyleSheet.create({
 
 AttemptContainer.propTypes = {
   candidateReducer: PropTypes.object.isRequired,
-  fetchAllQuestionForCandidate: PropTypes.func.isRequired,
   uploadCandidateResponses: PropTypes.func.isRequired,
   fetchGrades: PropTypes.func.isRequired,
 };
@@ -731,7 +671,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  fetchAllQuestionForCandidate,
   uploadCandidateResponses,
   fetchGrades,
 })(AttemptContainer);
