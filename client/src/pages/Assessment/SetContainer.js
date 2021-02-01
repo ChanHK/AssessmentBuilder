@@ -38,11 +38,7 @@ class SetContainer extends Component {
       sectionFilterNum: [], //stores the number of questions that will be filter out from each sections (array)
       assessmentID: props.assessmentID,
       type: props.type,
-
       questions: [], //separated based on sections (array of array of obj)
-      questionsAllID: [], //questions ID of all questions (array)
-      questionsAllIDSection: [], //questions ID of all questions but with section (array of array)
-
       msg: null, //stores error messages
     };
   }
@@ -100,24 +96,14 @@ class SetContainer extends Component {
 
       //create 2d array container
       let tempQuestions = [];
-      let questionsAllIDSection = [];
-      for (let i = 0; i < biggest; i++) {
-        tempQuestions.push([]);
-        questionsAllIDSection.push([]);
-      }
+      for (let i = 0; i < biggest; i++) tempQuestions.push([]);
 
-      let questionsAllID = [];
       assessmentQuestionReducer.assessmentQuestionLoad.forEach((x, index) => {
         tempQuestions[x.section - 1].push(x);
-        questionsAllIDSection[x.section - 1].push(x._id);
-        questionsAllID.push(x._id);
       });
 
       let tempArray = [];
-
-      for (let i = 0; i < tempQuestions.length; i++) {
-        tempArray.push("");
-      }
+      for (let i = 0; i < tempQuestions.length; i++) tempArray.push("");
 
       const { sectionFilterNum } = this.state;
       if (tempQuestions.length !== sectionFilterNum.length) {
@@ -133,8 +119,6 @@ class SetContainer extends Component {
         questions: tempQuestions,
         totalQuestionNumber:
           assessmentQuestionReducer.assessmentQuestionLoad.length,
-        questionsAllID: questionsAllID,
-        questionsAllIDSection: questionsAllIDSection,
       });
     }
   }
