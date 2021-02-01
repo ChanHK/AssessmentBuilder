@@ -201,8 +201,8 @@ class StartingPageContainer extends Component {
 
       localStorage.setItem("time", time);
       localStorage.setItem("timeSettings", timeSettings);
-      localStorage.setItem("set", set);
-      localStorage.setItem("type", type);
+      localStorage.setItem("set", set);//
+      localStorage.setItem("type", type);//
 
       // this.props.history.push(
       //   `/assessment/attempt/${set}/${type}/${timeSettings}/${time}/${this.props.match.params.assessmentID}`

@@ -19,7 +19,7 @@ import htmlToDraft from "html-to-draftjs";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  fetchAssessmentSetForCandidate,
+  fetchAssessmentSetForCandidate,//
   fetchAllQuestionForCandidate,
   uploadCandidateResponses,
   fetchGrades,

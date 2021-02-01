@@ -7,7 +7,6 @@ import profileReducer from "./profile.reducer";
 import questionReducer from "./question.reducer";
 import assessmentReducer from "./assessment.reducer";
 import assessmentQuestionReducer from "./assessmentQuestion.reducer";
-import assessmentSetReducer from "./assessmentSet.reducer";
 import candidateReducer from "./candidate.reducer";
 import homeReducer from "./home.reducer";
 
@@ -20,7 +19,6 @@ const Reducers = combineReducers({
   questionReducer: questionReducer,
   assessmentReducer: assessmentReducer,
   assessmentQuestionReducer: assessmentQuestionReducer,
-  assessmentSetReducer: assessmentSetReducer,
   candidateReducer: candidateReducer,
   homeReducer: homeReducer,
 });
