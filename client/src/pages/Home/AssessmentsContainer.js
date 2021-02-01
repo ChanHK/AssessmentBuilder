@@ -238,7 +238,9 @@ class AssessmentsContainer extends Component {
             {row.status !== "Ended" && (
               <TableButton
                 onClick={() => {
-                  this.props.history.push(`/assessment/activation/${row._id}`);
+                  this.props.history.push(
+                    `/assessment/activation/${subject}/${row._id}`
+                  );
                 }}
               >
                 {row.status === "Activated" ? "Deactivate" : "Activate"}

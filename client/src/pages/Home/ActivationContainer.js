@@ -33,6 +33,7 @@ class ActivationContainer extends Component {
       status: "",
       assessmentID: this.props.match.params.assessmentID,
       data: {},
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -181,13 +182,14 @@ class ActivationContainer extends Component {
       accessCB,
       timerCB,
       data,
+      subject,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     if (this.props.homeReducer.direct) {
-      this.props.history.push(`/home`);
+      this.props.history.push(`/assessment/${subject}`);
     }
 
     return (
