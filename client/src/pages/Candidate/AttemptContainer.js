@@ -19,7 +19,6 @@ import htmlToDraft from "html-to-draftjs";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  fetchAssessmentSetForCandidate,//
   fetchAllQuestionForCandidate,
   uploadCandidateResponses,
   fetchGrades,
@@ -53,7 +52,7 @@ class AttemptContainer extends Component {
 
     if (this.state.type === "1" || this.state.type === "2") {
       this.props.fetchAllQuestionForCandidate(data);
-    } else this.props.fetchAssessmentSetForCandidate(data);
+    }
 
     this.props.fetchGrades(data);
 
@@ -722,7 +721,6 @@ const styles = StyleSheet.create({
 
 AttemptContainer.propTypes = {
   candidateReducer: PropTypes.object.isRequired,
-  fetchAssessmentSetForCandidate: PropTypes.func.isRequired,
   fetchAllQuestionForCandidate: PropTypes.func.isRequired,
   uploadCandidateResponses: PropTypes.func.isRequired,
   fetchGrades: PropTypes.func.isRequired,
@@ -733,7 +731,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  fetchAssessmentSetForCandidate,
   fetchAllQuestionForCandidate,
   uploadCandidateResponses,
   fetchGrades,
