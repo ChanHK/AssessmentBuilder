@@ -46,6 +46,8 @@ class StartingPageContainer extends Component {
       startDate: "",
       endDate: "",
       assessmentID: this.props.match.params.assessmentID,
+      questions_sec_based: [], //set of questions based on sections, 2d array of obj
+      questions_normal: [], //normal question retrieve from DB, array of obj
     };
   }
 
@@ -99,18 +101,15 @@ class StartingPageContainer extends Component {
       if (questionTimeSelected) this.setState({ timeSettings: 2 });
       if (noLimitSelected) this.setState({ timeSettings: 3 });
 
-      let temp = this.convert(testInstruction);
-
       let hour = parseInt(time.substring(0, 2));
       let minute = parseInt(time.substring(3, 5));
       let second = parseInt(time.substring(6, 9));
-      let totalSec = hour * 3600 + minute * 60 + second;
 
       this.setState({
         assessmentTitle: testName,
-        instruction: temp,
+        instruction: this.convert(testInstruction),
         withAuthenticationSelected: withAuthenticationSelected,
-        time: totalSec.toString(),
+        time: (hour * 3600 + minute * 60 + second).toString(),
         attemptNum: parseInt(attemptNum),
         status: status,
         startDate: startDate,
@@ -178,7 +177,7 @@ class StartingPageContainer extends Component {
       status,
       startDate,
       endDate,
-      assessmentID,
+      // assessmentID,
     } = this.state;
 
     const {
