@@ -36,7 +36,6 @@ class StartingPageContainer extends Component {
       instruction: EditorState.createEmpty(),
       name: "",
       email: "",
-      accessCode: "",
       msg: null, // receives error messages from API
       withAuthenticationSelected: false, //does the user needs authentication ?
       setLength: 0, // size of the set
@@ -156,7 +155,6 @@ class StartingPageContainer extends Component {
     const {
       name,
       email,
-      accessCode,
       withAuthenticationSelected,
       attemptNum,
     } = this.state;
@@ -165,7 +163,6 @@ class StartingPageContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       name: name,
       email: email,
-      accessCode: accessCode,
       attemptNum: attemptNum,
     };
 
@@ -179,7 +176,6 @@ class StartingPageContainer extends Component {
       instruction,
       name,
       email,
-      accessCode,
       msg,
       withAuthenticationSelected,
       setLength,
@@ -310,23 +306,6 @@ class StartingPageContainer extends Component {
                     </span>
                   </CustomColumn>
                 </div>
-
-                {withAuthenticationSelected && (
-                  <>
-                    <CustomSubLabel>Candidate Access Code</CustomSubLabel>
-
-                    <div style={{ marginBottom: "25px" }}>
-                      <CustomInput
-                        name={"accessCode"}
-                        type={"text"}
-                        onChangeValue={this.onChange}
-                        placeholder={"Enter your access code"}
-                        value={accessCode}
-                        maxLength={10}
-                      />
-                    </div>
-                  </>
-                )}
 
                 <div className={css(styles.redText)}>
                   {msg === null
