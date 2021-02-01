@@ -160,54 +160,6 @@ router.post(
   }
 );
 
-// @route     GET api/candidate/attempt/assessment/fetch/set/:assessmentID
-// @desc      GET question set
-// @access    Private (candidate)
-// router.get(
-//   "/attempt/assessment/fetch/set/:set/:assessmentID",
-//   auth,
-//   (req, res) => {
-//     db.AssessmentSet.findOne({ assessments_id: req.params.assessmentID })
-//       .then((array) => {
-//         let results = array.generatedSets[req.params.set];
-
-//         db.AssessmentQuestion.findOne({
-//           assessments_id: req.params.assessmentID,
-//         })
-//           .select("-questions.section")
-//           .then((array) => {
-//             //retrieve all questions
-//             let temp = [];
-//             array.questions.forEach((item, index) => {
-//               results.forEach((item2, index2) => {
-//                 if (JSON.stringify(item._id) === `"` + item2 + `"`) {
-//                   temp.push(array.questions[index]);
-//                 }
-//               });
-//             });
-
-//             // sort temp based on the order in set
-//             let temp2 = [];
-//             results.forEach((item3, index3) => {
-//               temp.forEach((item4, index4) => {
-//                 if (JSON.stringify(item4._id) === `"` + item3 + `"`) {
-//                   temp2.push(temp[index4]);
-//                 }
-//               });
-//             });
-
-//             return res.json(temp2);
-//           })
-//           .catch(() => {
-//             return res.json({ message: "Fetch failed 2" });
-//           });
-//       })
-//       .catch(() => {
-//         return res.json({ message: "Fetch failed 1" });
-//       });
-//   }
-// );
-
 // @route     GET api/candidate/attempt/assessment/fetch/all_questions/:assessmentID
 // @desc      GET all questions for candidate
 // @access    Private (candidate)
