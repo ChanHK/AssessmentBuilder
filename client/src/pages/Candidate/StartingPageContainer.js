@@ -48,6 +48,7 @@ class StartingPageContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       questions_sec_based: [], //set of questions based on sections, 2d array of obj
       questions_normal: [], //normal question retrieve from DB, array of obj
+      final_questions: [], //set of questions to be submitted, array of obj
     };
   }
 
@@ -103,6 +104,9 @@ class StartingPageContainer extends Component {
 
       console.log(all_question_data);
 
+      if (fixedSelected) this.setState({ final_questions: all_question_data });
+      if (randomSelected) this._randomSelected(all_question_data);
+
       if (assessmentTimeSelected) this.setState({ timeSettings: 1 });
       if (questionTimeSelected) this.setState({ timeSettings: 2 });
       if (noLimitSelected) this.setState({ timeSettings: 3 });
@@ -146,6 +150,31 @@ class StartingPageContainer extends Component {
     }
   };
 
+  _randomSelected = (array) => {
+    let temp = array;
+    temp.forEach((item, index) => {
+      if (
+        item.questionType !== "Descriptive" &&
+        item.questionType !== "Short Answer"
+      ) {
+        temp[index].questionChoices = this.shuffleArray(item.questionChoices);
+      }
+    });
+
+    let num_array = [];
+    temp.forEach((item, index) => {
+      num_array.push(index);
+    });
+    const final_num = this.shuffleArray(num_array);
+
+    let new_array = [];
+    final_num.forEach((item, index) => {
+      new_array.push(temp[item]);
+    });
+
+    this.setState({ final_questions: new_array });
+  };
+
   getRandom = (arr, n) => {
     let result = new Array(n),
       len = arr.length,
@@ -158,6 +187,14 @@ class StartingPageContainer extends Component {
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
+  };
+
+  shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
   };
 
   onChange = (e) => {
