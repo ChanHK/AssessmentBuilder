@@ -11,8 +11,12 @@ import Wrapper from "../../components/Wrapper";
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Modal from "../../components/Modal";
 
 import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import SecondLabel from "../../components/LabelComponent/SecondLabel";
+import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
+
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
@@ -44,6 +48,8 @@ class AssessmentsContainer extends Component {
       generatedID: "", //ID return from createAssessmentObj
       subject: this.props.match.params.subject,
       totalAssessmentNum: 0,
+      showModal: false,
+      reuse_id: "",
     };
   }
 
@@ -116,6 +122,7 @@ class AssessmentsContainer extends Component {
       totalAssessmentNum,
       setupNum,
       activateNum,
+      showModal,
     } = this.state;
 
     const tableHeader = [
@@ -232,7 +239,11 @@ class AssessmentsContainer extends Component {
                 >
                   Statistics
                 </TableButton>
-                <TableButton>
+                <TableButton
+                  onClick={() => {
+                    this.setState({ showModal: true, reuse_id: row._id });
+                  }}
+                >
                   <FaIcons.FaRecycle />
                 </TableButton>
               </>
@@ -326,6 +337,48 @@ class AssessmentsContainer extends Component {
                 <Table data={filteredData} columns={tableHeader} />
               </div>
             </CustomColumn>
+            <Modal show={showModal}>
+              <div className={css(styles.modal)}>
+                <CustomColumn>
+                  <SecondLabel>Reuse assessment</SecondLabel>
+                  <ThirdLabel>
+                    All the responses, results, statistics and candidates will
+                    be removed. Are you sure?
+                  </ThirdLabel>
+                  <div style={{ marginTop: "25px" }}>
+                    <CustomRow>
+                      <Button
+                        backgroundColor={configStyles.colors.darkBlue}
+                        color={configStyles.colors.white}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          // this.props.deleteAssSub(data);
+                          this.setState({ showModal: false, reuse_id: "" });
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        backgroundColor={configStyles.colors.white}
+                        color={configStyles.colors.darkBlue}
+                        padding={"8px"}
+                        width={"100px"}
+                        type={"button"}
+                        marginLeft={"20px"}
+                        onClick={() => {
+                          this.setState({ showModal: false, reuse_id: "" });
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </CustomRow>
+                  </div>
+                </CustomColumn>
+              </div>
+            </Modal>
           </CustomMidContainer>
         </CustomFullContainer>
       </>
@@ -347,6 +400,17 @@ const styles = StyleSheet.create({
   tableRow: {
     fontSize: "15px",
     fontFamily: "Ubuntu-Regular",
+  },
+  modal: {
+    width: "100%",
+    height: "auto",
+    border: "none",
+    borderRadius: "5px",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    backgroundColor: configStyles.colors.white,
+    padding: "20px",
   },
 });
 
