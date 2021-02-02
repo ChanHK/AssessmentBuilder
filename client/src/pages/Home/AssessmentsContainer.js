@@ -12,6 +12,7 @@ import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
+import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
@@ -20,7 +21,9 @@ import CustomRow from "../../components/GridComponents/CustomRow";
 import StatusBox from "../../components/StatusBarComponents/StatusBox";
 import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrapper";
 
-import FirstLabel from "../../components/LabelComponent/FirstLabel";
+import * as FaIcons from "react-icons/fa";
+import * as MdIcons from "react-icons/md";
+import * as BsIcons from "react-icons/bs";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -172,7 +175,7 @@ class AssessmentsContainer extends Component {
                   );
                 }}
               >
-                Edit
+                <MdIcons.MdModeEdit />
               </TableButton>
             )}
             {row.status !== "Activated" && (
@@ -185,7 +188,7 @@ class AssessmentsContainer extends Component {
                   this.props.deleteAssessment(data);
                 }}
               >
-                Delete
+                <MdIcons.MdDelete />
               </TableButton>
             )}
             {row.status !== "Setup in progress" && (
@@ -196,7 +199,7 @@ class AssessmentsContainer extends Component {
                   );
                 }}
               >
-                View
+                <BsIcons.BsFillEyeFill />
               </TableButton>
             )}
             {row.status === "Ended" && (
@@ -228,6 +231,9 @@ class AssessmentsContainer extends Component {
                   }}
                 >
                   Statistics
+                </TableButton>
+                <TableButton>
+                  <FaIcons.FaRecycle />
                 </TableButton>
               </>
             )}
