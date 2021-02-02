@@ -28,6 +28,8 @@ import StatusBarWrapper from "../../components/StatusBarComponents/StatusBarWrap
 import * as FaIcons from "react-icons/fa";
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
+import * as ImIcons from "react-icons/im";
+import * as RiIcons from "react-icons/ri";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -182,7 +184,7 @@ class AssessmentsContainer extends Component {
                   );
                 }}
               >
-                <MdIcons.MdModeEdit />
+                <MdIcons.MdModeEdit size={20} />
               </TableButton>
             )}
             {row.status !== "Activated" && (
@@ -195,7 +197,7 @@ class AssessmentsContainer extends Component {
                   this.props.deleteAssessment(data);
                 }}
               >
-                <MdIcons.MdDelete />
+                <MdIcons.MdDelete size={20} />
               </TableButton>
             )}
             {row.status !== "Setup in progress" && (
@@ -206,7 +208,7 @@ class AssessmentsContainer extends Component {
                   );
                 }}
               >
-                <BsIcons.BsFillEyeFill />
+                <BsIcons.BsFillEyeFill size={20} />
               </TableButton>
             )}
             {row.status === "Ended" && (
@@ -218,7 +220,7 @@ class AssessmentsContainer extends Component {
                     );
                   }}
                 >
-                  Mark
+                  <RiIcons.RiMarkPenFill size={20} />
                 </TableButton>
 
                 <TableButton
@@ -228,7 +230,7 @@ class AssessmentsContainer extends Component {
                     );
                   }}
                 >
-                  Results
+                  <FaIcons.FaClipboardCheck size={20} />
                 </TableButton>
                 <TableButton
                   onClick={() => {
@@ -237,14 +239,14 @@ class AssessmentsContainer extends Component {
                     );
                   }}
                 >
-                  Statistics
+                  <ImIcons.ImStatsBars size={20} />
                 </TableButton>
                 <TableButton
                   onClick={() => {
                     this.setState({ showModal: true, reuse_id: row._id });
                   }}
                 >
-                  <FaIcons.FaRecycle />
+                  <FaIcons.FaRecycle size={20} />
                 </TableButton>
               </>
             )}
@@ -333,8 +335,58 @@ class AssessmentsContainer extends Component {
                   </Button>
                 </div>
               </Wrapper>
-              <div style={{ padding: "50px 0px", marginBottom: "100px" }}>
+              <div style={{ padding: "50px 0px" }}>
                 <Table data={filteredData} columns={tableHeader} />
+              </div>
+              <div style={{ marginBottom: "100px" }}>
+                <CustomRow>
+                  <div
+                    className={css(styles.iconCon)}
+                    style={{ marginRight: "10%" }}
+                  >
+                    <CustomColumn>
+                      <CustomRow>
+                        <MdIcons.MdModeEdit size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>Edit</ThirdLabel>
+                      </CustomRow>
+                      <CustomRow>
+                        <MdIcons.MdDelete size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>Delete</ThirdLabel>
+                      </CustomRow>
+                      <CustomRow>
+                        <FaIcons.FaClipboardCheck size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>Results</ThirdLabel>
+                      </CustomRow>
+                      <CustomRow>
+                        <FaIcons.FaRecycle size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>Reuse</ThirdLabel>
+                      </CustomRow>
+                    </CustomColumn>
+                  </div>
+                  <div className={css(styles.iconCon)}>
+                    <CustomColumn>
+                      <CustomRow>
+                        <BsIcons.BsFillEyeFill size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>View</ThirdLabel>
+                      </CustomRow>
+                      <CustomRow>
+                        <RiIcons.RiMarkPenFill size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>Mark</ThirdLabel>
+                      </CustomRow>
+                      <CustomRow>
+                        <ImIcons.ImStatsBars size={20} />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <ThirdLabel>Statistics</ThirdLabel>
+                      </CustomRow>
+                    </CustomColumn>
+                  </div>
+                </CustomRow>
               </div>
             </CustomColumn>
             <Modal show={showModal}>
@@ -411,6 +463,10 @@ const styles = StyleSheet.create({
     display: "flex",
     backgroundColor: configStyles.colors.white,
     padding: "20px",
+  },
+  iconCon: {
+    display: "flex",
+    width: "40%",
   },
 });
 
