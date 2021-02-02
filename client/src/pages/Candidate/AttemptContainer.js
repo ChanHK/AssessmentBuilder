@@ -19,6 +19,7 @@ import htmlToDraft from "html-to-draftjs";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
+  fetchGenQues,
   uploadCandidateResponses,
   fetchGrades,
 } from "../../actions/candidate.actions";
@@ -44,6 +45,7 @@ class AttemptContainer extends Component {
   componentDidMount() {
     const data = { assessmentID: this.state.assessmentID };
 
+    this.props.fetchGenQues();
     this.props.fetchGrades(data);
 
     if (this.state.timeSettings !== "3") {
@@ -52,6 +54,8 @@ class AttemptContainer extends Component {
         this.setState({ time: this.state.time - 1 });
       }, 1000);
     }
+
+    console.log(localStorage.getItem("token"));
 
     // document.addEventListener("visibilitychange", () => {
     //   if (document.visibilityState !== "visible") {
@@ -64,9 +68,12 @@ class AttemptContainer extends Component {
     const { candidateReducer } = this.props;
     if (
       prevProps.candidateReducer !== candidateReducer &&
+      candidateReducer.gen_ques_data !== null &&
       candidateReducer.grade !== null
     ) {
+      console.log(candidateReducer.gen_ques_data);
       this.setState({
+        question: candidateReducer.gen_ques_data,
         gradeData: candidateReducer.grade[0],
       });
     }
@@ -75,6 +82,7 @@ class AttemptContainer extends Component {
   componentWillUnmount() {
     this.props.candidateReducer.directStart = false;
     this.props.candidateReducer.grade = null;
+    this.props.candidateReducer.gen_ques_data = null;
     localStorage.clear();
   }
 
@@ -664,6 +672,7 @@ AttemptContainer.propTypes = {
   candidateReducer: PropTypes.object.isRequired,
   uploadCandidateResponses: PropTypes.func.isRequired,
   fetchGrades: PropTypes.func.isRequired,
+  fetchGenQues: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -673,4 +682,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   uploadCandidateResponses,
   fetchGrades,
+  fetchGenQues,
 })(AttemptContainer);

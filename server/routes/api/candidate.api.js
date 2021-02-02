@@ -185,9 +185,7 @@ router.post("/attempt/assessment/submit/:assessmentID", auth, (req, res) => {
   db.Candidate.updateOne(
     { _id: req.cand.id, assessments_id: req.params.assessmentID },
     {
-      $push: {
-        response: req.body.response,
-      },
+      response: req.body.response,
     },
     { new: true }
   )
@@ -239,6 +237,19 @@ router.get("/assessment/fetch/grades/:assessmentID", auth, (req, res) => {
         }
       });
       return res.json(temp);
+    })
+    .catch((err) => console.log(err));
+});
+
+// @route     GET api/candidate/attempt/response/fetch/questions
+// @desc      GET generated questions for candidate
+// @access    Private (candidate)
+router.get("/attempt/response/fetch/questions", auth, (req, res) => {
+  db.Candidate.findOne({
+    _id: req.cand.id,
+  })
+    .then((array) => {
+      return res.json(array.response);
     })
     .catch((err) => console.log(err));
 });

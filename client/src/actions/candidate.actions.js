@@ -165,3 +165,24 @@ export const fetchGrades = (data) => (dispatch, getState) => {
       dispatch({ type: CANDIDATE.FETCH_GRADES_FAIL });
     });
 };
+
+export const fetchGenQues = (data) => (dispatch, getState) => {
+  dispatch({ type: CANDIDATE.FETCH_GEN_QUESTION_CAND_ATTEMPT_BEGIN });
+
+  axios
+    .get(
+      `/api/candidate/attempt/response/fetch/questions`,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: CANDIDATE.FETCH_GEN_QUESTION_CAND_ATTEMPT_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: CANDIDATE.FETCH_GEN_QUESTION_CAND_ATTEMPT_FAIL });
+    });
+};
