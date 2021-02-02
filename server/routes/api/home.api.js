@@ -95,52 +95,57 @@ router.get("/profile/fetch/image", auth, (req, res) => {
 // @desc      POST delete assessment
 // @access    Private
 router.post("/assessment/delete/:assessmentID", auth, (req, res) => {
-  db.Assessment.findOne({ user_id: req.user.id }).then((result) => {
-    db.User.updateOne(
-      { _id: req.user.id },
-      {
-        $inc: { totalAssessmentsCreated: -1 },
-      }
-    ).then(() => {
-      db.Assessment.findByIdAndUpdate(
-        result._id,
+  db.Assessment.findOne({ user_id: req.user.id })
+    .then((result) => {
+      db.User.updateOne(
+        { _id: req.user.id },
         {
-          $pull: { assessments: { _id: req.params.assessmentID } },
-        },
-        { safe: true, new: true }
+          $inc: { totalAssessmentsCreated: -1 },
+        }
       )
-        .then((response) => {
-          db.AssessmentQuestion.deleteOne({
-            assessments_id: req.params.assessmentID,
-          })
-            .then(() => {
-              db.Candidate.deleteMany({
+        .then(() => {
+          db.Assessment.findByIdAndUpdate(
+            result._id,
+            {
+              $pull: { assessments: { _id: req.params.assessmentID } },
+            },
+            { safe: true, new: true }
+          )
+            .then((response) => {
+              db.AssessmentQuestion.deleteOne({
                 assessments_id: req.params.assessmentID,
               })
                 .then(() => {
-                  db.Feedback.deleteMany({
+                  db.Candidate.deleteMany({
                     assessments_id: req.params.assessmentID,
                   })
                     .then(() => {
-                      let temp = [];
-                      response.assessments.forEach((item, index) => {
-                        if (item.subject === req.body.subject) temp.push(item);
-                      });
-                      return res.status(200).json(temp);
+                      db.Feedback.deleteMany({
+                        assessments_id: req.params.assessmentID,
+                      })
+                        .then(() => {
+                          let temp = [];
+                          response.assessments.forEach((item, index) => {
+                            if (item.subject === req.body.subject)
+                              temp.push(item);
+                          });
+                          return res.status(200).json(temp);
+                        })
+                        .catch(() => {
+                          return res.status(400).json({
+                            message: "Delete failed",
+                          });
+                        });
                     })
-                    .catch(() => {
-                      return res.status(400).json({
-                        message: "Delete failed",
-                      });
-                    });
+                    .catch((err) => console.log(err));
                 })
                 .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
-    });
-  });
+    })
+    .catch((err) => console.log(err));
 });
 
 // @route     GET api/user/home/assessment/fetch/descriptive_questions/:assessmentID
