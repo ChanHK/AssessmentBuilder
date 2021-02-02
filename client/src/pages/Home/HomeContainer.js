@@ -87,9 +87,7 @@ class HomeContainer extends Component {
       const { assessments, all_subjects } = homeReducer.assessmentData;
       let tempActivateNum = 0;
       assessments.forEach((item, index) => {
-        if (item.status === "Activated") {
-          tempActivateNum++;
-        }
+        if (item.status === "Activated") tempActivateNum++;
       });
 
       this.setState({
@@ -116,9 +114,7 @@ class HomeContainer extends Component {
     this.props.homeReducer.pic = null;
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   addSub = (e) => {
     e.preventDefault();
@@ -128,9 +124,7 @@ class HomeContainer extends Component {
     string = string.trim().toLowerCase();
 
     all_subjects.forEach((item, index) => {
-      if (item === string) {
-        tempMsg.SUB = "Subject is created before";
-      }
+      if (item === string) tempMsg.SUB = "Subject is created before";
     });
     this.setState({ msg: tempMsg });
 
@@ -138,9 +132,7 @@ class HomeContainer extends Component {
       let temp = all_subjects;
       temp.push(string);
 
-      let data = {
-        all_subjects: temp,
-      };
+      let data = { all_subjects: temp };
 
       if (Object.keys(tempMsg).length === 0) {
         this.setState({ new_subject: "" });
@@ -221,9 +213,7 @@ class HomeContainer extends Component {
     const lowerCasedSearchText = search.toLowerCase();
 
     let filteredData = [];
-    all_subjects.forEach((item, index) => {
-      filteredData.push({ sub: item });
-    });
+    all_subjects.forEach((item, index) => filteredData.push({ sub: item }));
 
     if (search !== "") {
       filteredData = filteredData.filter((item) => {
@@ -231,9 +221,7 @@ class HomeContainer extends Component {
       });
     }
 
-    filteredData.forEach((data, index) => {
-      data.serial = index + 1;
-    });
+    filteredData.forEach((data, index) => (data.serial = index + 1));
 
     return (
       <>
@@ -422,9 +410,7 @@ HomeContainer.propTypes = {
   deleteAssSub: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   homeFetchAllAssessment,

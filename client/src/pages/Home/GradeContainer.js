@@ -123,9 +123,8 @@ class GradeContainer extends Component {
     const con_data_sco = parseFloat(score);
     const payload_sco = payload[0].response.score;
 
-    if (score === "") {
-      tempMsg.sco = "Please enter score field";
-    } else if (validator.isAlpha(score)) {
+    if (score === "") tempMsg.sco = "Please enter score field";
+    else if (validator.isAlpha(score)) {
       tempMsg.sco = `Please enter numbers only`;
     } else {
       if (
@@ -158,9 +157,7 @@ class GradeContainer extends Component {
       gradeData: gradeData,
     };
 
-    if (this.validateForm(data)) {
-      this.props.uploadFeedback(data);
-    }
+    if (this.validateForm(data)) this.props.uploadFeedback(data);
   };
 
   render() {
@@ -320,9 +317,7 @@ GradeContainer.propTypes = {
   fetchAGrade: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   logout,

@@ -57,9 +57,7 @@ class ViewResponseContainer extends Component {
       }
     }
 
-    const data = {
-      candID: this.state.candID,
-    };
+    const data = { candID: this.state.candID };
 
     this.props.fetchAResult(data);
     this.props.fetchFeedback(data);
@@ -483,9 +481,7 @@ ViewResponseContainer.propTypes = {
   fetchFeedback: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   fetchAResult,

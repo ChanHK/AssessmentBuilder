@@ -52,10 +52,7 @@ class ResultsContainer extends Component {
       }
     }
 
-    const data = {
-      assessmentID: this.state.assessmentID,
-    };
-
+    const data = { assessmentID: this.state.assessmentID };
     this.props.fetchResults(data);
   }
 
@@ -85,13 +82,9 @@ class ResultsContainer extends Component {
     this.props.homeReducer.results = null;
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
-  onReset = () => {
-    this.setState({ email: "", name: "", score: "", grade: "" });
-  };
+  onReset = () => this.setState({ email: "", name: "", score: "", grade: "" });
 
   render() {
     const { email, name, score, grade, data, assessmentID } = this.state;
@@ -296,9 +289,7 @@ class ResultsContainer extends Component {
       }
     }
 
-    filteredData.forEach((data, index) => {
-      data.serial = index + 1;
-    });
+    filteredData.forEach((data, index) => (data.serial = index + 1));
 
     return (
       <>
@@ -425,9 +416,7 @@ ResultsContainer.propTypes = {
   logout: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   fetchResults,

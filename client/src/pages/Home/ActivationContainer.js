@@ -50,10 +50,7 @@ class ActivationContainer extends Component {
       }
     }
 
-    const data = {
-      assessmentID: this.state.assessmentID,
-    };
-
+    const data = { assessmentID: this.state.assessmentID };
     this.props.fetchAllInfo(data);
   }
 
@@ -373,9 +370,7 @@ ActivationContainer.propTypes = {
   uploadStatus: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   fetchAllInfo,

@@ -56,9 +56,7 @@ class AssessmentsContainer extends Component {
         this.props.history.push("/login");
       }
     }
-    const data = {
-      subject: this.state.subject,
-    };
+    const data = { subject: this.state.subject };
     this.props.fetchAssSub(data);
   }
 
@@ -99,14 +97,10 @@ class AssessmentsContainer extends Component {
     this.props.homeReducer.newID = null;
   }
 
-  onChangeSearchText = (e) => {
-    this.setState({ searchText: e.target.value });
-  };
+  onChangeSearchText = (e) => this.setState({ searchText: e.target.value });
 
   toCreateAssessment = () => {
-    const data = {
-      subject: this.state.subject,
-    };
+    const data = { subject: this.state.subject };
     this.props.createAssessmentObj(data);
   };
 
@@ -272,9 +266,7 @@ class AssessmentsContainer extends Component {
       });
     }
 
-    filteredData.forEach((data, index) => {
-      data.serial = index + 1;
-    });
+    filteredData.forEach((data, index) => (data.serial = index + 1));
 
     return (
       <>
@@ -358,9 +350,7 @@ AssessmentsContainer.propTypes = {
   deleteAssessment: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   fetchAssSub,

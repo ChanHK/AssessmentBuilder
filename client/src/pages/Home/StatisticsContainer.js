@@ -52,10 +52,7 @@ class StatisticsContainer extends Component {
       }
     }
 
-    const data = {
-      assessmentID: this.state.assessmentID,
-    };
-
+    const data = { assessmentID: this.state.assessmentID };
     this.props.fetchAGrade(data);
     this.props.fetchResults(data);
   }
@@ -76,16 +73,9 @@ class StatisticsContainer extends Component {
         gradeRange,
       } = grade[0];
 
-      if (passOrFailSelected) {
-        this.passFailDataGenerator(results, unit);
-      }
-      if (addGradingSelected) {
-        this.gradedGenerator(results, gradeRange);
-      }
-
-      this.setState({
-        gradeData: grade[0],
-      });
+      if (passOrFailSelected) this.passFailDataGenerator(results, unit);
+      if (addGradingSelected) this.gradedGenerator(results, gradeRange);
+      this.setState({ gradeData: grade[0] });
     }
   }
 
@@ -242,10 +232,7 @@ class StatisticsContainer extends Component {
       }
     });
 
-    this.setState({
-      candNum: candNum,
-      range: collections,
-    });
+    this.setState({ candNum: candNum, range: collections });
   };
 
   render() {
@@ -447,9 +434,7 @@ StatisticsContainer.propTypes = {
   fetchResults: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  homeReducer: state.homeReducer,
-});
+const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 
 export default connect(mapStateToProps, {
   fetchAGrade,
