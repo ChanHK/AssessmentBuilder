@@ -246,12 +246,18 @@ class StartingPageContainer extends Component {
       final_questions,
     } = this.state;
 
+    let temp = [];
+    final_questions.forEach((item, index) => {
+      temp.push(item);
+      temp[index].question_id = item._id;
+    });
+
     const data = {
       assessmentID: assessmentID,
       name: name,
       email: email,
       attemptNum: attemptNum,
-      response: final_questions,
+      response: temp,
     };
 
     if (withAuthenticationSelected) this.props.candidateRegister(data);
