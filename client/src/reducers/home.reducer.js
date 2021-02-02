@@ -34,6 +34,7 @@ export default function (state = initialState, action) {
     case HOME.ADD_NEW_SUBJECT_BEGIN:
     case HOME.DELETE_ASS_SUB_BEGIN:
     case HOME.FETCH_ASS_BASED_SUB_BEGIN:
+    case HOME.REUSE_ASSESSMENT_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -48,6 +49,7 @@ export default function (state = initialState, action) {
       };
     case HOME.FETCH_ASS_BASED_SUB_SUCCESS:
     case HOME.DELETE_ASSESSMENT_SUCCESS:
+    case HOME.REUSE_ASSESSMENT_SUCCESS:
       return {
         ...state,
         isLoading: false,
@@ -69,6 +71,7 @@ export default function (state = initialState, action) {
     case HOME.ADD_NEW_SUBJECT_FAIL:
     case HOME.DELETE_ASS_SUB_FAIL:
     case HOME.FETCH_ASS_BASED_SUB_FAIL:
+    case HOME.REUSE_ASSESSMENT_FAIL:
       return {
         ...state,
         isLoading: false,

@@ -89,7 +89,6 @@ export const deleteAssessment = (data) => (dispatch, getState) => {
       }, 1500);
     })
     .catch((err) => {
-      console.log("delete failed", err);
       dispatch({ type: HOME.DELETE_ASSESSMENT_FAIL });
     });
 };
@@ -352,5 +351,27 @@ export const fetchAssSub = (data) => (dispatch, getState) => {
     .catch((err) => {
       console.log("fetch failed", err);
       dispatch({ type: HOME.FETCH_ASS_BASED_SUB_FAIL });
+    });
+};
+
+export const reuseAssessment = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.REUSE_ASSESSMENT_BEGIN });
+
+  axios
+    .post(
+      `/api/user/home2/assessment/reuse/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.REUSE_ASSESSMENT_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: HOME.REUSE_ASSESSMENT_FAIL });
     });
 };

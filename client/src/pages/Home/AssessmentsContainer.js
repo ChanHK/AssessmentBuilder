@@ -37,6 +37,7 @@ import {
   fetchAssSub,
   createAssessmentObj,
   deleteAssessment,
+  reuseAssessment,
 } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
@@ -125,6 +126,7 @@ class AssessmentsContainer extends Component {
       setupNum,
       activateNum,
       showModal,
+      reuse_id,
     } = this.state;
 
     const tableHeader = [
@@ -407,7 +409,11 @@ class AssessmentsContainer extends Component {
                         type={"button"}
                         marginLeft={"20px"}
                         onClick={() => {
-                          // this.props.deleteAssSub(data);
+                          const data = {
+                            assessmentID: reuse_id,
+                            subject: subject,
+                          };
+                          this.props.reuseAssessment(data);
                           this.setState({ showModal: false, reuse_id: "" });
                         }}
                       >
@@ -476,6 +482,7 @@ AssessmentsContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   createAssessmentObj: PropTypes.func.isRequired,
   deleteAssessment: PropTypes.func.isRequired,
+  reuseAssessment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
@@ -485,4 +492,5 @@ export default connect(mapStateToProps, {
   logout,
   createAssessmentObj,
   deleteAssessment,
+  reuseAssessment,
 })(AssessmentsContainer);

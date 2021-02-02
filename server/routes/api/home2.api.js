@@ -82,4 +82,41 @@ router.get("/assessment/fetch/assessment/:subject", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/home2/assessment/reuse/:assessmentID
+// @desc      POST (delete) remove a question bank
+// @access    Private
+router.post("/assessment/reuse/:assessmentID", auth, (req, res) => {
+  db.Assessment.findOneAndUpdate(
+    { user_id: req.user.id, "assessments._id": req.params.assessmentID },
+    {
+      $set: {
+        "assessments.$.status": "Setup in progress",
+        "assessments.$.timer.startDate": "",
+        "assessments.$.timer.endDate": "",
+      },
+    },
+    { new: true }
+  )
+    .then((results) => {
+      db.Candidate.deleteMany({
+        assessments_id: req.params.assessmentID,
+      })
+        .then(() => {
+          db.Feedback.deleteMany({
+            assessments_id: req.params.assessmentID,
+          })
+            .then(() => {
+              let temp = [];
+              results.assessments.forEach((item, index) => {
+                if (item.subject === req.body.subject) temp.push(item);
+              });
+              return res.status(200).json(temp);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+});
+
 module.exports = router;
