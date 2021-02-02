@@ -6,6 +6,7 @@ import * as configStyles from "../../config/styles";
 import Header from "../../components/Header";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import ScrollArrow from "../../components/ScrollArrow";
+import Button from "../../components/Button";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -36,6 +37,7 @@ class StatisticsContainer extends Component {
       unit: "",
       barLabel: [],
       passNFailShow: false,
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -245,6 +247,7 @@ class StatisticsContainer extends Component {
       unit,
       barLabel,
       gradeData,
+      subject,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -398,6 +401,20 @@ class StatisticsContainer extends Component {
                   </div>
                 </CustomColumn>
               )}
+
+              <div style={{ margin: "25px 0px 100px 0px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  onClick={() => {
+                    this.props.history.push(`/assessment/${subject}`);
+                  }}
+                >
+                  Back
+                </Button>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>

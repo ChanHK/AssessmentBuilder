@@ -213,7 +213,9 @@ class AssessmentsContainer extends Component {
 
                 <TableButton
                   onClick={() => {
-                    this.props.history.push(`/assessment/results/${row._id}`);
+                    this.props.history.push(
+                      `/assessment/results/${row._id}/${subject}`
+                    );
                   }}
                 >
                   Results
@@ -221,7 +223,7 @@ class AssessmentsContainer extends Component {
                 <TableButton
                   onClick={() => {
                     this.props.history.push(
-                      `/assessment/statistics/${row._id}`
+                      `/assessment/statistics/${row._id}/${subject}`
                     );
                   }}
                 >

@@ -131,7 +131,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/statistics/:assessmentID"
+          path="/assessment/statistics/:assessmentID/:subject"
           exact
           component={StatisticsContainer}
           isPrivate
@@ -145,7 +145,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/results/:assessmentID"
+          path="/assessment/results/:assessmentID/:subject"
           exact
           component={ResultsContainer}
           isPrivate

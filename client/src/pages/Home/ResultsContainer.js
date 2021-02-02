@@ -36,6 +36,7 @@ class ResultsContainer extends Component {
       grade: "",
       assessmentID: this.props.match.params.assessmentID,
       data: [], //stores results
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -87,7 +88,15 @@ class ResultsContainer extends Component {
   onReset = () => this.setState({ email: "", name: "", score: "", grade: "" });
 
   render() {
-    const { email, name, score, grade, data, assessmentID } = this.state;
+    const {
+      email,
+      name,
+      score,
+      grade,
+      data,
+      assessmentID,
+      subject,
+    } = this.state;
 
     const tableHeader = [
       {
@@ -363,8 +372,21 @@ class ResultsContainer extends Component {
                 </div>
               </div>
 
-              <div style={{ margin: "25px 0px 100px 0px" }}>
+              <div style={{ margin: "25px 0px 25px 0px" }}>
                 <Table data={filteredData} columns={tableHeader} />
+              </div>
+              <div style={{ marginBottom: "100px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  onClick={() => {
+                    this.props.history.push(`/assessment/${subject}`);
+                  }}
+                >
+                  Back
+                </Button>
               </div>
             </CustomColumn>
           </CustomMidContainer>
