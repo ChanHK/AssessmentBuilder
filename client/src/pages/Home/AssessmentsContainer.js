@@ -204,7 +204,7 @@ class AssessmentsContainer extends Component {
                 <TableButton
                   onClick={() => {
                     this.props.history.push(
-                      `/assessment/descriptive/responses/${row._id}`
+                      `/assessment/descriptive/responses/${row._id}/${subject}`
                     );
                   }}
                 >

@@ -124,7 +124,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/descriptive/responses/:assessmentID"
+          path="/assessment/descriptive/responses/:assessmentID/:subject"
           exact
           component={DescriptiveResponsesContainer}
           isPrivate

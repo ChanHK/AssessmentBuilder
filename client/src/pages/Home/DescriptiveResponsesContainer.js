@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { css, StyleSheet } from "aphrodite";
 import "../../css/general.css";
+import * as configStyles from "../../config/styles";
 
 import Header from "../../components/Header";
 import Table from "../../components/Table";
 import CustomInput from "../../components/CustomInput";
 import TableButton from "../../components/TableButton";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Button from "../../components/Button";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -33,6 +35,7 @@ class DescriptiveResponsesContainer extends Component {
       searchText: "",
       assessmentID: this.props.match.params.assessmentID,
       questions: [],
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -73,7 +76,7 @@ class DescriptiveResponsesContainer extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   render() {
-    const { searchText, questions, assessmentID } = this.state;
+    const { searchText, questions, assessmentID, subject } = this.state;
 
     const column = [
       {
@@ -179,6 +182,19 @@ class DescriptiveResponsesContainer extends Component {
                 />
               </div>
               <Table data={filteredData} columns={column} />
+              <div>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  onClick={() => {
+                    this.props.history.push(`/assessment/${subject}`);
+                  }}
+                >
+                  Back
+                </Button>
+              </div>
             </CustomColumn>
           </CustomMidContainer>
         </CustomFullContainer>
