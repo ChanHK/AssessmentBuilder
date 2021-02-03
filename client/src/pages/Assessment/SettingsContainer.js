@@ -53,6 +53,8 @@ class SettingContainer extends Component {
       type: props.type, //edit | create | view
       msg: null, //stores error messages
       subject: props.subject,
+      tabCheckType_WARN: false,
+      tabCheckType_END: false,
     };
   }
 
@@ -209,6 +211,10 @@ class SettingContainer extends Component {
 
     let curr_sco = parseFloat(score);
 
+    if (!passOrFailSelected && !addGradingSelected) {
+      tempMsg.MSG = "Please select a grading type";
+    }
+
     if (passOrFailSelected) {
       if (score === "") {
         tempMsg.P_SCO = "Passing score field is required";
@@ -356,6 +362,8 @@ class SettingContainer extends Component {
       type,
       msg,
       subject,
+      tabCheckType_WARN,
+      tabCheckType_END,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -622,6 +630,48 @@ class SettingContainer extends Component {
               </CustomColumn>
             </>
           )}
+
+          <span className={css(styles.redText)}>
+            {msg === null
+              ? null
+              : msg.hasOwnProperty("MSG")
+              ? "*" + msg.MSG
+              : null}
+          </span>
+        </div>
+
+        <SecondLabel>Tab Checking</SecondLabel>
+        <div className={css(styles.gradeBar)}>
+          <CustomRow>
+            <CustomSwitch
+              onChange={(e) => {
+                this.setState({
+                  tabCheckType_WARN: e,
+                  tabCheckType_END: false,
+                });
+              }}
+              checked={tabCheckType_WARN}
+            />
+
+            <div style={{ marginLeft: "15px" }}>
+              <ThirdLabel>Give warning</ThirdLabel>
+            </div>
+          </CustomRow>
+          <CustomRow>
+            <CustomSwitch
+              onChange={(e) => {
+                this.setState({
+                  tabCheckType_END: e,
+                  tabCheckType_WARN: false,
+                });
+              }}
+              checked={tabCheckType_END}
+            />
+
+            <div style={{ marginLeft: "15px" }}>
+              <ThirdLabel>End assessment immediately</ThirdLabel>
+            </div>
+          </CustomRow>
         </div>
 
         <div className={css(styles.buttonCon)}>
