@@ -69,8 +69,25 @@ class AttemptContainer extends Component {
       candidateReducer.gen_ques_data !== null &&
       candidateReducer.grade !== null
     ) {
+      let temp = candidateReducer.gen_ques_data;
+
+      temp.forEach((item, index) => {
+        if (
+          item.questionType === "Single Choice" ||
+          item.questionType === "Multiple Choice"
+        ) {
+          let checked = [];
+          for (let i = 0; i < item.questionChoices.length; i++) {
+            checked.push(false);
+          }
+          temp[index].checked = checked;
+        }
+        temp[index].response = "";
+        temp[index].question_id = temp[index]._id;
+      });
+
       this.setState({
-        question: candidateReducer.gen_ques_data,
+        question: temp,
         gradeData: candidateReducer.grade[0],
       });
     }
