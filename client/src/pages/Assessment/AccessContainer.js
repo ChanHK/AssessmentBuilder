@@ -13,6 +13,7 @@ import { ExcelRenderer } from "react-excel-renderer";
 import { v4 as uuidv4 } from "uuid";
 import validator from "validator";
 import Number from "./Data/Number";
+import * as MdIcons from "react-icons/md";
 
 import Modal from "../../components/Modal";
 import Radio from "../../components/Radio";
@@ -276,7 +277,7 @@ class AccessContainer extends Component {
                   });
                 }}
               >
-                Delete
+                <MdIcons.MdDelete size={20} />
               </TableButton>
             )}
           </CustomRow>
@@ -414,6 +415,18 @@ class AccessContainer extends Component {
 
               <div style={{ marginTop: 20 }}>
                 <Table data={rows} columns={column} />
+              </div>
+              <div style={{ marginTop: "25px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  type={"button"}
+                  onClick={() => this.setState({ rows: [] })}
+                >
+                  Delete All
+                </Button>
               </div>
             </>
           )}
