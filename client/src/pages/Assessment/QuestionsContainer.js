@@ -211,7 +211,7 @@ class QuestionsContainer extends Component {
       showModal,
       questionID,
     } = this.state;
-    console.log(questions);
+
     if (this.props.assessmentQuestionReducer.isLoading)
       return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
