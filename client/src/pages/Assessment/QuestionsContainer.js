@@ -98,6 +98,7 @@ class QuestionsContainer extends Component {
         });
       });
       this.setState({ questions: temp });
+      this.props.assessmentQuestionReducer.goingToDeleteData = null;
     }
 
     if (
@@ -124,6 +125,7 @@ class QuestionsContainer extends Component {
   componentWillUnmount() {
     this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
     this.props.questionReducer.questionBankData = null;
+    this.props.assessmentQuestionReducer.goingToDeleteData = null;
     this.props.assessmentQuestionReducer.goingToStoreData = null;
   }
 
@@ -218,9 +220,9 @@ class QuestionsContainer extends Component {
 
     for (let i = 0; i < questions.length; i++) {
       if (questions[i] !== null) {
-        questions[i].forEach((questions, index) => {
-          questions.serial = index + 1;
-        });
+        questions[i].forEach(
+          (questions, index) => (questions.serial = index + 1)
+        );
       }
     }
 
