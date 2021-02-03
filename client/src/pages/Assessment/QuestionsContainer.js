@@ -87,6 +87,21 @@ class QuestionsContainer extends Component {
 
     if (
       prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.goingToDeleteData !== null
+    ) {
+      const { questionID } = assessmentQuestionReducer.goingToDeleteData;
+
+      let temp = this.state.questions;
+      temp.forEach((item, index) => {
+        item.forEach((item2, index2) => {
+          if (item2._id === questionID) temp[index].splice(index2, 1);
+        });
+      });
+      this.setState({ questions: temp });
+    }
+
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
       assessmentQuestionReducer.goingToStoreData !== null
     ) {
       const {
@@ -196,7 +211,7 @@ class QuestionsContainer extends Component {
       showModal,
       questionID,
     } = this.state;
-
+    console.log(questions);
     if (this.props.assessmentQuestionReducer.isLoading)
       return <LoaderSpinner />;
     else document.body.style.overflow = "unset";

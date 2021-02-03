@@ -17,8 +17,8 @@ import { Editor } from "react-draft-wysiwyg";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
-  deleteAssessmentQuestion,
   passStoreData,
+  deleteQues,
 } from "../../actions/assessmentQuestion.actions";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
@@ -207,12 +207,8 @@ class SectionContainer extends Component {
                   </TableButton>
                   <TableButton
                     onClick={() => {
-                      const data = {
-                        assessmentID: assessmentID,
-                        questionID: question._id,
-                      };
-
-                      this.props.deleteAssessmentQuestion(data);
+                      const data = { questionID: question._id };
+                      this.props.deleteQues(data);
                     }}
                   >
                     <MdIcons.MdDelete size={20} className={css(styles.pE)} />
@@ -303,8 +299,8 @@ const styles = StyleSheet.create({
 
 SectionContainer.propTypes = {
   assessmentQuestionReducer: PropTypes.object.isRequired,
-  deleteAssessmentQuestion: PropTypes.func.isRequired,
   passStoreData: PropTypes.func.isRequired,
+  deleteQues: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -314,7 +310,7 @@ const mapStateToProps = (state) => ({
 export default compose(
   withRouter,
   connect(mapStateToProps, {
-    deleteAssessmentQuestion,
     passStoreData,
+    deleteQues,
   })
 )(SectionContainer);

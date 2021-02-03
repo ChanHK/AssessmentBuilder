@@ -133,31 +133,6 @@ export const addToQuestionBank = (data) => (dispatch, getState) => {
     });
 };
 
-export const deleteAssessmentQuestion = (data) => (dispatch, getState) => {
-  dispatch({ type: ASSESSMENT_QUESTION.DELETE_ASSESSMENT_QUESTION_BEGIN });
-
-  axios
-    .post(
-      `/api/user/assessment/questions/delete/${data.assessmentID}/${data.questionID}`,
-      data,
-      tokenConfig(getState)
-    )
-    .then((res) => {
-      setTimeout(() => {
-        dispatch({
-          type: ASSESSMENT_QUESTION.DELETE_ASSESSMENT_QUESTION_SUCCESS,
-          payload: res.data,
-        });
-      }, 500);
-    })
-    .catch((err) => {
-      console.log("Delete unsuccessful", err);
-      dispatch({
-        type: ASSESSMENT_QUESTION.DELETE_ASSESSMENT_QUESTION_FAIL,
-      });
-    });
-};
-
 export const updateAnAssessmentQuestion = (data) => (dispatch, getState) => {
   dispatch({ type: ASSESSMENT_QUESTION.UPDATE_AN_ASSESSMENT_QUESTION_BEGIN });
 
@@ -206,6 +181,13 @@ export const addAssQuesFromQB = (data) => (dispatch, getState) => {
 export const passStoreData = (data) => (dispatch, getState) => {
   dispatch({
     type: ASSESSMENT_QUESTION.PASS_TO_STORE_DATA,
+    payload: data,
+  });
+};
+
+export const deleteQues = (data) => (dispatch, getState) => {
+  dispatch({
+    type: ASSESSMENT_QUESTION.DELETE_QUES_DATA,
     payload: data,
   });
 };

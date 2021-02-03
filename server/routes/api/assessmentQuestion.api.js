@@ -202,53 +202,6 @@ router.post(
   }
 );
 
-// @route     POST api/user/assessment/questions/delete/:assessmentID/:questionID
-// @desc      POST ($pull) delete question in assessment
-// @access    Private
-router.post(
-  "/assessment/questions/delete/:assessmentID/:questionID",
-  auth,
-  (req, res) => {
-    db.AssessmentQuestion.findOne({
-      assessments_id: req.params.assessmentID,
-    })
-      .then((assessment) => {
-        db.AssessmentQuestion.findByIdAndUpdate(
-          assessment._id,
-          {
-            $pull: { questions: { _id: req.params.questionID } },
-          },
-          {
-            safe: true,
-            new: true,
-          }
-        )
-          .then((response) => {
-            db.Assessment.findOneAndUpdate(
-              {
-                "assessments._id": req.params.assessmentID,
-              },
-              {
-                $inc: {
-                  "assessments.$.totalQuestionNum": -1,
-                },
-              }
-            )
-              .then(() => {
-                return res.status(200).json(response.questions);
-              })
-              .catch((err) => {
-                return res
-                  .status(400)
-                  .json({ message: "Question fail to delete" });
-              });
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-  }
-);
-
 // @route     POST api/user/assessment/questions/add_many/:assessmentID
 // @desc      POST from QB to assessment question
 // @access    Private
