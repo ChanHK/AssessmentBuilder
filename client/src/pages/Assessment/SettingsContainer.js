@@ -55,6 +55,7 @@ class SettingContainer extends Component {
       msg: null, //stores error messages
       subject: props.subject,
       tabCheckType_WARN: false,
+      warn_num: 0,
       tabCheckType_END: false,
     };
   }
@@ -365,6 +366,7 @@ class SettingContainer extends Component {
       subject,
       tabCheckType_WARN,
       tabCheckType_END,
+      warn_num,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -646,10 +648,12 @@ class SettingContainer extends Component {
           <CustomRow>
             <CustomSwitch
               onChange={(e) => {
-                this.setState({
-                  tabCheckType_WARN: e,
-                  tabCheckType_END: false,
-                });
+                if (type !== "View") {
+                  this.setState({
+                    tabCheckType_WARN: e,
+                    tabCheckType_END: false,
+                  });
+                }
               }}
               checked={tabCheckType_WARN}
             />
@@ -664,15 +668,26 @@ class SettingContainer extends Component {
                 Give some warnings when the candidate switches the tab and will
                 end the assessments after he/she passes the number of warnings
               </Notice>
+              <div style={{ margin: "0px 0px 25px 60px" }}>
+                <CustomDropdown
+                  options={["1", "2", "3", "4", "5"]}
+                  placeholder={"Select number of warnings"}
+                  value={warn_num.toString()}
+                  onChange={(e) => this.setState({ warn_num: e.value })}
+                  disabled={type === "view" ? true : false}
+                />
+              </div>
             </>
           )}
           <CustomRow>
             <CustomSwitch
               onChange={(e) => {
-                this.setState({
-                  tabCheckType_END: e,
-                  tabCheckType_WARN: false,
-                });
+                if (type !== "View") {
+                  this.setState({
+                    tabCheckType_END: e,
+                    tabCheckType_WARN: false,
+                  });
+                }
               }}
               checked={tabCheckType_END}
             />
