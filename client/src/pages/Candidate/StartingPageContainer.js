@@ -47,6 +47,8 @@ class StartingPageContainer extends Component {
       endDate: "",
       assessmentID: this.props.match.params.assessmentID,
       final_questions: [], //set of questions to be submitted, array of obj
+      tabChecktype: "",
+      warn_num: "",
     };
   }
 
@@ -66,7 +68,13 @@ class StartingPageContainer extends Component {
       candidateReducer.all_question_data !== null
     ) {
       const { assessmentStartInfo, all_question_data } = candidateReducer;
-      const { testName, testInstruction } = assessmentStartInfo.settings;
+      const {
+        testName,
+        testInstruction,
+        tabCheckType_END,
+        tabCheckType_WARN,
+        warn_num,
+      } = assessmentStartInfo.settings;
       const { status } = assessmentStartInfo;
       const {
         withAuthenticationSelected,
@@ -94,6 +102,11 @@ class StartingPageContainer extends Component {
         startDate,
         endDate,
       } = assessmentStartInfo.timer;
+
+      if (tabCheckType_END) this.setState({ tabChecktype: "END" });
+      if (tabCheckType_WARN) {
+        this.setState({ tabChecktype: "WARN", warn_num: warn_num });
+      }
 
       if (fixedSelected) this.setState({ final_questions: all_question_data });
       if (randomSelected) this._randomSelected(all_question_data);
@@ -277,6 +290,8 @@ class StartingPageContainer extends Component {
       startDate,
       endDate,
       assessmentID,
+      tabChecktype,
+      warn_num,
     } = this.state;
 
     const {
@@ -288,6 +303,8 @@ class StartingPageContainer extends Component {
     if (direct) {
       localStorage.setItem("time", time);
       localStorage.setItem("timeSettings", timeSettings);
+      localStorage.setItem("tabChecktype", tabChecktype);
+      localStorage.setItem("warn_num", warn_num);
 
       this.props.history.push(
         `/assessment/attempt/${timeSettings}/${time}/${assessmentID}`

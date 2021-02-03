@@ -37,6 +37,10 @@ class AttemptContainer extends Component {
       time: parseInt(localStorage.getItem("time")) + 2, //current time + 2 seconds (loading time)
       gradeData: {},
       submitted: false, //check if it is auto submitted
+      inactiveCount: 0,
+      tabChecktype: localStorage.getItem("tabChecktype"),
+      warn_num: parseInt(localStorage.getItem("warn_num")),
+      AL_ERT: false,
     };
 
     this.interval_id = 0;
@@ -55,11 +59,16 @@ class AttemptContainer extends Component {
       }, 1000);
     }
 
-    // document.addEventListener("visibilitychange", () => {
-    //   if (document.visibilityState !== "visible") {
-    //     console.log("tab is inactive");
-    //   }
-    // });
+    if (this.state.tabChecktype !== "") {
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState !== "visible") {
+          this.setState({
+            inactiveCount: this.state.inactiveCount + 1,
+            AL_ERT: true,
+          });
+        }
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -202,7 +211,7 @@ class AttemptContainer extends Component {
         item.questionAnswers.forEach((ans, x) => {
           if (item.response === ans) {
             totalScore = totalScore + item.score;
-          item.correct = true;
+            item.correct = true;
           }
         });
         item.graded = true;
@@ -281,7 +290,31 @@ class AttemptContainer extends Component {
       time,
       submitted,
       start_time,
+      inactiveCount,
+      tabChecktype,
+      warn_num,
+      AL_ERT,
     } = this.state;
+
+    if (tabChecktype === "END" && inactiveCount > 0 && !submitted) {
+      this.setState({ submitted: true });
+      this.submit();
+    }
+    if (tabChecktype === "WARN" && inactiveCount === warn_num && !submitted) {
+      this.setState({ submitted: true });
+      this.submit();
+    }
+    if (
+      tabChecktype === "WARN" &&
+      inactiveCount < warn_num &&
+      inactiveCount > 0 &&
+      AL_ERT
+    ) {
+      alert(
+        "Please do not switch tabs, or else this assessment will be ended immediately "
+      );
+      this.setState({ AL_ERT: false });
+    }
 
     if (timeSettings === "1" && time === 0 && !submitted) {
       clearInterval(this.interval_id);
