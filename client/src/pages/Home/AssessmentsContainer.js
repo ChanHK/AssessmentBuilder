@@ -182,7 +182,7 @@ class AssessmentsContainer extends Component {
               <TableButton
                 onClick={() => {
                   this.props.history.push(
-                    `/assessment/edit/settings/${row._id}`
+                    `/assessment/edit/settings/${row._id}/${subject}`
                   );
                 }}
               >
@@ -206,7 +206,7 @@ class AssessmentsContainer extends Component {
               <TableButton
                 onClick={() => {
                   this.props.history.push(
-                    `/assessment/view/settings/${row._id}`
+                    `/assessment/view/settings/${row._id}/${subject}`
                   );
                 }}
               >
@@ -270,7 +270,9 @@ class AssessmentsContainer extends Component {
     ];
 
     if (generatedID !== "") {
-      this.props.history.push(`/assessment/create/settings/${generatedID}`);
+      this.props.history.push(
+        `/assessment/create/settings/${generatedID}/${subject}`
+      );
     }
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;

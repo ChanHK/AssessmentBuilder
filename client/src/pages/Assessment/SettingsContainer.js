@@ -23,6 +23,8 @@ import { EditorState, convertToRaw, ContentState, Modifier } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import validator from "validator";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -50,6 +52,7 @@ class SettingContainer extends Component {
       assessmentID: props.assessmentID,
       type: props.type, //edit | create | view
       msg: null, //stores error messages
+      subject: props.subject,
     };
   }
 
@@ -352,6 +355,7 @@ class SettingContainer extends Component {
       gradeValue,
       type,
       msg,
+      subject,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -619,19 +623,36 @@ class SettingContainer extends Component {
             </>
           )}
         </div>
-        {type !== "view" && (
+
+        <div className={css(styles.buttonCon)}>
+          {type !== "view" && (
+            <div style={{ marginRight: "15px" }}>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100px"}
+                type={"submit"}
+              >
+                Save
+              </Button>
+            </div>
+          )}
           <div>
             <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
+              backgroundColor={configStyles.colors.white}
+              color={configStyles.colors.darkBlue}
               padding={"8px"}
               width={"100px"}
-              type={"submit"}
+              type={"button"}
+              onClick={() => {
+                this.props.history.push(`/assessment/${subject}`);
+              }}
             >
-              Save
+              Back
             </Button>
           </div>
-        )}
+        </div>
       </form>
     );
   }
@@ -664,6 +685,14 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
   },
+  buttonCon: {
+    width: "100%",
+    height: "auto",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+  },
 });
 
 SettingContainer.propTypes = {
@@ -676,7 +705,7 @@ const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
 });
 
-export default connect(mapStateToProps, {
-  updateAssessmentSetting,
-  fetchAssessmentSetting,
-})(SettingContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { updateAssessmentSetting, fetchAssessmentSetting })
+)(SettingContainer);

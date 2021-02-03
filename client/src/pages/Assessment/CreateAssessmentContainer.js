@@ -46,12 +46,13 @@ class CreateAssessmentContainer extends Component {
       type: match.params.type,
       selected: e.target.value,
       assessmentID: match.params.assessmentID,
+      subject: match.params.subject,
     });
     this.props.history.replace(path);
   };
 
   render() {
-    const { selected, assessmentID, type } = this.props.match.params;
+    const { selected, assessmentID, type, subject } = this.props.match.params;
 
     return (
       <>
@@ -77,19 +78,39 @@ class CreateAssessmentContainer extends Component {
               </div>
 
               {selected === "settings" && (
-                <SettingsContainer assessmentID={assessmentID} type={type} />
+                <SettingsContainer
+                  assessmentID={assessmentID}
+                  type={type}
+                  subject={subject}
+                />
               )}
               {selected === "questions" && (
-                <QuestionsContainer assessmentID={assessmentID} type={type} />
+                <QuestionsContainer
+                  assessmentID={assessmentID}
+                  type={type}
+                  subject={subject}
+                />
               )}
               {selected === "set" && (
-                <SetContainer assessmentID={assessmentID} type={type} />
+                <SetContainer
+                  assessmentID={assessmentID}
+                  type={type}
+                  subject={subject}
+                />
               )}
               {selected === "access" && (
-                <AccessContainer assessmentID={assessmentID} type={type} />
+                <AccessContainer
+                  assessmentID={assessmentID}
+                  type={type}
+                  subject={subject}
+                />
               )}
               {selected === "timer" && (
-                <TimerContainer assessmentID={assessmentID} type={type} />
+                <TimerContainer
+                  assessmentID={assessmentID}
+                  type={type}
+                  subject={subject}
+                />
               )}
             </CustomColumn>
           </CustomMidContainer>

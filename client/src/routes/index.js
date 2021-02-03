@@ -159,7 +159,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/:type(edit|create|view)/:selected(settings|questions|set|access|timer)/:assessmentID"
+          path="/assessment/:type(edit|create|view)/:selected(settings|questions|set|access|timer)/:assessmentID/:subject"
           exact
           component={CreateAssessmentContainer}
           isPrivate

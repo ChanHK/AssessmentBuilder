@@ -17,6 +17,7 @@ import CustomDropdown from "../../components/CustomDropdown";
 import Modal from "../../components/Modal";
 
 import * as MdIcons from "react-icons/md";
+import { compose } from "redux";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -27,7 +28,6 @@ import {
   passStoreData,
 } from "../../actions/assessmentQuestion.actions";
 import { fetchQuestionBankData } from "../../actions/question.actions";
-import { compose } from "redux";
 
 class QuestionsContainer extends Component {
   constructor(props) {
@@ -41,6 +41,7 @@ class QuestionsContainer extends Component {
       store_subject: "",
       showModal: "",
       questionID: "",
+      subject: props.subject,
     };
   }
 
@@ -212,6 +213,7 @@ class QuestionsContainer extends Component {
       all_subjects,
       showModal,
       questionID,
+      subject,
     } = this.state;
 
     if (this.props.assessmentQuestionReducer.isLoading)
@@ -381,19 +383,35 @@ class QuestionsContainer extends Component {
               );
             })}
 
-          {type !== "view" && (
+          <div className={css(styles.buttonCon)}>
+            {type !== "view" && (
+              <div style={{ marginRight: "15px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  type={"submit"}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
             <div>
               <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
+                backgroundColor={configStyles.colors.white}
+                color={configStyles.colors.darkBlue}
                 padding={"8px"}
                 width={"100px"}
-                type={"submit"}
+                type={"button"}
+                onClick={() => {
+                  this.props.history.push(`/assessment/${subject}`);
+                }}
               >
-                Save
+                Back
               </Button>
             </div>
-          )}
+          </div>
         </form>
 
         <Modal show={showModal}>
@@ -497,6 +515,14 @@ const styles = StyleSheet.create({
     display: "flex",
     backgroundColor: configStyles.colors.white,
     padding: "20px",
+  },
+  buttonCon: {
+    width: "100%",
+    height: "auto",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
   },
 });
 

@@ -28,6 +28,8 @@ import ClickCopy from "../../components/ClickCopy";
 import Wrapper from "../../components/Wrapper";
 import LoaderSpinner from "../../components/LoaderSpinner";
 
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -53,6 +55,7 @@ class AccessContainer extends Component {
       assessmentID: props.assessmentID,
       type: props.type,
       msg: null, //stores error messages
+      subject: props.subject,
     };
   }
 
@@ -229,6 +232,7 @@ class AccessContainer extends Component {
       newEmail,
       type,
       msg,
+      subject,
     } = this.state;
 
     const column = [
@@ -444,19 +448,35 @@ class AccessContainer extends Component {
             </div>
           </div>
 
-          {type !== "view" && (
-            <div style={{ paddingTop: "25px" }}>
+          <div className={css(styles.buttonCon)}>
+            {type !== "view" && (
+              <div style={{ marginRight: "15px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  type={"submit"}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
+            <div>
               <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
+                backgroundColor={configStyles.colors.white}
+                color={configStyles.colors.darkBlue}
                 padding={"8px"}
                 width={"100px"}
-                type={"submit"}
+                type={"button"}
+                onClick={() => {
+                  this.props.history.push(`/assessment/${subject}`);
+                }}
               >
-                Save
+                Back
               </Button>
             </div>
-          )}
+          </div>
         </CustomColumn>
       </form>
     );
@@ -509,6 +529,15 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
   },
+  buttonCon: {
+    width: "100%",
+    height: "auto",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    marginTop: "25px",
+  },
 });
 
 AccessContainer.propTypes = {
@@ -521,7 +550,7 @@ const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
 });
 
-export default connect(mapStateToProps, {
-  updateAssessmentAccess,
-  fetchAssessmentAccess,
-})(AccessContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { updateAssessmentAccess, fetchAssessmentAccess })
+)(AccessContainer);

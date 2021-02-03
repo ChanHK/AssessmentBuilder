@@ -15,6 +15,8 @@ import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 import CustomColumn from "../../components/GridComponents/CustomColumn";
 import CustomRow from "../../components/GridComponents/CustomRow";
 
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -40,6 +42,7 @@ class SetContainer extends Component {
       type: props.type,
       questions: [], //separated based on sections (array of array of obj)
       msg: null, //stores error messages
+      subject: props.subject,
     };
   }
 
@@ -244,6 +247,7 @@ class SetContainer extends Component {
       sectionFilterNum,
       type,
       msg,
+      subject,
     } = this.state;
 
     const { assessmentReducer, assessmentQuestionReducer } = this.props;
@@ -474,28 +478,40 @@ class SetContainer extends Component {
           </>
         )}
 
-        {type !== "view" && (
-          <>
-            <span className={css(styles.redText)}>
-              {msg === null
-                ? null
-                : msg.hasOwnProperty("M")
-                ? "*" + msg.M
-                : null}
-            </span>
+        <>
+          <span className={css(styles.redText)}>
+            {msg === null ? null : msg.hasOwnProperty("M") ? "*" + msg.M : null}
+          </span>
+          <div className={css(styles.buttonCon)}>
+            {type !== "view" && (
+              <div style={{ marginRight: "15px" }}>
+                <Button
+                  backgroundColor={configStyles.colors.darkBlue}
+                  color={configStyles.colors.white}
+                  padding={"8px"}
+                  width={"100px"}
+                  type={"submit"}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
             <div>
               <Button
-                backgroundColor={configStyles.colors.darkBlue}
-                color={configStyles.colors.white}
+                backgroundColor={configStyles.colors.white}
+                color={configStyles.colors.darkBlue}
                 padding={"8px"}
                 width={"100px"}
-                type={"submit"}
+                type={"button"}
+                onClick={() => {
+                  this.props.history.push(`/assessment/${subject}`);
+                }}
               >
-                Save
+                Back
               </Button>
             </div>
-          </>
-        )}
+          </div>
+        </>
       </form>
     );
   }
@@ -542,6 +558,14 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
   },
+  buttonCon: {
+    width: "100%",
+    height: "auto",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+  },
 });
 
 SetContainer.propTypes = {
@@ -557,8 +581,11 @@ const mapStateToProps = (state) => ({
   assessmentQuestionReducer: state.assessmentQuestionReducer,
 });
 
-export default connect(mapStateToProps, {
-  updateAssessmentSet,
-  fetchAssessmentSet,
-  fetchAllAssessmentQuestion,
-})(SetContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, {
+    updateAssessmentSet,
+    fetchAssessmentSet,
+    fetchAllAssessmentQuestion,
+  })
+)(SetContainer);

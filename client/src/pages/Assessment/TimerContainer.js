@@ -18,6 +18,8 @@ import LoaderSpinner from "../../components/LoaderSpinner";
 import Hour from "./Data/Hour";
 import MinuteSeconds from "./Data/MinuteSeconds";
 
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -43,6 +45,7 @@ class TimerContainer extends Component {
       assessmentID: props.assessmentID,
       type: props.type,
       msg: null, //stores error messages
+      subject: props.subject,
     };
   }
 
@@ -221,6 +224,7 @@ class TimerContainer extends Component {
       endDate,
       type,
       msg,
+      subject,
     } = this.state;
 
     if (this.props.assessmentReducer.isLoading) return <LoaderSpinner />;
@@ -417,19 +421,36 @@ class TimerContainer extends Component {
             </div>
           </Wrapper>
         </div>
-        {type !== "view" && (
+
+        <div className={css(styles.buttonCon)}>
+          {type !== "view" && (
+            <div style={{ marginRight: "15px" }}>
+              <Button
+                backgroundColor={configStyles.colors.darkBlue}
+                color={configStyles.colors.white}
+                padding={"8px"}
+                width={"100px"}
+                type={"submit"}
+              >
+                Save
+              </Button>
+            </div>
+          )}
           <div>
             <Button
-              backgroundColor={configStyles.colors.darkBlue}
-              color={configStyles.colors.white}
+              backgroundColor={configStyles.colors.white}
+              color={configStyles.colors.darkBlue}
               padding={"8px"}
               width={"100px"}
-              type={"submit"}
+              type={"button"}
+              onClick={() => {
+                this.props.history.push(`/assessment/${subject}`);
+              }}
             >
-              Save
+              Back
             </Button>
           </div>
-        )}
+        </div>
       </form>
     );
   }
@@ -473,6 +494,14 @@ const styles = StyleSheet.create({
     fontFamily: "Ubuntu-Regular",
     fontSize: "15px",
   },
+  buttonCon: {
+    width: "100%",
+    height: "auto",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+  },
 });
 
 TimerContainer.propTypes = {
@@ -485,7 +514,7 @@ const mapStateToProps = (state) => ({
   assessmentReducer: state.assessmentReducer,
 });
 
-export default connect(mapStateToProps, {
-  updateAssessmentTimer,
-  fetchAssessmentTimer,
-})(TimerContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, { updateAssessmentTimer, fetchAssessmentTimer })
+)(TimerContainer);
