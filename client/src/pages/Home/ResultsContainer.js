@@ -408,7 +408,6 @@ const styles = StyleSheet.create({
   },
   block: {
     flexWrap: "nowrap",
-    backgroundColor: "plum",
     width: "450px",
     height: "auto",
     display: "flex",
