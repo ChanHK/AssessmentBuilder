@@ -157,6 +157,7 @@ class AttemptContainer extends Component {
       ) {
         if (item.response === item.questionAnswers[0]) {
           totalScore = totalScore + item.score;
+          item.correct = true;
         }
         item.graded = true;
         gradedNum++;
@@ -174,6 +175,7 @@ class AttemptContainer extends Component {
 
         if (currentLength === numOfAns) {
           totalScore = totalScore + item.score;
+          item.correct = true;
         }
         item.graded = true;
         gradedNum++;
@@ -192,6 +194,7 @@ class AttemptContainer extends Component {
 
         if (correctNum === numOfAns) {
           totalScore = totalScore + item.score;
+          item.correct = true;
         }
         item.graded = true;
         gradedNum++;
@@ -199,6 +202,7 @@ class AttemptContainer extends Component {
         item.questionAnswers.forEach((ans, x) => {
           if (item.response === ans) {
             totalScore = totalScore + item.score;
+          item.correct = true;
           }
         });
         item.graded = true;

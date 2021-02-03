@@ -55,6 +55,10 @@ const CandidateSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
       },
+      correct: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
 });
