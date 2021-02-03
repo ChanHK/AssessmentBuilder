@@ -152,7 +152,7 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/response/:candID/:assessmentID"
+          path="/assessment/response/:candID/:assessmentID/:subject"
           exact
           component={ViewResponseContainer}
           isPrivate

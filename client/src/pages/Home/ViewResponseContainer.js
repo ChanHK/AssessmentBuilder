@@ -41,6 +41,7 @@ class ViewResponseContainer extends Component {
       totalScore: "",
       response: [],
       feedbackData: [],
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -117,6 +118,7 @@ class ViewResponseContainer extends Component {
       response,
       assessmentID,
       feedbackData,
+      subject,
     } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
@@ -405,7 +407,7 @@ class ViewResponseContainer extends Component {
                   width={"100px"}
                   onClick={() => {
                     this.props.history.push(
-                      `/assessment/results/${assessmentID}`
+                      `/assessment/results/${assessmentID}/${subject}`
                     );
                   }}
                 >

@@ -174,7 +174,7 @@ class ResultsContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `/assessment/response/${row.id}/${assessmentID}`
+                  `/assessment/response/${row.id}/${assessmentID}/${subject}`
                 );
               }}
             >
