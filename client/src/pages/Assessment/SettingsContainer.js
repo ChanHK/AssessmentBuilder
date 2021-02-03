@@ -15,6 +15,7 @@ import Wrapper from "../../components/Wrapper";
 import CustomDropdown from "../../components/CustomDropdown";
 import Range from "../../components/Range";
 import LoaderSpinner from "../../components/LoaderSpinner";
+import Notice from "../../components/Notice";
 
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
@@ -657,6 +658,14 @@ class SettingContainer extends Component {
               <ThirdLabel>Give warning</ThirdLabel>
             </div>
           </CustomRow>
+          {tabCheckType_WARN && (
+            <>
+              <Notice>
+                Give some warnings when the candidate switches the tab and will
+                end the assessments after he/she passes the number of warnings
+              </Notice>
+            </>
+          )}
           <CustomRow>
             <CustomSwitch
               onChange={(e) => {
@@ -672,6 +681,11 @@ class SettingContainer extends Component {
               <ThirdLabel>End assessment immediately</ThirdLabel>
             </div>
           </CustomRow>
+          {tabCheckType_END && (
+            <Notice>
+              Ends the assessment immediately if the candidate switches tab
+            </Notice>
+          )}
         </div>
 
         <div className={css(styles.buttonCon)}>
