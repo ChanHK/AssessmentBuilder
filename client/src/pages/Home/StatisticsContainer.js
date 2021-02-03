@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import ScrollArrow from "../../components/ScrollArrow";
 import Button from "../../components/Button";
+import CustomEditor from "../../components/CustomEditor";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -23,6 +24,9 @@ import { fetchAGrade, fetchResults } from "../../actions/home.actions";
 import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
+
+import { EditorState, ContentState } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
 
 class StatisticsContainer extends Component {
   constructor(props) {
@@ -82,7 +86,11 @@ class StatisticsContainer extends Component {
       let temp = [];
       results.forEach((item, index) => {
         item.response.forEach((item2, index2) => {
-          temp.push({ id: item2.question_id, correct: item2.correct });
+          temp.push({
+            id: item2.question_id,
+            correct: item2.correct,
+            des: item2.questionDescription,
+          });
         });
       });
 
@@ -259,6 +267,16 @@ class StatisticsContainer extends Component {
     this.setState({ candNum: candNum, range: collections });
   };
 
+  convertHtml = (data) => {
+    const contentBlock = htmlToDraft(data);
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(
+        contentBlock.contentBlocks
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  };
+
   render() {
     const {
       candNum,
@@ -432,10 +450,12 @@ class StatisticsContainer extends Component {
                 {all_questionID.map((item, index) => {
                   let correct = 0;
                   let wrong = 0;
+                  let des = EditorState.createEmpty();
                   all_responses.forEach((item2, index2) => {
                     if (item === item2.id) {
                       if (item2.correct) correct++;
                       else wrong++;
+                      des = item2.des;
                     }
                   });
                   let barData = {
@@ -454,24 +474,32 @@ class StatisticsContainer extends Component {
                   };
                   return (
                     <div style={{ marginBottom: "50px" }}>
-                      <Bar
-                        data={barData}
-                        width={150}
-                        height={320}
-                        options={{
-                          maintainAspectRatio: false,
-                          scales: {
-                            yAxes: [
-                              {
-                                ticks: {
-                                  beginAtZero: true,
-                                  precision: 0,
-                                },
-                              },
-                            ],
-                          },
-                        }}
+                      <CustomEditor
+                        toolbarHidden={true}
+                        readOnly={true}
+                        editorState={this.convertHtml(des)}
                       />
+
+                      <div style={{ marginTop: "25px" }}>
+                        <Bar
+                          data={barData}
+                          width={150}
+                          height={320}
+                          options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                              yAxes: [
+                                {
+                                  ticks: {
+                                    beginAtZero: true,
+                                    precision: 0,
+                                  },
+                                },
+                              ],
+                            },
+                          }}
+                        />
+                      </div>
                     </div>
                   );
                 })}
