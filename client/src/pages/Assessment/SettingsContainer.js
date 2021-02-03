@@ -55,16 +55,13 @@ class SettingContainer extends Component {
       msg: null, //stores error messages
       subject: props.subject,
       tabCheckType_WARN: false,
-      warn_num: 0,
+      warn_num: "",
       tabCheckType_END: false,
     };
   }
 
   componentDidMount() {
-    const data = {
-      assessmentID: this.state.assessmentID,
-    };
-
+    const data = { assessmentID: this.state.assessmentID };
     this.props.fetchAssessmentSetting(data);
   }
 
@@ -87,6 +84,9 @@ class SettingContainer extends Component {
         gradeUnit,
         gradeRange,
         addGradingSelected,
+        tabCheckType_WARN,
+        tabCheckType_END,
+        warn_num,
       } = assessmentReducer.assessmentLoad;
 
       const ins = this.convertIns(testInstruction);
@@ -102,6 +102,9 @@ class SettingContainer extends Component {
         gradeUnit: gradeUnit,
         gradeRange: gradeRange,
         addGradingSelected: addGradingSelected,
+        tabCheckType_WARN: tabCheckType_WARN,
+        tabCheckType_END: tabCheckType_END,
+        warn_num: parseInt(warn_num),
       });
     }
   }
@@ -120,9 +123,7 @@ class SettingContainer extends Component {
     this.props.assessmentReducer.assessmentLoad = null;
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onClickPassorFail = (e) => {
     if (this.state.type !== "view") {
@@ -166,9 +167,7 @@ class SettingContainer extends Component {
 
   _handleBeforeInput = (input, length, editorObj) => {
     const inputLength = editorObj.getCurrentContent().getPlainText().length;
-    if (input && inputLength >= length) {
-      return "handled";
-    }
+    if (input && inputLength >= length) return "handled";
   };
 
   _handlePastedText = (input, length, editorObj) => {
@@ -184,9 +183,7 @@ class SettingContainer extends Component {
       EditorState.push(editorObj, newContent, "insert-characters");
 
       return true;
-    } else {
-      return false;
-    }
+    } else return false;
   };
 
   validateForm = (data) => {
@@ -199,6 +196,8 @@ class SettingContainer extends Component {
       gradeUnit,
       gradeRange,
       gradeValue,
+      tabCheckType_WARN,
+      warn_num,
     } = data;
     const { testInstruction } = this.state;
     let tempMsg = {};
@@ -306,6 +305,10 @@ class SettingContainer extends Component {
       }
     }
 
+    if (tabCheckType_WARN && warn_num === "") {
+      tempMsg.WARN = "Please select number of warnings";
+    }
+
     this.setState({ msg: tempMsg });
 
     if (Object.keys(tempMsg).length === 0) return true;
@@ -326,6 +329,9 @@ class SettingContainer extends Component {
       gradeRange,
       gradeValue,
       assessmentID,
+      tabCheckType_WARN,
+      tabCheckType_END,
+      warn_num,
     } = this.state;
 
     const data = {
@@ -342,11 +348,12 @@ class SettingContainer extends Component {
       gradeRange: gradeRange,
       gradeValue: gradeValue,
       assessmentID: assessmentID,
+      tabCheckType_WARN: tabCheckType_WARN,
+      tabCheckType_END: tabCheckType_END,
+      warn_num: warn_num,
     };
 
-    if (this.validateForm(data)) {
-      this.props.updateAssessmentSetting(data);
-    }
+    if (this.validateForm(data)) this.props.updateAssessmentSetting(data);
   };
 
   render() {
@@ -668,11 +675,21 @@ class SettingContainer extends Component {
                 Give some warnings when the candidate switches the tab and will
                 end the assessments after he/she passes the number of warnings
               </Notice>
+              <span
+                className={css(styles.redText)}
+                style={{ marginLeft: "60px" }}
+              >
+                {msg === null
+                  ? null
+                  : msg.hasOwnProperty("WARN")
+                  ? "*" + msg.WARN
+                  : null}
+              </span>
               <div style={{ margin: "0px 0px 25px 60px" }}>
                 <CustomDropdown
                   options={["1", "2", "3", "4", "5"]}
                   placeholder={"Select number of warnings"}
-                  value={warn_num.toString()}
+                  value={warn_num}
                   onChange={(e) => this.setState({ warn_num: e.value })}
                   disabled={type === "view" ? true : false}
                 />
