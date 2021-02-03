@@ -265,7 +265,7 @@ class AssessmentsContainer extends Component {
             )}
           </CustomRow>
         ),
-        width: "350px",
+        width: "200px",
       },
     ];
 

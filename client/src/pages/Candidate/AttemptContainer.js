@@ -55,8 +55,6 @@ class AttemptContainer extends Component {
       }, 1000);
     }
 
-    console.log(localStorage.getItem("token"));
-
     // document.addEventListener("visibilitychange", () => {
     //   if (document.visibilityState !== "visible") {
     //     console.log("tab is inactive");
@@ -71,7 +69,6 @@ class AttemptContainer extends Component {
       candidateReducer.gen_ques_data !== null &&
       candidateReducer.grade !== null
     ) {
-      console.log(candidateReducer.gen_ques_data);
       this.setState({
         question: candidateReducer.gen_ques_data,
         gradeData: candidateReducer.grade[0],
