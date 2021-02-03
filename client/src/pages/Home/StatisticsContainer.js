@@ -20,6 +20,7 @@ import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchAGrade, fetchResults } from "../../actions/home.actions";
+import { fetchAllAssessmentQuestion } from "../../actions/assessmentQuestion.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -38,6 +39,8 @@ class StatisticsContainer extends Component {
       barLabel: [],
       passNFailShow: false,
       subject: this.props.match.params.subject,
+      all_questionID: [],
+      all_responses: [],
     };
   }
 
@@ -57,10 +60,11 @@ class StatisticsContainer extends Component {
     const data = { assessmentID: this.state.assessmentID };
     this.props.fetchAGrade(data);
     this.props.fetchResults(data);
+    this.props.fetchAllAssessmentQuestion(data);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { homeReducer } = this.props;
+    const { homeReducer, assessmentQuestionReducer } = this.props;
 
     if (
       prevProps.homeReducer !== homeReducer &&
@@ -75,9 +79,27 @@ class StatisticsContainer extends Component {
         gradeRange,
       } = grade[0];
 
+      let temp = [];
+      results.forEach((item, index) => {
+        item.response.forEach((item2, index2) => {
+          temp.push({ id: item2.question_id, correct: item2.correct });
+        });
+      });
+
       if (passOrFailSelected) this.passFailDataGenerator(results, unit);
       if (addGradingSelected) this.gradedGenerator(results, gradeRange);
-      this.setState({ gradeData: grade[0] });
+      this.setState({ gradeData: grade[0], all_responses: temp });
+    }
+
+    if (
+      prevProps.assessmentQuestionReducer !== assessmentQuestionReducer &&
+      assessmentQuestionReducer.assessmentQuestionLoad !== null
+    ) {
+      const { assessmentQuestionLoad } = assessmentQuestionReducer;
+
+      let temp = [];
+      assessmentQuestionLoad.forEach((item, index) => temp.push(item._id));
+      this.setState({ all_questionID: temp });
     }
   }
 
@@ -248,9 +270,13 @@ class StatisticsContainer extends Component {
       barLabel,
       gradeData,
       subject,
+      all_questionID,
+      all_responses,
     } = this.state;
 
-    if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
+    const { homeReducer, assessmentQuestionReducer } = this.props;
+    if (homeReducer.isLoading || assessmentQuestionReducer.isLoading)
+      return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     const passFailPieData = {
@@ -402,6 +428,55 @@ class StatisticsContainer extends Component {
                 </CustomColumn>
               )}
 
+              <div style={{ marginTop: "25px" }}>
+                {all_questionID.map((item, index) => {
+                  let correct = 0;
+                  let wrong = 0;
+                  all_responses.forEach((item2, index2) => {
+                    if (item === item2.id) {
+                      if (item2.correct) correct++;
+                      else wrong++;
+                    }
+                  });
+                  let barData = {
+                    labels: ["Correct", "Wrong"],
+                    datasets: [
+                      {
+                        label: "number of candidates",
+                        backgroundColor: [
+                          configStyles.colors.correctGreen,
+                          configStyles.colors.falseRed,
+                        ],
+                        borderWidth: 1,
+                        data: [correct, wrong],
+                      },
+                    ],
+                  };
+                  return (
+                    <div style={{ marginBottom: "50px" }}>
+                      <Bar
+                        data={barData}
+                        width={150}
+                        height={320}
+                        options={{
+                          maintainAspectRatio: false,
+                          scales: {
+                            yAxes: [
+                              {
+                                ticks: {
+                                  beginAtZero: true,
+                                  precision: 0,
+                                },
+                              },
+                            ],
+                          },
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+
               <div style={{ margin: "25px 0px 100px 0px" }}>
                 <Button
                   backgroundColor={configStyles.colors.darkBlue}
@@ -449,12 +524,18 @@ StatisticsContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   fetchAGrade: PropTypes.func.isRequired,
   fetchResults: PropTypes.func.isRequired,
+  assessmentQuestionReducer: PropTypes.object.isRequired,
+  fetchAllAssessmentQuestion: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
+const mapStateToProps = (state) => ({
+  homeReducer: state.homeReducer,
+  assessmentQuestionReducer: state.assessmentQuestionReducer,
+});
 
 export default connect(mapStateToProps, {
   fetchAGrade,
   logout,
   fetchResults,
+  fetchAllAssessmentQuestion,
 })(StatisticsContainer);
