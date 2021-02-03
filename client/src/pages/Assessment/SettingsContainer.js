@@ -104,7 +104,7 @@ class SettingContainer extends Component {
         addGradingSelected: addGradingSelected,
         tabCheckType_WARN: tabCheckType_WARN,
         tabCheckType_END: tabCheckType_END,
-        warn_num: parseInt(warn_num),
+        warn_num: warn_num.toString(),
       });
     }
   }
@@ -350,7 +350,7 @@ class SettingContainer extends Component {
       assessmentID: assessmentID,
       tabCheckType_WARN: tabCheckType_WARN,
       tabCheckType_END: tabCheckType_END,
-      warn_num: warn_num,
+      warn_num: warn_num === "" ? "" : parseInt(warn_num),
     };
 
     if (this.validateForm(data)) this.props.updateAssessmentSetting(data);

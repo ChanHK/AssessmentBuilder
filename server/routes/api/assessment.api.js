@@ -24,6 +24,9 @@ router.post("/assessment/settings/update/:assessmentID", auth, (req, res) => {
         "assessments.$.settings.gradeUnit": req.body.gradeUnit,
         "assessments.$.settings.gradeRange": req.body.gradeRange,
         "assessments.$.settings.gradeValue": req.body.gradeValue,
+        "assessments.$.settings.tabCheckType_WARN": req.body.tabCheckType_WARN,
+        "assessments.$.settings.tabCheckType_END": req.body.tabCheckType_END,
+        "assessments.$.settings.warn_num": req.body.warn_num,
       },
     },
     {

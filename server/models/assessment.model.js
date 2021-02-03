@@ -43,6 +43,18 @@ const AssessmentSchema = new mongoose.Schema({
         },
         gradeRange: [String],
         gradeValue: [String],
+        tabCheckType_WARN: {
+          type: Boolean,
+          default: false,
+        },
+        tabCheckType_END: {
+          type: Boolean,
+          default: false,
+        },
+        warn_num: {
+          type: Number,
+          default: 0,
+        },
       },
       access: {
         link: {
