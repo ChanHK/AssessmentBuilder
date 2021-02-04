@@ -86,11 +86,13 @@ class StatisticsContainer extends Component {
       let temp = [];
       results.forEach((item, index) => {
         item.response.forEach((item2, index2) => {
-          temp.push({
-            id: item2.question_id,
-            correct: item2.correct,
-            des: item2.questionDescription,
-          });
+          if (item2.questionType !== "Descriptive") {
+            temp.push({
+              id: item2.question_id,
+              correct: item2.correct,
+              des: item2.questionDescription,
+            });
+          }
         });
       });
 
