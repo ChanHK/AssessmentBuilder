@@ -44,6 +44,14 @@ app.use("/api/candidate", candidate);
 app.use("/api/user/home", home);
 app.use("/api/user/home2", home2);
 
+// Serve any static files
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+// Handle React routing, return all requests to React app
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
