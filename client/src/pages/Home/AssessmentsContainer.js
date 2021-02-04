@@ -175,7 +175,7 @@ class AssessmentsContainer extends Component {
       },
       {
         name: "Options",
-        selector: "_id, status",
+        selector: "_id, status,settings.testName",
         cell: (row) => (
           <CustomRow>
             {row.status === "Setup in progress" && (
@@ -228,7 +228,7 @@ class AssessmentsContainer extends Component {
                 <TableButton
                   onClick={() => {
                     this.props.history.push(
-                      `/assessment/results/${row._id}/${subject}`
+                      `/assessment/results/${row._id}/${subject}/${row.settings.testName}`
                     );
                   }}
                 >

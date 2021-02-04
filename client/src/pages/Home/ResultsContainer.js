@@ -41,6 +41,7 @@ class ResultsContainer extends Component {
       assessmentID: this.props.match.params.assessmentID,
       data: [], //stores results
       subject: this.props.match.params.subject,
+      title: this.props.match.params.title,
     };
   }
 
@@ -116,6 +117,7 @@ class ResultsContainer extends Component {
       data,
       assessmentID,
       subject,
+      title,
     } = this.state;
 
     const tableHeader = [
@@ -194,7 +196,7 @@ class ResultsContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `/assessment/response/${row.id}/${assessmentID}/${subject}`
+                  `/assessment/response/${row.id}/${assessmentID}/${subject}/${title}`
                 );
               }}
             >
