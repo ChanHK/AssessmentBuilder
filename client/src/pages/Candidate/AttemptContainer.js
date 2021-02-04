@@ -300,13 +300,13 @@ class AttemptContainer extends Component {
       this.setState({ submitted: true });
       this.submit();
     }
-    if (tabChecktype === "WARN" && inactiveCount === warn_num && !submitted) {
+    if (tabChecktype === "WARN" && inactiveCount > warn_num && !submitted) {
       this.setState({ submitted: true });
       this.submit();
     }
     if (
       tabChecktype === "WARN" &&
-      inactiveCount < warn_num &&
+      inactiveCount <= warn_num &&
       inactiveCount > 0 &&
       AL_ERT
     ) {
