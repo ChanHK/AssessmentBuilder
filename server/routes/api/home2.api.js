@@ -119,4 +119,28 @@ router.post("/assessment/reuse/:assessmentID", auth, (req, res) => {
     .catch((err) => console.log(err));
 });
 
+// @route     POST api/user/home2/assessment/result/delete/:candID/:assessmentID
+// @desc      POST (delete) remove a candidate result
+// @access    Private
+router.post(
+  "/assessment/result/delete/:candID/:assessmentID",
+  auth,
+  (req, res) => {
+    db.Candidate.deleteOne({
+      _id: req.params.candID,
+    })
+      .then(() => {
+        db.Candidate.find({ assessments_id: req.params.assessmentID })
+          .select("-__v")
+          .select("-assessments_id")
+          .select("-response._id")
+          .then((result) => {
+            return res.json(result);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  }
+);
+
 module.exports = router;

@@ -22,7 +22,7 @@ import * as MdIcons from "react-icons/md";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchResults } from "../../actions/home.actions";
+import { fetchResults, deleteResults } from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -182,6 +182,20 @@ class ResultsContainer extends Component {
               }}
             >
               <MdIcons.MdOpenInNew size={20} />
+            </TableButton>
+            <TableButton
+              onClick={() => {
+                const data = {
+                  candID: row.id,
+                  assessmentID: assessmentID,
+                };
+                this.props.deleteResults(data);
+              }}
+            >
+              <MdIcons.MdDelete size={20} />
+            </TableButton>
+            <TableButton onClick={() => {}}>
+              <MdIcons.MdEmail size={20} />
             </TableButton>
           </CustomRow>
         ),
@@ -438,6 +452,7 @@ ResultsContainer.propTypes = {
   fetchResults: PropTypes.func.isRequired,
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
+  deleteResults: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
@@ -445,4 +460,5 @@ const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
 export default connect(mapStateToProps, {
   fetchResults,
   logout,
+  deleteResults,
 })(ResultsContainer);

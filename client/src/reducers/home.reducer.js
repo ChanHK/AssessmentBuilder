@@ -35,6 +35,7 @@ export default function (state = initialState, action) {
     case HOME.DELETE_ASS_SUB_BEGIN:
     case HOME.FETCH_ASS_BASED_SUB_BEGIN:
     case HOME.REUSE_ASSESSMENT_BEGIN:
+    case HOME.DELETE_RESULT_BEGIN:
       return {
         ...state,
         isLoading: true,
@@ -72,6 +73,7 @@ export default function (state = initialState, action) {
     case HOME.DELETE_ASS_SUB_FAIL:
     case HOME.FETCH_ASS_BASED_SUB_FAIL:
     case HOME.REUSE_ASSESSMENT_FAIL:
+    case HOME.DELETE_RESULT_FAIL:
       return {
         ...state,
         isLoading: false,
@@ -102,6 +104,7 @@ export default function (state = initialState, action) {
         desResponses: action.payload,
       };
     case HOME.FETCH_RESULTS_SUCCESS:
+    case HOME.DELETE_RESULT_SUCCESS:
       return {
         ...state,
         isLoading: false,

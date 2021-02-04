@@ -375,3 +375,25 @@ export const reuseAssessment = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.REUSE_ASSESSMENT_FAIL });
     });
 };
+
+export const deleteResults = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.DELETE_RESULT_BEGIN });
+
+  axios
+    .post(
+      `/api/user/home2/assessment/result/delete/${data.candID}/${data.assessmentID}`,
+      data,
+      tokenConfig(getState)
+    )
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.DELETE_RESULT_SUCCESS,
+          payload: res.data,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: HOME.DELETE_RESULT_FAIL });
+    });
+};
