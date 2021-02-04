@@ -67,9 +67,12 @@ class ResultsContainer extends Component {
         let temp = {
           email: item.email,
           name: item.name,
-          score: item.totalScore,
-          grade: item.grade,
-          submitDate: item.submissionDate,
+          score: item.totalScore === "" ? "Did not attempt" : item.totalScore,
+          grade: item.grade === "" ? "Did not attempt" : item.grade,
+          submitDate:
+            item.submissionDate === ""
+              ? "Did not attempt"
+              : item.submissionDate,
           id: item._id,
         };
         data.push(temp);
@@ -178,7 +181,7 @@ class ResultsContainer extends Component {
                 );
               }}
             >
-              <MdIcons.MdOpenInNew />
+              <MdIcons.MdOpenInNew size={20} />
             </TableButton>
           </CustomRow>
         ),

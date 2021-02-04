@@ -85,9 +85,10 @@ class ViewResponseContainer extends Component {
       this.setState({
         name: name,
         email: email,
-        grade: grade,
-        submissionDate: submissionDate,
-        totalScore: totalScore,
+        grade: grade === "" ? "Did not attempt" : grade,
+        submissionDate:
+          submissionDate === "" ? "Did not attempt" : submissionDate,
+        totalScore: totalScore === "" ? "Did not attempt" : totalScore,
         response: response,
         feedbackData: homeReducer.feedback,
       });
