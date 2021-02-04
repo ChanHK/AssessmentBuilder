@@ -5,9 +5,9 @@ const cors = require("cors");
 const path = require("path");
 
 //env config # for heroku deployment
-require("dotenv").config({
-  path: ".env",
-});
+// require("dotenv").config({
+//   path: ".env",
+// });
 
 const authUser = require("./routes/api/auth.api");
 const userProfile = require("./routes/api/profile.api");
