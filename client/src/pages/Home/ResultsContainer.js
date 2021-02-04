@@ -96,12 +96,12 @@ class ResultsContainer extends Component {
   onReset = () => this.setState({ email: "", name: "", score: "", grade: "" });
 
   sendMultiEmail = () => {
-    const { data } = this.state;
+    const { data, title } = this.state;
     let sent_email_data = [];
     data.forEach((item, index) => {
       sent_email_data.push({
         to: item.email,
-        subject: "Assessment Results",
+        subject: `${title} results`,
         html: `<h3>${item.grade}</h3><p>${item.score}</p>`,
       });
     });
@@ -218,7 +218,7 @@ class ResultsContainer extends Component {
                 const sent_email_data = [
                   {
                     to: row.email,
-                    subject: "Assessment Results",
+                    subject: `${title} results`,
                     html: `<h3>${row.grade}</h3><p>${row.score}</p>`,
                   },
                 ];
