@@ -22,7 +22,11 @@ import * as MdIcons from "react-icons/md";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchResults, deleteResults } from "../../actions/home.actions";
+import {
+  fetchResults,
+  deleteResults,
+  sendEmail,
+} from "../../actions/home.actions";
 import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
 
@@ -89,6 +93,19 @@ class ResultsContainer extends Component {
   onChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   onReset = () => this.setState({ email: "", name: "", score: "", grade: "" });
+
+  sendMultiEmail = () => {
+    const { data } = this.state;
+    let sent_email_data = [];
+    data.forEach((item, index) => {
+      sent_email_data.push({
+        to: item.email,
+        subject: "Assessment Results",
+        html: `<h3>${item.grade}</h3><p>${item.score}</p>`,
+      });
+    });
+    this.props.sendEmail(sent_email_data);
+  };
 
   render() {
     const {
@@ -171,7 +188,7 @@ class ResultsContainer extends Component {
       },
       {
         name: "Option",
-        selector: "id",
+        selector: "id,email,grade,score",
         cell: (row) => (
           <CustomRow>
             <TableButton
@@ -194,7 +211,18 @@ class ResultsContainer extends Component {
             >
               <MdIcons.MdDelete size={20} />
             </TableButton>
-            <TableButton onClick={() => {}}>
+            <TableButton
+              onClick={() => {
+                const sent_email_data = [
+                  {
+                    to: row.email,
+                    subject: "Assessment Results",
+                    html: `<h3>${row.grade}</h3><p>${row.score}</p>`,
+                  },
+                ];
+                this.props.sendEmail(sent_email_data);
+              }}
+            >
               <MdIcons.MdEmail size={20} />
             </TableButton>
           </CustomRow>
@@ -392,10 +420,19 @@ class ResultsContainer extends Component {
               <div style={{ margin: "25px 0px 25px 0px" }}>
                 <Table data={filteredData} columns={tableHeader} />
               </div>
-              <div style={{ marginBottom: "100px" }}>
+              <div className={css(styles.buttonRowCon)}>
                 <Button
                   backgroundColor={configStyles.colors.darkBlue}
                   color={configStyles.colors.white}
+                  padding={"8px"}
+                  onClick={this.sendMultiEmail}
+                >
+                  Send to all candidates
+                </Button>
+                <div style={{ marginRight: "15px" }}></div>
+                <Button
+                  backgroundColor={configStyles.colors.white}
+                  color={configStyles.colors.darkBlue}
                   padding={"8px"}
                   width={"100px"}
                   onClick={() => {
@@ -446,6 +483,15 @@ const styles = StyleSheet.create({
     backgroundColor: configStyles.colors.inputErrorRed,
     padding: "0px 10px 0px 10px",
   },
+  buttonRowCon: {
+    marginBottom: "100px",
+    flexDirection: "row",
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    width: "100%",
+    height: "auto",
+  },
 });
 
 ResultsContainer.propTypes = {
@@ -453,6 +499,7 @@ ResultsContainer.propTypes = {
   homeReducer: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   deleteResults: PropTypes.func.isRequired,
+  sendEmail: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ homeReducer: state.homeReducer });
@@ -461,4 +508,5 @@ export default connect(mapStateToProps, {
   fetchResults,
   logout,
   deleteResults,
+  sendEmail,
 })(ResultsContainer);

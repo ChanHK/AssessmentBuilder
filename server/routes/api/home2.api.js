@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const db = require("../../models");
 
@@ -142,5 +144,24 @@ router.post(
       .catch((err) => console.log(err));
   }
 );
+
+// @route     PUT api/user/home2/sent/email/result
+// @desc      sent results to candidates
+// @access    Private
+router.put("/sent/email/result", auth, (req, res) => {
+  const data = req.body;
+  data.forEach((item, index) => {
+    item.from = process.env.EMAIL_FROM;
+  });
+
+  sgMail
+    .send(data)
+    .then(() => {
+      return res.json({ message: "success" });
+    })
+    .catch(() => {
+      return res.json({ message: "failed" });
+    });
+});
 
 module.exports = router;

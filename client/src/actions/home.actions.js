@@ -397,3 +397,20 @@ export const deleteResults = (data) => (dispatch, getState) => {
       dispatch({ type: HOME.DELETE_RESULT_FAIL });
     });
 };
+
+export const sendEmail = (data) => (dispatch, getState) => {
+  dispatch({ type: HOME.SEND_RESULTS_BEGIN });
+
+  axios
+    .put("/api/user/home2/sent/email/result", data, tokenConfig(getState))
+    .then((res) => {
+      setTimeout(() => {
+        dispatch({
+          type: HOME.SEND_RESULTS_SUCCESS,
+        });
+      }, 1500);
+    })
+    .catch((err) => {
+      dispatch({ type: HOME.SEND_RESULTS_FAIL });
+    });
+};
