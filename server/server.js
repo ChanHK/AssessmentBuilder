@@ -2,12 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path");
+// const path = require("path");
 
-// env config # for heroku deployment
-// require("dotenv").config({
-//   path: ".env",
-// });
+//env config # for heroku deployment
+require("dotenv").config({
+  path: ".env",
+});
 
 const authUser = require("./routes/api/auth.api");
 const userProfile = require("./routes/api/profile.api");
@@ -45,10 +45,10 @@ app.use("/api/candidate", candidate);
 app.use("/api/user/home", home);
 app.use("/api/user/home2", home2);
 
-app.use(express.static(path.join(__dirname, "../client/build")));
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
+// app.use(express.static(path.join(__dirname, "../client/build")));
+// app.get("*", function (req, res) {
+//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+// });
 
 const port = process.env.PORT || 5000;
 
@@ -56,4 +56,3 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-app.get("/", (req, res) => res.send("Hello from Express!"));
