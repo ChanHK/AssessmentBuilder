@@ -32,7 +32,10 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then(() => console.log(`MongoDB connected successfully`))
+  .then(() => {
+    console.log(`MongoDB connected successfully`);
+    console.log(process.env.NODE_ENV === "production");
+  })
   .catch((err) => console.log(err));
 
 // use Routes
