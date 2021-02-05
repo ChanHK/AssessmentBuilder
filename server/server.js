@@ -34,7 +34,6 @@ mongoose
   })
   .then(() => {
     console.log(`MongoDB connected successfully`);
-    console.log(process.env.NODE_ENV === "production");
   })
   .catch((err) => console.log(err));
 
@@ -50,12 +49,11 @@ app.use("/api/user/home2", home2);
 
 // serve static assets if in production
 if (process.env.NODE_ENV === "production") {
-  console.log("called");
   // set static folder
   app.use(express.static("client/build"));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "/client", "/build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
 
