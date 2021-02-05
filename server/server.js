@@ -47,6 +47,7 @@ app.use("/api/user/home2", home2);
 
 // serve static assets if in production
 if (process.env.NODE_ENV === "production") {
+  console.log("called");
   // set static folder
   app.use(express.static("client/build"));
 
