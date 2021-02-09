@@ -655,7 +655,7 @@ class SettingContainer extends Component {
           <CustomRow>
             <CustomSwitch
               onChange={(e) => {
-                if (type !== "View") {
+                if (type !== "view") {
                   this.setState({
                     tabCheckType_WARN: e,
                     tabCheckType_END: false,
@@ -699,7 +699,7 @@ class SettingContainer extends Component {
           <CustomRow>
             <CustomSwitch
               onChange={(e) => {
-                if (type !== "View") {
+                if (type !== "view") {
                   this.setState({
                     tabCheckType_END: e,
                     tabCheckType_WARN: false,
