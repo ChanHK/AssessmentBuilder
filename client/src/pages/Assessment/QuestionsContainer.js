@@ -288,7 +288,7 @@ class QuestionsContainer extends Component {
                     padding={"8px"}
                     onClick={() =>
                       this.props.history.push(
-                        `/assessment/update_question/1/${type}/create/${assessmentID}/0`
+                        `/assessment/update_question/1/${type}/create/${assessmentID}/0/${subject}`
                       )
                     }
                   >
@@ -302,7 +302,7 @@ class QuestionsContainer extends Component {
                     padding={"8px"}
                     onClick={() => {
                       this.props.history.push(
-                        `/assessment/question_bank/1/${type}/${assessmentID}`
+                        `/assessment/question_bank/1/${type}/${assessmentID}/${subject}`
                       );
                     }}
                   >

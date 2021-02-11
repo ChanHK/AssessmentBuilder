@@ -117,7 +117,7 @@ export default function Routes() {
         />
 
         <Route
-          path="/assessment/grade/responses/:questionID/:assessmentID"
+          path="/assessment/grade/responses/:questionID/:assessmentID/:subject"
           exact
           component={GradeContainer}
           isPrivate
@@ -166,14 +166,14 @@ export default function Routes() {
           role={"User"}
         />
         <Route
-          path="/assessment/question_bank/:section/:type(edit|create)/:assessmentID"
+          path="/assessment/question_bank/:section/:type(edit|create)/:assessmentID/:subject"
           exact
           component={RetrieveQuestionBankContainer}
           isPrivate
           role={"User"}
         />
         <Route
-          path="/assessment/update_question/:section/:type(edit|create)/:type2(edit|create)/:assessmentID/:questionID"
+          path="/assessment/update_question/:section/:type(edit|create)/:type2(edit|create)/:assessmentID/:questionID/:subject"
           exact
           component={CreateEditQuestionContainer}
           isPrivate

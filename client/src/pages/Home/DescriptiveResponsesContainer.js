@@ -130,7 +130,7 @@ class DescriptiveResponsesContainer extends Component {
             <TableButton
               onClick={() => {
                 this.props.history.push(
-                  `/assessment/grade/responses/${row._id}/${assessmentID}`
+                  `/assessment/grade/responses/${row._id}/${assessmentID}/${subject}`
                 );
               }}
             >

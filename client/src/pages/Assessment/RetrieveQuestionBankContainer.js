@@ -52,6 +52,7 @@ class RetrieveQuestionBankContainer extends Component {
       section: this.props.match.params.section,
       type: this.props.match.params.type,
       totalSubjects: [],
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -135,8 +136,10 @@ class RetrieveQuestionBankContainer extends Component {
   };
 
   handleClick = () => {
-    const { type, assessmentID } = this.state;
-    this.props.history.push(`/assessment/${type}/questions/${assessmentID}`);
+    const { type, assessmentID, subject } = this.state;
+    this.props.history.push(
+      `/assessment/${type}/questions/${assessmentID}/${subject}`
+    );
   };
 
   _add_selected = () => {
@@ -459,8 +462,8 @@ class RetrieveQuestionBankContainer extends Component {
                   </Button>
                   <div style={{ marginRight: "15px" }}></div>
                   <Button
-                    backgroundColor={configStyles.colors.darkBlue}
-                    color={configStyles.colors.white}
+                    backgroundColor={configStyles.colors.white}
+                    color={configStyles.colors.darkBlue}
                     padding={"8px"}
                     onClick={this.handleClick}
                     width={"100px"}

@@ -43,6 +43,7 @@ class GradeContainer extends Component {
       isEmpty: false,
       gradeData: {},
       msg: null, //store error messages
+      subject: this.props.match.params.subject,
     };
   }
 
@@ -161,14 +162,14 @@ class GradeContainer extends Component {
   };
 
   render() {
-    const { payload, score, isEmpty, assessmentID, msg } = this.state;
+    const { payload, score, isEmpty, assessmentID, msg, subject } = this.state;
 
     if (this.props.homeReducer.isLoading) return <LoaderSpinner />;
     else document.body.style.overflow = "unset";
 
     if (isEmpty) {
       this.props.history.push(
-        `/assessment/descriptive/responses/${assessmentID}`
+        `/assessment/descriptive/responses/${assessmentID}/${subject}`
       );
     }
 

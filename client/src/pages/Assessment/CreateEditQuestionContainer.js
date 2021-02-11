@@ -42,8 +42,8 @@ import {
 } from "../../actions/assessmentQuestion.actions";
 
 class CreateEditQuestionContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questionType: "",
       questionDescription: EditorState.createEmpty(),
@@ -52,6 +52,9 @@ class CreateEditQuestionContainer extends Component {
       choiceArrObj: [], //stores temporary choices and answer(isChecked)
       score: "",
       msg: null, //stores error messages
+      subject: this.props.match.params.subject,
+      type: this.props.match.params.type,
+      assessmentID: this.props.match.params.assessmentID,
     };
   }
 
@@ -77,9 +80,10 @@ class CreateEditQuestionContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { type, assessmentID, subject } = this.state;
     if (this.props.assessmentQuestionReducer.direct) {
       this.props.history.push(
-        `/assessment/${this.props.match.params.type}/questions/${this.props.match.params.assessmentID}`
+        `/assessment/${type}/questions/${assessmentID}/${subject}`
       );
     }
 
@@ -481,6 +485,9 @@ class CreateEditQuestionContainer extends Component {
       choiceArrObj,
       score,
       msg,
+      subject,
+      type,
+      assessmentID,
     } = this.state;
 
     if (this.props.assessmentQuestionReducer.isLoading)
@@ -850,7 +857,7 @@ class CreateEditQuestionContainer extends Component {
                         width={"100px"}
                         onClick={() => {
                           this.props.history.push(
-                            `/assessment/${this.props.match.params.type}/questions/${this.props.match.params.assessmentID}`
+                            `/assessment/${type}/questions/${assessmentID}/${subject}`
                           );
                         }}
                       >
