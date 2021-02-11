@@ -222,16 +222,28 @@ router.post(
       }
     )
       .then(() => {
-        return res
-          .status(200)
-          .json({ message: "Question updated successfully" });
+        db.Assessment.findOneAndUpdate(
+          {
+            "assessments._id": req.params.assessmentID,
+          },
+          {
+            $inc: {
+              "assessments.$.totalQuestionNum": 1,
+            },
+          }
+        )
+          .then(() => {
+            return res
+              .status(200)
+              .json({ message: "Question updated successfully" });
+          })
+          .catch(() => {
+            return res.status(400).json({
+              message: "Question update fail",
+            });
+          });
       })
-      .catch(() => {
-        console.log(req.body.array);
-        return res.status(400).json({
-          message: "Question update fail",
-        });
-      });
+      .catch((err) => console.log(err));
   }
 );
 
