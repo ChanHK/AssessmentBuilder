@@ -108,7 +108,9 @@ class StatisticsContainer extends Component {
       const { assessmentQuestionLoad } = assessmentQuestionReducer;
 
       let temp = [];
-      assessmentQuestionLoad.forEach((item, index) => temp.push(item._id));
+      assessmentQuestionLoad.forEach((item, index) => {
+        if (item.questionType !== "Descriptive") temp.push(item._id);
+      });
       this.setState({ all_questionID: temp });
     }
   }
