@@ -126,6 +126,9 @@ class HomeContainer extends Component {
     all_subjects.forEach((item, index) => {
       if (item === string) tempMsg.SUB = "Subject is created before";
     });
+
+    if (string === "") tempMsg.SUB = "Please fill up";
+
     this.setState({ msg: tempMsg });
 
     if (!all_subjects.includes(string) && string !== "") {

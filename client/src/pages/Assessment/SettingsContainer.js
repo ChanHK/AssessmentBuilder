@@ -202,7 +202,7 @@ class SettingContainer extends Component {
     const { testInstruction } = this.state;
     let tempMsg = {};
 
-    if (testName === "") {
+    if (testName.trim() === "") {
       tempMsg.TN = "Assessment title field is required";
     }
 

@@ -96,6 +96,9 @@ class QBSubjectsContainer extends Component {
         tempMsg.SUB = "Subject is created before";
       }
     });
+
+    if (string.trim() === "") tempMsg.SUB = "Please fill up";
+
     this.setState({ msg: tempMsg });
 
     if (!totalSubjects.includes(string) && string !== "") {
