@@ -429,7 +429,7 @@ class ResultsContainer extends Component {
                   padding={"8px"}
                   onClick={this.sendMultiEmail}
                 >
-                  Send to all candidates
+                  Send result to all candidates
                 </Button>
                 <div style={{ marginRight: "15px" }}></div>
                 <Button
