@@ -11,6 +11,7 @@ import CustomInput from "../../components/CustomInput";
 import LoaderSpinner from "../../components/LoaderSpinner";
 import Wrapper from "../../components/Wrapper";
 import ScrollArrow from "../../components/ScrollArrow";
+import TableExtensions from "../../components/TableExtensions";
 
 import CustomFullContainer from "../../components/GridComponents/CustomFullContainer";
 import CustomMidContainer from "../../components/GridComponents/CustomMidContainer";
@@ -346,6 +347,11 @@ class ResultsContainer extends Component {
     }
 
     filteredData.forEach((data, index) => (data.serial = index + 1));
+    
+    const tableData = {
+      data: filteredData,
+      columns: tableHeader,
+    };
 
     return (
       <>
@@ -420,7 +426,9 @@ class ResultsContainer extends Component {
               </div>
 
               <div style={{ margin: "25px 0px 25px 0px" }}>
-                <Table data={filteredData} columns={tableHeader} />
+                <TableExtensions tableData={tableData}>
+                  <Table data={filteredData} columns={tableHeader} />
+                </TableExtensions>
               </div>
               <div className={css(styles.buttonRowCon)}>
                 <Button

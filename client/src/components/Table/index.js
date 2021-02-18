@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     marginBottom: "20px",
     border: "2px solid",
     borderColor: configStyles.colors.black,
+    marginTop: "20px",
   },
   noSelect: {
     userSelect:
