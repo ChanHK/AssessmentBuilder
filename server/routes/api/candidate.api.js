@@ -52,7 +52,10 @@ router.post(
       assessments: { $elemMatch: { _id: req.params.assessmentID } },
     })
       .then((array) => {
-        db.Candidate.find({ email: req.body.email }).then((result) => {
+        db.Candidate.find({
+          email: req.body.email,
+          assessments_id: req.params.assessmentID,
+        }).then((result) => {
           if (result.length >= req.body.attemptNum) {
             return res.status(400).json({
               message: "You have reach the maximum number of attempts",
@@ -122,7 +125,10 @@ router.post(
       assessments: { $elemMatch: { _id: req.params.assessmentID } },
     })
       .then(() => {
-        db.Candidate.find({ email: req.body.email }).then((result) => {
+        db.Candidate.find({
+          email: req.body.email,
+          assessments_id: req.params.assessmentID,
+        }).then((result) => {
           if (result.length >= req.body.attemptNum) {
             return res.status(400).json({
               message: "You have reach the maximum number of attempts",
