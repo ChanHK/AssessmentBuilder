@@ -353,7 +353,7 @@ class QuestionsContainer extends Component {
                               this.props.history.push(
                                 `/assessment/update_question/${
                                   index + 2
-                                }/${type}/create/${assessmentID}/0`
+                                }/${type}/create/${assessmentID}/0/${subject}`
                               )
                             }
                           >
@@ -369,7 +369,7 @@ class QuestionsContainer extends Component {
                               this.props.history.push(
                                 `/assessment/question_bank/${
                                   index + 2
-                                }/${type}/${assessmentID}`
+                                }/${type}/${assessmentID}/${subject}`
                               );
                             }}
                           >
