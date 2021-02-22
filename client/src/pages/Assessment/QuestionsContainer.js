@@ -275,6 +275,7 @@ class QuestionsContainer extends Component {
               onSortEnd={this.onSortEnd.bind(this, 0)}
               onSectionSortEnd={this.onSectionSortEnd.bind(this)}
               type={type}
+              subject={subject}
             />
           )}
 
@@ -339,6 +340,7 @@ class QuestionsContainer extends Component {
                       onSectionSortEnd={this.onSectionSortEnd.bind(this)}
                       current={index + 1}
                       type={type}
+                      subject={subject}
                     />
                   )}
                   {type !== "view" && (

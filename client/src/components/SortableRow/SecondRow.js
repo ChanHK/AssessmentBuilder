@@ -164,6 +164,7 @@ class SectionContainer extends Component {
       sectionIndex,
       current,
       onSortEnd,
+      subject,
     } = this.props;
 
     const contentBlock = htmlToDraft(question.questionDescription);
@@ -199,7 +200,7 @@ class SectionContainer extends Component {
                   <TableButton
                     onClick={() => {
                       this.props.history.push(
-                        `/assessment/update_question/${question.section}/${this.props.match.params.type}/edit/${assessmentID}/${question._id}`
+                        `/assessment/update_question/${question.section}/${this.props.match.params.type}/edit/${assessmentID}/${question._id}/${subject}`
                       );
                     }}
                   >

@@ -11,6 +11,7 @@ const SortableSection = SortableElement(
     sectionIndex,
     current,
     onSortEnd,
+    subject,
   }) => (
     <SectionContainer
       question={question}
@@ -20,12 +21,13 @@ const SortableSection = SortableElement(
       sectionIndex={sectionIndex}
       onSortEnd={onSortEnd}
       current={current}
+      subject={subject}
     />
   )
 );
 
 const SortableRow = SortableContainer(
-  ({ questions, assessmentID, type, onSectionSortEnd, current }) => {
+  ({ questions, assessmentID, type, onSectionSortEnd, current, subject }) => {
     return (
       <div>
         {questions.map((question, index) => (
@@ -38,6 +40,7 @@ const SortableRow = SortableContainer(
             sectionIndex={index}
             onSortEnd={onSectionSortEnd}
             current={current}
+            subject={subject}
           />
         ))}
       </div>
