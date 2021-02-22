@@ -53,7 +53,7 @@ const AssessmentSchema = new mongoose.Schema({
         },
         warn_num: {
           type: Number,
-          default: 0,
+          default: 1,
         },
       },
       access: {
