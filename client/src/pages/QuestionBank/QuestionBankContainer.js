@@ -351,7 +351,7 @@ class QuestionBankContainer extends Component {
                       this.setState({ move_subject: e.value });
                     }}
                     value={move_subject}
-                    placeholder="Select question type"
+                    placeholder="Select a subject"
                   />
                   <div style={{ marginTop: "25px" }}>
                     <CustomRow>
