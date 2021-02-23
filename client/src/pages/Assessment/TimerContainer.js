@@ -28,7 +28,7 @@ import {
   fetchAssessmentTimer,
 } from "../../actions/assessment.actions";
 
-const seconds10 = ["10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+const seconds10 = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
 
 class TimerContainer extends Component {
   constructor(props) {
