@@ -267,7 +267,7 @@ class GradeContainer extends Component {
                   width={"100px"}
                   onClick={() => {
                     this.props.history.push(
-                      `/assessment/descriptive/responses/${assessmentID}`
+                      `/assessment/descriptive/responses/${assessmentID}/${subject}`
                     );
                   }}
                 >
