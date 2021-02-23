@@ -118,6 +118,7 @@ class StatisticsContainer extends Component {
   componentWillUnmount() {
     this.props.homeReducer.grade = null;
     this.props.homeReducer.results = null;
+    this.props.assessmentQuestionReducer.assessmentQuestionLoad = null;
   }
 
   passFailDataGenerator = (results, unit) => {
