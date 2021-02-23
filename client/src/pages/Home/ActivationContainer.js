@@ -211,7 +211,7 @@ class ActivationContainer extends Component {
                     />
                   </div>
                   <div className={css(styles.textCon)}>
-                    <SecondLabel>Settings</SecondLabel>
+                    <SecondLabel>Start</SecondLabel>
                   </div>
                 </CustomRow>
               </div>
