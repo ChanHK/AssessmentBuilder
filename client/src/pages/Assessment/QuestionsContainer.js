@@ -426,7 +426,7 @@ class QuestionsContainer extends Component {
                   this.setState({ store_subject: e.value });
                 }}
                 value={store_subject}
-                placeholder="Select question type"
+                placeholder="Select a subject"
               />
               <div style={{ marginTop: "25px" }}>
                 <CustomRow>
