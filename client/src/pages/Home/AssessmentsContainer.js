@@ -399,7 +399,8 @@ class AssessmentsContainer extends Component {
                   <SecondLabel>Reuse assessment</SecondLabel>
                   <ThirdLabel>
                     All the responses, results, statistics and candidates will
-                    be removed. Are you sure?
+                    be removed. Please make sure you have downloaded the results
+                    from the result page before you reuse this assessment.
                   </ThirdLabel>
                   <div style={{ marginTop: "25px" }}>
                     <CustomRow>
