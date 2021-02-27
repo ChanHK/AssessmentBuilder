@@ -8,6 +8,7 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -22,6 +23,7 @@ class ForgotPasswordContainer extends Component {
       email: "",
       msg: null,
       successMsg: null,
+      load: false,
     };
   }
 
@@ -39,7 +41,10 @@ class ForgotPasswordContainer extends Component {
     }
 
     if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({ successMsg: this.props.sucMsg.message.message });
+      this.setState({
+        successMsg: this.props.sucMsg.message.message,
+        load: false,
+      });
     }
   }
 
@@ -63,15 +68,18 @@ class ForgotPasswordContainer extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
-      email: this.state.email,
-    };
+    this.setState({ load: true });
+
+    const data = { email: this.state.email };
 
     this.props.forgotPassword(data);
   };
 
   render() {
-    const { email, msg, successMsg } = this.state;
+    const { email, msg, successMsg, load } = this.state;
+
+    if (load) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     return (
       <div className={css(styles.background)}>
