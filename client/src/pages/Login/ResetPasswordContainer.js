@@ -8,6 +8,7 @@ import CustomSubLabel from "../../components/FormComponents/CustomSubLabel";
 
 import CustomInput from "../../components/CustomInput";
 import Button from "../../components/Button";
+import LoaderSpinner from "../../components/LoaderSpinner";
 
 import * as IoIcons from "react-icons/io";
 
@@ -27,6 +28,7 @@ class ResetPasswordContainer extends Component {
       showPassword2: false,
       msg: null,
       successMsg: null,
+      load: false,
     };
   }
 
@@ -40,11 +42,14 @@ class ResetPasswordContainer extends Component {
     }
 
     if (prevProps.errors !== this.props.errors) {
-      this.setState({ msg: this.props.errors.message });
+      this.setState({ msg: this.props.errors.message, load: false });
     }
 
     if (prevProps.sucMsg !== this.props.sucMsg) {
-      this.setState({ successMsg: this.props.sucMsg.message.message });
+      this.setState({
+        successMsg: this.props.sucMsg.message.message,
+        load: false,
+      });
     }
   }
 
@@ -75,6 +80,7 @@ class ResetPasswordContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    this.setState({ load: true });
     const {
       match: { params },
     } = this.props;
@@ -96,7 +102,11 @@ class ResetPasswordContainer extends Component {
       showPassword2,
       msg,
       successMsg,
+      load,
     } = this.state;
+
+    if (load) return <LoaderSpinner />;
+    else document.body.style.overflow = "unset";
 
     return (
       <div className={css(styles.background)}>

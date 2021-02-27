@@ -37,7 +37,7 @@ class ForgotPasswordContainer extends Component {
     }
 
     if (prevProps.errors !== this.props.errors) {
-      this.setState({ msg: this.props.errors.message });
+      this.setState({ msg: this.props.errors.message, load: false });
     }
 
     if (prevProps.sucMsg !== this.props.sucMsg) {
