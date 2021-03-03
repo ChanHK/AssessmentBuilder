@@ -312,7 +312,7 @@ class RetrieveQuestionBankContainer extends Component {
             </div>
           );
         },
-        width: "40%",
+        width: "500px",
       },
       {
         name: "Subject",
