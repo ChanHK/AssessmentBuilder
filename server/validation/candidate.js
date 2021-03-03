@@ -11,8 +11,8 @@ module.exports = function validateCandidateSignUp(data) {
     errors.name = "Name field is required";
   } else if (!Validator.isLength(data.name, 3, 30)) {
     errors.name = "Please enter within 3 and 30 characters";
-  } else if (!Validator.isAlpha(data.name)) {
-    errors.name = "Please enter alphabelts only";
+  } else if (!/^[a-z ,.'-]+$/i.test(data.name)) {
+    errors.name = "Please enter valid name";
   }
 
   if (Validator.isEmpty(data.email)) errors.email = "Email field is required";
