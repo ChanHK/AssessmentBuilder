@@ -455,7 +455,7 @@ class StatisticsContainer extends Component {
                 {all_questionID.map((item, index) => {
                   let correct = 0;
                   let wrong = 0;
-                  let des = EditorState.createEmpty();
+                  let des = "";
                   all_responses.forEach((item2, index2) => {
                     if (item === item2.id) {
                       if (item2.correct) correct++;
@@ -477,6 +477,7 @@ class StatisticsContainer extends Component {
                       },
                     ],
                   };
+                  if (correct === 0 && wrong === 0) return false;
                   return (
                     <div style={{ marginBottom: "50px" }}>
                       <CustomEditor
