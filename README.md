@@ -38,6 +38,11 @@ assessmentbuilder2020@gmail.com
 ## Picture
 <img src="https://user-images.githubusercontent.com/59449120/134696101-d833e89c-c98a-4c31-b84c-28da4888e6ab.png" width="700">
 
+## Third party usage
+[Cloudinary](https://cloudinary.com/) stores images  
+[Sendgrid](https://sendgrid.com/) helps in sending single to multiple emails at once  
+[MongoDB](https://www.mongodb.com/) stores data  
+
 ## .env (place it with client and server)
 DB="mongodb+srv://clifford:j4UAR7PbgKWd8uIy@assessmentbuilder.nqpou.mongodb.net/AssessmentBuilder?retryWrites=true&w=majority"
 JWT_TOKEN_KEY="asbdiqwneiuqenqwne123123i192hsndandnasdjsa"
