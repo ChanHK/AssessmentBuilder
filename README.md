@@ -1,4 +1,4 @@
-# AssessmentBuilder
+# <img src="https://user-images.githubusercontent.com/59449120/134697208-bd0f8826-1173-40be-9386-5ba114375de6.png" width="48"> AssessmentBuilder
 It is a final year project created using the MERN stack. The web application allows the users ( lecturers ) to create and conduct assessments online, for ( students ), they are able to attempt the assessments online.
 
 ## Run
@@ -14,6 +14,29 @@ Click [here](https://assessmentbuilder.herokuapp.com/) to access assessmentbuild
 
 ## Email
 assessmentbuilder2020@gmail.com
+
+## Features
+- Provide question bank to store and create questions
+- As many as 6 question templates
+  - Single choice
+  - Multiple choice
+  - Descriptive
+  - True or false
+  - Short answer
+  - Order
+- View results of each candidates, their choice of answer
+- Email results
+- Statistics on whole assessments and all questions
+- Reuse assessment
+- Mark descriptive questions
+- Dynamic question order
+- Dynamic set generation settings
+- Flexible timer
+- cheating check mechanism
+- generate QR code for the assessment
+
+## Picture
+<img src="https://user-images.githubusercontent.com/59449120/134696101-d833e89c-c98a-4c31-b84c-28da4888e6ab.png" width="700">
 
 ## .env (place it with client and server)
 DB="mongodb+srv://clifford:j4UAR7PbgKWd8uIy@assessmentbuilder.nqpou.mongodb.net/AssessmentBuilder?retryWrites=true&w=majority"
