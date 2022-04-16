@@ -1,5 +1,5 @@
 # <img src="https://user-images.githubusercontent.com/59449120/134697208-bd0f8826-1173-40be-9386-5ba114375de6.png" width="48"> AssessmentBuilder
-It is a final year project created using the MERN stack. The web application allows the users ( lecturers ) to create and conduct assessments online, for ( students ), they are able to attempt the assessments online.
+This is a final year project created using the MERN stack. This web application allows the users ( lecturers ) to create and conduct assessments online, for ( students ), they are able to attempt the assessments online.
 
 ## Run
 ```npm
