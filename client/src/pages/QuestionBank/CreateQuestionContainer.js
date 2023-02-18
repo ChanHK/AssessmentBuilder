@@ -237,31 +237,28 @@ class CreateQuestionContainer extends Component {
   };
 
   addRow = (type) => {
+    const maxLength = 8;
     //for single and multi choice
-    if (type === "Choice") {
-      if (this.state.choiceArrObj.length < 8) {
-        this.setState({
-          choiceArrObj: this.state.choiceArrObj.concat({
-            editorValue: EditorState.createEmpty(),
-            isChecked: false,
-          }),
-        });
-      }
+    if (type === "Choice" && this.state.choiceArrObj.length < maxLength) {
+      const newChoiceObj = {
+        editorValue: EditorState.createEmpty(),
+        isChecked: false,
+      };
+      const newState = {
+        choiceArrObj: this.state.choiceArrObj.concat(newChoiceObj),
+      };
+      this.setState(newState);
     }
 
     //for short ans and order
-    if (type === "Ans") {
-      if (this.state.questionAns.length < 8) {
-        this.setState({
-          questionAns: this.state.questionAns.concat(""),
-        });
-      }
-    } else {
-      if (this.state.questionAns.length < 8) {
-        this.setState({
-          questionAns: this.state.questionAns.concat(EditorState.createEmpty()),
-        });
-      }
+    if (this.state.questionAns.length < maxLength) {
+      const newState = {
+        questionAns:
+          type === "Ans"
+            ? this.state.questionAns.concat("")
+            : this.state.questionAns.concat(EditorState.createEmpty()),
+      };
+      this.setState(newState);
     }
   };
 

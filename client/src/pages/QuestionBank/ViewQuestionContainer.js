@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import jwt_decode from "jwt-decode";
+import htmlToDraft from "html-to-draftjs";
+import { EditorState, ContentState } from "draft-js";
 import "../../css/general.css";
 import { StyleSheet, css } from "aphrodite";
 
@@ -17,15 +22,8 @@ import FirstLabel from "../../components/LabelComponent/FirstLabel";
 import SecondLabel from "../../components/LabelComponent/SecondLabel";
 import ThirdLabel from "../../components/LabelComponent/ThirdLabel";
 
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { fetchAQuestion } from "../../actions/question.actions";
-
-import jwt_decode from "jwt-decode";
 import { logout } from "../../actions/auth.actions";
-
-import htmlToDraft from "html-to-draftjs";
-import { EditorState, ContentState } from "draft-js";
 
 class ViewQuestionContainer extends Component {
   constructor(props) {
