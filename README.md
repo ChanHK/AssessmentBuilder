@@ -9,8 +9,8 @@ npm run server
 npm run dev
 ```
 ## Host
-This app is hosted on [heroku](https://dashboard.heroku.com/apps/assessmentbuilder).
-Click [here](https://assessmentbuilder.herokuapp.com/) to access assessmentbuilder app.
+This app is hosted on [render](https://dashboard.render.com/web/srv-chun28fdvk4olirg67rg/events).
+Click [here](https://assessmentbuilder.onrender.com) to access assessmentbuilder app.
 
 ## Email
 assessmentbuilder2020@gmail.com
