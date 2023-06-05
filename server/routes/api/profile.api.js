@@ -53,6 +53,13 @@ router.post("/profile", auth, parser.single("url"), (req, res) => {
 
   if (!isValid) return res.status(400).json(errors);
 
+  if (process.env.NODE_ENV === "production") {
+    return res.status(403).json({
+      message:
+        "The administrator has restricted access to this particular feature.",
+    });
+  }
+
   db.User.findById(req.user.id).then((user) => {
     user.username = req.body.username;
     user.gender = req.body.gender;

@@ -126,14 +126,8 @@ class EditProfileContainer extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const {
-      username,
-      gender,
-      image,
-      imagePosX,
-      imagePosY,
-      imageScale,
-    } = this.state;
+    const { username, gender, image, imagePosX, imagePosY, imageScale } =
+      this.state;
 
     const formData = new FormData();
     formData.append("url", image);
@@ -257,6 +251,13 @@ class EditProfileContainer extends Component {
                   </div>
 
                   <CustomRow>
+                    <span className={css(styles.redText)}>
+                      {msg === null
+                        ? null
+                        : msg.hasOwnProperty("message")
+                        ? "*" + msg.message
+                        : null}
+                    </span>
                     <div className={css(styles.buttonContainer)}>
                       <div style={{ marginRight: "10px" }}>
                         <Button

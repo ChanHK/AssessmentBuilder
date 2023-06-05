@@ -13,6 +13,15 @@ const validateLoginInput = require("../../validation/login");
 const validateForgotPasswordInput = require("../../validation/forgotPassword");
 const validateResetPasswordInput = require("../../validation/resetPassword");
 
+function restrict(res) {
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(403).json({
+      message:
+        "The administrator has restricted access to this particular feature.",
+    });
+  }
+};
+
 // @route     POST api/auth/register
 // @desc      Register user and return JWT token
 // @access    Public
@@ -25,6 +34,8 @@ router.post("/register", (req, res) => {
     .then((user) => {
       if (user)
         return res.status(400).json({ message: "Email already exists" });
+
+      restrict(res);
 
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -120,10 +131,13 @@ router.put("/forgotPassword", (req, res) => {
   const email = req.body.email;
 
   db.User.findOne({ email }).then((user) => {
-    if (!user)
+    if (!user) {
       return res.status(400).json({
         message: "This email does not exist, please enter a valid email",
       });
+    }
+
+    restrict(res);
 
     const token = jwt.sign(
       {
