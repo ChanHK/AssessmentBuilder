@@ -41,7 +41,7 @@ class AccessContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      link: `https://assessmentbuilder.herokuapp.com/assessment/start/${props.assessmentID}`,
+      link: `https://assessmentbuilder.onrender.com/assessment/start/${props.assessmentID}`,
 
       showModal: false, // display enlarged QR code
       noAuthenticationSelected: true,
