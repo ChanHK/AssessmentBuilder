@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, css } from "aphrodite";
-import ImageUploader from "react-images-upload";
+import ImageUploader from "react-images-uploading";
 import * as configStyles from "../../config/styles";
 
 const ImageUpload = (props) => (
