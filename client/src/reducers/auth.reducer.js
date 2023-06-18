@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
         isLoading: true,
       };
     case LOGIN.LOGIN_SUCCESS:
-    case REGISTER.REQISTER_SUCCESS:
+    case REGISTER.REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("role", action.payload.role);
       return {
@@ -27,7 +27,7 @@ export default function (state = initialState, action) {
       };
     case LOGIN.LOGIN_FAIL:
     case LOGOUT.LOGOUT_SUCCESS:
-    case REGISTER.REQISTER_FAIL:
+    case REGISTER.REGISTER_FAIL:
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       return {

@@ -18,14 +18,14 @@ export const register = (data) => (dispatch) => {
     .post("/api/auth/register", data, config)
     .then((res) =>
       dispatch({
-        type: REGISTER.REQISTER_SUCCESS,
+        type: REGISTER.REGISTER_SUCCESS,
         payload: res.data,
       })
     )
     .catch((err) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
-        type: REGISTER.REQISTER_FAIL,
+        type: REGISTER.REGISTER_FAIL,
       });
     });
 };
